@@ -715,9 +715,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           },
             //{table: {headerRows: 1,widths: ['*'],body: [[ {text: 'REFERENCE PAINT', style: "tblHeader"}]]},layout:'lightHorizontalLines'}
             {}
-            //{table: {headerRows: 1,widths: ['*'],body: [[ {text: 'XPTO WAS HERE', style: "tblHeader"}]]},layout: 'lightHorizontalLines'},
-            //{table: {headerRows: 1,widths: ['*'],body: [[ {text: 'XPTO WAS HERE', style: "tblHeader"}]]},layout: 'lightHorizontalLines'}
-          ],
+         ],
       styles: {
         header: {
           fontSize:12,
