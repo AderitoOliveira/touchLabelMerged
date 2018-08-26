@@ -1,0 +1,89 @@
+<div class="wrap">
+    <div id="actions">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header-actions">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="button-wrap col-md-4">
+                                    <button class="inset-button button add" ng-click="insertOrderModal()">
+                                        <span class="button-inner-wrap">
+                                            <img src="assets/icons/btn-add.svg" width="20px" height="20px">
+                                            <span class="btn-text">Adicionar</span>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6 vert-spacer"></div>
+                                <div class="col-md-6">
+                                    <div class="search-wrap">
+                                        <input type="text" name="Pesquisa" ng-model="searchChar" placeholder=" Pesquisar">  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="list-content" ng-controller="ordersController">
+        <div class="row">
+            <div id="order-table" class="col-md-12">
+                <div class="order-table-wrap">
+                    <div class="order-table-header row">
+                        <div class="inner-wrap">
+                            <div class="col-md-1 header-order-nr">Encomenda</div>
+                            <div class="col-md-2 header-order-client">Cliente</div>
+                            <div class="col-md-2 header-order-date">Data de encomenda</div>
+                            <div class="col-md-2 header-order-date-end">Data de Fecho</div>
+                            <div class="col-md-2 header-order-products"><span class="light">Total Produtos</span><br>Total Produzidos</div>
+                            <div class="col-md-2 header-order-state">Estado</div>
+                            <div class="col-md-1"></div>
+                        </div>
+                    </div>
+                    <div class="order-table-content row">
+                        <div class="col-md-12" dir-paginate="order in orders | orderBy : 'CREATED_DATE' |filter:searchChar | itemsPerPage:7">
+                            <div class="row">
+                                <div class="item-inner-wrap">
+                                    <div class="col-md-1 table-item item-order-nr">{{order.ORDER_ID}}</div>
+                                    <div class="col-md-2 table-item item-order-client">{{order.CLIENT_NAME}}</div>
+                                    <div class="col-md-2 table-item item-order-date">{{order.CREATED_DATE}}</div>
+                                    <div class="col-md-2 table-item item-order-date-end">{{order.MODIFIED_DATE}}</div>
+                                    <div class="col-md-2 table-item item-order-products">{{order.QTY_ORDERED}}<strong> / {{order.QTY_PRODUCED}}</strong></div>
+                                    <div class="col-md-2 table-item item-order-state">Estado</div>
+                                    <div class="col-md-1 table-item item-order-actions">
+                                        <a class="btn btn-sm btn-primary" ng-click="printLabelProduct(order.ORDER_ID, order.CLIENT_NAME)" data-toggle="tooltip" title="Imprimir Etiquetas do Produto.">
+                                            <img src="assets/icons/btn-paint.svg" width="24px" height="24px" />
+                                        </a>
+                                        <a class="btn btn-sm btn-warning" ng-click="showProductsForOrder(order.ORDER_ID)" data-toggle="tooltip" title="Editar Produto.">
+                                            <img src="assets/icons/btn-view.svg" width="24px" height="24px" />
+                                        </a>
+                                    </div>
+                                    <div class="progressrow item-row col-md-12">
+                                        <div class="progress-bar-wrap">
+                                            <div class="progressbar-inner" data-status={{order.width}} style="background-color:{{order.progressBarColor}};width:{{order.width}}%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div align="center">
+            <dir-pagination-controls
+                    max-size="10"
+                    direction-links="true"
+                    boundary-links="true" >
+            </dir-pagination-controls>
+        </div>
+    </div>
+</div>

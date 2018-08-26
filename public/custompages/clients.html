@@ -1,0 +1,77 @@
+<div class="wrap">
+    <div id="actions">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header-actions">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="button-wrap col-md-4">
+                                    <button class="inset-button button add">
+                                        <span class="button-inner-wrap">
+                                            <img src="assets/icons/btn-add.svg" width="20px" height="20px">
+                                            <span class="btn-text">Adicionar</span>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6 vert-spacer"></div>
+                                <div class="col-md-6">
+                                    <div class="search-wrap">
+                                        <input type="text" name="Pesquisa" ng-model="searchChar" placeholder=" Pesquisar">  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <div id="card-content" ng-controller="clients">
+        <!--<table ng-table="usersTable" id="products" class="table table-responsive table-striped table-hover table-condensed">-->
+        <div class="row">
+            <div class="col-md-3 client-item"  dir-paginate="client in data | orderBy : 'ClientName' | filter:searchChar | itemsPerPage:20">
+                <div class="item-card">
+                    <div class="image-wrapper">
+                        <div class="image-inner" style="background-image:url(/images/client-default.png);"></div>
+                    </div>
+                    <div class="info-wrapper">
+                        <div class="name">
+                            {{client.ClientName}}
+                        </div>
+                        <div class="card-actions">
+                            <a class="btn btn-card" ng-click="removeRow(client.ClientID)"><img src="assets/icons/card-edit.svg" width="30px" height="30px" /></a>
+                        </div>
+                    </div>
+                    <!--<td>{{client.ClientID}}</td>
+                    <td>{{client.Address}}</td>
+                    <td>{{client.NIF}}</td>
+                    <td>{{client.PhoneNumber}}</td>
+                    <td><a class="btn btn-xs btn-warning" ng-click="removeRow(client.ClientID)"><i class="glyphicon glyphicon-pencil"></i></a></td>
+                    <td><a class="btn btn-xs btn-danger" ng-click="removeRow(client.ClientID)"><i class="glyphicon glyphicon-trash"></i></a></td>-->
+                </div>
+            </div>
+        </div>
+    
+            
+            <tbody>
+                
+                <tr dir-paginate="client in data | orderBy : 'ClientName' | filter:searchChar | itemsPerPage:20">
+                    
+                </tr>
+            </tbody>
+        </table>
+        <!--<div align="center">
+                <dir-pagination-controls
+                     max-size="100"
+                     direction-links="true"
+                     boundary-links="true" >
+                </dir-pagination-controls>
+         </div>-->
+    </div>
+</div>

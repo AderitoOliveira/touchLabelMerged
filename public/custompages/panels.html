@@ -1,0 +1,73 @@
+<div class="container" style="padding-top:16px;">
+    <div class="row" ng-controller="panels">
+      <!--div class="my-col-count-style"-->
+        <!--div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="glyphicon glyphicon-star yelloStar"></span>
+            <label class="float-left">name</label>
+          </div>
+          <div class="panel-body">
+            <span>text</span> <a href="#" class="btn btn-link">read more</a> <a href="#" class="btn btn-primary btn-xs pull-right">ADD</a>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="glyphicon glyphicon-star yelloStar"></span>
+            <label class="float-left">name</label>
+          </div>
+          <div class="panel-body">
+            <span>text</span> <a href="#" class="btn btn-link">read more</a> <a href="#" class="btn btn-primary btn-xs pull-right">ADD</a>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="glyphicon glyphicon-star yelloStar"></span>
+            <label class="float-left">name</label>
+          </div>
+          <div class="panel-body">
+              <span>text</span> <a href="#" class="btn btn-link">read more</a> <a href="#" class="btn btn-primary btn-xs pull-right">ADD</a> 
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="glyphicon glyphicon-star yelloStar"></span>
+            <label class="float-left">name</label>
+          </div>
+          <div class="panel-body">
+            <span>text</span> <a href="#" class="btn btn-link">read more</a> <a href="#" class="btn btn-primary btn-xs pull-right">ADD</a>
+          </div>
+        </div-->
+    <!--table ng-table="usersTable"-->
+        <div class="my-col-count-style">
+      <!--tbody-->  
+        <!--tr ng-repeat="client in data"-->
+          <!--td-->
+            <div class="panel panel-default clickable" ng-repeat="client in data">
+              <div class="panel-heading">
+                <span class="glyphicon glyphicon-star yelloStar"></span>
+                <label class="float-left">{{client.ClientName}}</label>
+              </div>
+              <div class="panel-body">
+              <img ng-src={{image}} height="150" width="150">
+              <div class="container">
+                  <h2>Progress Bar With Label</h2>
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:90%">
+                      50%
+                    </div>
+                  </div>
+                </div>
+              <!--span>text</span>
+                 <a href="#" class="btn btn-link">read more</a> 
+                 <a href="#" class="btn btn-primary btn-xs pull-right">ADD</a -->
+              </div>
+          </div>
+          <!--/td-->
+        <!--/tr-->
+      <!--/tbody-->
+    </div>
+    <!--/table-->
+      </div>
+    </div>
+</div>
+</div>

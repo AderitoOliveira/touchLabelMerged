@@ -1,0 +1,116 @@
+<div class="wrap">
+    <div id="actions">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="header-actions">
+                  <div class="row">
+                      <div class="col-md-6">
+                          <div class="row">
+                              <div class="button-wrap col-md-4">
+                                  <button class="inset-button button add disabled">
+                                      <span class="button-inner-wrap">
+                                          <img src="assets/icons/btn-add.svg" width="20px" height="20px">
+                                          <span class="btn-text">Adicionar</span>
+                                      </span>
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="row">
+                              <div class="col-md-6 vert-spacer"></div>
+                              <div class="col-md-6">
+                                  <div class="search-wrap">
+                                      <input type="text" name="Pesquisa" ng-model="searchChar" placeholder=" Pesquisar">  
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+    <div class="form-wrap">
+        <div ng-controller="editproducts" class="row">
+            <form class="form-horizontal form-edit col-md-12">
+            <div class="form-group row">
+                <div class="form-photo col-md-3">
+                <div class="form-item-inner">
+                    <label class="control-label">Imagem</label>
+                    <div class="photo-wrap">
+                    <a class="photo-link" ng-href="{{image}}" target="_blank">
+                        <img ng-src={{image}} height="270" width="270">
+                    </a>
+                    <a class="btn btn-warning pull-left" ng-click="editarImagem()"><img src="assets/icons/symbol-edit.svg" width="18px" height="18px">Alterar Imagem<i></i></a>
+                    </div>
+                </div>
+                </div>
+                <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12 form-row">
+                    <div class="row">
+                        <div class="form-input-item col-md-6">
+                            <label class="control-label" for="productId">Referência Interna</label>
+                            <div class="input-wrap-inner">
+                            <input type="productId" class="form-control" id="productId" placeholder="Referência Produto" ng-model="productId">
+                            </div>
+                        </div>
+                        <div class="form-input-item col-md-6">
+                            <label class="control-label" for="productId">Referência Cliente</label>
+                            <div class="input-wrap-inner">
+                            <input type="productId" class="form-control" id="productId" placeholder="Referência Produto" ng-model="productId">
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-12 form-row">
+                    <div class="row">
+                        <div class="form-input-item col-md-6">
+                            <label class="control-label" for="productName">Nome</label>
+                            <div class="input-wrap-inner">
+                            <input type="productName" class="form-control" id="productName" placeholder="Nome do Produto" ng-model="productName">
+                            </div>
+                        </div>
+                        <div class="form-input-item col-md-6">
+                            <label class="control-label" for="nameInTheLabel">Nome Etiqueta</label>
+                            <div class="input-wrap-inner">
+                                <input type="nameInTheLabel" class="form-control" id="nameInTheLabel" placeholder="Nome artigo Etiqueta" ng-model="nameInTheLabel">
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-12 form-row">
+                    <div class="row">
+                        <div class="form-input-item col-md-6">
+                            <label class="control-label" for="barCode">Código de Barras</label>
+                            <div class="input-wrap-inner">
+                            <input type="barCode" class="form-control" id="barCode" placeholder="Número do código de Barras" ng-model="barCode">
+                            </div>
+                        </div>
+                        <div class="form-input-item col-md-6">
+                            <label class="control-label nolabel"></label>
+                            <div class="input-wrap-inner">
+                                <button type="submit" ng-show="techSheetExist == true" ng-click="editTechnicalSheet()" class="btn btn-default btn-tech-sheet"><img src="assets/icons/btn-add.svg" width="20px" height="20px">Editar Ficha Técnica</button> 
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-12 button-holder">
+                        <div class="row">
+                            <div class="col-md-4 vert-spacer"></div>
+                            <div class="col-md-4">
+                            <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" />Cancelar</button>
+                            </div>
+                            <div class="col-md-4">
+                            <button type="submit" ng-click="submit()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </form>  
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1741 @@
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,700");
+@media screen and (min-width: 1200px) and (max-width: 1400px) {
+  /* line 2, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  .container {
+    width: 1169px;
+  }
+}
+
+/* line 9, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.techSheetDiv {
+  text-align: center;
+}
+
+/* line 13, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+body {
+  background: #000;
+}
+
+/* line 17, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.ng-untouched {
+  border: 1px;
+  border-style: solid;
+  border-color: rgba(25, 131, 173, 0.884);
+  margin-top: 10px;
+}
+
+/* line 24, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.productLabel {
+  background-color: rgba(171, 196, 219, 0.644);
+}
+
+/* line 29, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.productLabelEmptySpace {
+  margin-top: 20px;
+}
+
+/* line 33, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.productLabelTextBoxTMarginTop {
+  margin-top: 100px;
+}
+
+/* line 37, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.mainDiv {
+  background-color: white;
+}
+
+/* line 41, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.productLabelButtonBox {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+/* line 47, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.headerHeight50 {
+  height: 50px;
+  margin-bottom: 30px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+/* line 54, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.headerHeight30 {
+  height: 30px;
+}
+
+/* line 58, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.container-fluid {
+  background-color: #6d7fcc;
+}
+
+/* line 62, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+h4 {
+  display: block;
+  font-size: 1.5em;
+  margin-bottom: 1.33em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+  color: whitesmoke;
+}
+
+/* ------------------------ EDIT IMAGE FILE UPLOAD STYLE----------------------------*/
+/* line 74, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.thumb {
+  width: 200px;
+  height: 200px;
+  float: none;
+  position: relative;
+  top: 7px;
+}
+
+/* line 82, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+form .progress {
+  line-height: 15px;
+}
+
+/* line 87, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.progress {
+  display: inline-block;
+  width: 150px;
+  height: 25px;
+  border: 0px;
+  position: relative;
+}
+
+/* line 95, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.progress span {
+  position: absolute;
+  display: block;
+  width: 100%;
+  color: black;
+  font-weight: bold;
+  margin-block-start: 300px;
+}
+
+/*----------------------------------------------------------------------*/
+/* line 105, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.my-col-count-style {
+  column-count: 3;
+  column-gap: 15px;
+}
+
+/* line 110, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.my-col-count-style .panel {
+  display: inline-block;
+  width: 100%;
+}
+
+/*------------------------------------------------------------------------*/
+/* line 117, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.clickable {
+  cursor: pointer;
+}
+
+/* line 122, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.clickable .glyphicon {
+  display: inline-block;
+  padding: 6px 12px;
+}
+
+/* line 128, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.panel-heading span {
+  margin-top: -23px;
+  font-size: 15px;
+  margin-right: -9px;
+}
+
+/* line 134, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+a.clickable {
+  color: inherit;
+}
+
+/* line 135, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+a.clickable:hover {
+  text-decoration: none;
+}
+
+/* ------ Everything for the Modals ------------*/
+/* line 138, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.modal {
+  display: table;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+/* line 145, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.modal-dialog {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+/* line 150, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.modal-content {
+  margin-left: auto;
+  margin-right: auto;
+  width: 600px;
+  /*whatever width you want*/
+}
+
+/* line 156, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.modal-body {
+  overflow-y: inherit;
+}
+
+/* ------------------------------------------------*/
+/*------------- Style for the Pagination ----------*/
+/* ------------------------------------------------*/
+/* line 166, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.inpDiv {
+  float: right;
+  width: 100px;
+  height: 50px;
+  padding-right: 170px;
+}
+
+/* line 173, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.inpDiv2 {
+  position: absolute;
+}
+
+/* line 177, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.modal-title {
+  display: block;
+  font-size: 2em;
+  margin-top: 0.67em;
+  margin-bottom: 0.67em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+  color: black;
+}
+
+/* line 188, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.floating-card {
+  float: left;
+  margin: 5px;
+  max-width: 300px;
+}
+
+/* --------------------  CSS para o Navbar BOOTSTRAP ----------------------------------*/
+/*
+    DEMO STYLE
+*/
+/* line 204, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #fafafa;
+}
+
+/* line 209, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+p {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.1em;
+  font-weight: 300;
+  line-height: 1.7em;
+  color: #999;
+}
+
+/* line 217, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+a, a:hover, a:focus {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+/* line 223, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.navbar {
+  padding: 15px 10px;
+  background: #fff;
+  border: none;
+  border-radius: 0;
+  margin-bottom: 40px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* line 232, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.navbar-btn {
+  box-shadow: none;
+  outline: none !important;
+  border: none;
+}
+
+/* line 238, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.line {
+  width: 100%;
+  height: 1px;
+  border-bottom: 1px dashed #ddd;
+  margin: 40px 0;
+}
+
+/* line 245, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+i, span {
+  display: inline-block;
+}
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+/* line 252, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.wrapper {
+  display: flex;
+  align-items: stretch;
+}
+
+/* line 258, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+a[data-toggle="collapse"] {
+  position: relative;
+}
+
+/* line 262, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+a[aria-expanded="false"]::before, a[aria-expanded="true"]::before {
+  content: '\e259';
+  display: block;
+  position: absolute;
+  right: 20px;
+  font-family: 'Glyphicons Halflings';
+  font-size: 0.6em;
+}
+
+/* line 270, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+a[aria-expanded="true"]::before {
+  content: '\e260';
+}
+
+/* line 275, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+ul ul a {
+  font-size: 0.9em !important;
+  padding-left: 30px !important;
+  background: #6d7fcc;
+}
+
+/* line 281, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+ul.CTAs {
+  padding: 20px;
+}
+
+/* line 285, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+ul.CTAs a {
+  text-align: center;
+  font-size: 0.9em !important;
+  display: block;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+/* line 293, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+a.download {
+  background: #fff;
+  color: #7386D5;
+}
+
+/* line 298, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+a.article, a.article:hover {
+  background: #6d7fcc !important;
+  color: #fff !important;
+}
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+/* line 308, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#content {
+  padding: 20px;
+  min-height: 100vh;
+  transition: all 0.3s;
+}
+
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+@media (max-width: 768px) {
+  /* line 319, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #sidebar {
+    min-width: 80px;
+    max-width: 80px;
+    text-align: center;
+    margin-left: -80px !important;
+  }
+  /* line 325, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  a[aria-expanded="false"]::before, a[aria-expanded="true"]::before {
+    top: auto;
+    bottom: 5px;
+    right: 50%;
+    -webkit-transform: translateX(50%);
+    -ms-transform: translateX(50%);
+    transform: translateX(50%);
+  }
+  /* line 333, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #sidebar.active {
+    margin-left: 0 !important;
+  }
+  /* line 337, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #sidebar .sidebar-header h3, #sidebar .CTAs {
+    display: none;
+  }
+  /* line 341, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #sidebar .sidebar-header strong {
+    display: block;
+  }
+  /* line 345, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #sidebar ul li a {
+    padding: 20px 10px;
+  }
+  /* line 349, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #sidebar ul li a span {
+    font-size: 0.85em;
+  }
+  /* line 352, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #sidebar ul li a i {
+    margin-right: 0;
+    display: block;
+  }
+  /* line 357, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #sidebar ul ul a {
+    padding: 10px !important;
+  }
+  /* line 361, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #sidebar ul li a i {
+    font-size: 1.3em;
+  }
+  /* line 364, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #sidebar {
+    margin-left: 0;
+  }
+  /* line 367, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #sidebarCollapse span {
+    display: none;
+  }
+}
+
+/*--------------------------------  TOOLTIP -----------------------------------------------------*/
+/* Tooltip container */
+/* line 374, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+  /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+/* line 381, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #1b0b0b;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 30px;
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+/* Tooltip arrow */
+/* line 403, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+/* line 415, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* line 424, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  text-align: left;
+  font-weight: normal;
+}
+
+/* line 431, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#content {
+  width: 100%;
+  float: left;
+  padding: 0px;
+  background: #fafbfc;
+  padding-left: 180px;
+}
+
+/* line 438, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#main-header {
+  width: calc(100% - 180px);
+  float: left;
+  padding: 21px 0px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.25);
+  position: fixed;
+  z-index: 1;
+}
+
+/* line 446, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#main-header h1.main-title {
+  font-size: 24px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #222222;
+  margin: 0 auto;
+  padding-left: 0px;
+  transition: all 0.3s;
+}
+
+/* line 458, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#main-header ul#notifications {
+  padding: 0px;
+  float: right;
+  margin: 0 auto;
+}
+
+/* line 462, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#main-header ul#notifications li.notification {
+  width: 30px;
+  height: 30px;
+  float: left;
+  margin: 0px 2px;
+  position: relative;
+  list-style-type: none;
+  background-size: 100%;
+  background-position: center center;
+}
+
+/* line 471, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#main-header ul#notifications li.notification:before {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: 0px;
+  left: 0px;
+}
+
+/* line 478, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#main-header ul#notifications li.notification span.notification-label {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  top: -8px;
+  right: -15px;
+  z-index: 1;
+  text-align: center;
+  border-radius: 100%;
+  font-size: 10px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 18px;
+  letter-spacing: normal;
+  color: #ffffff;
+}
+
+/* line 497, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#main-header ul#notifications .notification-error:before {
+  content: url(../assets/icons/notification-error.svg);
+}
+
+/* line 500, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#main-header ul#notifications .notification-error .notification-label {
+  background-color: #e31b1b;
+}
+
+/* line 505, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#main-header ul#notifications .notification-warning:before {
+  content: url(../assets/icons/notification-warning.svg);
+}
+
+/* line 508, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#main-header ul#notifications .notification-warning .notification-label {
+  background-color: #e3cf1b;
+}
+
+/* line 513, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#main-header ul#notifications .notification-status:before {
+  content: url(../assets/icons/notification-status.svg);
+}
+
+/* line 516, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#main-header ul#notifications .notification-status .notification-label {
+  background-color: #1be36b;
+}
+
+/* line 522, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#main-content {
+  width: 100%;
+  float: left;
+  margin-top: 36px;
+  background: transparent;
+  position: relative;
+  z-index: 0;
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+
+/* line 533, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.header-label-checkbox, .item-label-checkbox {
+  max-width: 50px;
+}
+
+/* line 537, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar.active .sidebar-header h3, #sidebar.active .CTAs {
+  display: none;
+}
+
+/* line 541, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar.active .sidebar-header strong {
+  display: block;
+}
+
+/* line 545, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar ul li a {
+  text-align: left;
+}
+
+/* line 549, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar.active ul li a {
+  padding: 20px 10px;
+  text-align: center;
+  font-size: 0.85em;
+}
+
+/* line 555, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar.active ul li a i {
+  margin-right: 0;
+  display: block;
+  font-size: 1.8em;
+  margin-bottom: 5px;
+}
+
+/* line 562, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar.active ul ul a {
+  padding: 10px !important;
+}
+
+/* line 566, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar.active a[aria-expanded="false"]::before, #sidebar.active a[aria-expanded="true"]::before {
+  top: auto;
+  bottom: 5px;
+  right: 50%;
+  -webkit-transform: translateX(50%);
+  -ms-transform: translateX(50%);
+  transform: translateX(50%);
+}
+
+/* line 575, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar .sidebar-header {
+  padding: 20px;
+  background: #6d7fcc;
+}
+
+/* line 580, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar .sidebar-header strong {
+  display: none;
+  font-size: 1.8em;
+}
+
+/* line 585, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar ul.components {
+  padding: 20px 0;
+  border-bottom: 1px solid #47748b;
+}
+
+/* line 590, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar ul li a {
+  padding: 10px;
+  font-size: 1.1em;
+  display: block;
+}
+
+/* line 595, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar ul li a:hover {
+  color: #7386D5;
+  background: #fff;
+}
+
+/* line 599, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar ul li a i {
+  margin-right: 10px;
+}
+
+/* line 603, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar ul li.active > a, a[aria-expanded="true"] {
+  color: #fff;
+  background: #6d7fcc;
+}
+
+/* line 608, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar {
+  transition: all 0.3s;
+  width: 180px;
+  background-color: #222222;
+  min-width: 180px;
+  position: fixed;
+  height: 100vh;
+  z-index: 1;
+}
+
+/* line 616, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar .sidebar-header {
+  background: transparent;
+  width: 100%;
+  float: left;
+  padding: 18px 0px;
+  text-align: center;
+}
+
+/* line 623, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar ul.components {
+  width: 100%;
+  float: left;
+  padding: 0px;
+  margin-bottom: 0px;
+  border: none !important;
+}
+
+/* line 629, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar ul.components li {
+  color: #fff;
+}
+
+/* line 631, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar ul.components li a {
+  padding: 9px 0px;
+  background-color: rgba(255, 255, 255, 0.02);
+  color: #fff !important;
+  transition: all 0.3s;
+}
+
+/* line 636, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar ul.components li a span.menu-icon-wrap {
+  width: 40px;
+  text-align: center;
+}
+
+/* line 640, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar ul.components li a:hover, #sidebar ul.components li a.active-nav {
+  transition: all 0.3s;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* line 645, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar ul.components li a:before {
+  content: "" !important;
+}
+
+/* line 651, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar ul.components li.active a {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* line 656, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar #settings-nav {
+  position: absolute;
+  bottom: 0;
+}
+
+/* line 660, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#sidebar.active {
+  max-width: 180px;
+}
+
+/* line 664, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.header-actions {
+  border-radius: 4px;
+  box-shadow: inset 0 -1px 2px 0 rgba(0, 0, 0, 0.25);
+  background-color: #fff;
+  border: solid 1px #CACBCC;
+  overflow: hidden;
+}
+
+/* line 671, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+button.button {
+  font-size: 18px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #ffffff;
+  border: none;
+  padding: 14px 0px;
+  width: 100%;
+}
+
+/* line 682, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+button.button span.button-inner-wrap {
+  margin-bottom: -4px;
+}
+
+/* line 684, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+button.button span.button-inner-wrap img {
+  float: left;
+}
+
+/* line 687, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+button.button span.button-inner-wrap .btn-text {
+  float: left;
+  margin-bottom: -10px;
+}
+
+/* line 692, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+button.button.add {
+  background: #27AE60;
+}
+
+/* line 696, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.search-wrap {
+  width: 100%;
+  float: left;
+}
+
+/* line 699, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.search-wrap input {
+  margin: 0 auto;
+  width: 100%;
+  float: left;
+  height: 100%;
+  border: none;
+  padding: 14px 4px;
+  position: relative;
+  z-index: 0;
+  background-color: #fafbfc;
+  box-shadow: inset 2px 0 2px 0 rgba(0, 0, 0, 0.25);
+  font-size: 18px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+/* line 719, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content {
+  padding-top: 36px;
+}
+
+/* line 721, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content .item-card {
+  background-color: #ffffff;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 36px;
+}
+
+/* line 728, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content .item-card .image-wrapper {
+  z-index: 0;
+}
+
+/* line 730, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content .item-card .image-wrapper .image-inner {
+  width: 100%;
+  padding-top: 100%;
+  height: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+/* line 738, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content .item-card .info-wrapper {
+  position: absolute;
+  bottom: 0px;
+  z-index: 1;
+  background: #fff;
+  width: 100%;
+  float: left;
+  padding: 9px 12px;
+  min-height: 48px;
+}
+
+/* line 747, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content .item-card .info-wrapper .name {
+  max-width: calc(100% - 30px);
+  float: left;
+  font-size: 18px;
+  line-height: 30px;
+  letter-spacing: normal;
+  color: #222222;
+  width: 100%;
+}
+
+/* line 756, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content .item-card .info-wrapper .card-actions {
+  width: 30px;
+  float: right;
+  position: absolute;
+  right: 12px;
+  bottom: 9px;
+}
+
+/* line 762, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content .item-card .info-wrapper .card-actions .btn-card {
+  padding: 0px;
+  border: 0px;
+}
+
+/* line 768, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content .item-card .item-hover {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 100%;
+}
+
+/* line 773, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content .item-card .item-hover .top-overlay {
+  background-color: rgba(0, 0, 0, 0.75);
+  height: 100%;
+  color: #fff;
+  padding: 20px 12px 48px;
+}
+
+/* line 778, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content .item-card .item-hover .top-overlay .item-name {
+  font-size: 22px;
+  min-height: 55px;
+  width: 100%;
+  float: left;
+}
+
+/* line 784, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content .item-card .item-hover .top-overlay .price-half {
+  width: 50%;
+  float: left;
+}
+
+/* line 788, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content .item-card .item-hover .top-overlay .item-text {
+  font-size: 18px;
+  width: 100%;
+  float: left;
+  margin: 3px 0px;
+}
+
+/* line 793, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content .item-card .item-hover .top-overlay .item-text span.label {
+  font-size: 14px;
+  width: 100%;
+  float: left;
+  text-align: left;
+  font-weight: normal;
+  padding: 0px;
+}
+
+/* line 803, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content .item-card .item-hover .btn-card {
+  border: 0px;
+  padding: 0px;
+}
+
+/* line 807, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content .item-card .item-hover .btn-left {
+  float: left;
+}
+
+/* line 810, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content .item-card .item-hover .btn-right {
+  float: right;
+}
+
+/* line 814, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#card-content .item-card:hover .item-hover {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  z-index: 1;
+}
+
+/* line 824, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.nav-toggle {
+  position: absolute;
+  height: 100%;
+  width: 60px;
+  background: #222;
+  top: 0px;
+  left: 0px;
+  padding: 24px 15px;
+  z-index: 1;
+  display: none;
+}
+
+/* line 835, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#menu-toggle {
+  display: none;
+  width: 30px;
+  height: 24px;
+  float: left;
+  margin-right: 6px;
+  background: #222;
+  border: none;
+  padding: 5px;
+  border-radius: 2px;
+  margin-top: 3px;
+}
+
+/* line 846, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#menu-toggle span.icon-bar {
+  width: 100%;
+  float: left;
+  margin-bottom: 4px;
+  background: #fff;
+  height: 2px;
+}
+
+/* line 855, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#order-table, #label-table {
+  padding-top: 36px;
+}
+
+/* line 860, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.order-labels-content .item-inner-wrap {
+  padding-bottom: 9px;
+}
+
+/* line 865, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.label-table-header > .inner-wrap {
+  padding: 9px 0px;
+}
+
+/* line 869, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.order-table-wrap, .label-table-wrap {
+  border-radius: 4px;
+  background-color: #ffffff;
+  overflow: hidden;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+/* line 876, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#action-wrap {
+  padding: 48px 0px;
+}
+
+/* line 878, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#action-wrap button.btn-save {
+  height: 48px;
+  width: auto !important;
+  text-align: center;
+  border-radius: 4px;
+  background-color: #27ae60;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #ffffff;
+  border: 0px;
+  float: right;
+  padding: 0px 28px;
+}
+
+/* line 897, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.header-label-checkbox {
+  margin-left: 4px;
+  margin-right: -4px;
+}
+
+/* line 901, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.checkbox-wrap {
+  margin-top: 4px;
+}
+
+/* line 905, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.btn-black {
+  background: #222222;
+  color: #fff !important;
+  text-align: center;
+  max-width: calc(50% - 23px);
+  width: 100%;
+}
+
+/* line 911, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.btn-black img {
+  margin-right: 5px;
+}
+
+/* line 914, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.btn-black:first-child {
+  margin-right: 15px;
+}
+
+/* line 917, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.btn-black:last-child {
+  margin-left: 15px;
+}
+
+/* line 920, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.btn-black.btn-outline {
+  border: 2px solid #222222;
+  background: #ffffff;
+  color: #222222 !important;
+}
+
+/* line 928, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.order-table-header > .inner-wrap, .label-table-header > .inner-wrap {
+  background-color: #dadada;
+  font-size: 16px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #222;
+  width: 100%;
+  float: left;
+}
+
+/* line 939, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.order-table-header > .inner-wrap > div, .label-table-header > .inner-wrap > div {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  line-height: 1;
+}
+
+/* line 943, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.order-table-header > .inner-wrap > div span.light, .label-table-header > .inner-wrap > div span.light {
+  font-weight: normal;
+}
+
+/* line 947, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.order-table-header > .inner-wrap > .header-order-products, .label-table-header > .inner-wrap > .header-order-products {
+  line-height: 1.2;
+}
+
+/* line 952, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.disabled {
+  cursor: auto;
+  opacity: 0.5;
+}
+
+/* line 957, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.item-inner-wrap {
+  background-color: #ffffff;
+  box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+  width: 100%;
+  float: left;
+  padding: 9px 0 0px;
+}
+
+/* line 963, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.item-inner-wrap > div:first-child {
+  text-indent: 12px;
+}
+
+/* line 967, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+a.btn.btn-sm {
+  padding: 0px;
+  background: transparent !important;
+  border: none;
+  margin-right: 5px;
+}
+
+/* line 972, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+a.btn.btn-sm:last-child {
+  margin-right: 0px;
+}
+
+/* line 976, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.progress-bar-wrap {
+  width: 100%;
+  float: left;
+  height: 12px;
+  margin-top: 5px;
+  border-bottom: 1px solid #dedede;
+  background: #ededed;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* line 984, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.progress-bar-wrap .progressbar-inner {
+  background: #cd1919;
+  transition: all 3s ease-in-out;
+  height: 12px;
+  width: 0px;
+}
+
+/* line 989, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.progress-bar-wrap .progressbar-inner.full {
+  background: #27ae60;
+  transition: all 3s ease-in-out;
+  width: 100%;
+}
+
+/* line 996, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.header-order-nr {
+  text-indent: 5px;
+}
+
+/* line 999, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.table-item {
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #222;
+  line-height: 2;
+}
+
+/* line 1010, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.item-order-actions a {
+  float: left;
+  width: 25px;
+}
+
+/* line 1015, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.item-order-nr {
+  font-weight: bold;
+}
+
+/* line 1019, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.item-order-products strong {
+  font-size: 22px;
+  line-height: 1.4;
+}
+
+/* line 1025, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.add-product-label h2 {
+  font-size: 24px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #222222;
+  margin: 0 auto;
+  background: #fff;
+  padding: 14px 8px 12px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* line 1040, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#add-product {
+  border-radius: 4px;
+  background-color: rgba(226, 226, 226, 0.5);
+  border: solid 1px #d9d9d9;
+  margin-top: 48px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+/* line 1047, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#add-product input.form-control {
+  border-radius: 2px;
+  border: solid 1px #c4c4c4;
+  box-shadow: inset -1px -1px 2px 0 rgba(118, 118, 118, 0.25);
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  height: 36px;
+  margin: 12px 0px;
+}
+
+/* line 1060, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#add-product .add-actions-wrap {
+  width: auto;
+  float: right;
+  padding-right: 8px;
+  margin: 12px 0px;
+}
+
+/* line 1065, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#add-product .add-actions-wrap .btn-save {
+  width: 174px;
+  height: 36px;
+  border-radius: 2px;
+  background: #27ae60 !important;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+/* line 1078, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#add-product .add-actions-wrap .btn-save img {
+  margin-right: 6px;
+  margin-top: -1px;
+  margin-bottom: 2px;
+}
+
+/* line 1085, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#add-product .add-actions-wrap .btn-cancel {
+  width: 36px;
+  height: 36px;
+  border-radius: 2px;
+  background: #c21414 !important;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+/* line 1100, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#add-product .add-actions-wrap .btn-default {
+  padding: 0px;
+  text-align: center;
+  line-height: 16px;
+}
+
+/* line 1106, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#add-product .add-actions-wrap .btn-default:hover {
+  color: #fff;
+}
+
+/* line 1111, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+#add-product .col-md-3:first-child input {
+  margin-left: 8px !important;
+  width: calc(100% - 8px);
+}
+
+/* line 1117, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.order-product-details-header .header-inner {
+  padding: 15px 8px;
+  font-size: 16px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #000000;
+  background-color: rgba(218, 218, 218, 0.77);
+}
+
+/* line 1128, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.order-product-details-item .item-row-inner {
+  border-bottom: 2px solid #d9d9d9;
+  background: #fff;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #000000;
+  padding: 9px 7px 8px;
+}
+
+/* line 1139, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.order-product-details-item .item-row-inner .item-amount {
+  font-weight: bold;
+}
+
+/* line 1145, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.order-product-details-add .form-inner {
+  padding: 12px 7px;
+  background-color: rgba(226, 226, 226, 0.5);
+}
+
+/* line 1148, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.order-product-details-add .form-inner input.form-control {
+  border-radius: 2px;
+  border: solid 1px #c4c4c4;
+  box-shadow: inset -1px -1px 2px 0 rgba(118, 118, 118, 0.25);
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  height: 36px;
+  margin: 0px;
+}
+
+/* line 1165, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.order-header-actions, .add-actions-wrap {
+  width: auto;
+  float: right;
+}
+
+/* line 1168, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.order-header-actions .btn-save, .add-actions-wrap .btn-save {
+  width: 174px;
+  height: 36px;
+  border-radius: 2px;
+  background: #27ae60 !important;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+/* line 1181, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.order-header-actions .btn-save img, .add-actions-wrap .btn-save img {
+  margin-right: 6px;
+  margin-top: -1px;
+  margin-bottom: 2px;
+}
+
+/* line 1187, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.order-header-actions .btn-cancel, .add-actions-wrap .btn-cancel {
+  width: 36px;
+  height: 36px;
+  border-radius: 2px;
+  background: #c21414 !important;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+/* line 1202, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.order-header-actions .btn-default, .add-actions-wrap .btn-default {
+  padding: 0px;
+  text-align: center;
+  line-height: 16px;
+}
+
+/* line 1208, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.order-header-actions .btn-default:hover, .add-actions-wrap .btn-default:hover {
+  color: #fff;
+}
+
+/* line 1213, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-wrap {
+  padding-top: 36px;
+}
+
+/* line 1215, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-wrap label.control-label {
+  width: 100%;
+  float: left;
+  text-align: left !important;
+  font-size: 16px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #222222;
+  margin-bottom: 8px;
+  padding-top: 0px;
+}
+
+/* line 1228, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-wrap label.control-label.nolabel {
+  height: 19px;
+}
+
+/* line 1232, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-wrap .photo-wrap {
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  width: 100%;
+  float: left;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* line 1238, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-wrap .photo-wrap .btn {
+  width: 100%;
+  float: left;
+  border: none;
+  background-color: #dcd51e;
+  font-size: 18px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #ffffff;
+  border-radius: 0px;
+  padding: 12px 0px;
+}
+
+/* line 1254, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-wrap .form-row {
+  margin-bottom: 24px;
+}
+
+/* line 1257, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-wrap a.photo-link {
+  width: 100%;
+  float: left;
+}
+
+/* line 1260, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-wrap a.photo-link img {
+  width: 100%;
+  float: left;
+  height: auto;
+}
+
+/* line 1266, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-wrap input.form-control {
+  border-radius: 2px;
+  box-shadow: inset -1px -1px 2px 0 rgba(118, 118, 118, 0.25);
+  background-color: #ffffff;
+  border: solid 1px #c4c4c4;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  height: 48px;
+}
+
+/* line 1279, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-wrap .btn-tech-sheet {
+  height: 48px;
+  border-radius: 2px;
+  background: #2755ae !important;
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #ffffff;
+}
+
+/* line 1294, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-wrap button.btn-cancel {
+  height: 48px;
+  width: 100%;
+  text-align: center;
+  border-radius: 2px;
+  background-color: #c21414;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #ffffff;
+  border: 0px;
+}
+
+/* line 1310, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-wrap button.btn-save {
+  height: 48px;
+  width: 100%;
+  text-align: center;
+  border-radius: 2px;
+  background-color: #27ae60;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #ffffff;
+  border: 0px;
+  width: 100%;
+}
+
+/* line 1326, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-wrap button img {
+  margin-right: 6px;
+}
+
+/* line 1329, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-wrap .button-holder {
+  padding-top: 12px;
+}
+
+/* line 1334, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.header-label-checkbox, .item-label-checkbox {
+  max-width: 40px;
+}
+
+/* line 1338, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.label-header-item {
+  line-height: 2 !important;
+}
+
+/* line 1342, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.header-label-name, .header-label-qty {
+  line-height: 1 !important;
+}
+
+/* line 1346, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.label-header-item:first-child {
+  text-indent: 8px;
+}
+
+/* line 1350, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.header-label-client-ref, .header-label-inner-ref, .header-label-amount, .header-label-checkbox {
+  line-height: 1 !important;
+}
+
+/* line 1354, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.checkbox-wrap {
+  position: relative;
+}
+
+/* line 1356, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.checkbox-wrap input.special-checkbox {
+  opacity: 0;
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 0px;
+  left: 12px;
+  width: 24px;
+  height: 24px;
+  z-index: 1;
+}
+
+/* line 1367, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.checkbox-wrap span.checkbox-item {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  background-image: url(../assets/icons/checkbox.png);
+  background-size: 24px;
+  background-position: 0px 0px;
+  position: absolute;
+}
+
+/* line 1376, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.checkbox-wrap input.special-checkbox:checked ~ span.checkbox-item {
+  background-position: 0px 24px;
+}
+
+/* line 1381, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-heading-wrap {
+  padding: 24px 0px 0px;
+}
+
+/* line 1383, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-heading-wrap ul.toggle-wrap {
+  padding: 0px;
+  border-bottom: 1px solid #c4c4c4;
+}
+
+/* line 1386, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-heading-wrap ul.toggle-wrap li.toggle-item {
+  list-style-type: none;
+}
+
+/* line 1389, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-heading-wrap ul.toggle-wrap a.toggle-button {
+  font-size: 24px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #222222;
+  opacity: 0.75;
+  text-align: center;
+  width: 100%;
+  float: left;
+  padding: 3px 0px 7px;
+  cursor: pointer;
+}
+
+/* line 1403, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.form-heading-wrap ul.toggle-wrap a.toggle-button.active {
+  opacity: 1;
+  padding: 3px 0px;
+  border-bottom: 4px solid #222;
+}
+
+/* line 1411, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.inner-form-wrap {
+  display: none;
+}
+
+/* line 1413, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+.inner-form-wrap.active {
+  display: block;
+}
+
+@media screen and (max-width: 1024px) {
+  /* line 1419, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  .nav-toggle {
+    display: block;
+  }
+  /* line 1422, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #menu-toggle {
+    display: block;
+    margin-left: 0px;
+    transition: all 0.3s;
+  }
+  /* line 1427, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #main-header {
+    width: 100%;
+  }
+  /* line 1429, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #main-header h1.main-title {
+    padding-left: 60px;
+  }
+  /* line 1433, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #main-header.active-nav .nav-toggle {
+    margin-left: 180px;
+    transition: all 0.3s;
+  }
+  /* line 1437, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #main-header.active-nav h1.main-title {
+    padding-left: 240px;
+    transition: all 0.3s;
+  }
+  /* line 1443, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #sidebar {
+    position: fixed;
+    height: 100vh;
+    z-index: 10;
+    left: -180px;
+    transition: all 0.3s;
+  }
+  /* line 1449, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #sidebar.active {
+    left: 0px;
+    transition: all 0.3s;
+  }
+  /* line 1454, C:/wamp64/www/easylabel/public/stylesheets/scss/style.scss */
+  #content {
+    padding-left: 0px;
+  }
+}
+
+/*# sourceMappingURL=../style.map */

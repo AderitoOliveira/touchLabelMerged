@@ -1,0 +1,192 @@
+<div class="container">
+    <div ng-controller="createTechSheet">
+        <form class="form-horizontal" id="printSectionId" role="form">
+          <!-- FICHA TÉCNICA PRODUÇÃO-->
+          <div class="techSheetDiv">
+            <h3>Ficha Técnica Produção</h3>
+            <br class='no-print'>
+          </div>
+          <div class="form-group">
+            <!--div class="form-group"-->
+              <label class="control-label col-sm-2" for="rawMaterial">Matéria Prima:</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="rawMaterial" placeholder="Matéria Prima" ng-model="rawMaterial">
+              </div>
+            <!--/div-->
+            <!--div class="form-group"-->
+              <label class="control-label col-sm-2" for="rawMaterialExtra">Matéria Prima Adicional:</label>
+              <div class="col-sm-4">
+                <input type="rawMaterialExtra" class="form-control" id="rawMaterialExtra" placeholder="Matéria Prima Adicional" ng-model="rawMaterialExtra">
+              </div>
+            <!--/div-->
+          </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="productHeight">Altura Peça:</label>
+              <div class="col-sm-4">
+                 <input type="text" class="form-control" id="productHeight" placeholder="Altura" ng-model="productHeight">
+              </div>
+              <label class="control-label col-sm-2" for="productWidth">Largura Peça:</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="productWidth" placeholder="Largura" ng-model="productWidth">
+              </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="topWidth">Topo Peça:</label>
+                <div class="col-sm-4">
+                    <input type="fileName" class="form-control" id="topWidth" placeholder="Largura Topo Peça" ng-model="topWidth">
+                </div>
+                <label class="control-label col-sm-2" for="bottomWidth">Fundo Peça:</label>
+                <div class="col-sm-4">
+                   <input type="bottomWidth" class="form-control" id="bottomWidth" placeholder="Largura Fundo Peça" ng-model="bottomWidth">
+                </div>
+            </div>
+            <div class="form-group">
+                 <label class="control-label col-sm-2" for="relief">Relevo:</label>
+                 <div class="col-sm-4">
+                   <input type="relief" class="form-control" id="relief" placeholder="Relevo" ng-model="relief">
+                 </div>
+                 <label class="control-label col-sm-2" for="sponge">Esponja:</label>
+                 <div class="col-sm-4">
+                   <input type="sponge" class="form-control" id="sponge" placeholder="Esponja" ng-model="sponge">
+                 </div>
+            </div>
+
+            <div class="form-group">
+                    <label class="control-label col-sm-2" for="cooking">Cozedura:</label>
+                    <div class="col-sm-4">
+                      <input type="cooking" class="form-control" id="cooking" placeholder="Cozedura" ng-model="cooking">
+                    </div>
+                    <label class="control-label col-sm-2" for="cookingTemperature">Temperatura Cozedura:</label>
+                    <div class="col-sm-4">
+                      <input type="cookingTemperature" class="form-control" id="cookingTemperature" placeholder="Temperatura Cozedura" ng-model="cookingTemperature">
+                    </div>
+               </div>
+
+
+            <!-- FICHA TÉCNICA PINTURA-->
+            <br>
+            <br>
+            <div class="techSheetDiv marginTopToDiv">
+                  <h3>Ficha Técnica Pintura</h3>
+                  <br class='no-print'>
+                </div>
+                <div class="form-group">
+                  <!--div class="form-group"-->
+                    <label class="control-label col-sm-2" for="paintedCold">Pintado a frio:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="paintedCold" placeholder="Pintado a frio" ng-model="paintedCold">
+                    </div>
+                  <!--/div-->
+                  <!--div class="form-group"-->
+                  <!--/div-->
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="refPaint">Ref. Tinta:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="refPaint" placeholder="Referência Tinta" ng-model="refPaint">
+                    </div>
+                    <label class="control-label col-sm-2" for="refPaintQty">Ref. Tinta Quantidade:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="refPaintQty" placeholder="Quantidade Referência Tinta" ng-model="refPaintQty">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="glassed">Vidrado:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="glassed" placeholder="Vidrado" ng-model="glassed">
+                    </div>
+                    <label class="control-label col-sm-2" for="refGlassed">Ref. Vidrado:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="refGlassed" placeholder="Referência Vidrado" ng-model="refGlassed">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="refPaintSmoked">Ref. Tinta Fuminho:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="refPaintSmoked" placeholder="Referência Tinta Fuminho" ng-model="refPaintSmoked">
+                    </div>
+                    <label class="control-label col-sm-2" for="refPaintSmokedQty">Ref. Tinta Fuminho Qty:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="refPaintSmokedQty" placeholder="Quantidade Referência Tinta Fuminho" ng-model="refPaintSmokedQty">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="finishTypeObs">Tipo Acabamento Obs:</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="finishTypeObs" placeholder="Tipo de Acabamento Observações" ng-model="finishTypeObs">
+                    </div>
+                </div>
+
+
+
+                <!-- FICHA TÉCNICA EMBALAGEM-->
+            <br>
+            <br>
+            <div class="techSheetDiv marginTopToDiv">
+                  <h3>Ficha Técnica Embalagem</h3>
+                  <br class='no-print'>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="barCodeTechSheet">Código de Barras:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control ng-touched" id="barCodeTechSheet" placeholder="Código de Barras" ng-model="barCodeTechSheet">
+                    </div>
+                    <label class="control-label col-sm-2" for="labelWaterProof">Etiqueta Prova de água:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control ng-touched" id="labelWaterProof" placeholder="Etiqueta Prova de água" ng-model="labelWaterProof">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="felts">Feltros:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="felts" placeholder="Feltros" ng-model="felts">
+                    </div>
+                    <label class="control-label col-sm-2" for="feltsQty">Qty. Feltros:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="feltsQty" placeholder="Quantidade Feltros" ng-model="feltsQty">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="bag">Saco:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="bag" placeholder="Saco" ng-model="bag">
+                    </div>
+                    <label class="control-label col-sm-2" for="bagSize">Tamanho Saco:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="bagSize" placeholder="Tamanho Saco" ng-model="bagSize">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="qtyByBox">Quantidade por caixa:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="qtyByBox" placeholder="Quantidade por caixa" ng-model="qtyByBox">
+                    </div>
+                    <label class="control-label col-sm-2" for="boxMeasures">Medidas de Caixa:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="boxMeasures" placeholder="Medidas de Caixa" ng-model="boxMeasures">
+                    </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="dispositionByRow">Disposição por fiada:</label>
+                  <div class="col-sm-4">
+                    <input type="text" class="form-control" id="dispositionByRow" placeholder="Disposição por fiada" ng-model="dispositionByRow">
+                  </div>
+                  <label class="control-label col-sm-2" for="qtyByPallet">Quant. Por palete:</label>
+                  <div class="col-sm-4">
+                    <input type="text" class="form-control" id="qtyByPallet" placeholder="Quantidade por palete" ng-model="qtyByPallet">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="finalObservations">OBSERVAÇÕES FINAIS:</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="finalObservations" placeholder="OBSERVAÇÕES FINAIS" ng-model="finalObservations ">
+                  </div>
+                </div>
+        </form>  
+        
+        <div class="col-sm-offset-0 col-sm-12">
+                <button type="submit" ng-click="printTechnicalSheet('printSectionId')" class="btn btn-default btn-warning pull-right active">Imprimir Folha Produção</button>
+                <button type="submit" ng-click="saveTechSheet()" class="btn btn-default btn-success pull-left active">Gravar Alterações</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+<div class="wrap">
+    <div id="actions">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header-actions">
+                    <div class="row">
+                        <div class="col-md-6">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6 vert-spacer"></div>
+                                <div class="col-md-6">
+                                    <div class="search-wrap">
+                                        <input type="text" name="Pesquisa" ng-model="searchChar" placeholder=" Pesquisar">  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="list-content" ng-controller="boxesToOrder">
+        <div class="row">
+            <div ng-table="boxesToOrderTable" id="label-table" class="col-md-12">
+                <div class="label-table-wrap">
+                    <div class="label-table-header row">
+                        <div class="inner-wrap">
+                            <div class="col-md-1 label-header-item header-label-checkbox"><div class="checkbox-wrap"><input class="special-checkbox" type="checkbox" ng-model="box" ng-change="changeValue(box)"/><span class="checkbox-item"></span></div></div>
+                            <div class="col-md-1 label-header-item header-label-ordernr">Encomenda</div>
+                            <div class="col-md-1 label-header-item header-label-client-ref">Ref. Cliente</div>
+                            <div class="col-md-1 label-header-item header-label-inner-ref">Ref. Interna</div>
+                            <div class="col-md-2 label-header-item header-label-client">Cliente</div>
+                            <div class="col-md-2 label-header-item header-label-product">Nome Produto</div>
+                            <div class="col-md-2 label-header-item header-label-amount"><span class="light">Produtos por Caixa</span>Total Produzido</div>
+                            <div class="col-md-2 label-header-item header-label-boxes-amount">Caixas a encomendar</div>
+                        </div>
+                    </div>
+                    <div class="order-labels-content row">
+                            <div class="col-md-12" dir-paginate="boxesForProduct in boxesToOrder | orderBy : 'TOTAL_BOXES_TO_ORDER' | filter:searchChar | itemsPerPage:7">
+                                <div class="row">
+                                    <div class="item-inner-wrap">
+                                        <div class="col-md-1 table-item item-label-checkbox"><div class="checkbox-wrap"><input class="special-checkbox" type="checkbox" ng-model="box" ng-change="changeValue(box)"/><span class="checkbox-item"></span></div></div>
+                                        <div class="col-md-1 table-item item-label-ordernr">{{boxesForProduct.ORDER_ID}}</div>
+                                        <div class="col-md-1 table-item item-label-client-ref">{{boxesForProduct.CUSTOMER_PRODUCT_ID}}</div>
+                                        <div class="col-md-2 table-item item-label-inner-ref">{{boxesForProduct.INTERNAL_PRODUCT_ID}}</div>
+                                        <div class="col-md-1 table-item item-label-client">{{boxesForProduct.ORDER_ID}}</div>
+                                        <div class="col-md-2 table-item item-label-product">{{boxesForProduct.PRODUCT_NAME}}</div>
+                                        <div class="col-md-2 table-item item-label-amount">{{boxesForProduct.QTY_BY_BOX}}<strong> / {{boxesForProduct.TOTAL_PRODUCTS_PRODUCED}}</strong></div>
+                                        <div class="col-md-2 table-item item-label-boxes-amount">{{boxesForProduct.TOTAL_BOXES_TO_ORDER}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="action-wrap">
+        <div class="row">
+            <div class="col-md-12">
+                    <button type="submit" ng-click="submit()" class="btn btn-default btn-save"><img src="assets/icons/send.svg" width="21px" height="16px">Gerar Encomenda</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div align="center">
+        <dir-pagination-controls
+                max-size="100"
+                direction-links="true"
+                boundary-links="true" >
+        </dir-pagination-controls>
+    </div>
+</div>

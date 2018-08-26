@@ -1,0 +1,46 @@
+<div class="modal fade">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">{{title}}</h4>
+        </div>
+        <div class="modal-body">
+  
+          <form class="form-horizontal" role="form">
+            <div class="form-group">
+                  <label for="internalproductid" class="col-sm-3 control-label">Ref Produto</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control"  placeholder="Referência do Produto" ng-model="internalproductid" />  
+
+                  </div>
+            </div>
+            <div class="form-group">
+                  <label for="productnameinternal" class="col-sm-3 control-label">Nome do Produto</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" id="productnameinternal"  placeholder="Nome do Produto" ng-model="productnameinternal" />  
+                  </div>
+            </div>
+            <div class="form-group">
+                  <label for="nameemployee" class="col-sm-3 control-label">Nome Rodista</label>
+                  <div class="col-sm-6">
+                    <input type="text" autocomplete="off" class="form-control" id="nameemployee" placeholder="Nome Funcionário" ng-model="nameemployee" uib-typeahead="employee as employee.EMPLOYEE_NAME for employee in dataEmployees | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}" >
+                  </div>
+            </div>
+            <div class="form-group">
+                  <label for="qtyproduzida" class="col-sm-3 control-label">Quantidade Produzida</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" id="qtyproduzida" placeholder="Quantidade produtos produzidos" ng-model="qtyproduzida">
+                  </div>
+            </div>
+          </form>
+  
+      </div>
+        <div class="modal-footer">
+          <button type="button" ng-click="save()" class="btn btn-primary" data-dismiss="modal">OK</button>
+          <button type="button" ng-click="cancel()" class="btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

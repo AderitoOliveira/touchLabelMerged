@@ -1,0 +1,94 @@
+<div class="wrap">
+    <div id="actions">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header-actions">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="button-wrap col-md-4">
+                                    <button class="inset-button button add" ng-click="insertProductPath()">
+                                        <span class="button-inner-wrap">
+                                            <img src="assets/icons/btn-add.svg" width="20px" height="20px">
+                                            <span class="btn-text">Adicionar</span>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6 vert-spacer"></div>
+                                <div class="col-md-6">
+                                    <div class="search-wrap">
+                                        <input type="text" name="Pesquisa" ng-model="searchChar" placeholder=" Pesquisar">  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="card-content" ng-controller="products">
+        <div class="row">
+            <div class="col-md-3 client-item"  dir-paginate="product in products | orderBy : 'ProductID' |filter:searchChar | itemsPerPage:20">
+                <div class="item-card">
+                    <div class="image-wrapper">
+                        <div class="image-inner" style="background-image:url({{product.Image_Path}}/{{product.Image_Name}});"></div>
+                    </div>
+                    <div class="info-wrapper">
+                        <div class="name">
+                            {{product.ProductName}}
+                        </div>
+                        <div class="card-actions">
+                            <a class="btn btn-card" ng-click="removeRow(client.ClientID)"><img src="assets/icons/card-info.svg" width="30px" height="30px" /></a>
+                        </div>
+                    </div>
+                    <div class="item-hover">
+                        <div class="top-overlay">
+                            <div class="item-name">
+                                {{product.ProductName}}
+                            </div>
+                            <div class="item-text item-reference ref-int">
+                                <span class="label">Referência Interna</span>
+                                {{product.INTERNAL_PRODUCT_ID}}
+                            </div>
+                            <div class="item-text item-reference ref-ext">
+                                    <span class="label">Referência Cliente</span>
+                                {{product.CUSTOMER_PRODUCT_ID}}
+                            </div>
+                            <div class="item-text item-price">
+                                <div class="price-half price-left">
+                                    <span class="label">Preço 1</span>
+                                    {{product.PrecoEURO1}}€
+                                </div>
+                                <div class="price-half price-right">
+                                    <span class="label">Preço 2</span>
+                                    {{product.PrecoEURO2}}€
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-wrapper hover-actions">
+                            <a class="btn btn-card btn-left" ng-click="printLabelProduct(product.ProductID, product.ProductName)">
+                                <img src="assets/icons/card-print.svg" width="30px" height="30px" />
+                            </a>
+                            <a class="btn btn-card btn-right" ng-click="editProductPath(product.ProductName, product.INTERNAL_PRODUCT_ID, product.Image_Name, product.BAR_Code_Number, product.PRODUCT_NAME_FOR_LABEL, product.NUM_ARTICLES_IN_BOX)">
+                                <img src="assets/icons/card-edit.svg" width="30px" height="30px" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div align="center">
+            <dir-pagination-controls
+                 max-size="10"
+                 direction-links="true"
+                 boundary-links="true" >
+            </dir-pagination-controls>
+        </div>
+    </div>
+</div>

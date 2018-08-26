@@ -1,0 +1,51 @@
+<div class="modal fade">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{{title}}</h4>
+      </div>
+  	<div class="modal-body">
+
+			<form class="form-horizontal" role="form">
+		  	<div class="form-group">
+		    	<label for="productid" class="col-sm-3 control-label">Número do Produto</label>
+		    	<div class="col-sm-6">
+		      	<input type="text" class="form-control" id="productid" placeholder="Número do produto" ng-model="productid">
+		    	</div>
+		  	</div>
+		  	<div class="form-group">
+		    	<label for="productname" class="col-sm-3 control-label">Nome do Produto</label>
+		    	<div class="col-sm-6">
+		      	<input type="text" class="form-control" id="productname" placeholder="Nome do Produto" ng-model="productname">
+		    	</div>
+      	</div>
+      	<div class="form-group">
+		    	<label for="imagename" class="col-sm-3 control-label">Nome Ficheiro</label>
+		    	<div class="col-sm-6">
+		      	<input type="text" class="form-control" id="imagename" placeholder="Nome Ficheiro do Produto" ng-model="imagename">
+		    	</div>
+		  	</div>
+		  	<div class="form-group">
+		    	<label for="barcode" class="col-sm-3 control-label">Código de barras</label>
+		    	<div class="col-sm-6">
+		      	<input type="text" class="form-control" id="barcode" placeholder="Código de barras" ng-model="barcode">
+		    	</div>
+		  	</div>
+			</form>
+			<div class="well well-sm">
+				<div class="image-wrapper">
+					<a ng-href="{{image}}" target="_blank">
+				 		<img ng-src={{image}} height="150" width="150">
+					</a>
+				</div>
+			</div>
+
+    </div>
+      <div class="modal-footer">
+        <button type="button" ng-click="save()" class="btn btn-primary" data-dismiss="modal">OK</button>
+        <button type="button" ng-click="cancel()" class="btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

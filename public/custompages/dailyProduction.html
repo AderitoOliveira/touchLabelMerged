@@ -1,0 +1,38 @@
+<div class="container">
+    <div ng-controller="dailyProduction">
+        <table ng-table="dailyProductionTable" id="dailyProduction" class="table table-responsive table-striped table-hover table-condensed">
+            <thead class="thead-dark">
+                <th>Número Encomenda</th>
+                <th>Ref. Produto Cliente</th>
+                <th>Ref. Produto Interna</th>
+                <th>Nome Produto</th>
+                <th>Número Rodista</th>
+                <th>Nome Rodista</th>
+                <th>Quantidade produzida</th>
+                <th>Data de registo de Produção</th>
+            </thead>
+            <tbody>
+                <div class="inpDiv">
+                    <input type="text" name="Pesquisa" ng-model="searchChar" placeholder=" Pesquisar">  
+                </div>
+                <tr dir-paginate="productsProduced in dailyProduction | orderBy : 'CREATED_DATE' | filter:searchChar | itemsPerPage:7">
+                    <td>{{productsProduced.ORDER_ID}}</td>
+                    <td>{{productsProduced.CUSTOMER_PRODUCT_ID}}</td>
+                    <td>{{productsProduced.INTERNAL_PRODUCT_ID}}</td>
+                    <td>{{productsProduced.PRODUCT_NAME}}</td>
+                    <td>{{productsProduced.EMPLOYEE_ID}}</td>
+                    <td>{{productsProduced.EMPLOYEE_NAME}}</td>
+                    <td>{{productsProduced.TOTAL_PRODUCTS_PRODUCED}}</td>
+                    <td>{{productsProduced.CREATED_DATE}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div align="center">
+                <dir-pagination-controls
+                     max-size="100"
+                     direction-links="true"
+                     boundary-links="true" >
+                </dir-pagination-controls>
+         </div>
+    </div>
+</div>

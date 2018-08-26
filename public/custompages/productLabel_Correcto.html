@@ -1,0 +1,45 @@
+<div class="container">
+    <div ng-controller="productLabels">
+        <table id="products" class="table table-responsive table-striped table-hover table-condensed table-sm">
+            <thead class="thead-dark">
+                <th>ProductID</th>
+                <th>ProductName</th>
+                <th>Image_Path</th>
+                <th>Image_Name</th>
+                <th>Zpl_String_Article</th>
+                <th>Zpl_String_Box</th>
+                <th>ARTICLE_PRINTER_IP_ADDRESS</th>
+                <th>printers.BOX_PRINTER_IP_ADDRESS</th>
+                <th>ARTICLE_PRINTER_PORT</th>
+                <th>BOX_PRINTER_PORT</th>
+            </thead>
+            <div class="inpDiv2" colspan="2">
+                <a class="btn btn-success pull-left active" ng-click="insertProductPath()">Adicionar Artigo<i></i></a>
+            </div>
+            <div class="inpDiv">
+                <input type="text" ng-model="searchChar" placeholder="Pesquisar">  
+            </div>
+            <tr dir-paginate="product in data | orderBy : 'ProductID' |filter:searchChar | itemsPerPage:7">
+                    <td>{{product.ProductID}}</td>
+                    <td>{{product.ProductName}}</td>
+                    <td>{{product.Image_Path}}</td>
+                    <td>{{product.Image_Name}}</td>
+                    <td>{{product.Zpl_String_Article}}</td>
+                    <td>{{product.Zpl_String_Box}}</td>
+                    <td>{{product.ARTICLE_PRINTER_IP_ADDRESS}}</td>
+                    <td>{{product.printers.BOX_PRINTER_IP_ADDRESS}}</td>
+                    <td>{{product.ARTICLE_PRINTER_PORT}}</td>
+                    <td>{{product.BOX_PRINTER_PORT}}</td>
+                    <td><a class="btn btn-xs btn-primary" ng-click="printLabel(product.ARTICLE_PRINTER_IP_ADDRESS, product.ARTICLE_PRINTER_PORT, product.Zpl_String_Article)" data-toggle="tooltip" title="Imprimir Etiquetas do Produto."><i class="glyphicon glyphicon-barcode"></i></a></td>
+                    <!--td><a class="btn btn-xs btn-primary" ui-sref="togo({ productName: 'fromhtml2' })"><i class="glyphicon glyphicon-barcode"></i></a></td-->
+            </tr>
+        </table>
+        <div align="center">
+            <dir-pagination-controls
+                 max-size="10"
+                 direction-links="true"
+                 boundary-links="true" >
+            </dir-pagination-controls>
+        </div>
+    </div>
+</div>
