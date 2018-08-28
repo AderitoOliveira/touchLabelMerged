@@ -1,5 +1,5 @@
 <div class="wrap">
-    <div id="actions">
+    <div id="actions" ng-controller="boxesToOrder">
         <div class="row">
             <div class="col-md-12">
                 <div class="header-actions">
@@ -21,7 +21,7 @@
             </div>
         </div>
     </div>
-    <div id="list-content" ng-controller="boxesToOrder">
+    <div id="list-content">
         <div class="row">
             <div ng-table="boxesToOrderTable" id="label-table" class="col-md-12">
                 <div class="label-table-wrap">
