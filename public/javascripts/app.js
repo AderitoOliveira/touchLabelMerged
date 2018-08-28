@@ -1213,6 +1213,11 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
 
    };
 
+   $scope.back = function () {
+    var currentPageTemplate = $state.current.templateUrl;
+    $templateCache.remove(currentPageTemplate);
+    $state.transitionTo("editProduct", {'productName': $scope.productName, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
+   };
 
 
  $scope.printTechnicalSheet = function(divName) {
