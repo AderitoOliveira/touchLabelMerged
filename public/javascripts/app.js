@@ -639,7 +639,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
          paintingPDFTemplate.content[1] = Object.values(buildTables(arrayForAll));
 
-         pdfMake.createPdf(paintingPDFTemplate).download();
+         var filename = 'Encomenda_' + orderId;
+         pdfMake.createPdf(paintingPDFTemplate).download(filename);
 
       },
       function errorCallback(data){
