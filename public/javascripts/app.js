@@ -870,6 +870,14 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
   };
 
+  //FUNCTION TO SEE THE DETAILS ABOUT THE PRODUCT IN THE ORDER
+  $scope.seeProductDetailInOrder = function (customerproductid) {
+
+    return customer_product_id===customerproductid;
+
+  };
+  
+
 }]);
 
 //CONTROLLER FOR ALL THE ORDERS
