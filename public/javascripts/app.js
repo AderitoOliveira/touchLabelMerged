@@ -1207,7 +1207,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
     var res = $http.post('/updateProductTechSheet', dataObj).then(function(data, status, headers, config) {
       var currentPageTemplate = $state.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
-      $state.transitionTo("editProduct", {'productName': $scope.productName, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
+      $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
 
     });
 
@@ -1216,7 +1216,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
    $scope.back = function () {
     var currentPageTemplate = $state.current.templateUrl;
     $templateCache.remove(currentPageTemplate);
-    $state.transitionTo("editProduct", {'productName': $scope.productName, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
+    $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId,'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
    };
 
 
@@ -1381,6 +1381,7 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
   $scope.barCode = $stateParams.barCode;
   $scope.numArticleByBox = $stateParams.numArticleByBox;
   $scope.nameInTheLabel = $stateParams.nameInTheLabel;
+  $scope.techSheetExist = $stateParams.techSheetExist;
 
   $scope.image = '/images' + '/' + $stateParams.imageName;
 
