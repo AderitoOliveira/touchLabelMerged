@@ -60,7 +60,7 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
         url: '/testImage',
           templateUrl : '../custompages/imageUpload.html',
           controller : 'editImageCtrl',
-          params: {productName: null, productId: null, imageName: null, barCode: null}
+          params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null}
     })
     .state('listOrderProducts', {
       url: '/listOrderProducts',
@@ -1444,7 +1444,7 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
   
   $scope.editarImagem = function () {
     //$state.go("editImage", null, { reload: true });
-    $state.transitionTo("editImage", {'productName': $scope.productName, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode}) ;
+    $state.transitionTo("editImage", {'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode}) ;
   };
 
   $scope.createTechnicalSheet = function () {
@@ -1733,9 +1733,9 @@ $scope.cancel = function() {
 //EDIT IMAGE CONTROLLER
 app.controller('editImageCtrl', [ '$http', '$state', '$scope', 'Upload', '$timeout', '$stateParams', '$templateCache', function ($http, $state, $scope, Upload, $timeout, $stateParams, $templateCache) {
   
-  alert($stateParams.productName);
   $scope.productName = $stateParams.productName;
   $scope.productId = $stateParams.productId;
+  $scope.customerProductId = $stateParams.customerProductId;
   $scope.imageName = $stateParams.imageName;
   $scope.barCode = $stateParams.barCode;
 
@@ -1760,7 +1760,7 @@ app.controller('editImageCtrl', [ '$http', '$state', '$scope', 'Upload', '$timeo
 
     var dataObj = {
       productname: $scope.productName,
-      productid: $scope.productId,
+      productid: $scope.customerProductId,
       imagename: $scope.picFile.name,
       barcode: $scope.barCode
     };	

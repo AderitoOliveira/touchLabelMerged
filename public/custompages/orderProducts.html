@@ -86,7 +86,7 @@
                         <div class="col-md-12" dir-paginate="product in products | orderBy : 'QUANTITY_PRODUCED' |filter:searchChar | itemsPerPage:7" ng-click="dailyProductionDetails(product.CUSTOMER_PRODUCT_ID)">
                             <div class="row">
                                 <div class="item-inner-wrap">
-                                    <div class="col-md-1 table-item item-order-nr">{{order.ORDER_ID}}</div>
+                                    <div class="col-md-1 table-item item-order-nr"><img src="{{product.IMAGE_PATH}}/{{product.IMAGE_NAME}}" class="img-product img-rounded" height="50" width="50"/></div>
                                     <div class="col-md-1 table-item item-order-client">{{product.INTERNAL_PRODUCT_ID}}</div>
                                     <div class="col-md-2 table-item item-order-date">{{product.PRODUCT_NAME}}</div>
                                     <div class="col-md-2 table-item item-order-date-end">{{product.CREATED_DATE}}</div>
