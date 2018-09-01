@@ -17,10 +17,8 @@
         } 
         
         $(document).on('change', function () {
-            console.log('changed');
             $('.progressbar-inner').each(function(){
                 var itemProgress = $(this).attr('data-status');
-                console.log(itemProgress);
                 $(this).animate({
                     width: itemProgress+'%'
                 }, 400);
@@ -42,14 +40,16 @@
 
         $(document).on('click','.checkbox-all', function(){
             if($('.checkbox-all').is(':checked')){
-                console.log('is checked');
                 $('.special-checkbox').each(function(){
-                    $(this).prop('checked',true);
+                  if(! $(this).is(':checked')){
+                      $(this).click();
+                  }
                 })
             } else {
-                console.log('is unchecked');
                 $('.special-checkbox').each(function(){
-                    $(this).prop('checked',false);
+                    if( $(this).is(':checked')){
+                        $(this).click();
+                    }
                 })
             }
         });
@@ -57,7 +57,6 @@
         $(document).on('click','.special-checkbox', function(){
             var allCheckboxes = $('.special-checkbox').length;
             var checkedCheckboxes = $('.special-checkbox:checked:checked').length;
-            console.log('checked: '+checkedCheckboxes+' / all: '+allCheckboxes);
             if( allCheckboxes === checkedCheckboxes ){
                 $('.checkbox-all').prop('checked',true);
             } else {
