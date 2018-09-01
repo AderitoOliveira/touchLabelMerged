@@ -110,11 +110,6 @@
                                         </a>
                                         
                                     </div>
-                                    <div class="progressrow item-row col-md-12">
-                                        <div class="progress-bar-wrap">
-                                            <div class="progressbar-inner"  data-status={{product.width}} style="background-color:{{product.progressBarColor}};width:{{product.width}}%;"></div>
-                                        </div>
-                                    </div>
                                     <div class="order-product-details item-row col-md-12" ng-if="seeProductDetailInOrder(product.CUSTOMER_PRODUCT_ID)">
                                         <div class="row">
                                             <div class="col-md-12 order-product-details-header">
@@ -181,6 +176,11 @@
                                                     </div>
                                                 </div>                                                
                                             </div>                                                                                                   
+                                        </div>
+                                    </div>
+                                    <div class="progressrow item-row col-md-12">
+                                        <div class="progress-bar-wrap">
+                                            <div class="progressbar-inner"  data-status={{product.width}} style="background-color:{{product.progressBarColor}};width:{{product.width}}%;"></div>
                                         </div>
                                     </div>
                                 </div>
