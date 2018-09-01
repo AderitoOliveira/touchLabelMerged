@@ -164,17 +164,17 @@
                                                 <div class="form-inner">
                                                     <div class="row">
                                                         <div class="col-md-2">
-                                                            <input type="productName" class="form-control" id="productName" placeholder="Número Produzido" ng-model="productName">
+                                                            <input type="text" class="form-control" id="qtyproduzida" placeholder="Número Produzido" ng-model="qtyproduzida">
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <input type="productName" class="form-control" id="productName" placeholder="Escolha Um Rodista" ng-model="productName">
+                                                            <input type="text" class="form-control" id="nameemployee" placeholder="Escolha Um Rodista" ng-model="nameemployee" uib-typeahead="employee as employee.EMPLOYEE_NAME for employee in dataEmployees | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}">
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <input type="productName" class="form-control" id="productName" placeholder="Data de Produção" ng-model="productName">
+                                                            <input type="text" class="form-control" id="productName" placeholder="Data de Produção" ng-model="productName">
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="add-actions-wrap">
-                                                                <button type="submit" ng-click="insertDailyProductionModal(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME)" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px" />Adicionar</button>
+                                                                <button type="submit" ng-click="insertDailyProductionModal(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.TOTAL_PRODUCTS_PRODUCED, qtyproduzida, nameemployee)" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px" />Adicionar</button>
                                                                 <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" /></button>
                                                             </div>
                                                         </div>
