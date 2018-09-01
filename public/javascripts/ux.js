@@ -24,7 +24,8 @@
                 $(this).animate({
                     width: itemProgress+'%'
                 }, 400);
-            })
+            })  
+
         });
         
         $(document).on('click', '#tech-sheet-tabs .toggle-button', function(){
@@ -37,6 +38,31 @@
                 $(this).removeClass('active');
             });
             $(activeForm).addClass('active');
+        });
+
+        $(document).on('click','.checkbox-all', function(){
+            if($('.checkbox-all').is(':checked')){
+                console.log('is checked');
+                $('.special-checkbox').each(function(){
+                    $(this).prop('checked',true);
+                })
+            } else {
+                console.log('is unchecked');
+                $('.special-checkbox').each(function(){
+                    $(this).prop('checked',false);
+                })
+            }
+        });
+
+        $(document).on('click','.special-checkbox', function(){
+            var allCheckboxes = $('.special-checkbox').length;
+            var checkedCheckboxes = $('.special-checkbox:checked:checked').length;
+            console.log('checked: '+checkedCheckboxes+' / all: '+allCheckboxes);
+            if( allCheckboxes === checkedCheckboxes ){
+                $('.checkbox-all').prop('checked',true);
+            } else {
+                $('.checkbox-all').prop('checked', false);
+            }
         });
           
     }); 

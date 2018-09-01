@@ -692,6 +692,16 @@ button.button {
     &.add{
         background:#27AE60;
     }
+    &.multiple{
+        width:50%;
+        float:left;
+        img{
+            margin-right:6px;
+        }
+    }
+    &.print{
+        background:#2755ae; 
+    }
 }
 .search-wrap {
     width: 100%;
@@ -1353,7 +1363,7 @@ a.btn.btn-sm {
 
 .checkbox-wrap{
     position:relative;
-    input.special-checkbox{
+    input.special-checkbox, .checkbox-all{
         opacity: 0;
         position: absolute;
         width: 24px;
@@ -1373,7 +1383,7 @@ a.btn.btn-sm {
         background-position: 0px 0px;
         position:absolute;
     }
-    input.special-checkbox:checked ~ span.checkbox-item{
+    input.special-checkbox:checked ~ span.checkbox-item, input.checkbox-all:checked ~ span.checkbox-item{
         background-position: 0px 24px;
     }
 }
