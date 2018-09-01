@@ -544,12 +544,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   if($scope.totalquantityproduced <= products_still_to_produce) 
   {
    
-    $scope.orderproductstatus = 'EM ABERTO';
-    if (($scope.totalquantityproduced - products_still_to_produce) == 0) {
-      $scope.orderproductstatus = 'PRONTO PARA FECHAR EM PRODUÇÂO';
-    } 
-
-
+    $scope.orderproductstatus = 'EM PRODUÇÂO';
+    
     var dataObj = {
       ORDER_ID: $scope.orderid,
       INTERNAL_PRODUCT_ID : $scope.internalproductid,
@@ -622,7 +618,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                ORDER_ID: order_id,
                INTERNAL_PRODUCT_ID : $scope.internalproductid,
                CUSTOMER_PRODUCT_ID: customer_product_id,
-               PRODUCT_NAME: $scope.productnameinternal,
+               PRODUCT_NAME: orderproduct.PRODUCT_NAME,
                EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
                EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
                TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
@@ -638,7 +634,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               ORDER_ID: order_id,
               INTERNAL_PRODUCT_ID : $scope.internalproductid,
               CUSTOMER_PRODUCT_ID: customer_product_id,
-              PRODUCT_NAME: $scope.productnameinternal,
+              PRODUCT_NAME: orderproduct.PRODUCT_NAME,
               EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
               EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
               TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
