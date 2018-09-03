@@ -329,7 +329,7 @@ app.controller('labels', function ($scope, $http, $rootScope) {
 });
 
 //Controller for All the Orders
-app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams', '$state', 'ModalService', function ($scope, $http, $rootScope, $stateParams, $state, ModalService) {
+app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams', '$state', 'ModalService', 'productInOtherOpenOrdersOrOverProduction', function ($scope, $http, $rootScope, $stateParams, $state, ModalService, productInOtherOpenOrdersOrOverProduction) {
    
   $rootScope.name= "Lista de Produtos da Encomenda " + $stateParams.orderId;
   $scope.products = [];
@@ -652,7 +652,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
        //ALL THE ORDERS TO CHECK IF THE SAME INTERNAL PRODUCT ID IS OPENED TO BE REGISTERED
         if(products_remaining_from_daily_production > 0) {
 
-          productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production);
+          productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name);
         
         } //if
 
@@ -660,7 +660,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       else {
         //IN THIS ORDER THERE IS NOT A PRODUCT FOR THE SAME INTERNAL PRODUCT ID
         //WE NEED TO CHECK IF THERE'S ANTOHER ORDER WITH THE SAME INTERNAL PRODUCT ID
-        productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production);        
+        productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name);        
     }
 
       $state.reload();
@@ -2566,7 +2566,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', function($http) {
     //return {
       var alertMsg = new Array();
       //insertProduction : function ($scope, orderid, internalproductid, products_remaining_from_daily_production, alertMsg) { 
-      function insertProduction($scope, orderid, internalproductid, products_remaining_from_daily_production) { 
+      function insertProduction($scope, orderid, internalproductid, products_remaining_from_daily_production, employyee_name) { 
   
         //INITIALIZE OVERPRODUCTION VARIABLE
         $scope.overProduction = products_remaining_from_daily_production;
@@ -2605,8 +2605,8 @@ app.factory('productInOtherOpenOrdersOrOverProduction', function($http) {
                     INTERNAL_PRODUCT_ID : $scope.internalproductid,
                     CUSTOMER_PRODUCT_ID: customer_product_id,
                     PRODUCT_NAME: $scope.productnameinternal,
-                    EMPLOYEE_NAME: $scope.nameemployee.EMPLOYEE_NAME,
-                    EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
+                    EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+                    EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
                     TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
                   };	
       
@@ -2616,6 +2616,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', function($http) {
                   //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
                   //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
                   //DAILY PRODUCTION
+                 if(products_remaining_from_daily_production > 0) {
                   alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
                   alert(alertMsg.toString());
 
@@ -2624,13 +2625,16 @@ app.factory('productInOtherOpenOrdersOrOverProduction', function($http) {
                     INTERNAL_PRODUCT_ID : $scope.internalproductid,
                     CUSTOMER_PRODUCT_ID: customer_product_id,
                     PRODUCT_NAME: $scope.productnameinternal,
-                    EMPLOYEE_NAME: $scope.nameemployee.EMPLOYEE_NAME,
-                    EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
+                    EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+                    EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
                     TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
                   };	
 
                   var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
-                });
+                  });
+
+                  products_remaining_from_daily_production = 0; 
+                }    
             }
           } //for
           //WE NEED TO CHECK IF WE STILL HAVE PRODUCTS TO REGISTER AS OVER PRODUCTION
@@ -2638,8 +2642,8 @@ app.factory('productInOtherOpenOrdersOrOverProduction', function($http) {
             var insertOverProductionData = {
               INTERNAL_PRODUCT_ID : $scope.internalproductid,
               PRODUCT_NAME: $scope.productnameinternal,
-              EMPLOYEE_NAME: $scope.nameemployee.EMPLOYEE_NAME,
-              EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
+              EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+              EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
               PRODUCTS_PRODUCED: $scope.overProduction,
             };
     
@@ -2654,7 +2658,8 @@ app.factory('productInOtherOpenOrdersOrOverProduction', function($http) {
                     var insertOverProductionData = {
                       INTERNAL_PRODUCT_ID : $scope.internalproductid,
                       PRODUCT_NAME: $scope.productnameinternal,
-                      EMPLOYEE_NAME: $scope.nameemployee.EMPLOYEE_NAME,
+                      EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+                      EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
                       EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
                       PRODUCTS_PRODUCED: $scope.overProduction,
                     };
