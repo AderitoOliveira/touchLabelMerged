@@ -1953,7 +1953,7 @@ $scope.totalproductsproduced = totalproductsproduced;
 //  the button has the 'data-dismiss' attribute.
 
 $scope.productTechSheet = [];
-var request = $http.get('/getProductTechSheet/' + encodeURIComponent($scope.internalproductid));    
+var request = $http.get('/getProductTechSheet/' + encodeURIComponent($scope.customerproductid));    
 request.then(function successCallback(response) {
     $scope.productTechSheet  = response.data;
     return  $scope.productTechSheet; 
