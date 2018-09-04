@@ -9,7 +9,7 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
       controller: 'editproducts',
       params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox:null}
     })
-    .state('clients', {
+    .state('clientstate', {
 		url: '/',
         templateUrl : '../custompages/clients.html',
         controller : 'clients'
@@ -124,7 +124,12 @@ app.controller('chartsTest', function ($scope, $http, $rootScope) {
 //INSERT CLIENT CONTROLLER
 app.controller('insertClient', function ($scope, $http, $rootScope, $rootScope) {
 
+  $scope.data = [];
   $rootScope.name="Inserir um novo cliente ";
+
+  $scope.back() = function() {
+    $scope.go('clientstate', {});
+  };
    
 });
 
@@ -1298,7 +1303,7 @@ app.controller('clients', function($scope, $http, $rootScope, $state) {
     });
 
     $scope.createClient = function() {
-      $state.transitionTo("insertClient", {}) ;
+      $state.transitionTo("createClient", {}) ;
     };
 });
 
