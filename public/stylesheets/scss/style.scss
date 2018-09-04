@@ -694,6 +694,7 @@ button.button {
         .btn-text {
             float: left;
             margin-bottom: -10px;
+            margin-left:6px;
         }
     }
     &.add{
@@ -1430,6 +1431,30 @@ a.btn.btn-sm {
     &.active{
         display:block;
     }
+}
+
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+    background-color: #222222;
+    border-color: #222222;
+}
+
+.pagination>li>a:focus, .pagination>li>a:hover, .pagination>li>span:focus, .pagination>li>span:hover {
+    z-index: 2;
+    color: #222222;
+    background-color: #eee;
+    border-color: #ddd;
+}
+
+.pagination>li>a, .pagination>li>span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #222222;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
 }
 
 @media screen and (max-width:1024px){
