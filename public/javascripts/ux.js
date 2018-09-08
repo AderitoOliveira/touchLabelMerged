@@ -21,7 +21,7 @@
                 var itemProgress = $(this).attr('data-status');
                 $(this).animate({
                     width: itemProgress+'%'
-                }, 400);
+                }, 0);
             })  
 
         });
