@@ -12,8 +12,7 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
     .state('home', {
       url: '/',
           templateUrl : '../custompages/home.html',
-          //controller : 'homeController'
-          controller : 'chartsTest'
+          controller : 'homeController'
       })
     .state('clientstate', {
 		url: '/client',
@@ -142,6 +141,17 @@ app.controller('configurations', function ($scope, $http, $rootScope) {
 //CONFIGURATIONS  CONTROLER
 app.controller('homeController', function ($scope, $http, $rootScope) {
    
+  $scope.labels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  $scope.series = ['Series A', 'Series B',  'Series C',  'Series D'];
+  $scope.options = { legend: { display: true, position: 'bottom' } };
+  $scope.colours = ['#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'];
+
+  $scope.data = [
+    [65, 59, 80, 81, 56, 55, 40],
+    [28, 48, 40, 19, 86, 27, 90],
+    [23, 34, 55, 33, 67, 18, 60],
+    [23, 32, 34, 45, 84, 34, 70]
+  ];
   
 
 });
