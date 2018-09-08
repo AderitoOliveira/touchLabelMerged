@@ -134,13 +134,17 @@ app.controller('chartsTest', function ($scope, $http, $rootScope) {
 //CONFIGURATIONS  CONTROLER
 app.controller('configurations', function ($scope, $http, $rootScope) {
    
-  
+  $rootScope.name= "Configurar Parâmetros do Sistema";
 
 });
 
 //CONFIGURATIONS  CONTROLER
 app.controller('homeController', function ($scope, $http, $rootScope) {
    
+
+  $rootScope.name= "TouchLabel";
+
+
   $scope.labels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
   $scope.series = ['Series A', 'Series B',  'Series C',  'Series D'];
   $scope.options = { legend: { display: true, position: 'bottom' } };
