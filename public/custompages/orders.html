@@ -2,7 +2,7 @@
     <div id="actions">
         <div class="row">
             <div class="col-md-12">
-                <div class="header-actions">
+                <div class="header-actions"  ng-controller="ordersController">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="row">
@@ -41,10 +41,10 @@
                     <div class="col-md-12 add-product-form">
                         <div class="row">
                             <div class="col-md-4">
-                                <input type="text" class="form-control" id="orderID" placeholder="Número de Encomenda" ng-model="orderID">
+                                <input type="text" class="form-control" id="orderid" placeholder="Número de Encomenda" ng-model="orderid">
                             </div>
                             <div class="col-md-4">
-                                <input type="text" class="form-control" id="clientname" placeholder="Nome do Cliente" ng-model="clientname" uib-typeahead="client as client.clientname for client in clients | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}">
+                                <input type="text" class="form-control" id="clientname" placeholder="Nome do Cliente" ng-model="clientname" uib-typeahead="client as client.CLIENT_NAME for client in clients | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}">
                             </div>
                             <div class="col-md-4">
                                 <div class="add-actions-wrap">
@@ -58,7 +58,7 @@
             </div>
         </div>
     </div>
-    <div id="list-content" ng-controller="ordersController">
+    <div id="list-content">
         <div class="row">
             <div id="order-table" class="col-md-12">
                 <div class="order-table-wrap">

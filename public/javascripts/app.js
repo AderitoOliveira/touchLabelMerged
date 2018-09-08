@@ -979,7 +979,7 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
 
 
   $scope.$watch('clientname', function(){
-  $scope.clientid = $scope.clientname;
+  $scope.clientid = $scope.clientname.CLIENT_NAME;
     console.log($scope.selected);
   });
   
@@ -1001,9 +1001,9 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
   //Save Content Modal  
   $scope.save = function () {
     var dataObj = {
-      ORDER_ID: $scope.orderID,
-      CLIENT_NAME: $scope.clientname.clientname,
-      CLIENT_ID: $scope.clientid.cleintid
+      ORDER_ID: $scope.orderid,
+      CLIENT_NAME: $scope.clientname.CLIENT_NAME,
+      CLIENT_ID: $scope.clientname.CLIENT_ID
     };	
     
     var res = $http.post('/insertorder', dataObj).then(function(data, status, headers, config) {
