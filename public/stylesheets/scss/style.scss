@@ -1042,6 +1042,19 @@ a.btn.btn-sm {
 #configurations-wrap{
     //margin-top:-72px;
 }
+
+.item-order-state{
+    span.order-status {
+        width: 50%;
+        float: left;
+    }
+    
+    .item-order-actions {
+        width: 50%;
+        float: right;
+    }
+}
+
 .add-product-label, .add-order-label{
     h2 {
         font-size: 24px;

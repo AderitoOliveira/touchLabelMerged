@@ -68,12 +68,12 @@
                     <div class="order-table-header row">
                         <div class="inner-wrap">
                             <div class="col-md-1 header-order-nr">Foto</div>
+                            <div class="col-md-1 header-order-client">Referência Cliente</div>
                             <div class="col-md-1 header-order-client">Referência Interna</div>
                             <div class="col-md-2 header-order-date">Nome</div>
                             <div class="col-md-2 header-order-date-end">Data Encomenda</div>
                             <div class="col-md-2 header-order-products"><span class="light">Total Produtos</span><br>Total Produzidos</div>
-                            <div class="col-md-2 header-order-state">Estado</div>
-                            <div class="col-md-2"></div>
+                            <div class="col-md-3 header-order-state">Estado</div>
                         </div>
                     </div>
                     <div class="order-table-content row">
@@ -81,28 +81,31 @@
                             <div class="row">
                                 <div class="item-inner-wrap">
                                     <div class="col-md-1 table-item item-order-nr"><img src="{{product.IMAGE_PATH}}/{{product.IMAGE_NAME}}" class="img-product img-rounded" height="50" width="50"/></div>
+                                    <div class="col-md-1 table-item item-order-client">{{product.CUSTOMER_PRODUCT_ID}}</div>
                                     <div class="col-md-1 table-item item-order-client">{{product.INTERNAL_PRODUCT_ID}}</div>
                                     <div class="col-md-2 table-item item-order-date">{{product.PRODUCT_NAME}}</div>
                                     <div class="col-md-2 table-item item-order-date-end">{{product.CREATED_DATE}}</div>
                                     <div class="col-md-2 table-item item-order-products">{{product.TOTAL_QUANTITY_ORDERED}}<strong> / {{product.TOTAL_PRODUCTS_PRODUCED}}</strong></div>
-                                    <div class="col-md-2 table-item item-order-state">{{product.ORDER_PRODUCT_STATUS}}</div>
-                                    <div class="col-md-2 table-item item-order-actions">
-                                        <a class="btn btn-sm btn-danger" ng-click="deleteProductInOrder(product.INTERNAL_PRODUCT_ID, product.PRODUCT_NAME)" data-toggle="tooltip" title="Remover Produto.">
-                                            <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
-                                        </a>
-                                        <a class="btn btn-sm btn-warning" ng-click="showEditProductModal(product.INTERNAL_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.QUANTITY_PRODUCED)" data-toggle="tooltip" title="Editar Produto.">
-                                            <img src="assets/icons/btn-edit.svg" width="24px" height="24px" />
-                                        </a>
-                                        <a class="btn btn-sm btn-success" ng-click="closeProductInProduction(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME,  product.TOTAL_QUANTITY_ORDERED, product.TOTAL_PRODUCTS_PRODUCED)" data-toggle="tooltip" title="Fechar Produção">
-                                            <img src="assets/icons/btn-success.svg" width="24px" height="24px" />
-                                        </a>
-                                        <a class="btn btn-sm btn-success" ng-click="closeProductPainting(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_PRODUCTS_PRODUCED)" data-toggle="tooltip" title="Fechar Produto em Pintura">
-                                            <img src="assets/icons/btn-success-paint.svg" width="24px" height="24px" />
-                                        </a>
-                                        <a class="btn btn-sm btn-success" ng-click="seeProductDetailInOrder(product.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="Ver Detalhes de Produção do Produto">
-                                            <img src="assets/icons/btn-view.svg" width="24px" height="24px" />
-                                        </a>
-                                        
+                                    <div class="col-md-3 table-item item-order-state">
+                                        <span class="order-status">{{product.ORDER_PRODUCT_STATUS}}</span>
+                                        <div class="item-order-actions">
+                                            <a class="btn btn-sm btn-danger" ng-click="deleteProductInOrder(product.INTERNAL_PRODUCT_ID, product.PRODUCT_NAME)" data-toggle="tooltip" title="Remover Produto.">
+                                                <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
+                                            </a>
+                                            <a class="btn btn-sm btn-warning" ng-click="showEditProductModal(product.INTERNAL_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.QUANTITY_PRODUCED)" data-toggle="tooltip" title="Editar Produto.">
+                                                <img src="assets/icons/btn-edit.svg" width="24px" height="24px" />
+                                            </a>
+                                            <a class="btn btn-sm btn-success" ng-click="closeProductInProduction(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME,  product.TOTAL_QUANTITY_ORDERED, product.TOTAL_PRODUCTS_PRODUCED)" data-toggle="tooltip" title="Fechar Produção">
+                                                <img src="assets/icons/btn-success.svg" width="24px" height="24px" />
+                                            </a>
+                                            <a class="btn btn-sm btn-success" ng-click="closeProductPainting(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_PRODUCTS_PRODUCED)" data-toggle="tooltip" title="Fechar Produto em Pintura">
+                                                <img src="assets/icons/btn-success-paint.svg" width="24px" height="24px" />
+                                            </a>
+                                            <a class="btn btn-sm btn-success" ng-click="seeProductDetailInOrder(product.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="Ver Detalhes de Produção do Produto">
+                                                <img src="assets/icons/btn-view.svg" width="24px" height="24px" />
+                                            </a>
+                                        </div>
+                                    </div>
                                     </div>
                                     <div class="order-product-details item-row col-md-12" ng-if="seeProductDetailInOrder(product.CUSTOMER_PRODUCT_ID)">
                                         <div class="row">
