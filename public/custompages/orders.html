@@ -31,6 +31,33 @@
             </div>
         </div>
     </div>
+    <div id="add-order">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12 add-order-label">
+                        <h2>Adicionar Encomenda</h2>
+                    </div>
+                    <div class="col-md-12 add-product-form">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="productName" class="form-control" id="productName" placeholder="Número de Encomenda" ng-model="productName">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="productName" class="form-control" id="productName" placeholder="Nome do Cliente" ng-model="productName">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="add-actions-wrap">
+                                    <button type="submit" ng-click="submit()" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px" />Adicionar</button>
+                                    <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" /></button>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="list-content" ng-controller="ordersController">
         <div class="row">
             <div id="order-table" class="col-md-12">
