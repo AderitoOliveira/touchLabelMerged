@@ -86,6 +86,12 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
         controller : 'editTechSheet',
         params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null}
     })
+    .state('configuration', {
+      url: '/configuration',
+        templateUrl : '../custompages/configurations.html',
+        controller : 'configurations',
+        params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null}
+    })
     .state('listOrders', {
 	  url: '/listOrders',
       templateUrl : '../custompages/orders.html',
@@ -117,6 +123,13 @@ app.controller('chartsTest', function ($scope, $http, $rootScope) {
     [23, 34, 55, 33, 67, 18, 60],
     [23, 32, 34, 45, 84, 34, 70]
   ];
+
+});
+
+//CONFIGURATIONS  CONTROLER
+app.controller('configurations', function ($scope, $http, $rootScope) {
+   
+  
 
 });
 
