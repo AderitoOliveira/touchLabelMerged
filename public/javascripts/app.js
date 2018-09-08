@@ -390,6 +390,28 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   $scope.products = [];
   var orderId = $stateParams.orderId;
   $scope.orderid = $stateParams.orderId;
+
+  $scope.$watch('productname', function(){
+    $scope.productid = $scope.productname;
+    console.log($scope.productname);
+  });
+
+  $scope.$watch('productid', function(){
+    $scope.productname = $scope.productid;
+    console.log($scope.productid);
+  });
+
+  $scope.dataProducts = [];
+  
+  var request = $http.get('/productForModal');    
+  request.then(function successCallback(response) {
+  $scope.dataProducts  = response.data;
+  return  $scope.dataProducts; 
+  },
+  function errorCallback(data){
+  console.log('Error: ' + data);
+  });
+
   var request = $http.get('/orderproducts/' + orderId);    
   request.then(function successCallback(response) {
        $scope.products  = response.data;
@@ -1610,7 +1632,7 @@ function errorCallback(data){
     $scope.orderproductstatus = 'Em Produção';
 
     var dataObj = {
-      ORDER_ID: $scope.orderid,
+        ORDER_ID: $scope.orderid,
       INTERNAL_PRODUCT_ID : $scope.productid.INTERNAL_PRODUCT_ID,
       CUSTOMER_PRODUCT_ID: $scope.productid.CUSTOMER_PRODUCT_ID,
       PRODUCT_NAME: $scope.productid.ProductName,
