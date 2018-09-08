@@ -9,8 +9,14 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
       controller: 'editproducts',
       params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox:null}
     })
+    .state('home', {
+      url: '/',
+          templateUrl : '../custompages/home.html',
+          //controller : 'homeController'
+          controller : 'chartsTest'
+      })
     .state('clientstate', {
-		url: '/',
+		url: '/client',
         templateUrl : '../custompages/clients.html',
         controller : 'clients'
     })
@@ -128,6 +134,13 @@ app.controller('chartsTest', function ($scope, $http, $rootScope) {
 
 //CONFIGURATIONS  CONTROLER
 app.controller('configurations', function ($scope, $http, $rootScope) {
+   
+  
+
+});
+
+//CONFIGURATIONS  CONTROLER
+app.controller('homeController', function ($scope, $http, $rootScope) {
    
   
 
