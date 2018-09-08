@@ -122,11 +122,8 @@ fetchProductsForOrderModal = function(data, callback) {
         callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
         callback.end(JSON.stringify(rows));
-        console.log(data); 
-        callback = rows;
-        console.log("--------------------------------------------------");   
-        console.log(rows);   
-        console.log("--------------------------------------------------");    
+        console.log("FETCH ALL PRODUCTS FOR SHOWING IN THE TYPEAHEAD"); 
+        //callback = rows;
     });
 });
 }
@@ -182,11 +179,8 @@ fetchAllOrders = function(data, callback) {
         callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
         callback.end(JSON.stringify(rows));
-        console.log(data); 
-        callback = rows;
-        console.log("--------------------------------------------------");   
-        console.log(rows);   
-        console.log("--------------------------------------------------");    
+        console.log("FETCH ALL ORDERS"); 
+        //callback = rows;
     });
 });
 }
@@ -204,11 +198,8 @@ fetchAllProductsForAnOrder = function(data, callback) {
         callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
         callback.end(JSON.stringify(rows));
-        console.log(data); 
-        callback = rows;
-        console.log("--------------------------------------------------");   
-        console.log(rows);   
-        console.log("--------------------------------------------------");    
+        console.log("FECTHING ALL PRODUCTS FOR THE ORDER " + data.params.id); 
+        //callback = rows; 
     });
 });
 }
@@ -508,11 +499,8 @@ getTechSheetForPaiting = function(data, callback) {
         callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
         callback.end(JSON.stringify(rows));
-        console.log(data); 
-        callback = rows;
-        console.log("--------------------------------------------------");   
-        console.log(rows);   
-        console.log("--------------------------------------------------");    
+        console.log("GET PRODUCTS IN THE ORDER TO CREATE PAINTING SHEET"); 
+        //callback = rows;
     });
 });
 }
@@ -529,7 +517,7 @@ getPDFTemplate = function(data, callback) {
         callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
         callback.end(JSON.stringify(rows));
-        callback = rows; 
+        //callback = rows; 
     });
 });
 }
