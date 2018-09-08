@@ -402,7 +402,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   });
 
   $scope.dataProducts = [];
-  
+
   var request = $http.get('/productForModal');    
   request.then(function successCallback(response) {
   $scope.dataProducts  = response.data;
@@ -977,6 +977,40 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
        console.log('Error: ' + data);
    });
 
+
+  $scope.$watch('clientname', function(){
+  $scope.clientid = $scope.clientname;
+    console.log($scope.selected);
+  });
+  
+  
+  $scope.dataProducts = [];
+  $scope.SimpleSelectedData = 143432;
+  
+  $scope.clients = [];
+  
+  var request = $http.get('/clients');    
+  request.then(function successCallback(response) {
+   $scope.clients  = response.data;
+   return  $scope.clients; 
+  },
+  function errorCallback(data){
+   console.log('Error: ' + data);
+  });
+  
+  //Save Content Modal  
+  $scope.save = function () {
+    var dataObj = {
+      ORDER_ID: $scope.orderID,
+      CLIENT_NAME: $scope.clientname.clientname,
+      CLIENT_ID: $scope.clientid.cleintid
+    };	
+    
+    var res = $http.post('/insertorder', dataObj).then(function(data, status, headers, config) {
+      $state.reload();
+    });
+  
+  };
 
   //INSERT PRODUCT IN AN ORDER
   $scope.insertOrderModal = function() {
