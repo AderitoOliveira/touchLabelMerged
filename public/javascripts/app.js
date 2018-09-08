@@ -601,6 +601,157 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
   };
 
+   //INSERT DAILY PRODUCTION
+   $scope.insertDailyProduction = function(internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced,totalquantityproduced, employyee_name) {
+
+    //$scope.title = title;
+    $scope.orderid = $scope.orderid;
+    $scope.internalproductid = internalproductid;
+    $scope.customerproductid = customerproductid;
+    $scope.productnameinternal = productName;
+    $scope.totalquantityordered = totalquantityordered;
+    $scope.totalquantityproduced = totalquantityproduced;
+
+    //PRODUCTS STILL TO PRODUCE
+  var products_still_to_produce = totalquantityordered - totalproductsproduced;
+  //THE NUMBER OF PRODUCTS TO REGISTER ARE STILL INFERIOR TO THE NUMBER OF PRODUCTS TO PRODUCE
+  if($scope.totalquantityproduced <= products_still_to_produce) 
+  {
+   
+    $scope.orderproductstatus = 'EM PRODUÇÂO';
+    
+    var dataObj = {
+      ORDER_ID: $scope.orderid,
+      INTERNAL_PRODUCT_ID : $scope.internalproductid,
+      CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+      PRODUCT_NAME: $scope.productnameinternal,
+      EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+      EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+      TOTAL_PRODUCTS_PRODUCED: $scope.totalquantityproduced,
+    };	
+    
+    var res = $http.post('/insertDailyProduction', dataObj).then(function(data, status, headers, config) {
+      $state.reload();
+    });
+  } else {
+
+    alert("NUMERO ARTIGOS PRODUZIDO: " + $scope.totalquantityproduced + ". NUMERO ARTIGOS AINDA POR PRODUZIR: " + products_still_to_produce)
+    //THE NUMBER OF PRODUCTS products_still_to_produce ARE THE NUMBER OF PRODUCTS STILL TO REGISTER IN THIS ORDER.
+    var dataObj = {
+      ORDER_ID: $scope.orderid,
+      INTERNAL_PRODUCT_ID : $scope.internalproductid,
+      CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+      PRODUCT_NAME: $scope.productnameinternal,
+      EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+      EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+      TOTAL_PRODUCTS_PRODUCED: products_still_to_produce,
+    };	
+
+    
+    var res = $http.post('/insertDailyProduction', dataObj).then(function(data, status, headers, config) {
+      //$state.reload;
+    });
+
+
+    //THE NUMBER OF PRODUCTS FROM THE DAILY PRODUCTION THAT WE STILL NEED TO REGISTE IN ANOTHER ORDER
+    var products_remaining_from_daily_production = $scope.totalquantityproduced - products_still_to_produce;
+
+    //var xyz = productInTheSameOrder.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production);
+
+    //WE NEED TO CHECK IF IN THE SAME ORDER TERE ARE PRODUCTS STILL TO ADD FOR THE SAME INTERNAL PRODUCT ID
+    $scope.productsToClose = [];
+    var xpto = new Array();
+    
+    var request = $http.get('/productstilltocloseinthisorder/' +  encodeURIComponent($scope.orderid) + '/'+ encodeURIComponent($scope.internalproductid));    
+    request.then(function successCallback(response) {
+    $scope.productsToClose  = response.data;
+
+      console.log("productsToClose.length: " + $scope.productsToClose.length);
+
+    if($scope.productsToClose.length > 0) { 
+      ///################################################################################////
+      for(i=0; i < $scope.productsToClose.length; i++) {
+        var orderproduct = $scope.productsToClose[i];
+ 
+        var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PRODUCED;
+ 
+        var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
+        var order_id = orderproduct.ORDER_ID;
+ 
+        console.log("orderproduct: " + orderproduct);
+        console.log("customer_product_id: " + customer_product_id);
+        console.log("order_id: " + order_id);
+        console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
+
+        //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
+        //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
+        if(number_of_products_to_close_order <= products_remaining_from_daily_production) { 
+
+          products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
+           var insertProductsInTheSameOrder = {
+               ORDER_ID: order_id,
+               INTERNAL_PRODUCT_ID : $scope.internalproductid,
+               CUSTOMER_PRODUCT_ID: customer_product_id,
+               PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+               EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+               EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+               TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
+             };	
+ 
+             var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
+            });
+        } else {
+            //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
+            //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
+            //DAILY PRODUCTION
+            var insertProductsInTheSameOrder = {
+              ORDER_ID: order_id,
+              INTERNAL_PRODUCT_ID : $scope.internalproductid,
+              CUSTOMER_PRODUCT_ID: customer_product_id,
+              PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+              EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+              EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+              TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
+            };	
+
+            var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
+           });
+
+           products_remaining_from_daily_production = 0;
+
+       }
+ 
+       }//FOR
+       //IF WE STILL HAVE PRODUCTS TO REGISTER IN THE DAILY PRODUCTION AND THEY CAN'T BE ADDED INTO THIS ORDER, WE NEED TO ITERATE OVER 
+       //ALL THE ORDERS TO CHECK IF THE SAME INTERNAL PRODUCT ID IS OPENED TO BE REGISTERED
+        if(products_remaining_from_daily_production > 0) {
+
+          productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name);
+        
+        } //if
+
+      } //IF 
+      else {
+        //IN THIS ORDER THERE IS NOT A PRODUCT FOR THE SAME INTERNAL PRODUCT ID
+        //WE NEED TO CHECK IF THERE'S ANTOHER ORDER WITH THE SAME INTERNAL PRODUCT ID
+        productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name);        
+    }
+
+      $state.reload();
+
+    },
+    function errorCallback(data){
+      console.log('Error: ' + data);
+    });
+
+    alert("XPTO:" + xpto);
+    console.log("ANTES DO ÚLTIMO STATE RELOAD!!!!");
+    $state.reload();
+
+   }//ELSE
+
+  };
+
   buildTables = function (arrayForAllKeys) {
 
     var formattedArr = [];

@@ -122,11 +122,8 @@ fetchProductsForOrderModal = function(data, callback) {
         callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
         callback.end(JSON.stringify(rows));
-        console.log(data); 
-        callback = rows;
-        console.log("--------------------------------------------------");   
-        console.log(rows);   
-        console.log("--------------------------------------------------");    
+        console.log("FETCH ALL PRODUCTS FOR SHOWING IN THE TYPEAHEAD"); 
+        //callback = rows;
     });
 });
 }
@@ -182,11 +179,8 @@ fetchAllOrders = function(data, callback) {
         callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
         callback.end(JSON.stringify(rows));
-        console.log(data); 
-        callback = rows;
-        console.log("--------------------------------------------------");   
-        console.log(rows);   
-        console.log("--------------------------------------------------");    
+        console.log("FETCH ALL ORDERS"); 
+        //callback = rows;
     });
 });
 }
@@ -204,11 +198,8 @@ fetchAllProductsForAnOrder = function(data, callback) {
         callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
         callback.end(JSON.stringify(rows));
-        console.log(data); 
-        callback = rows;
-        console.log("--------------------------------------------------");   
-        console.log(rows);   
-        console.log("--------------------------------------------------");    
+        console.log("FECTHING ALL PRODUCTS FOR THE ORDER " + data.params.id); 
+        //callback = rows; 
     });
 });
 }
@@ -496,9 +487,6 @@ checkIfProductTechSheetExists = function(data, callback) {
 
 //GET TECHNICAL SHEET INFORMATION FOR THE PRODUCTS IN THE ORDER TO SEND IT FOR PAINTING
 getTechSheetForPaiting = function(data, callback) {
-    console.log("#################################################################");
-    console.log(data);
-    console.log("#################################################################");
     con.connect(function(err) {
     con.query('select ordProd.CUSTOMER_PRODUCT_ID, ordProd.PRODUCT_NAME, techSheet.Painted_Cold, techSheet.Ref_Paint, techSheet.Ref_Paint_Qty, techSheet.Glassed, techSheet.Ref_Glassed, techSheet.Ref_Paint_Smoked, techSheet.Ref_Paint_Smoked_Qty, techSheet.Finish_Type_Obs from  products_technical_sheet techSheet, orders_products ordProd where ordProd.ORDER_ID = ? and ordProd.CUSTOMER_PRODUCT_ID = techSheet.CUSTOMER_PRODUCT_ID', [data.params.orderid], function(err, rows) {
         if (err) {
@@ -508,11 +496,8 @@ getTechSheetForPaiting = function(data, callback) {
         callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
         callback.end(JSON.stringify(rows));
-        console.log(data); 
-        callback = rows;
-        console.log("--------------------------------------------------");   
-        console.log(rows);   
-        console.log("--------------------------------------------------");    
+        console.log("GET PRODUCTS IN THE ORDER TO CREATE PAINTING SHEET"); 
+        //callback = rows;
     });
 });
 }
@@ -529,7 +514,7 @@ getPDFTemplate = function(data, callback) {
         callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
         callback.end(JSON.stringify(rows));
-        callback = rows; 
+        //callback = rows; 
     });
 });
 }
