@@ -1039,7 +1039,7 @@ a.btn.btn-sm {
     line-height:1.4;
 }
 
-.add-product-label{
+.add-product-label, .add-order-label{
     h2 {
         font-size: 24px;
         font-weight: 500;
@@ -1055,7 +1055,7 @@ a.btn.btn-sm {
     }
 }
 
-#add-product {
+#add-product, #add-order {
     border-radius: 4px;
     background-color:rgba(226, 226, 226, 0.5);
     border: solid 1px #d9d9d9;
