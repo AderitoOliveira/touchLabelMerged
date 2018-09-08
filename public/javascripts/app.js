@@ -473,6 +473,26 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
    });
   };
 
+  //CREATE PRODDUCT IN THE ORDER
+  $scope.save = function () {
+    $scope.orderproductstatus = 'Em Produção';
+
+    var dataObj = {
+      ORDER_ID: $scope.orderid,
+      INTERNAL_PRODUCT_ID : $scope.productid.INTERNAL_PRODUCT_ID,
+      CUSTOMER_PRODUCT_ID: $scope.productid.CUSTOMER_PRODUCT_ID,
+      PRODUCT_NAME: $scope.productid.ProductName,
+      TOTAL_QUANTITY_ORDERED: $scope.qtyencomenda,
+      QUANTITY_PRODUCED: $scope.qtyproduzida,
+      ORDER_PRODUCT_STATUS: $scope.orderproductstatus
+    };	
+    
+    var res = $http.post('/insertorderproduct', dataObj).then(function(data, status, headers, config) {
+      $state.reload();
+    });
+
+  };
+
   //INSERT PRODUCT IN AN ORDER
   $scope.insertOrderProductModal = function() {
     ModalService.showModal({
@@ -1011,29 +1031,6 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
     });
   
   };
-
-  //INSERT PRODUCT IN AN ORDER
-  $scope.insertOrderModal = function() {
-    ModalService.showModal({
-      templateUrl: "../modal/insertOrderModal.html",
-      controller: "orderCreateModalController",
-      preClose: (modal) => { modal.element.modal('hide'); },
-      inputs: {
-        title: "Adicionar Encomenda",
-        orderid: $stateParams.orderId
-      }
-    }).then(function(modal) {
-    modal.element.modal();
-    modal.close.then(function(result) {
-      if (!result) {
-        $scope.complexResult = "Modal forcibly closed..."
-      } else {
-        $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
-      }
-    });
-   });
-  };
-
 
   $scope.showProductsForOrder= function(orderId){
     $state.transitionTo("listOrderProducts", {'orderId': orderId}) ;
@@ -1666,7 +1663,7 @@ function errorCallback(data){
     $scope.orderproductstatus = 'Em Produção';
 
     var dataObj = {
-        ORDER_ID: $scope.orderid,
+      ORDER_ID: $scope.orderid,
       INTERNAL_PRODUCT_ID : $scope.productid.INTERNAL_PRODUCT_ID,
       CUSTOMER_PRODUCT_ID: $scope.productid.CUSTOMER_PRODUCT_ID,
       PRODUCT_NAME: $scope.productid.ProductName,
