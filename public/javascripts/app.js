@@ -602,7 +602,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
    //INSERT DAILY PRODUCTION
-   $scope.insertDailyProductionModal = function(internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced,totalquantityproduced, employyee_name) {
+   $scope.insertDailyProduction = function(internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced,totalquantityproduced, employyee_name) {
 
     //$scope.title = title;
     $scope.orderid = $scope.orderid;
