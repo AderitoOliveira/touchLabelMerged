@@ -1,0 +1,148 @@
+<div class="wrap" ng-controller="insertClient">
+    <div id="actions">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header-actions">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="button-wrap col-md-4">
+                                    <button class="inset-button button add disabled">
+                                        <span class="button-inner-wrap">
+                                            <img src="assets/icons/btn-add.svg" width="20px" height="20px">
+                                            <span class="btn-text">Adicionar</span>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6 vert-spacer"></div>
+                                <div class="col-md-6">
+                                    <div class="search-wrap">
+                                        <input type="text" name="Pesquisa" ng-model="searchChar" placeholder=" Pesquisar">  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  <div class="form-wrap">
+      <div ng-controller="insertClient" class="row">
+          <form class="form-horizontal form-edit col-md-12">
+            <div class="form-group row">
+              <div class="form-photo col-md-3">
+                <div class="form-item-inner">
+                    <label class="control-label">Imagem</label>
+                    <div class="photo-wrap">
+                    <a class="photo-link" ng-href="{{image}}" target="_blank">
+                        <img ng-src={{image}} height="270" width="270">
+                    </a>
+                    <a class="btn btn-warning pull-left" ng-click="editarImagem()"><img src="assets/icons/symbol-edit.svg" width="18px" height="18px">Alterar Imagem<i></i></a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-12 form-row">
+                    <div class="row">
+                      <div class="form-input-item col-md-6">
+                          <label class="control-label" for="clientname">Nome do Cliente</label>
+                          <div class="input-wrap-inner">
+                            <input type="text" class="form-control" id="clientname" placeholder="Nome do Cliente" ng-model="clientname">
+                          </div>
+                      </div>
+                      <div class="form-input-item col-md-6">
+                          <label class="control-label" for="firstaddress">Morada</label>
+                          <div class="input-wrap-inner">
+                            <input type="text" class="form-control" id="firstaddress" placeholder="Morada" ng-model="firstaddress">
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 form-row">
+                    <div class="row">
+                      <div class="form-input-item col-md-6">
+                          <label class="control-label" for="location">Cidade</label>
+                          <div class="input-wrap-inner">
+                            <input type="text" class="form-control" id="location" placeholder="Cidade" ng-model="location">
+                          </div>
+                      </div>
+                      <div class="form-input-item col-md-6">
+                          <label class="control-label" for="country">País</label>
+                          <div class="input-wrap-inner">
+                              <input type="text" class="form-control" id="country" placeholder="País" ng-model="country">
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 form-row">
+                    <div class="row">
+                      <div class="form-input-item col-md-6">
+                          <label class="control-label" for="countrycode">Código do País</label>
+                          <div class="input-wrap-inner">
+                            <input type="text" class="form-control" id="countrycode" placeholder="Código do País" ng-model="countrycode">
+                          </div>
+                      </div>
+                      <div class="form-input-item col-md-6">
+                          <label class="control-label" for="postalcode">Código Postal</label>
+                          <div class="input-wrap-inner">
+                            <input type="text" class="form-control" id="postalcode" placeholder="Código Postal" ng-model="postalcode">
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 form-row">
+                    <div class="row">
+                      <div class="form-input-item col-md-6">
+                          <label class="control-label" for="nif">Número Identificação Fiscal</label>
+                          <div class="input-wrap-inner">
+                            <input type="text" class="form-control" id="nif" placeholder="NIF" ng-model="nif">
+                          </div>
+                      </div>
+                      <div class="form-input-item col-md-6">
+                          <label class="control-label" for="coin">Moeda</label>
+                          <div class="input-wrap-inner">
+                            <input type="text" class="form-control" id="coin" placeholder="Moeda" ng-model="coin">
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 form-row">
+                    <div class="row">
+                      <div class="form-input-item col-md-6">
+                          <label class="control-label" for="phonenumber">Número Telefone</label>
+                          <div class="input-wrap-inner">
+                            <input type="text" class="form-control" id="phonenumber" placeholder="Num. Telefone" ng-model="phonenumber">
+                          </div>
+                      </div>
+                      <div class="form-input-item col-md-6">
+                          <label class="control-label" for="persontocontact">Nome do cliente a contactar</label>
+                          <div class="input-wrap-inner">
+                            <input type="text" class="form-control" id="persontocontact" placeholder="Pessoa a contactar" ng-model="persontocontact">
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 button-holder">
+                    <div class="row">
+                      <div class="col-md-4 vert-spacer"></div>
+                      <div class="col-md-4">
+                        <button type="submit" ng-click="goBack()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" />Cancelar</button>
+                      </div>
+                      <div class="col-md-4">
+                        <button type="submit" ng-click="submit()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>  
+      </div>
+  </div>
+</div>

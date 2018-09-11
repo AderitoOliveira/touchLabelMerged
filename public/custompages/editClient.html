@@ -1,4 +1,4 @@
-<div class="wrap">
+<div class="wrap" ng-controller="editClient">
     <div id="actions">
         <div class="row">
             <div class="col-md-12">
@@ -51,31 +51,15 @@
                   <div class="col-md-12 form-row">
                     <div class="row">
                       <div class="form-input-item col-md-6">
-                          <label class="control-label" for="productId">Referência Interna</label>
+                          <label class="control-label" for="clientname">Nome do Cliente</label>
                           <div class="input-wrap-inner">
-                            <input type="productId" class="form-control" id="productId" placeholder="Referência Produto" ng-model="productId">
+                            <input type="text" class="form-control" id="clientname" placeholder="Nome do Cliente" ng-model="clientname">
                           </div>
                       </div>
                       <div class="form-input-item col-md-6">
-                          <label class="control-label" for="productId">Referência Cliente</label>
+                          <label class="control-label" for="firstaddress">Morada</label>
                           <div class="input-wrap-inner">
-                            <input type="productId" class="form-control" id="productId" placeholder="Referência Produto" ng-model="productId">
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-12 form-row">
-                    <div class="row">
-                      <div class="form-input-item col-md-6">
-                          <label class="control-label" for="productName">Nome</label>
-                          <div class="input-wrap-inner">
-                            <input type="productName" class="form-control" id="productName" placeholder="Nome do Produto" ng-model="productName">
-                          </div>
-                      </div>
-                      <div class="form-input-item col-md-6">
-                          <label class="control-label" for="nameInTheLabel">Nome Etiqueta</label>
-                          <div class="input-wrap-inner">
-                              <input type="nameInTheLabel" class="form-control" id="nameInTheLabel" placeholder="Nome artigo Etiqueta" ng-model="nameInTheLabel">
+                            <input type="text" class="form-control" id="firstaddress" placeholder="Morada" ng-model="firstaddress">
                           </div>
                       </div>
                     </div>
@@ -83,15 +67,63 @@
                   <div class="col-md-12 form-row">
                     <div class="row">
                       <div class="form-input-item col-md-6">
-                          <label class="control-label" for="barCode">Código de Barras</label>
+                          <label class="control-label" for="location">Cidade</label>
                           <div class="input-wrap-inner">
-                            <input type="barCode" class="form-control" id="barCode" placeholder="Número do código de Barras" ng-model="barCode">
+                            <input type="text" class="form-control" id="location" placeholder="Cidade" ng-model="location">
                           </div>
                       </div>
                       <div class="form-input-item col-md-6">
-                          <label class="control-label nolabel"></label>
+                          <label class="control-label" for="country">País</label>
                           <div class="input-wrap-inner">
-                              <button type="submit" ng-show="techSheetExist == true" ng-click="editTechnicalSheet()" class="btn btn-default btn-tech-sheet"><img src="assets/icons/btn-add.svg" width="20px" height="20px">Editar Ficha Técnica</button> 
+                              <input type="text" class="form-control" id="country" placeholder="País" ng-model="country">
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 form-row">
+                    <div class="row">
+                      <div class="form-input-item col-md-6">
+                          <label class="control-label" for="countrycode">Código do País</label>
+                          <div class="input-wrap-inner">
+                            <input type="text" class="form-control" id="countrycode" placeholder="Código do País" ng-model="countrycode">
+                          </div>
+                      </div>
+                      <div class="form-input-item col-md-6">
+                          <label class="control-label" for="postalcode">Código Postal</label>
+                          <div class="input-wrap-inner">
+                            <input type="text" class="form-control" id="postalcode" placeholder="Código Postal" ng-model="postalcode">
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 form-row">
+                    <div class="row">
+                      <div class="form-input-item col-md-6">
+                          <label class="control-label" for="nif">Número Identificação Fiscal</label>
+                          <div class="input-wrap-inner">
+                            <input type="text" class="form-control" id="nif" placeholder="NIF" ng-model="nif">
+                          </div>
+                      </div>
+                      <div class="form-input-item col-md-6">
+                          <label class="control-label" for="coin">Moeda</label>
+                          <div class="input-wrap-inner">
+                            <input type="text" class="form-control" id="coin" placeholder="Moeda" ng-model="coin">
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 form-row">
+                    <div class="row">
+                      <div class="form-input-item col-md-6">
+                          <label class="control-label" for="phonenumber">Número Telefone</label>
+                          <div class="input-wrap-inner">
+                            <input type="text" class="form-control" id="phonenumber" placeholder="Num. Telefone" ng-model="phonenumber">
+                          </div>
+                      </div>
+                      <div class="form-input-item col-md-6">
+                          <label class="control-label" for="persontocontact">Nome do cliente a contactar</label>
+                          <div class="input-wrap-inner">
+                            <input type="text" class="form-control" id="persontocontact" placeholder="Pessoa a contactar" ng-model="persontocontact">
                           </div>
                       </div>
                     </div>

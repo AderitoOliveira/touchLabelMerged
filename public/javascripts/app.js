@@ -32,7 +32,7 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
     })
     .state('createClient', {
       url: '/createClient',
-        templateUrl : '../custompages/insertClient.html',
+        templateUrl : '../custompages/createClient.html',
         controller : 'insertClient',
         params: {}
     })
@@ -162,16 +162,29 @@ app.controller('homeController', function ($scope, $http, $rootScope) {
 
 
 //INSERT CLIENT CONTROLLER
-app.controller('insertClient', function ($scope, $http, $rootScope, $rootScope) {
+app.controller('insertClient', function ($scope, $http, $rootScope, $rootScope, $state) {
 
   $scope.data = [];
-  $rootScope.name="Inserir um novo cliente ";
+  $rootScope.name="Inserir um novo cliente";
 
-  $scope.back() = function() {
-    $scope.go('clientstate', {});
-  };
+  $scope.goBack = function() {
+    $state.transitionTo("clientstate", {}) ;
+  }
    
 });
+
+//EDIT CLIENT CONTROLLER
+app.controller('editClient', function ($scope, $http, $rootScope, $rootScope, $state) {
+
+  $scope.data = [];
+  $rootScope.name="Editar o client X";
+
+  $scope.goBack = function() {
+    $state.transitionTo("clientstate", {}) ;
+  }
+   
+});
+
 
 app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$stateParams', function ($scope, $http, $rootScope, $state, $stateParams) {
   
