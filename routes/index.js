@@ -148,7 +148,7 @@ router.get('/getallordersforopeninternalproductid/:orderid/:productid', function
 });
 
 //Insert Client
-router.post('/client', function(req,res){
+router.post('/insertClient', function(req,res){
   console.log("INSERT NEW CLIENT");
   console.log(req.body);
   insertClient(req,res);  
@@ -203,7 +203,6 @@ router.post('/updateorderproductstatus', function(req,res){
   console.log(req.body);
   updateOrderProductStatus(req,res);  
 });
-
 
 
 //Insert PrintedLabels

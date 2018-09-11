@@ -162,14 +162,48 @@ app.controller('homeController', function ($scope, $http, $rootScope) {
 
 
 //INSERT CLIENT CONTROLLER
-app.controller('insertClient', function ($scope, $http, $rootScope, $rootScope, $state) {
+app.controller('insertClient', function ($scope, $http, $rootScope, $rootScope, $state, $templateCache) {
 
   $scope.data = [];
   $rootScope.name="Inserir um novo cliente";
 
+/*   $scope.CLIENT_ID = CLIENT_ID;
+  $scope.CLIENT_NAME = CLIENT_NAME;
+  $scope.FIRST_ADDRESS = FIRST_ADDRESS;
+  $scope.LOCATION = LOCATION;
+  $scope.COUNTRY = COUNTRY;
+  $scope.COUNTRY_CODE = COUNTRY_CODE;
+  $scope.POSTAL_CODE = POSTAL_CODE;
+  $scope.NIF = NIF;
+  $scope.COIN = COIN;
+  $scope.PHONE_NUMBER = PHONE_NUMBER;
+  $scope.PERSON_TO_CONTACT = PERSON_TO_CONTACT; */
+
+  $scope.save = function () {
+    var dataObj = {
+      CLIENT_NAME: $scope.clientname,
+      FIRST_ADDRESS: $scope.firstaddress,
+      LOCATION: $scope.location,
+      COUNTRY: $scope.country,
+      COUNTRY_CODE: $scope.countrycode,
+      POSTAL_CODE: $scope.postalcode,
+      NIF: $scope.nif,
+      COIN: $scope.coin,
+      PHONE_NUMBER: $scope.phonenumber,
+      PERSON_TO_CONTACT: $scope.persontocontact
+    };
+
+    var res = $http.post('/insertClient', dataObj).then(function(data, status, headers, config) {
+      var currentPageTemplate = $state.current.templateUrl;
+      $templateCache.remove(currentPageTemplate);
+      $state.transitionTo("clientstate", {}) ;
+
+    });
+  };
+
   $scope.goBack = function() {
     $state.transitionTo("clientstate", {}) ;
-  }
+  };
    
 });
 
