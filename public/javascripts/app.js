@@ -214,7 +214,7 @@ app.controller('insertClient', function ($scope, $http, $rootScope, $rootScope, 
 });
 
 //EDIT CLIENT CONTROLLER
-app.controller('editclient', function ($scope, $http, $rootScope, $rootScope, $state, $stateParams, $templateCache) {
+app.controller('editclient', function ($scope, $http, $rootScope, $state, $stateParams) {
 
   $rootScope.name="DASSE";
   $scope.clientid = $stateParams.clientid;
@@ -240,8 +240,13 @@ app.controller('editclient', function ($scope, $http, $rootScope, $rootScope, $s
           console.log('Error: ' + data);
   });
 
+  $scope.$watch('persontocontact', function(){
+    console.log($scope.persontocontact);
+  });
 
   $scope.updateClient = function() {
+
+    var xyz = $scope.persontocontact;
     
     var dataObj = {
       CLIENT_ID: $scope.clientid,
@@ -254,13 +259,11 @@ app.controller('editclient', function ($scope, $http, $rootScope, $rootScope, $s
       NIF: $scope.nif,
       COIN: $scope.coin,
       PHONE_NUMBER: $scope.phonenumber,
-      PERSON_TO_CONTACT: $scope.persontocontact
+      PERSON_TO_CONTACT: xyz
     };	
     
     //var res = $http.post('/updateproduct', dataObj);
     var res = $http.post('/updateClient', dataObj).then(function(data, status, headers, config) {
-      var currentPageTemplate = $state.current.templateUrl;
-      $templateCache.remove(currentPageTemplate);
       $state.go("clientstate", null, { reload: true });
     });
 
