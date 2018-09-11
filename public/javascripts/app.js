@@ -214,9 +214,9 @@ app.controller('insertClient', function ($scope, $http, $rootScope, $rootScope, 
 });
 
 //EDIT CLIENT CONTROLLER
-app.controller('editclient', function ($scope, $http, $rootScope, $rootScope, $state, $stateParams) {
+app.controller('editclient', function ($scope, $http, $rootScope, $rootScope, $state, $stateParams, $templateCache) {
 
-  $rootScope.name="Editar o client X";
+  $rootScope.name="DASSE";
   $scope.clientid = $stateParams.clientid;
 
   $scope.clientData = [];
@@ -241,10 +241,35 @@ app.controller('editclient', function ($scope, $http, $rootScope, $rootScope, $s
   });
 
 
+  $scope.updateClient = function() {
+    
+    var dataObj = {
+      CLIENT_ID: $scope.clientid,
+      CLIENT_NAME: $scope.clientname,
+      FIRST_ADDRESS: $scope.firstaddress,
+      LOCATION: $scope.location,
+      COUNTRY: $scope.country,
+      COUNTRY_CODE: $scope.countrycode,
+      POSTAL_CODE: $scope.postalcode,
+      NIF: $scope.nif,
+      COIN: $scope.coin,
+      PHONE_NUMBER: $scope.phonenumber,
+      PERSON_TO_CONTACT: $scope.persontocontact
+    };	
+    
+    //var res = $http.post('/updateproduct', dataObj);
+    var res = $http.post('/updateClient', dataObj).then(function(data, status, headers, config) {
+      var currentPageTemplate = $state.current.templateUrl;
+      $templateCache.remove(currentPageTemplate);
+      $state.go("clientstate", null, { reload: true });
+    });
+
+
+  };
 
   $scope.goBack = function() {
     $state.transitionTo("clientstate", {}) ;
-  }
+  };
    
 });
 

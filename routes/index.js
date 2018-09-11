@@ -161,6 +161,13 @@ router.get('/editClient/:clientid', function(req,res){
   editClient(req,res);  
 });
 
+//UPDATE CLIENT
+router.post('/updateClient', function(req,res){
+  console.log("UPDATE CLIENT " + req.body.CLIENT_ID);
+  console.log(req.body);
+  updateClient(req,res);  
+});
+
 //Insert Products
 router.post('/insertProduct', function(req,res){
   console.log("INSERT NEW PRODUCT");
