@@ -255,9 +255,6 @@ insertClient = function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
-    console.log("##########################################################");
-    console.log(req.body);
-    console.log("##########################################################");
     con.connect(function(err) {
     con.query('INSERT INTO clients SET ?', postData, function (error, results, fields) {
     if (error) throw error;
@@ -266,6 +263,21 @@ insertClient = function(req, res) {
  });
 }
 
+//EDIT CLIENT
+editClient = function(data, callback) {
+    con.connect(function(err) {
+    con.query('SELECT CLIENT_ID, CLIENT_NAME, FIRST_ADDRESS, LOCATION, COUNTRY, COUNTRY_CODE, POSTAL_CODE, NIF, COIN, PHONE_NUMBER, PERSON_TO_CONTACT from clients where CLIENT_ID = ?', [data.params.clientid], function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+    });
+});
+}
 
 //INSERT PRODUCT
 insertNewProduct = function(req, res) {

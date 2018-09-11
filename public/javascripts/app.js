@@ -36,6 +36,12 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
         controller : 'insertClient',
         params: {}
     })
+    .state('editClient', {
+      url: '/editClient',
+        templateUrl : '../custompages/editClient.html',
+        controller : 'editclient',
+        params: {clientid: null}
+    })
     .state('listPanels', {
       url: '/listPanels',
         templateUrl : '../custompages/panels.html',
@@ -190,7 +196,7 @@ app.controller('insertClient', function ($scope, $http, $rootScope, $rootScope, 
       NIF: $scope.nif,
       COIN: $scope.coin,
       PHONE_NUMBER: $scope.phonenumber,
-      PERSON_TO_CONTACT: $scope.persontocontact
+      PERSON_TO_CONTACT: $scope.persontocontact 
     };
 
     var res = $http.post('/insertClient', dataObj).then(function(data, status, headers, config) {
@@ -208,10 +214,33 @@ app.controller('insertClient', function ($scope, $http, $rootScope, $rootScope, 
 });
 
 //EDIT CLIENT CONTROLLER
-app.controller('editClient', function ($scope, $http, $rootScope, $rootScope, $state) {
+app.controller('editclient', function ($scope, $http, $rootScope, $rootScope, $state, $stateParams) {
 
-  $scope.data = [];
   $rootScope.name="Editar o client X";
+  $scope.clientid = $stateParams.clientid;
+
+  $scope.clientData = [];
+  var request = $http.get('/editClient/' + encodeURIComponent($scope.clientid));    
+  request.then(function successCallback(response) {
+      $scope.clientData  = response.data;
+
+      $scope.clientname = $scope.clientData[0].CLIENT_NAME;
+      $scope.firstaddress = $scope.clientData[0].FIRST_ADDRESS;
+      $scope.location = $scope.clientData[0].LOCATION;
+      $scope.country = $scope.clientData[0].COUNTRY;
+      $scope.countrycode = $scope.clientData[0].COUNTRY_CODE;
+      $scope.postalcode = $scope.clientData[0].POSTAL_CODE;
+      $scope.nif = $scope.clientData[0].NIF;
+      $scope.coin = $scope.clientData[0].COIN;
+      $scope.phonenumber = $scope.clientData[0].PHONE_NUMBER;
+      $scope.persontocontact = $scope.clientData[0].PERSON_TO_CONTACT;
+
+      },
+      function errorCallback(data){
+          console.log('Error: ' + data);
+  });
+
+
 
   $scope.goBack = function() {
     $state.transitionTo("clientstate", {}) ;
@@ -1595,6 +1624,10 @@ app.controller('clients', function($scope, $http, $rootScope, $state) {
 
     $scope.createClient = function() {
       $state.transitionTo("createClient", {}) ;
+    };
+
+    $scope.editClient = function(clientId) {
+      $state.transitionTo("editClient", {"clientid": clientId}) ;
     };
 });
 

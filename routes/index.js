@@ -147,11 +147,18 @@ router.get('/getallordersforopeninternalproductid/:orderid/:productid', function
   fetchAllOrdersForOpenInternalProductId(req,res);  
 });
 
-//Insert Client
+//INSERT CLIENT
 router.post('/insertClient', function(req,res){
   console.log("INSERT NEW CLIENT");
   console.log(req.body);
   insertClient(req,res);  
+});
+
+//GET CLIENT TO EDIT
+router.get('/editClient/:clientid', function(req,res){
+  console.log("GET CLIENT TO EDIT");
+  console.log(req.body);
+  editClient(req,res);  
 });
 
 //Insert Products
