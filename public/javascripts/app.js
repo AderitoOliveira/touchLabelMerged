@@ -1947,7 +1947,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
                 '_PAINTED_COLD_',
                 '_REF_PAINT_QTY_',
                 '_REF_PAINT_SMOKED_QTY_',
-                '_REF_QTY_GLASSED'
+                '_GLASSED_'
               ]
               ]
           },
@@ -2164,6 +2164,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
       '_REF_PAINT_SMOKED_QTY_' : $scope.refPaintSmokedQty,
       '_REF_PAINT_' : $scope.refPaint,
       '_REF_PAINT_SMOKED_' : $scope.refPaintSmoked,
+      '_GLASSED_' : $scope.glassed,
       '_REF_GLASSED_' : $scope.refGlassed,
       '_FINISH_TYPE_OBS_' : $scope.finishTypeObs,
       '_BAR_CODE_TECH_SHEET_' : $scope.barCodeTechSheet,
