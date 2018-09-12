@@ -1845,7 +1845,8 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
 
   var dd = {
     content: [
-            {table: { headerRows: 1, widths: [ '*'],
+            {
+              table: { headerRows: 1, widths: [ '*'],
                    body: [
                           [ 
                             {text: 'Ficha Técnica do Producto', style: "tblBanner"}
@@ -1861,7 +1862,8 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
             {
                 text:'', margin:[20,10],
             },
-            {table: { headerRows: 1, widths: [ '*'],
+            {
+              table: { headerRows: 1, widths: [ '*'],
                    body: [
                           [ 
                             {text: 'Produção', style: "tblHeader"}
@@ -1874,193 +1876,196 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
                 text:'', margin:[20,10],
             },
             {
-          table: {
-        headerRows: 1,
-        widths: [ '*','*'],
-        body: [
-              [{text: 'Matéria Prima', style: 'tblBigHeader'}, {text: 'Matéria Prima Adicional', style: 'tblBigHeader'}],
-              [
-                '_RAW_MATERIAL_',
-                '_RAW_MATERIAL_EXTRA_'
-              ]
-              ]
-          },
-          layout: 'noBorders',
-          style: 'tableRowsText',
+              table: {
+              headerRows: 1,
+              widths: [ '*','*'],
+              body: [
+                      [{text: 'Matéria Prima', style: 'tblBigHeader'}, {text: 'Matéria Prima Adicional', style: 'tblBigHeader'}],
+                      [
+                        '_RAW_MATERIAL_',
+                        '_RAW_MATERIAL_EXTRA_'
+                      ]
+                    ]
+              },
+              layout: 'noBorders',
+              style: 'tableRowsText',
             },
             {
-          table: {
-        headerRows: 1,
-        widths: [ '*','*','*','*'],
-        body: [
-              [{text: 'Altura Peça', style: 'tblBigHeader'}, {text: 'Largura Peça', style: 'tblBigHeader'}, {text: 'Topo Peça', style: 'tblBigHeader'}, {text: 'Fundo Peça', style: 'tblBigHeader'}],
-              [
-                '_PRODUCT_HEIGHT_',
-                '_PRODUCT_WIDHT_',
-                '_TOP_WIDTH_',
-                '_BOTTOM_WIDTH_'
-              ]
-              ]
-          },
-          layout: 'noBorders',
-          style: 'tableRowsText',
+              table: {
+              headerRows: 1,
+              widths: [ '*','*','*','*'],
+              body: [
+                      [{text: 'Altura Peça', style: 'tblBigHeader'}, {text: 'Largura Peça', style: 'tblBigHeader'}, {text: 'Topo Peça', style: 'tblBigHeader'}, {text: 'Fundo Peça', style: 'tblBigHeader'}],
+                      [
+                        '_PRODUCT_HEIGHT_',
+                        '_PRODUCT_WIDHT_',
+                        '_TOP_WIDTH_',
+                        '_BOTTOM_WIDTH_'
+                      ]
+                    ]
+              },
+              layout: 'noBorders',
+              style: 'tableRowsText',
             },
              {
-          table: {
-        headerRows: 1,
-        widths: ['*','*','*','*'],
-        body: [
-              [{text: 'Relevo', style: 'tblBigHeader'}, {text: 'Esponja', style: 'tblBigHeader'}, {text: 'Cozedura', style: 'tblBigHeader'}, {text: 'Temp. Cozedura', style: 'tblBigHeader'}],
-              [
-                '_RELIEF_',
-                '_SPONGE_',
-                '_COOKING_',
-                '_COOKING_TEMPERATURE_'
-              ]
-              ]
-          },
-          layout: 'noBorders',
-          style: 'tableRowsText',
-            },
-            {
-                text:'', margin:[20,10],
-            },
-            {table: { headerRows: 1, widths: [ '*'],
-                   body: [
-                          [ 
-                            {text: 'Pintura', style: "tblHeader"}
-                         ]
+                table: {
+                headerRows: 1,
+                widths: ['*','*','*','*'],
+                body: [
+                        [{text: 'Relevo', style: 'tblBigHeader'}, {text: 'Esponja', style: 'tblBigHeader'}, {text: 'Cozedura', style: 'tblBigHeader'}, {text: 'Temp. Cozedura', style: 'tblBigHeader'}],
+                        [
+                          '_RELIEF_',
+                          '_SPONGE_',
+                          '_COOKING_',
+                          '_COOKING_TEMPERATURE_'
                         ]
-                    },
-                    layout: 'lightHorizontalLines'
+                      ]
+                },
+                layout: 'noBorders',
+                style: 'tableRowsText',
             },
             {
                 text:'', margin:[20,10],
             },
             {
-          table: {
-        headerRows: 1,
-        widths: [ '*','*','*','*'],
-        body: [
-              [{text: 'Pintado a frio', style: 'tblBigHeader'}, {text: 'Quantidade Tinta', style: 'tblBigHeader'}, {text: 'Quanti. Fuminho', style: 'tblBigHeader'}, {text: 'Quanti. Vidrado', style: 'tblBigHeader'}],
-              [
-                '_PAINTED_COLD_',
-                '_REF_PAINT_QTY_',
-                '_REF_PAINT_SMOKED_QTY_',
-                '_GLASSED_'
-              ]
-              ]
-          },
-          layout: 'noBorders',
-          style: 'tableRowsText',
-            },
-            {
-          table: {
-        headerRows: 1,
-        widths: [ '*','*','*'],
-        body: [
-              [{text: 'Referência Tinta', style: 'tblBigHeader'}, {text: 'Referência Fuminho', style: 'tblBigHeader'}, {text: 'Referência Vidrado', style: 'tblBigHeader'}],
-              [
-                '_REF_PAINT_',
-                '_REF_PAINT_SMOKED_',
-                '_REF_GLASSED_',
-              ]
-              ]
-          },
-          layout: 'noBorders',
-          style: 'tableRowsText',
-            },
-            {
-          table: {
-        headerRows: 1,
-        widths: [ '*'],
-        body: [
-              [{text: 'Observações - Tipo de Acabamento', style: 'tblBigHeader'}],
-              [
-                '_FINISH_TYPE_OBS_'
-              ]
-              ]
-          },
-          layout: 'noBorders',
-          style: 'tableRowsText',
-            },
-            {
-                text:'', margin:[20,10],
-            },
-            {table: { headerRows: 1, widths: [ '*'],
-                   body: [
-                          [ 
-                            {text: 'Embalagem', style: "tblHeader"}
-                         ]
+                table: { headerRows: 1, widths: [ '*'],
+                body: [
+                        [ 
+                          {text: 'Pintura', style: "tblHeader"}
                         ]
-                    },
-                    layout: 'lightHorizontalLines'
+                      ]
+                },
+                layout: 'lightHorizontalLines'
             },
             {
                 text:'', margin:[20,10],
             },
             {
-          table: {
-        headerRows: 1,
-        widths: [ '*','*','*'],
-        body: [
-              [{text: 'Código de Barras', style: 'tblBigHeader'}, {text: 'Etiqueta Prova de Água', style: 'tblBigHeader'}, {text: 'Feltros', style: 'tblBigHeader'}],
-              [
-                '_BAR_CODE_TECH_SHEET_',
-                '_LABEL_WATER_PROOF_',
-                '_FELTS_'
-              ]
-              ]
-          },
-          layout: 'noBorders',
-          style: 'tableRowsText',
+                table: {
+                headerRows: 1,
+                widths: [ '*','*','*','*'],
+                body: [
+                        [
+                          {text: 'Pintado a frio', style: 'tblBigHeader'}, {text: 'Quantidade Tinta', style: 'tblBigHeader'}, {text: 'Quanti. Fuminho', style: 'tblBigHeader'}, {text: 'Quanti. Vidrado', style: 'tblBigHeader'}],
+                        [
+                          '_PAINTED_COLD_',
+                          '_REF_PAINT_QTY_',
+                          '_REF_PAINT_SMOKED_QTY_',
+                          '_GLASSED_'
+                        ]
+                      ]
+                },
+                layout: 'noBorders',
+                style: 'tableRowsText',
             },
             {
-          table: {
-        headerRows: 1,
-        widths: [ '*','*','*','*'],
-        body: [
-              [{text: 'Quantidade Feltros', style: 'tblBigHeader'}, {text: 'Saco', style: 'tblBigHeader'}, {text: 'Tamanho Saco', style: 'tblBigHeader'}, {text: 'Medidas de Caixa', style: 'tblBigHeader'}],
-              [
-                '_FELTS_QTY_',
-                '_BAG_',
-                '_BAG_SIZE_',
-                '_BOX_MEASURES_',
-              ]
-              ]
-          },
-          layout: 'noBorders',
-          style: 'tableRowsText',
+                table: {
+                headerRows: 1,
+                widths: [ '*','*','*'],
+                body: [
+                        [{text: 'Referência Tinta', style: 'tblBigHeader'}, {text: 'Referência Fuminho', style: 'tblBigHeader'}, {text: 'Referência Vidrado', style: 'tblBigHeader'}],
+                        [
+                          '_REF_PAINT_',
+                          '_REF_PAINT_SMOKED_',
+                          '_REF_GLASSED_',
+                        ]
+                      ]
+                },
+                layout: 'noBorders',
+                style: 'tableRowsText',
             },
             {
-          table: {
-        headerRows: 1,
-        widths: [ '*','*','*'],
-        body: [
-              [{text: 'Quantidade por caixa', style: 'tblBigHeader'}, {text: 'Quantidade por Palete', style: 'tblBigHeader'}, {text: 'Disposição por Fiada', style: 'tblBigHeader'}],
-              [
-                '_QTY_BY_BOX_',
-                '_QTY_BY_PALLET_',
-                '_DISPOSITION_BY_ROW_',
-              ]
-              ]
-          },
-          layout: 'noBorders',
-          style: 'tableRowsText',
+              table: {
+              headerRows: 1,
+              widths: [ '*'],
+              body: [
+                      [{text: 'Observações - Tipo de Acabamento', style: 'tblBigHeader'}],
+                      [
+                        '_FINISH_TYPE_OBS_'
+                      ]
+                    ]
+              },
+              layout: 'noBorders',
+              style: 'tableRowsText',
             },
             {
-          table: {
-        headerRows: 1,
-        widths: [ '*'],
-        body: [
-              [{text: 'Observações Finais', style: 'tblBigHeader'}],
-              [
-                '_FINAL_OBSERVATIONS_'
-              ]
-              ]
-          },
-          layout: 'noBorders',
-          style: 'tableRowsText',
+                text:'', margin:[20,10],
+            },
+            {
+              table: { headerRows: 1, widths: [ '*'],
+              body: [
+                      [ 
+                        {text: 'Embalagem', style: "tblHeader"}
+                      ]
+                    ]
+              },
+              layout: 'lightHorizontalLines'
+            },
+            {
+                text:'', margin:[20,10],
+            },
+            {
+              table: {
+              headerRows: 1,
+              widths: [ '*','*','*'],
+              body: [
+                      [{text: 'Código de Barras', style: 'tblBigHeader'}, {text: 'Etiqueta Prova de Água', style: 'tblBigHeader'}, {text: 'Feltros', style: 'tblBigHeader'}],
+                      [
+                        '_BAR_CODE_TECH_SHEET_',
+                        '_LABEL_WATER_PROOF_',
+                        '_FELTS_'
+                      ]
+                    ]
+              },
+              layout: 'noBorders',
+              style: 'tableRowsText',
+            },
+            {
+              table: {
+              headerRows: 1,
+              widths: [ '*','*','*','*'],
+              body: [
+                      [{text: 'Quantidade Feltros', style: 'tblBigHeader'}, {text: 'Saco', style: 'tblBigHeader'}, {text: 'Tamanho Saco', style: 'tblBigHeader'}, {text: 'Medidas de Caixa', style: 'tblBigHeader'}],
+                      [
+                        '_FELTS_QTY_',
+                        '_BAG_',
+                        '_BAG_SIZE_',
+                        '_BOX_MEASURES_',
+                      ]
+                    ]
+              },
+              layout: 'noBorders',
+              style: 'tableRowsText',
+            },
+            {
+              table: {
+              headerRows: 1,
+              widths: [ '*','*','*'],
+              body: [
+                      [{text: 'Quantidade por caixa', style: 'tblBigHeader'}, {text: 'Quantidade por Palete', style: 'tblBigHeader'}, {text: 'Disposição por Fiada', style: 'tblBigHeader'}],
+                      [
+                        '_QTY_BY_BOX_',
+                        '_QTY_BY_PALLET_',
+                        '_DISPOSITION_BY_ROW_',
+                      ]
+                    ]
+              },
+              layout: 'noBorders',
+              style: 'tableRowsText',
+            },
+            {
+              table: {
+              headerRows: 1,
+              widths: [ '*'],
+              body: [
+                      [{text: 'Observações Finais', style: 'tblBigHeader'}],
+                      [
+                        '_FINAL_OBSERVATIONS_'
+                      ]
+                    ]
+              },
+              layout: 'noBorders',
+              style: 'tableRowsText',
             },
      ],
   styles: {
