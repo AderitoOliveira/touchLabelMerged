@@ -1419,50 +1419,304 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
    };
   
 
-   $scope.printTechnicalSheet = function(divName) {
+   $scope.printTechnicalSheet = function() {
 
-    var originalContents = document.body.innerHTML;      
+    var documentDefinition = {
+      content: [
+              {table: { headerRows: 1, widths: [ '*'],
+                     body: [
+                            [ 
+                              {text: 'Ficha Técnica do Producto', style: "tblBanner"}
+                           ]
+                          ]
+                      },
+                      layout: 'lightHorizontalLines',
+          
+              },
+              {
+                  text:'Pot Vera Concrete Grey (C405/35)',style: "productName"
+              },
+              {
+                  text:'', margin:[20,10],
+              },
+              {table: { headerRows: 1, widths: [ '*'],
+                     body: [
+                            [ 
+                              {text: 'Produção', style: "tblHeader"}
+                           ]
+                          ]
+                      },
+                      layout: 'lightHorizontalLines'
+              },
+              {
+                  text:'', margin:[20,10],
+              },
+              {
+            table: {
+          headerRows: 1,
+          widths: [ '*','*'],
+          body: [
+                [{text: 'Matéria Prima', style: 'tblBigHeader'}, {text: 'Matéria Prima Adicional', style: 'tblBigHeader'}],
+                [
+              '$scope.rawMaterial',
+              '$scope.rawMaterialExtra'
+                ]
+                ]
+            },
+            layout: 'noBorders',
+            style: 'tableRowsText',
+              },
+              {
+            table: {
+          headerRows: 1,
+          widths: [ '*','*','*','*'],
+          body: [
+                [{text: 'Altura Peça', style: 'tblBigHeader'}, {text: 'Largura Peça', style: 'tblBigHeader'}, {text: 'Topo Peça', style: 'tblBigHeader'}, {text: 'Fundo Peça', style: 'tblBigHeader'}],
+                [
+              '$scope.productHeight',
+              '$scope.productWidth',
+              '$scope.topWidth',
+              '$scope.bottomWidth'
+                ]
+                ]
+            },
+            layout: 'noBorders',
+            style: 'tableRowsText',
+              },
+               {
+            table: {
+          headerRows: 1,
+          widths: ['*','*','*','*'],
+          body: [
+                [{text: 'Relevo', style: 'tblBigHeader'}, {text: 'Esponja', style: 'tblBigHeader'}, {text: 'Cozedura', style: 'tblBigHeader'}, {text: 'Temp. Cozedura', style: 'tblBigHeader'}],
+                [
+              '$scope.relief',
+              '$scope.sponge',
+              '$scope.cooking',
+              '$scope.cookingTemperature'
+                ]
+                ]
+            },
+            layout: 'noBorders',
+            style: 'tableRowsText',
+              },
+              {
+                  text:'', margin:[20,10],
+              },
+              {table: { headerRows: 1, widths: [ '*'],
+                     body: [
+                            [ 
+                              {text: 'Pintura', style: "tblHeader"}
+                           ]
+                          ]
+                      },
+                      layout: 'lightHorizontalLines'
+              },
+              {
+                  text:'', margin:[20,10],
+              },
+              {
+            table: {
+          headerRows: 1,
+          widths: [ '*','*','*','*'],
+          body: [
+                [{text: 'Pintado a frio', style: 'tblBigHeader'}, {text: 'Quantidade Tinta', style: 'tblBigHeader'}, {text: 'Quanti. Fuminho', style: 'tblBigHeader'}, {text: 'Quanti. Vidrado', style: 'tblBigHeader'}],
+                [
+              '$scope.paintedCold',
+              '$scope.refPaintQty',
+              '$scope.refPaintSmokedQty',
+              '30 cl'
+                ]
+                ]
+            },
+            layout: 'noBorders',
+            style: 'tableRowsText',
+              },
+              {
+            table: {
+          headerRows: 1,
+          widths: [ '*','*','*'],
+          body: [
+                [{text: 'Referência Tinta', style: 'tblBigHeader'}, {text: 'Referência Fuminho', style: 'tblBigHeader'}, {text: 'Referência Vidrado', style: 'tblBigHeader'}],
+                [
+              '$scope.refPaint',
+              '$scope.refPaintSmoked',
+              '$scope.refGlassed'
+                ]
+                ]
+            },
+            layout: 'noBorders',
+            style: 'tableRowsText',
+              },
+              {
+            table: {
+          headerRows: 1,
+          widths: [ '*'],
+          body: [
+                [{text: 'Observações - Tipo de Acabamento', style: 'tblBigHeader'}],
+                [
+					'$scope.finishTypeObs'
+                ]
+                ]
+            },
+            layout: 'noBorders',
+            style: 'tableRowsText',
+              },
+              {
+                  text:'', margin:[20,10],
+              },
+              {table: { headerRows: 1, widths: [ '*'],
+                     body: [
+                            [ 
+                              {text: 'Embalagem', style: "tblHeader"}
+                           ]
+                          ]
+                      },
+                      layout: 'lightHorizontalLines'
+              },
+              {
+                  text:'', margin:[20,10],
+              },
+              {
+            table: {
+          headerRows: 1,
+          widths: [ '*','*','*'],
+          body: [
+                [{text: 'Código de Barras', style: 'tblBigHeader'}, {text: 'Etiqueta Prova de Água', style: 'tblBigHeader'}, {text: 'Feltros', style: 'tblBigHeader'}],
+                [
+              '$scope.barCodeTechSheet',
+              '$scope.labelWaterProof',
+              '$scope.felts'
+                ]
+                ]
+            },
+            layout: 'noBorders',
+            style: 'tableRowsText',
+              },
+              {
+            table: {
+          headerRows: 1,
+          widths: [ '*','*','*','*'],
+          body: [
+                [{text: 'Quantidade Feltros', style: 'tblBigHeader'}, {text: 'Saco', style: 'tblBigHeader'}, {text: 'Tamanho Saco', style: 'tblBigHeader'}, {text: 'Medidas de Caixa', style: 'tblBigHeader'}],
+                [
+              '$scope.feltsQty',
+              '$scope.bag',
+              '$scope.bagSize',
+              '$scope.boxMeasures'
+                ]
+                ]
+            },
+            layout: 'noBorders',
+            style: 'tableRowsText',
+              },
+              {
+            table: {
+          headerRows: 1,
+          widths: [ '*','*','*'],
+          body: [
+                [{text: 'Quantidade por caixa', style: 'tblBigHeader'}, {text: 'Quantidade por Palete', style: 'tblBigHeader'}, {text: 'Disposição por Fiada', style: 'tblBigHeader'}],
+                [
+              '$scope.qtyByBox',
+              '$scope.qtyByPallet',
+              '$scope.dispositionByRow'
+                ]
+                ]
+            },
+            layout: 'noBorders',
+            style: 'tableRowsText',
+              },
+              {
+            table: {
+          headerRows: 1,
+          widths: [ '*'],
+          body: [
+                [{text: 'Observações Finais', style: 'tblBigHeader'}],
+                [
+					'$scope.finalObservations'
+                ]
+                ]
+            },
+            layout: 'noBorders',
+            style: 'tableRowsText',
+              },
+       ],
+    styles: {
+      'headerText': {
+        fontSize:12,
+        color: 'black',
+        bold: false,
+        lineHeight: 1.25,
+        margin: [15, -4, -300, 21.33]  
+      },
+      'name': {
+        fontSize: 20,
+        color: 'black',
+        bold: true,
+      },
+      'table': {
+        margin: [0, 20, 0, 20]  
+      },
+      'contacts': {
+          fontSize:12,
+          color: 'black',
+          bold: false
+      },
+      'tblBanner':{
+          margin: [0, 0, 5, 3],
+          color: '#9b9898',
+          borderWeight: 3,
+          alignment: 'center',
+          bold: 'true',
+          fontSize: 25,
+      },
+      'productName':{
+          margin: [0, 0, 5, 3],
+          color: '#191717',
+          borderWeight: 3,
+          alignment: 'center',
+          bold: 'true',
+          fontSize: 18,
+      },
+      'tableRowsText':{
+          margin: [0, 0, 5, 3],
+          color: '#9b9898',
+          borderWeight: 3,
+          alignment: 'left',
+          bold: 'true',
+          fontSize: 14,
+      },
+      'tblHeader':{
+          margin: [0, 0, 5, 3],
+          color: '#e50404',
+          borderWeight: 3,
+          alignment: 'center',
+          bold: 'true',
+          fontSize: 18,
+      },
+      'tblBigHeader':{
+          margin: [0, 0, 0, 0],
+          color: '#3f4247',
+          borderWeight: 3,
+          alignment: 'left',
+          bold: 'true',
+          fontSize: 14,
+      },
+      'tblSmallHeader':{
+        //margin: [0, 0, 5, 3],
+        color: '#3f1da5',
+        borderWeight: 3,
+        //alignment: 'center',
+        bold: 'true',
+        fontSize: 16,
+      },	
+    },
+    pageMargins: [ 56.6, 42.5, 15, 15 ],
+    pageSize: 'A4',
+    };
 
-    var divEl = document.getElementById(divName);
-    var allInputs = divEl.querySelectorAll("input,textarea");
-    for( var counter = 0; counter < allInputs.length; counter++)
-    {
-      var input = allInputs.item(counter);
-      input.setAttribute("value", input.value);
-    }
+    pdfMake.createPdf(documentDefinition).download();
 
-    var printContents = document.getElementById(divName).innerHTML;
-
-    if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
-        var popupWin = window.open('', '_blank', 'width=600,height=600,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
-        popupWin.window.focus();     
-        popupWin.document.write("<!DOCTYPE html><html><head>");
-    
-        popupWin.document.write("<link rel='stylesheet' media='print' href='stylesheets/printeStyle.css' type='text/css' />\n");
-        popupWin.document.write("<link rel='stylesheet' media='screen' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' type='text/css' />\n");
-        popupWin.document.write("</head>\n");
-        popupWin.document.write("<body onload='window.print()'>\n");
-        popupWin.document.write(printContents);
-        popupWin.document.write("</body>\n");
-        popupWin.document.write("</html>\n");
-
-        popupWin.onbeforeunload = function (event) {
-            popupWin.close();
-            return '.\n';
-        };
-        popupWin.onabort = function (event) {
-            popupWin.document.close();
-            popupWin.close();
-        }
-    } else {
-        var popupWin = window.open('', '_blank', 'width=800,height=600');
-        popupWin.document.open();
-        popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="style.css" /></head><body onload="window.print()">' + printContents + '</html>');
-        popupWin.document.close();
-    }
-    popupWin.document.close();
-
-    return true;
   };
    
   
@@ -1587,51 +1841,354 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
    };
 
 
- $scope.printTechnicalSheet = function(divName) {
+ $scope.printTechnicalSheet = function() {
 
-  var originalContents = document.body.innerHTML;      
+  var dd = {
+    content: [
+            {table: { headerRows: 1, widths: [ '*'],
+                   body: [
+                          [ 
+                            {text: 'Ficha Técnica do Producto', style: "tblBanner"}
+                         ]
+                        ]
+                    },
+                    layout: 'lightHorizontalLines',
+        
+            },
+            {
+                text:'_PRODUCT_NAME_',style: "productName"
+            },
+            {
+                text:'', margin:[20,10],
+            },
+            {table: { headerRows: 1, widths: [ '*'],
+                   body: [
+                          [ 
+                            {text: 'Produção', style: "tblHeader"}
+                         ]
+                        ]
+                    },
+                    layout: 'lightHorizontalLines'
+            },
+            {
+                text:'', margin:[20,10],
+            },
+            {
+          table: {
+        headerRows: 1,
+        widths: [ '*','*'],
+        body: [
+              [{text: 'Matéria Prima', style: 'tblBigHeader'}, {text: 'Matéria Prima Adicional', style: 'tblBigHeader'}],
+              [
+                '_RAW_MATERIAL_',
+                '_RAW_MATERIAL_EXTRA_'
+              ]
+              ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+            },
+            {
+          table: {
+        headerRows: 1,
+        widths: [ '*','*','*','*'],
+        body: [
+              [{text: 'Altura Peça', style: 'tblBigHeader'}, {text: 'Largura Peça', style: 'tblBigHeader'}, {text: 'Topo Peça', style: 'tblBigHeader'}, {text: 'Fundo Peça', style: 'tblBigHeader'}],
+              [
+                '_PRODUCT_HEIGHT_',
+                '_PRODUCT_WIDHT_',
+                '_TOP_WIDTH_',
+                '_BOTTOM_WIDTH_'
+              ]
+              ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+            },
+             {
+          table: {
+        headerRows: 1,
+        widths: ['*','*','*','*'],
+        body: [
+              [{text: 'Relevo', style: 'tblBigHeader'}, {text: 'Esponja', style: 'tblBigHeader'}, {text: 'Cozedura', style: 'tblBigHeader'}, {text: 'Temp. Cozedura', style: 'tblBigHeader'}],
+              [
+                '_RELIEF_',
+                '_SPONGE_',
+                '_COOKING_',
+                '_COOKING_TEMPERATURE_'
+              ]
+              ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+            },
+            {
+                text:'', margin:[20,10],
+            },
+            {table: { headerRows: 1, widths: [ '*'],
+                   body: [
+                          [ 
+                            {text: 'Pintura', style: "tblHeader"}
+                         ]
+                        ]
+                    },
+                    layout: 'lightHorizontalLines'
+            },
+            {
+                text:'', margin:[20,10],
+            },
+            {
+          table: {
+        headerRows: 1,
+        widths: [ '*','*','*','*'],
+        body: [
+              [{text: 'Pintado a frio', style: 'tblBigHeader'}, {text: 'Quantidade Tinta', style: 'tblBigHeader'}, {text: 'Quanti. Fuminho', style: 'tblBigHeader'}, {text: 'Quanti. Vidrado', style: 'tblBigHeader'}],
+              [
+                '_PAINTED_COLD_',
+                '_REF_PAINT_QTY_',
+                '_REF_PAINT_SMOKED_QTY_',
+                '_REF_QTY_GLASSED'
+              ]
+              ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+            },
+            {
+          table: {
+        headerRows: 1,
+        widths: [ '*','*','*'],
+        body: [
+              [{text: 'Referência Tinta', style: 'tblBigHeader'}, {text: 'Referência Fuminho', style: 'tblBigHeader'}, {text: 'Referência Vidrado', style: 'tblBigHeader'}],
+              [
+                '_REF_PAINT_',
+                '_REF_PAINT_SMOKED_',
+                '_REF_GLASSED_',
+              ]
+              ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+            },
+            {
+          table: {
+        headerRows: 1,
+        widths: [ '*'],
+        body: [
+              [{text: 'Observações - Tipo de Acabamento', style: 'tblBigHeader'}],
+              [
+                '_FINISH_TYPE_OBS_'
+              ]
+              ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+            },
+            {
+                text:'', margin:[20,10],
+            },
+            {table: { headerRows: 1, widths: [ '*'],
+                   body: [
+                          [ 
+                            {text: 'Embalagem', style: "tblHeader"}
+                         ]
+                        ]
+                    },
+                    layout: 'lightHorizontalLines'
+            },
+            {
+                text:'', margin:[20,10],
+            },
+            {
+          table: {
+        headerRows: 1,
+        widths: [ '*','*','*'],
+        body: [
+              [{text: 'Código de Barras', style: 'tblBigHeader'}, {text: 'Etiqueta Prova de Água', style: 'tblBigHeader'}, {text: 'Feltros', style: 'tblBigHeader'}],
+              [
+                '_BAR_CODE_TECH_SHEET_',
+                '_LABEL_WATER_PROOF_',
+                '_FELTS_'
+              ]
+              ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+            },
+            {
+          table: {
+        headerRows: 1,
+        widths: [ '*','*','*','*'],
+        body: [
+              [{text: 'Quantidade Feltros', style: 'tblBigHeader'}, {text: 'Saco', style: 'tblBigHeader'}, {text: 'Tamanho Saco', style: 'tblBigHeader'}, {text: 'Medidas de Caixa', style: 'tblBigHeader'}],
+              [
+                '_FELTS_QTY_',
+                '_BAG_',
+                '_BAG_SIZE_',
+                '_BOX_MEASURES_',
+              ]
+              ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+            },
+            {
+          table: {
+        headerRows: 1,
+        widths: [ '*','*','*'],
+        body: [
+              [{text: 'Quantidade por caixa', style: 'tblBigHeader'}, {text: 'Quantidade por Palete', style: 'tblBigHeader'}, {text: 'Disposição por Fiada', style: 'tblBigHeader'}],
+              [
+                '_QTY_BY_BOX_',
+                '_QTY_BY_PALLET_',
+                '_DISPOSITION_BY_ROW_',
+              ]
+              ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+            },
+            {
+          table: {
+        headerRows: 1,
+        widths: [ '*'],
+        body: [
+              [{text: 'Observações Finais', style: 'tblBigHeader'}],
+              [
+                '_FINAL_OBSERVATIONS_'
+              ]
+              ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+            },
+     ],
+  styles: {
+    'headerText': {
+      fontSize:12,
+      color: 'black',
+      bold: false,
+      lineHeight: 1.25,
+      margin: [15, -4, -300, 21.33]  
+    },
+    'name': {
+      fontSize: 20,
+      color: 'black',
+      bold: true,
+    },
+    table: {
+      margin: [0, 20, 0, 20]  
+    },
+    'contacts': {
+        fontSize:12,
+        color: 'black',
+        bold: false
+    },
+    'tblBanner':{
+        margin: [0, 0, 5, 3],
+        color: '#9b9898',
+        borderWeight: 3,
+        alignment: 'center',
+        bold: 'true',
+        fontSize: 25,
+    },
+    'productName':{
+        margin: [0, 0, 5, 3],
+        color: '#191717',
+        borderWeight: 3,
+        alignment: 'center',
+        bold: 'true',
+        fontSize: 18,
+    },
+    'tableRowsText':{
+        margin: [0, 0, 0, 0],
+        color: '#9b9898',
+        borderWeight: 3,
+        alignment: 'left',
+        bold: 'true',
+        fontSize: 14,
+    },
+    'tblHeader':{
+        margin: [0, 0, 5, 3],
+        color: '#e50404',
+        borderWeight: 3,
+        alignment: 'center',
+        bold: 'true',
+        fontSize: 18,
+    },
+    'tblBigHeader':{
+        margin: [0, 0, 0, 0],
+        color: '#3f4247',
+        borderWeight: 3,
+        alignment: 'left',
+        bold: 'true',
+        fontSize: 14,
+    },
+    'tblSmallHeader':{
+      //margin: [0, 0, 5, 3],
+      color: '#3f1da5',
+      borderWeight: 3,
+      //alignment: 'center',
+      bold: 'true',
+      fontSize: 16,
+    },	
+  },
+  pageMargins: [ 56.6, 42.5, 15, 15 ],
+  pageSize: 'A4',
+  };
 
-  var divEl = document.getElementById(divName);
-  var allInputs = divEl.querySelectorAll("input,textarea");
-  for( var counter = 0; counter < allInputs.length; counter++)
-  {
-    var input = allInputs.item(counter);
-    input.setAttribute("value", input.value);
-  }
 
-  var printContents = document.getElementById(divName).innerHTML;
-
-  if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
-      var popupWin = window.open('', '_blank', 'width=600,height=600,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
-      popupWin.window.focus();     
-      popupWin.document.write("<!DOCTYPE html><html><head>");
-  
-      popupWin.document.write("<link rel='stylesheet' media='print' href='stylesheets/printeStyle.css' type='text/css' />\n");
-      popupWin.document.write("<link rel='stylesheet' media='screen' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' type='text/css' />\n");
-      popupWin.document.write("</head>\n");
-      popupWin.document.write("<body onload='window.print()'>\n");
-      popupWin.document.write(printContents);
-      popupWin.document.write("</body>\n");
-      popupWin.document.write("</html>\n");
-
-      popupWin.onbeforeunload = function (event) {
-          popupWin.close();
-          return '.\n';
-      };
-      popupWin.onabort = function (event) {
-          popupWin.document.close();
-          popupWin.close();
+    function replaceAll(str, map){
+      for(key in map){
+          str2 = str.replace(key, map[key]);
+          str=str2;
+          str2=null;
       }
-  } else {
-      var popupWin = window.open('', '_blank', 'width=800,height=600');
-      popupWin.document.open();
-      popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="style.css" /></head><body onload="window.print()">' + printContents + '</html>');
-      popupWin.document.close();
-  }
-  popupWin.document.close();
+      return str;
+    }
 
-  return true;
-};
+    var map = {
+      '_PRODUCT_NAME_' : $scope.productName,
+      '_RAW_MATERIAL_' : $scope.rawMaterial,
+      '_RAW_MATERIAL_EXTRA_' : $scope.rawMaterialExtra,
+      '_PRODUCT_HEIGHT_' : $scope.productHeight,
+      '_PRODUCT_WIDHT_' : $scope.productWidth,
+      '_TOP_WIDTH_' : $scope.topWidth,
+      '_BOTTOM_WIDTH_' : $scope.bottomWidth,
+      '_RELIEF_' : $scope.relief,
+      '_SPONGE_' : $scope.sponge,
+      '_COOKING_' : $scope.cooking,
+      '_COOKING_TEMPERATURE_' : $scope.cookingTemperature,
+      '_PAINTED_COLD_' : $scope.paintedCold,
+      '_REF_PAINT_QTY_' : $scope.refPaintQty,
+      '_REF_PAINT_SMOKED_QTY_' : $scope.refPaintSmokedQty,
+      '_REF_PAINT_' : $scope.refPaint,
+      '_REF_PAINT_SMOKED_' : $scope.refPaintSmoked,
+      '_REF_GLASSED_' : $scope.refGlassed,
+      '_FINISH_TYPE_OBS_' : $scope.finishTypeObs,
+      '_BAR_CODE_TECH_SHEET_' : $scope.barCodeTechSheet,
+      '_LABEL_WATER_PROOF_' : $scope.labelWaterProof,
+      '_FELTS_' : $scope.felts,
+      '_FELTS_QTY_' : $scope.feltsQty,
+      '_BAG_' : $scope.bag,
+      '_BAG_SIZE_' : $scope.bagSize,
+      '_BOX_MEASURES_' : $scope.boxMeasures,
+      '_QTY_BY_BOX_' : $scope.qtyByBox,
+      '_QTY_BY_PALLET_' : $scope.qtyByPallet,
+      '_DISPOSITION_BY_ROW_' : $scope.dispositionByRow,
+      '_FINAL_OBSERVATIONS_' : $scope.finalObservations
+    };
+
+
+    var documentDefintionString = JSON.stringify(dd);
+    var documentDefinitionToJSON = replaceAll(documentDefintionString, map);
+
+    var documentToPrint = JSON.parse(documentDefinitionToJSON); 
+    //var doc2 = documentDefinition.replace(refPaint, '$scope.refPaint');
+
+    pdfMake.createPdf(documentToPrint).download();
+
+  };
  
 
 });
