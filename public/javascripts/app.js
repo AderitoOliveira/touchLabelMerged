@@ -83,7 +83,7 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
       url: '/listOrderProducts',
         templateUrl : '../custompages/orderProducts.html',
         controller : 'orderProducts',
-        params: {orderId: null}
+        params: {orderId: null, clientname: null}
     })
     .state('createTechnicalSheet', {
       url: '/createTechnicalSheet',
@@ -498,6 +498,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   $scope.products = [];
   var orderId = $stateParams.orderId;
   $scope.orderid = $stateParams.orderId;
+  $scope.clientname = $stateParams.clientname;
 
   $scope.$watch('productname', function(){
     $scope.productid = $scope.productname;
@@ -664,7 +665,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         customerproductid: customerproductid,
         productname: productName,
         quantityordered: qtyorder,
-        totalproductsproduced: qtyproduced
+        totalproductsproduced: qtyproduced,
+        clientname: $scope.clientname
       }
     }).then(function(modal) {
     modal.element.modal();
@@ -1291,8 +1293,8 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
   
   };
 
-  $scope.showProductsForOrder= function(orderId){
-    $state.transitionTo("listOrderProducts", {'orderId': orderId}) ;
+  $scope.showProductsForOrder= function(orderId, clientname){
+    $state.transitionTo("listOrderProducts", {'orderId': orderId, 'clientname' : clientname}) ;
   }
 
 }]);
@@ -2703,8 +2705,8 @@ app.controller('editImageCtrl', [ '$http', '$state', '$scope', 'Upload', '$timeo
 /*------------------ Controller for the MODAL to CLOSE the PRODUCT for PRODUCTION in the ORDER-----------------------*/
 
 app.controller('closeProductInOrderToProduction',  [
-  '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid' ,'productname', 'quantityordered', 'totalproductsproduced', 
-  function($scope,$http, $element, $urlRouter, $templateCache, $state, title, close , orderid, internalproductid, customerproductid, productname, quantityordered, totalproductsproduced){
+  '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid' ,'productname', 'quantityordered', 'totalproductsproduced', 'clientname', 
+  function($scope,$http, $element, $urlRouter, $templateCache, $state, title, close , orderid, internalproductid, customerproductid, productname, quantityordered, totalproductsproduced, clientname){
 
 $scope.title = title;
 $scope.orderid = orderid;
@@ -2713,6 +2715,7 @@ $scope.customerproductid = customerproductid;
 $scope.productname = productname;
 $scope.quantityordered = quantityordered;
 $scope.totalproductsproduced = totalproductsproduced;
+$scope.clientname = clientname;
 //  This close function doesn't need to use jQuery or bootstrap, because
 //  the button has the 'data-dismiss' attribute.
 
@@ -2740,9 +2743,9 @@ $scope.yes = function () {
     INTERNAL_PRODUCT_ID: $scope.internalproductid,
     PRODUCT_NAME: $scope.productname,
     TOTAL_PRODUCTS_PRODUCED: $scope.totalproductsproduced,
-    //BOX_ID: ,
     QTY_BY_BOX: qtyProductsByBox,
     TOTAL_BOXES_TO_ORDER: numBoxesToOrder,
+    CLIENT_NAME: $scope.clientname  
   };	
 
   var dataUpdateOrderProductStatus = {
@@ -3032,14 +3035,16 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
 
   var rowValues = [];
   var boxesToSendInOrder = [];
-  $scope.changeValue = function (box, ORDER_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_BOXES_TO_ORDER) {
+  var _clientname = "";
+  $scope.changeValue = function (box, ORDER_ID, CUSTOMER_PRODUCT_ID, CLIENT_NAME, PRODUCT_NAME, TOTAL_BOXES_TO_ORDER) {
       console.log(box);
       if(box == true) {
         rowValues.push(ORDER_ID);
+        rowValues.push(TOTAL_BOXES_TO_ORDER);
         rowValues.push(CUSTOMER_PRODUCT_ID);
         rowValues.push(PRODUCT_NAME);
-        rowValues.push(TOTAL_BOXES_TO_ORDER);
         boxesToSendInOrder.push(rowValues);
+        _clientname = CLIENT_NAME;
 
         rowValues = [];
       } else if (box == false && boxesToSendInOrder.length > 0) {
@@ -3088,7 +3093,7 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
   }
 
 
-  $scope.downloadPDF = function() {
+  $scope.generateOrder = function() {
 
     var localCopyBoxesToSendInOrder = angular.copy(boxesToSendInOrder);
     var docDefinition = {
@@ -3134,9 +3139,9 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
                 {
                     text: [
                         {text: '\nCLIENTE', style: 'label'},
-                        {text: '\nEdelman B.V.', style: 'client'},
+                        {text: '\n_CLIENT_NAME_', style: 'client'},
                         {text: '\n\nDATA DA ENCOMENDA', style: 'label'},
-                        {text: '\n31.07.2018', style: 'date'},
+                        {text: '\n_ORDER_DATE_', style: 'date'},
                     ], style : 'orderDetails'
                 },
                 {
@@ -3169,7 +3174,7 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
               body: [
                 [ 
                 {text: 'REF. CAIXA', style: "tblHeader"},
-                {text: 'QUANTIDADE', style: "tblHeader"},
+                {text: 'QUANT. CAIXAS', style: "tblHeader"},
                 {text: 'DIMENSÕES', style: "tblHeader"},
                 {text: 'DESCRIÇÃO', style: "tblHeader"}
                 ]
@@ -3282,13 +3287,36 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
       docDefinition.content[1].table.body[i+1] = localCopyBoxesToSendInOrder[i];
     }
 
-    pdfMake.createPdf(docDefinition).download();
+    function replaceAll(str, map){
+      for(key in map){
+          str2 = str.replace(key, map[key]);
+          str=str2;
+          str2=null;
+      }
+      return str;
+    }
+
+    var currentDate = new Date();
+    var day = currentDate.getDate();
+    var month = currentDate.getMonth() + 1;
+    var year = currentDate.getFullYear();
+    var dateToPrint = day + "/" + month + "/" + year;
+
+    var map = {
+      '_CLIENT_NAME_' : _clientname,
+      '_ORDER_DATE_' : dateToPrint
+    };
+
+
+
+    var documentDefintionString = JSON.stringify(docDefinition);
+    var documentDefinitionToJSON = replaceAll(documentDefintionString, map);
+
+    var documentToPrint = JSON.parse(documentDefinitionToJSON); 
+
+    pdfMake.createPdf(documentToPrint).download();
 
     localCopyBoxesToSendInOrder = [];
-    //const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-    //pdfDocGenerator.getBase64((data) => {
-    //  alert(data);
-    //});
   }
 
 }]);
