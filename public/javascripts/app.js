@@ -3301,6 +3301,7 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
     var month = currentDate.getMonth() + 1;
     var year = currentDate.getFullYear();
     var dateToPrint = day + "/" + month + "/" + year;
+    var dateToPrintInFileName = day + "_" + month + "_" + year;
 
     var map = {
       '_CLIENT_NAME_' : _clientname,
@@ -3314,7 +3315,8 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
 
     var documentToPrint = JSON.parse(documentDefinitionToJSON); 
 
-    pdfMake.createPdf(documentToPrint).download();
+    var filename = 'Encomenda_Caixas_' + _clientname + '_' + dateToPrintInFileName;
+    pdfMake.createPdf(documentToPrint).download(filename);
 
     localCopyBoxesToSendInOrder = [];
   }
