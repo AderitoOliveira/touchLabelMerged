@@ -1,4 +1,4 @@
-<div class="wrap">
+<div class="wrap" ng-controller="editproducts">
     <div id="actions">
       <div class="row">
           <div class="col-md-12">
@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="form-wrap">
-        <div ng-controller="editproducts" class="row">
+        <div class="row">
             <form class="form-horizontal form-edit col-md-12">
             <div class="form-group row">
                 <div class="form-photo col-md-3">
@@ -78,6 +78,22 @@
                                 <input type="nameInTheLabel" class="form-control" id="nameInTheLabel" placeholder="Nome artigo Etiqueta" ng-model="nameInTheLabel">
                             </div>
                         </div>
+                    </div>
+                    </div>
+                    <div class="col-md-12 form-row">
+                    <div class="row">
+                        <div class="form-input-item col-md-6">
+                                <label class="control-label" for="preco1">Preço 1</label>
+                                <div class="input-wrap-inner">
+                                <input type="preco1" class="form-control" id="preco1" placeholder="Preço 1" ng-model="preco1">
+                                </div>
+                            </div>
+                            <div class="form-input-item col-md-6">
+                                <label class="control-label" for="preco2">Preço 2</label>
+                                <div class="input-wrap-inner">
+                                    <input type="preco2" class="form-control" id="preco2" placeholder="Preço 2" ng-model="preco2">
+                                </div>
+                            </div>
                     </div>
                     </div>
                     <div class="col-md-12 form-row">

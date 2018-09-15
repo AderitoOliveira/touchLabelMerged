@@ -330,11 +330,10 @@ insertPrintedLables = function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
-    console.log(req.body);
-    console.log("##########################################################");
-    console.log("IMAGE_NAME ------> " + req.body.imagename);
+    console.log("PRECO_1: " + req.body.preco1);
+    console.log("PRECO_2: " + req.body.preco2);
     con.connect(function(err) {
-    con.query('UPDATE products SET ProductName = ?, PRODUCT_NAME_FOR_LABEL = ?, NUM_ARTICLES_IN_BOX = ?, Image_Name = ?, BAR_Code_Number = ? where CUSTOMER_PRODUCT_ID = ?',  [req.body.productname, req.body.nameInTheLabel, req.body.numArticleByBox, req.body.imagename, req.body.barcode, req.body.productid], function (error, results, fields) {
+    con.query('UPDATE products SET ProductName = ?, PRODUCT_NAME_FOR_LABEL = ?, NUM_ARTICLES_IN_BOX = ?, Image_Name = ?, BAR_Code_Number = ?, PrecoEURO1 = ?, PrecoEURO2 = ? where CUSTOMER_PRODUCT_ID = ?',  [req.body.productname, req.body.nameInTheLabel, req.body.numArticleByBox, req.body.imagename, req.body.barcode, req.body.preco1, req.body.preco2, req.body.productid], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });

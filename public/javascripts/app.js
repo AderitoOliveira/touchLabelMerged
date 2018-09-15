@@ -7,7 +7,7 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
       url: '/editProduct',
       templateUrl: '../custompages/editProduct.html',
       controller: 'editproducts',
-      params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox:null}
+      params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox:null, preco1: null, preco2: null}
     })
     .state('home', {
       url: '/',
@@ -1321,12 +1321,14 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
   $rootScope.name= "Criar Ficha Técnica";
   $scope.data = [];
 
-  $scope.productName = 	 $stateParams.productName,
-  $scope.productId = 		 $stateParams.productId,
-  $scope.imageName = 		 $stateParams.imageName,
-  $scope.barCode = 		 $stateParams.barCode,
-  $scope.nameInTheLabel =	 $stateParams.nameInTheLabel ,
-  $scope.numArticleByBox = $stateParams.numArticleByBox
+  $scope.productName     = 	$stateParams.productName;
+  $scope.productId       = 	$stateParams.productId;
+  $scope.imageName       = 	$stateParams.imageName;
+  $scope.barCode         = 	$stateParams.barCode;
+  $scope.nameInTheLabel  =	$stateParams.nameInTheLabel;
+  $scope.numArticleByBox =  $stateParams.numArticleByBox;
+  $scope.preco1          =  $stateParams.preco1;
+  $scope.preco2          =  $stateParams.preco2;
 
   $scope.data = [];
   var productId = $stateParams.productId;
@@ -1414,7 +1416,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
     var res = $http.post('/insertProductTechSheet', dataObj).then(function(data, status, headers, config) {
       var currentPageTemplate = $state.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
-      $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
+      $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
 
     });
 
@@ -1725,7 +1727,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
   $scope.back = function () {
     var currentPageTemplate = $state.current.templateUrl;
     $templateCache.remove(currentPageTemplate);
-    $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId,'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
+    $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId,'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
    };
 
 });
@@ -1737,12 +1739,15 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
   $rootScope.name= "Editar Ficha Técnica";
   $scope.data = [];
 
-  $scope.productName = 	 $stateParams.productName,
-  $scope.productId = 		 $stateParams.productId,
-  $scope.imageName = 		 $stateParams.imageName,
-  $scope.barCode = 		 $stateParams.barCode,
-  $scope.nameInTheLabel =	 $stateParams.nameInTheLabel ,
-  $scope.numArticleByBox = $stateParams.numArticleByBox
+  $scope.productName      = 	$stateParams.productName;
+  $scope.productId        = 	$stateParams.productId;
+  $scope.imageName        = 	$stateParams.imageName;
+  $scope.barCode          = 	$stateParams.barCode;
+  $scope.nameInTheLabel   =	  $stateParams.nameInTheLabel;
+  $scope.numArticleByBox  =   $stateParams.numArticleByBox;
+  $scope.preco1           =   $stateParams.preco1;
+  $scope.preco2           =   $stateParams.preco2;
+
 
   $scope.data = [];
   var productId = $stateParams.productId;
@@ -1830,7 +1835,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
     var res = $http.post('/updateProductTechSheet', dataObj).then(function(data, status, headers, config) {
       var currentPageTemplate = $state.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
-      $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
+      $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
 
     });
 
@@ -1839,7 +1844,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
    $scope.back = function () {
     var currentPageTemplate = $state.current.templateUrl;
     $templateCache.remove(currentPageTemplate);
-    $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId,'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
+    $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId,'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
    };
 
 
@@ -2245,8 +2250,8 @@ app.controller('products', function($scope, $http,  $location, $rootScope,  $sta
 
 
     //EDITAR Produto
-    $scope.editProductPath= function(productName, customerProductId, productId, imageName, barCode, nameInTheLabel, numArticleByBox){
-      $state.transitionTo("editProduct", {'productName': productName, 'customerProductId': customerProductId,'productId': productId, 'imageName': imageName, 'barCode': barCode, 'nameInTheLabel':nameInTheLabel , 'numArticleByBox': numArticleByBox}) ;
+    $scope.editProductPath= function(productName, customerProductId, productId, imageName, barCode, nameInTheLabel, numArticleByBox, preco1, preco2){
+      $state.transitionTo("editProduct", {'productName': productName, 'customerProductId': customerProductId,'productId': productId, 'imageName': imageName, 'barCode': barCode, 'nameInTheLabel':nameInTheLabel , 'numArticleByBox': numArticleByBox, 'preco1':  preco1, 'preco2':  preco2}) ;
     }
 
     //IMPRIMIR ETIQUETAS do Produto
@@ -2322,6 +2327,8 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
   $scope.numArticleByBox = $stateParams.numArticleByBox;
   $scope.nameInTheLabel = $stateParams.nameInTheLabel;
   $scope.techSheetExist = $stateParams.techSheetExist;
+  $scope.preco1 = $stateParams.preco1;
+  $scope.preco2 = $stateParams.preco2;
 
   $scope.image = '/images' + '/' + $stateParams.imageName;
 
@@ -2350,12 +2357,14 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
     //$templateCache.remove(currentPageTemplate);
     //$state.go("listProducts", null, { reload: true });
     var dataObj = {
-      productname: $scope.productName,
-      productid: $scope.productId,
-      imagename: $scope.imageName,
-      barcode: $scope.barCode,
-      numArticleByBox: $scope.numArticleByBox,
-      nameInTheLabel: $scope.nameInTheLabel
+      productname     : $scope.productName,
+      productid       : $scope.customerProductId,
+      imagename       : $scope.imageName,
+      barcode         : $scope.barCode,
+      numArticleByBox : $scope.numArticleByBox,
+      nameInTheLabel  : $scope.nameInTheLabel,
+      preco1          : $scope.preco1,
+      preco2          : $scope.preco2
     };	
     
     //var res = $http.post('/updateproduct', dataObj);
