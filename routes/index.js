@@ -350,4 +350,11 @@ router.get('/getLabelsToPrint', function(req,res){
   fetchAllLabelsToPrint(req,res);  
 });
 
+//GET NEXT VALUE FROM THE pdf_requistion_id_sequence SEQUENCE
+router.get('/getPDFRequistionIdSequence', function(req,res){
+  console.log("GET VALUE FROM THE pdf_requistion_id_sequence");
+  console.log(req.body);
+  fecthNextValueFromPDFReqIdSequence(req,res);  
+});
+
 module.exports = router;

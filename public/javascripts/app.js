@@ -3033,10 +3033,19 @@ $scope.yes = function () {
 app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', function($scope, $http, $rootScope, $filter) {
   $rootScope.name= "Lista de todas as caixas a encomendar";
   $scope.boxesToOrder = [];
+  $scope.sequence_value = 0;
   var request = $http.get('/getAllOrderBoxes');    
   request.then(function successCallback(response) {
       $scope.boxesToOrder  = response.data;
       return  $scope.boxesToOrder; 
+  },
+  function errorCallback(data){
+      console.log('Error: ' + data);
+  });
+
+  var request = $http.get('/getPDFRequistionIdSequence');    
+  request.then(function successCallback(response) {
+      $scope.sequence_value  = response.data[0].NEXT_VALUE;
   },
   function errorCallback(data){
       console.log('Error: ' + data);
@@ -3170,7 +3179,7 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
                 {
                     text: [
                         {text: '\nREQUISIÇÃO Nº', style: 'label'},
-                        {text: '\n508', style: 'client'}
+                        {text: '\n_REQUISITION_ID_', style: 'client'}
                     ], style : 'orderNumber'
                 }
               ]
@@ -3313,8 +3322,9 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
     var dateToPrintInFileName = day + "_" + month + "_" + year;
 
     var map = {
-      '_CLIENT_NAME_' : _clientname,
-      '_ORDER_DATE_' : dateToPrint
+      '_CLIENT_NAME_'    : _clientname,
+      '_ORDER_DATE_'     : dateToPrint,
+      '_REQUISITION_ID_' : $scope.sequence_value
     };
 
 
