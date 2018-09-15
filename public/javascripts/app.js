@@ -2425,11 +2425,10 @@ app.controller('createproducts', ['$http', '$scope', '$rootScope', '$state', '$s
       image_name: $scope.image_name,
       bar_code_number: $scope.bar_code,
       num_articles_in_box: $scope.num_article_by_box,
-      product_name_for_label: $scope.name_in_the_label
+      product_name_for_label: $scope.name_in_the_label,
+      precoEURO1: preco1,
+      precoEURO12: preco2
     };	
-    
-    alert($scope.imageName);
-    //alert(imagename);
 
     var res = $http.post('/insertProduct', dataObj).then(function(data, status, headers, config) {
       var currentPageTemplate = $state.current.templateUrl;
