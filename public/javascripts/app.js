@@ -732,7 +732,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       controller: "GenericController",
       preClose: (modal) => { modal.element.modal('hide'); },
       inputs: {
-        message: 'A quantidade de artigos a produzir já foi atingido!' 
+        message: 'A quantidade de artigos a produzir para o produto ' + productName + ' na encomenda ' +  $scope.orderid + ' já foi atingida!'
       }
       }).then(function(modal) {
             modal.element.modal();
@@ -746,7 +746,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       });
 
       $state.reload();
-      
+
       return true;
   };
 
