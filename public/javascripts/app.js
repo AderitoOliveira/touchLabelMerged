@@ -724,6 +724,32 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
     //PRODUCTS STILL TO PRODUCE
   var products_still_to_produce = totalquantityordered - totalproductsproduced;
+
+  if(products_still_to_produce == 0){
+
+     ModalService.showModal({
+      templateUrl: "../modal/genericModal.html",
+      controller: "GenericController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        message: 'A quantidade de artigos a produzir já foi atingido!' 
+      }
+      }).then(function(modal) {
+            modal.element.modal();
+            modal.close.then(function(result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+            }
+            });
+      });
+
+      $state.reload();
+      
+      return true;
+  };
+
   //THE NUMBER OF PRODUCTS TO REGISTER ARE STILL INFERIOR TO THE NUMBER OF PRODUCTS TO PRODUCE
   if($scope.totalquantityproduced <= products_still_to_produce) 
   {
@@ -2594,6 +2620,20 @@ app.controller('ProductUpdateModalController',  [
   };
 
 }]);
+
+
+
+/*------------------------    Controller for the GENERIC MODAL   -----------------------------*/
+app.controller('GenericController', function($scope, message) {
+
+  $scope.message = message;
+
+  $scope.yes = function () {
+    return true;
+  };
+
+}); 
+
 
 /*------------------ Controller for the MODAL to DELETE the PRODUCT in the ORDER-----------------------*/
 
