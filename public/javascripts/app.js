@@ -40,7 +40,7 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
       url: '/editClient',
         templateUrl : '../custompages/editClient.html',
         controller : 'editclient',
-        params: {clientid: null}
+        params: {clientid: null, clientname:null, imagename: null}
     })
     .state('listPanels', {
       url: '/listPanels',
@@ -78,6 +78,12 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
           templateUrl : '../custompages/imageUpload.html',
           controller : 'editImageCtrl',
           params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null}
+    })
+    .state('editImageClient', {
+      url: '/testImage',
+        templateUrl : '../custompages/imageUpload.html',
+        controller : 'editImageClientCtrl',
+        params: {clientid: null, imagename: null}
     })
     .state('listOrderProducts', {
       url: '/listOrderProducts',
@@ -216,8 +222,10 @@ app.controller('insertClient', function ($scope, $http, $rootScope, $rootScope, 
 //EDIT CLIENT CONTROLLER
 app.controller('editclient', function ($scope, $http, $rootScope, $state, $stateParams) {
 
-  $rootScope.name="DASSE";
+  $rootScope.name="Editar o client " + $stateParams.clientname;
   $scope.clientid = $stateParams.clientid;
+
+  $scope.image = '/images' + '/' + $stateParams.imagename;
 
   $scope.clientData = [];
   var request = $http.get('/editClient/' + encodeURIComponent($scope.clientid));    
@@ -240,13 +248,13 @@ app.controller('editclient', function ($scope, $http, $rootScope, $state, $state
           console.log('Error: ' + data);
   });
 
-  $scope.$watch('persontocontact', function(){
-    console.log($scope.persontocontact);
-  });
+  //$scope.$watch('persontocontact', function(){
+  //  console.log($scope.persontocontact);
+  //});
 
   $scope.updateClient = function() {
 
-    var xyz = $scope.persontocontact;
+    //var xyz = $scope.persontocontact;
     
     var dataObj = {
       CLIENT_ID: $scope.clientid,
@@ -259,7 +267,7 @@ app.controller('editclient', function ($scope, $http, $rootScope, $state, $state
       NIF: $scope.nif,
       COIN: $scope.coin,
       PHONE_NUMBER: $scope.phonenumber,
-      PERSON_TO_CONTACT: xyz
+      PERSON_TO_CONTACT: $scope.persontocontact
     };	
     
     //var res = $http.post('/updateproduct', dataObj);
@@ -268,6 +276,10 @@ app.controller('editclient', function ($scope, $http, $rootScope, $state, $state
     });
 
 
+  };
+
+  $scope.editImage = function () {
+    $state.transitionTo("editImageClient", {'clientid': $scope.clientid, 'imagename': $stateParams.imagename}) ;
   };
 
   $scope.goBack = function() {
@@ -2284,8 +2296,8 @@ app.controller('clients', function($scope, $http, $rootScope, $state) {
       $state.transitionTo("createClient", {}) ;
     };
 
-    $scope.editClient = function(clientId) {
-      $state.transitionTo("editClient", {"clientid": clientId}) ;
+    $scope.editClient = function(clientId, clientname, imagename) {
+      $state.transitionTo("editClient", {'clientid': clientId, 'clientname': clientname ,'imagename': imagename}) ;
     };
 });
 
@@ -2436,7 +2448,7 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
 
   };
   
-  $scope.editarImagem = function () {
+  $scope.editImage = function () {
     //$state.go("editImage", null, { reload: true });
     $state.transitionTo("editImage", {'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode}) ;
   };
@@ -2737,7 +2749,7 @@ $scope.cancel = function() {
 
 }]);
 
-//EDIT IMAGE CONTROLLER
+//EDIT PRODUCT IMAGE CONTROLLER
 app.controller('editImageCtrl', [ '$http', '$state', '$scope', 'Upload', '$timeout', '$stateParams', '$templateCache', function ($http, $state, $scope, Upload, $timeout, $stateParams, $templateCache) {
   
   $scope.productName = $stateParams.productName;
@@ -2778,6 +2790,49 @@ app.controller('editImageCtrl', [ '$http', '$state', '$scope', 'Upload', '$timeo
       $templateCache.remove(currentPageTemplate);
       $state.go("listProducts", null, { reload: true });
     });    
+
+  });
+  }
+}]);
+
+
+//EDIT CLIENT IMAGE CONTROLLER
+app.controller('editImageClientCtrl', [ '$http', '$state', '$scope', 'Upload', '$timeout', '$stateParams', '$templateCache', function ($http, $state, $scope, Upload, $timeout, $stateParams, $templateCache) {
+  
+  $scope.clientid = $stateParams.clientid;
+ 
+  $scope.image = '/images' + '/' + $stateParams.imagename;
+  
+  $scope.uploadPic = function(file) {
+  file.upload = Upload.upload({
+    url: 'http://localhost:3700/upload',
+    data: {username: $scope.username, file: file},
+  }); 
+
+  file.upload.then(function (response) {
+    $timeout(function () {
+      file.result = response.data;
+    });
+  }, function (response) {
+    if (response.status > 0)
+      $scope.errorMsg = response.status + ': ' + response.data;
+  }, function (evt) {
+    // Math.min is to fix IE which reports 200% sometimes
+    file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+
+    var dataObj = {
+      productname: $scope.productName,
+      productid: $scope.customerProductId,
+      imagename: $scope.picFile.name,
+      barcode: $scope.barCode
+    };	
+    
+    //var res = $http.post('/updateproduct', dataObj);
+    //var res = $http.post('/updateproduct', dataObj).then(function(data, status, headers, config) {
+      var currentPageTemplate = $state.current.templateUrl;
+      $templateCache.remove(currentPageTemplate);
+      $state.go("listProducts", null, { reload: true });
+    //});    
 
   });
   }

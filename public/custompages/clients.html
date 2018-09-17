@@ -1,4 +1,4 @@
-<div class="wrap">
+<div class="wrap" ng-controller="clients">
     <div id="actions">
         <div class="row">
             <div class="col-md-12">
@@ -32,7 +32,7 @@
         </div>
     </div>
         
-    <div id="card-content" ng-controller="clients">
+    <div id="card-content">
         <!--<table ng-table="usersTable" id="products" class="table table-responsive table-striped table-hover table-condensed">-->
         <div class="row">
             <div class="col-md-3 client-item"  dir-paginate="client in data | orderBy : 'ClientName' | filter:searchChar | itemsPerPage:20">
@@ -45,15 +45,9 @@
                             {{client.CLIENT_NAME}}
                         </div>
                         <div class="card-actions">
-                            <a class="btn btn-card" ng-click="editClient(client.CLIENT_ID)"><img src="assets/icons/card-edit.svg" width="30px" height="30px" /></a>
+                            <a class="btn btn-card" ng-click="editClient(client.CLIENT_ID, client.CLIENT_NAME, client.IMAGE_NAME)"><img src="assets/icons/card-edit.svg" width="30px" height="30px" /></a>
                         </div>
                     </div>
-                    <!--<td>{{client.ClientID}}</td>
-                    <td>{{client.Address}}</td>
-                    <td>{{client.NIF}}</td>
-                    <td>{{client.PhoneNumber}}</td>
-                    <td><a class="btn btn-xs btn-warning" ng-click="removeRow(client.ClientID)"><i class="glyphicon glyphicon-pencil"></i></a></td>
-                    <td><a class="btn btn-xs btn-danger" ng-click="removeRow(client.ClientID)"><i class="glyphicon glyphicon-trash"></i></a></td>-->
                 </div>
             </div>
         </div>
