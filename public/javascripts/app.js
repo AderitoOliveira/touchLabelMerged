@@ -2200,7 +2200,11 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
     
         function replaceAll(str, map){
           for(key in map){
-              str2 = str.replace(key, map[key]);
+              var value = map[key];
+              if(value == null) {
+                value = '';
+              }
+              str2 = str.replace(key, value);
               str=str2;
               str2=null;
           }
@@ -2247,7 +2251,9 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
         var documentToPrint = JSON.parse(documentDefinitionToJSON); 
         //var doc2 = documentDefinition.replace(refPaint, '$scope.refPaint');
     
-        pdfMake.createPdf(documentToPrint).download();
+        var fileName = 'Ficha_Técnica_' + $scope.productName.replace(/\s/g,'_').replace('/','_');
+
+        pdfMake.createPdf(documentToPrint).download(fileName);
     
 
     },
