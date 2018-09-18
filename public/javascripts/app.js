@@ -83,7 +83,7 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
       url: '/testImage',
         templateUrl : '../custompages/imageUpload.html',
         controller : 'editImageClientCtrl',
-        params: {clientid: null, imagename: null}
+        params: {clientid: null, clientname: null, imagename: null}
     })
     .state('listOrderProducts', {
       url: '/listOrderProducts',
@@ -279,7 +279,7 @@ app.controller('editclient', function ($scope, $http, $rootScope, $state, $state
   };
 
   $scope.editImage = function () {
-    $state.transitionTo("editImageClient", {'clientid': $scope.clientid, 'imagename': $stateParams.imagename}) ;
+    $state.transitionTo("editImageClient", {'clientid': $scope.clientid, 'clientname': $scope.clientname, 'imagename': $stateParams.imagename}) ;
   };
 
   $scope.goBack = function() {
@@ -917,11 +917,14 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                               [ 
                                 {text: 'Ref Produto', style: "tblSmallHeader"},
                                 {text: 'Nome Produto', style: "tblSmallHeader"},
-                                {text: 'Pintado a Frio', style: "tblSmallHeader"},
-                                {text: 'Vidrado', style: "tblSmallHeader"},
-                                {text: 'Ref Vidrado', style: "tblSmallHeader"},
+                                //{text: 'Pintado a Frio', style: "tblSmallHeader"},
+                                //{text: 'Vidrado', style: "tblSmallHeader"},
+                                //{text: 'Ref Vidrado', style: "tblSmallHeader"},
                                 {text: 'Ref Tinta Fuminho', style: "tblSmallHeader"},
-                                {text: 'Observações', style: "tblSmallHeader"}
+                                {text: 'Observações', style: "tblSmallHeader"},
+                                {text: 'Nome Pintor', style: "tblSmallHeader"},
+                                {text: 'Data Pintura', style: "tblSmallHeader"},
+                                {text: 'Quantidade', style: "tblSmallHeader"}
                              ]
                             ]
                         },
@@ -944,11 +947,14 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                               [ 
                                 {text: CUSTOMER_PRODUCT_ID, style: "tblRows"},
                                 {text: PRODUCT_NAME, style: "tblRows"},
-                                {text: Painted_Cold, style: "tblRows"},
-                                {text: Glassed, style: "tblRows"},
-                                {text: Ref_Glassed, style: "tblRows"},
+                                //{text: Painted_Cold, style: "tblRows"},
+                                //{text: Glassed, style: "tblRows"},
+                                //{text: Ref_Glassed, style: "tblRows"},
                                 {text: Ref_Paint_Smoked, style: "tblRows"},
-                                {text: Finish_Type_Obs, style: "tblRows"}
+                                {text: Finish_Type_Obs, style: "tblRows"},
+                                {text: "", style: "tblRows"},
+                                {text: "", style: "tblRows"},
+                                {text: "", style: "tblRows"}
                              ]
                             ]
                         },
@@ -985,11 +991,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
               var dataTechSheet = {
                 Finish_Type_Obs : $scope.productTechSheet[i].Finish_Type_Obs,
-                Glassed : $scope.productTechSheet[i].Glassed,
+                //Glassed : $scope.productTechSheet[i].Glassed,
                 CUSTOMER_PRODUCT_ID : $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
                 PRODUCT_NAME : $scope.productTechSheet[i].PRODUCT_NAME,
-                Painted_Cold : $scope.productTechSheet[i].Painted_Cold,
-                Ref_Glassed : $scope.productTechSheet[i].Ref_Glassed,
+                //Painted_Cold : $scope.productTechSheet[i].Painted_Cold,
+                //Ref_Glassed : $scope.productTechSheet[i].Ref_Glassed,
                 Ref_Paint_Smoked : $scope.productTechSheet[i].Ref_Paint_Smoked
               };
 
@@ -1000,11 +1006,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               var internalArray = [];
               var dataTechSheet = {
                 Finish_Type_Obs : $scope.productTechSheet[i].Finish_Type_Obs,
-                Glassed : $scope.productTechSheet[i].Glassed,
+                //Glassed : $scope.productTechSheet[i].Glassed,
                 CUSTOMER_PRODUCT_ID : $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
                 PRODUCT_NAME : $scope.productTechSheet[i].PRODUCT_NAME,
-                Painted_Cold : $scope.productTechSheet[i].Painted_Cold,
-                Ref_Glassed : $scope.productTechSheet[i].Ref_Glassed,
+                //Painted_Cold : $scope.productTechSheet[i].Painted_Cold,
+                //Ref_Glassed : $scope.productTechSheet[i].Ref_Glassed,
                 Ref_Paint_Smoked : $scope.productTechSheet[i].Ref_Paint_Smoked
               };
               internalArray.push(dataTechSheet);
@@ -2797,8 +2803,9 @@ app.controller('editImageCtrl', [ '$http', '$state', '$scope', 'Upload', '$timeo
 
 
 //EDIT CLIENT IMAGE CONTROLLER
-app.controller('editImageClientCtrl', [ '$http', '$state', '$scope', 'Upload', '$timeout', '$stateParams', '$templateCache', function ($http, $state, $scope, Upload, $timeout, $stateParams, $templateCache) {
+app.controller('editImageClientCtrl', [ '$http', '$state', '$rootScope','$scope', 'Upload', '$timeout', '$stateParams', '$templateCache', function ($http, $state, $rootScope, $scope, Upload, $timeout, $stateParams, $templateCache) {
   
+  $rootScope.name = 'Editar Imagem do Cliente ' + $stateParams.clientname;
   $scope.clientid = $stateParams.clientid;
  
   $scope.image = '/images' + '/' + $stateParams.imagename;
