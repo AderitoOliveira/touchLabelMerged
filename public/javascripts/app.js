@@ -222,7 +222,7 @@ app.controller('insertClient', function ($scope, $http, $rootScope, $rootScope, 
 //EDIT CLIENT CONTROLLER
 app.controller('editclient', function ($scope, $http, $rootScope, $state, $stateParams) {
 
-  $rootScope.name="Editar o client " + $stateParams.clientname;
+  $rootScope.name="Editar o cliente " + $stateParams.clientname;
   $scope.clientid = $stateParams.clientid;
 
   $scope.image = '/images' + '/' + $stateParams.imagename;
