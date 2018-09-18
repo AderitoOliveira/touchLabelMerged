@@ -465,7 +465,7 @@ body{
         padding:0px;
         float:right;
         margin:0 auto;
-        display: none;
+        //display: none;
         li.notification{
             width:30px;
             height:30px;
@@ -475,6 +475,7 @@ body{
             list-style-type: none;
             background-size:100%;
             background-position:center center;
+            cursor:pointer;
             &:before{
                 position:absolute;
                 width:30px;
@@ -522,6 +523,75 @@ body{
             }
             .notification-label{
                 background-color: #1be36b;
+            }
+        }
+        .expanded .notification-wrap{
+            opacity: 1;
+            height:auto;
+        }
+        .notification-wrap {
+            cursor: auto;
+            position: absolute;
+            right: -4px;
+            width: 400px;
+            top: 100%;
+            border: 1px solid #DEDEDE;
+            box-sizing: border-box;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 4px;
+            z-index:0;
+            margin-top: 12px;
+            opacity: 0;
+            height:0px;
+            .notification-wrap-group{
+                background: #fff;
+                padding: 24px 12px;
+                position:relative;
+                &:before, &:after{
+                    position: absolute;
+                    top: -10px;
+                    right: 8px;
+                    width:20px;
+                    height:20px;
+                    background:#fff;
+                    transform:rotate(45deg);
+                }
+                &:before{
+                    content:"";
+                    z-index:-1;
+                    border:1px solid #dedede;
+                    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                }
+                &:after{
+                    content:"";
+                    z-index: 1;
+                }
+                .notification-group {
+                    border-bottom: 1px solid #cccccc;
+                    padding-bottom: 12px;
+                    margin-bottom: 12px;
+                    line-height: normal;
+                    font-size: 14px;
+                }
+                
+                .notification-inner {
+                    max-height: calc(100vh - 130px);
+                    overflow-y: scroll;
+                }
+                
+                .notification-group-title {
+                    color: #000000;
+                    font-weight: bold;
+                    margin-bottom: 6px;
+                }
+                
+                .notification-lines {
+                    color: #222222;
+                }
+                
+                .notification-item {
+                    margin-bottom: 18px;
+                }
             }
         }
     }

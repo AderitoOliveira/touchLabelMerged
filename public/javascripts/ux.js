@@ -74,5 +74,9 @@
             })
         }
     })
+
+    $(document).on('click','li.notification', function(){
+        $(this).toggleClass('expanded');
+    })
     
 })(jQuery);

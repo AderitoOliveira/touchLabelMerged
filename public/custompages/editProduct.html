@@ -65,53 +65,63 @@
                     </div>
                     </div>
                     <div class="col-md-12 form-row">
-                    <div class="row">
-                        <div class="form-input-item col-md-6">
-                            <label class="control-label" for="productName">Nome</label>
-                            <div class="input-wrap-inner">
-                            <input type="productName" class="form-control" id="productName" placeholder="Nome do Produto" ng-model="productName">
+                        <div class="row">
+                            <div class="form-input-item col-md-6">
+                                <label class="control-label" for="customerProductId">Cliente</label>
+                                <div class="input-wrap-inner">
+                                <input type="customerProductId" class="form-control" id="customerProductId" placeholder="Nome Cliente" ng-model="customerProductId">
+                                </div>
+                            </div>
+                            <div class="form-input-item col-md-6">
+                                <label class="control-label" for="productName">Nome</label>
+                                <div class="input-wrap-inner">
+                                <input type="productName" class="form-control" id="productName" placeholder="Nome do Produto" ng-model="productName">
+                                </div>
                             </div>
                         </div>
-                        <div class="form-input-item col-md-6">
-                            <label class="control-label" for="nameInTheLabel">Nome Etiqueta</label>
-                            <div class="input-wrap-inner">
-                                <input type="nameInTheLabel" class="form-control" id="nameInTheLabel" placeholder="Nome artigo Etiqueta" ng-model="nameInTheLabel">
-                            </div>
-                        </div>
-                    </div>
                     </div>
                     <div class="col-md-12 form-row">
-                    <div class="row">
-                        <div class="form-input-item col-md-6">
+                        <div class="row">
+                            <div class="form-input-item col-md-6">
+                                <label class="control-label" for="nameInTheLabel">Nome Etiqueta</label>
+                                <div class="input-wrap-inner">
+                                    <input type="nameInTheLabel" class="form-control" id="nameInTheLabel" placeholder="Nome artigo Etiqueta" ng-model="nameInTheLabel">
+                                </div>
+                            </div>
+                            <div class="form-input-item col-md-6">
                                 <label class="control-label" for="preco1">Preço 1</label>
                                 <div class="input-wrap-inner">
                                 <input type="preco1" class="form-control" id="preco1" placeholder="Preço 1" ng-model="preco1">
                                 </div>
-                            </div>
+                            </div>                            
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-row">
+                        <div class="row">
                             <div class="form-input-item col-md-6">
                                 <label class="control-label" for="preco2">Preço 2</label>
                                 <div class="input-wrap-inner">
                                     <input type="preco2" class="form-control" id="preco2" placeholder="Preço 2" ng-model="preco2">
                                 </div>
                             </div>
-                    </div>
+                            <div class="form-input-item col-md-6">
+                                <label class="control-label" for="barCode">Código de Barras</label>
+                                <div class="input-wrap-inner">
+                                <input type="barCode" class="form-control" id="barCode" placeholder="Número do código de Barras" ng-model="barCode">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-12 form-row">
-                    <div class="row">
-                        <div class="form-input-item col-md-6">
-                            <label class="control-label" for="barCode">Código de Barras</label>
-                            <div class="input-wrap-inner">
-                            <input type="barCode" class="form-control" id="barCode" placeholder="Número do código de Barras" ng-model="barCode">
+                        <div class="row">
+                            <div class="form-input-item col-md-12">
+                                <label class="control-label nolabel"></label>
+                                <div class="input-wrap-inner">
+                                    <button type="submit" ng-show="techSheetExist == true" ng-click="editTechnicalSheet()" class="btn btn-default btn-tech-sheet"><img src="assets/icons/btn-add.svg" width="20px" height="20px">Editar Ficha Técnica</button> 
+                                    <button type="submit" ng-show="techSheetExist != true" ng-click="createTechnicalSheet()" class="btn btn-default btn-tech-sheet"><img src="assets/icons/btn-add.svg" width="20px" height="20px">Criar Ficha Técnica</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-input-item col-md-6">
-                            <label class="control-label nolabel"></label>
-                            <div class="input-wrap-inner">
-                                <button type="submit" ng-show="techSheetExist == true" ng-click="editTechnicalSheet()" class="btn btn-default btn-tech-sheet"><img src="assets/icons/btn-add.svg" width="20px" height="20px">Editar Ficha Técnica</button> 
-                                <button type="submit" ng-show="techSheetExist != true" ng-click="createTechnicalSheet()" class="btn btn-default btn-tech-sheet"><img src="assets/icons/btn-add.svg" width="20px" height="20px">Criar Ficha Técnica</button>
-                            </div>
-                        </div>
-                    </div>
                     </div>
                     <div class="col-md-12 button-holder">
                         <div class="row">
