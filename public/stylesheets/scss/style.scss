@@ -528,6 +528,7 @@ body{
         .expanded .notification-wrap{
             opacity: 1;
             height:auto;
+            display:block;
         }
         .notification-wrap {
             cursor: auto;
@@ -543,6 +544,7 @@ body{
             margin-top: 12px;
             opacity: 0;
             height:0px;
+            display:none;
             .notification-wrap-group{
                 background: #fff;
                 padding: 24px 12px;

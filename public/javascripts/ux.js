@@ -75,8 +75,23 @@
         }
     })
 
+    $(document).click(function(e) {
+        // check that your clicked
+        // element has no id=info
+      
+        if( !e.target.classList.contains('notification')) {
+            $('li.notification').removeClass('expanded');
+        }
+    });
+
     $(document).on('click','li.notification', function(){
-        $(this).toggleClass('expanded');
+        if($(this).hasClass('expanded')){
+            $('li.notification').removeClass('expanded');
+        } else {
+            $('li.notification').removeClass('expanded');
+            $(this).addClass('expanded');
+        }
     })
+
     
 })(jQuery);
