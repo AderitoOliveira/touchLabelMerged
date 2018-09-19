@@ -983,9 +983,45 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
       for(i=0; i < $scope.productTechSheet.length; i++) {
 
+        //PAINTED COLD - IT MUST CONTAIN Ref_Paint
         if($scope.productTechSheet[i].Ref_Paint != null) {          
 
-            currentRefPaint = $scope.productTechSheet[i].Ref_Paint;
+            currentRefPaint = $scope.productTechSheet[i].Ref_Paint + ' ( FRIO)';
+
+            if(arrayForAll[currentRefPaint] != null){
+
+              var dataTechSheet = {
+                Finish_Type_Obs : $scope.productTechSheet[i].Finish_Type_Obs,
+                //Glassed : $scope.productTechSheet[i].Glassed,
+                CUSTOMER_PRODUCT_ID : $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
+                PRODUCT_NAME : $scope.productTechSheet[i].PRODUCT_NAME,
+                //Painted_Cold : $scope.productTechSheet[i].Painted_Cold,
+                //Ref_Glassed : $scope.productTechSheet[i].Ref_Glassed,
+                Ref_Paint_Smoked : $scope.productTechSheet[i].Ref_Paint_Smoked
+              };
+
+              var internalArray = arrayForAll[currentRefPaint];
+              internalArray.push(dataTechSheet);
+              arrayForAll[currentRefPaint] = internalArray;
+            } else {
+              var internalArray = [];
+              var dataTechSheet = {
+                Finish_Type_Obs : $scope.productTechSheet[i].Finish_Type_Obs,
+                //Glassed : $scope.productTechSheet[i].Glassed,
+                CUSTOMER_PRODUCT_ID : $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
+                PRODUCT_NAME : $scope.productTechSheet[i].PRODUCT_NAME,
+                //Painted_Cold : $scope.productTechSheet[i].Painted_Cold,
+                //Ref_Glassed : $scope.productTechSheet[i].Ref_Glassed,
+                Ref_Paint_Smoked : $scope.productTechSheet[i].Ref_Paint_Smoked
+              };
+              internalArray.push(dataTechSheet);
+              arrayForAll[currentRefPaint] = internalArray;
+            };
+        }
+
+        //GLASSED (HOT) - IT MUST CONTAIN Ref_Glassed
+        if($scope.productTechSheet[i].Ref_Glassed != null) {
+          currentRefPaint = $scope.productTechSheet[i].Ref_Glassed + ' (VIDRADO)';
 
             if(arrayForAll[currentRefPaint] != null){
 
@@ -1017,14 +1053,17 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               arrayForAll[currentRefPaint] = internalArray;
             };
 
-        }
+        }        
+
       }
 
       var requestPDFTemplate = $http.get('/getPDFTemplate/' +  encodeURIComponent('paiting_products_in_order'));    
       requestPDFTemplate.then(function successCallback(response) {
          var pdfTemplatePaiting  = response.data[0].template_definition;
 
-         paintingPDFTemplate.content[1] = Object.values(buildTables(arrayForAll));
+        //var orderProductPaintingPDFToJSON = JSON.parse(pdfTemplatePaiting);
+
+        paintingPDFTemplate.content[1] = Object.values(buildTables(arrayForAll));
 
          var filename = 'Encomenda_' + orderId;
          pdfMake.createPdf(paintingPDFTemplate).download(filename);
