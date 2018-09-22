@@ -696,8 +696,6 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   //CLOSE THE PRODUCT FOR PAITING - CREATE THE LABELS RECORD TO PRINT
   $scope.closeProductPainting = function(internalproductid, customerproductid, productName, qtyproduced) {
 
-    alert($stateParams.orderId);
-
     ModalService.showModal({
       templateUrl: "../modal/closeProductForPainting.html",
       controller: "closeProductInOrderForPainting",
@@ -783,7 +781,6 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     });
   } else {
 
-    alert("NUMERO ARTIGOS PRODUZIDO: " + $scope.totalquantityproduced + ". NUMERO ARTIGOS AINDA POR PRODUZIR: " + products_still_to_produce)
     //THE NUMBER OF PRODUCTS products_still_to_produce ARE THE NUMBER OF PRODUCTS STILL TO REGISTER IN THIS ORDER.
     var dataObj = {
       ORDER_ID: $scope.orderid,
@@ -892,7 +889,6 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       console.log('Error: ' + data);
     });
 
-    alert("XPTO:" + xpto);
     console.log("ANTES DO ÚLTIMO STATE RELOAD!!!!");
     $state.reload();
 
@@ -2394,7 +2390,6 @@ app.controller('products', function($scope, $http,  $location, $rootScope,  $sta
     $scope.removeRow = function (product, product2) {
         console.log('value2 i:' + product);
         console.log('value2 i:' + product2);
-        alert("Clicked!!!!");
     };
 
     $scope.changePath = function() {
@@ -2968,9 +2963,9 @@ $scope.yes = function () {
   };	
 
   var dataUpdateOrderProductStatus = {
-    ORDER_PRODUCT_STATUS: 'Fechado em Produção',
+    ORDER_PRODUCT_STATUS: 'Em Pintura',
     ORDER_ID: $scope.orderid,
-    INTERNAL_PRODUCT_ID: $scope.internalproductid,
+    CUSTOMER_PRODUCT_ID: $scope.customerproductid,
   };
   
   var res = $http.post('/insertOrderBoxes', dataObj).then(function(data, status, headers, config) {
@@ -3053,7 +3048,6 @@ $scope.save = function () {
     });
   } else {
 
-    alert("NUMERO ARTIGOS PRODUZIDO: " + $scope.qtyproduzida + ". NUMERO ARTIGOS AINDA POR PRODUZIR: " + products_still_to_produce)
     //THE NUMBER OF PRODUCTS products_still_to_produce ARE THE NUMBER OF PRODUCTS STILL TO REGISTER IN THIS ORDER.
     var dataObj = {
       ORDER_ID: $scope.orderid,
@@ -3162,7 +3156,6 @@ $scope.save = function () {
       console.log('Error: ' + data);
     });
 
-    alert("XPTO:" + xpto);
     console.log("ANTES DO ÚLTIMO STATE RELOAD!!!!");
     $state.reload();
 
@@ -3173,7 +3166,6 @@ $scope.save = function () {
 //  the doesn't have the 'data-dismiss' attribute.
 $scope.cancel = function() {
   var products_still_to_produce = totalquantityordered - totalquantityproduced;
-  alert("QUANTIDADE PRODUTOS AINDA EM FALTA: " + products_still_to_produce);
   //  Manually hide the modal.
   $element.modal('hide');
   //  Now call close, returning control to the caller.
@@ -3316,7 +3308,7 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
     $http.post('/sendmail', {params: {mailOptions}}).then(res=>{
         $scope.loading = false;
         $scope.serverMessage = 'Foi enviado um email para a sua caixa de email com a informação da encomenda!!!!';
-        alert($scope.serverMessage);
+        //alert($scope.serverMessage);
     });
   }
 
