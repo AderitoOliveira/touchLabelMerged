@@ -536,23 +536,37 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   var request = $http.get('/orderproducts/' + orderId);    
   request.then(function successCallback(response) {
        $scope.products  = response.data;
+
+       //IF em_pintura
+       //IF em_producao
+
+
        for(i=0; i < $scope.products.length; i++) {
-        var percentage = Math.round( $scope.products[i].TOTAL_PRODUCTS_PRODUCED  / $scope.products[i].TOTAL_QUANTITY_ORDERED * 100);
-        $scope.products[i].percent= percentage;
-        $scope.products[i].width= percentage;
-        //NEWSTYLES
-        if(percentage > 33) {
-          $scope.products[i].progressBarColor = "#e31b1b";
-        }
-        if(percentage >= 34 && percentage <= 66) {
-          $scope.products[i].progressBarColor = "#e3cf1b";
-        }
-        if( percentage > 66) {
-          $scope.products[i].progressBarColor = "#1be36b";
-        }
-        console.log("SCOPE CLIENT NAME: " + $scope.products[i].CLIENT_NAME)
-        console.log("Percentagem Total: " + percentage);
-        }
+          var percentage = Math.round( $scope.products[i].TOTAL_PRODUCTS_PRODUCED  / $scope.products[i].TOTAL_QUANTITY_ORDERED * 100);
+          $scope.products[i].percent= percentage;
+          $scope.products[i].width= percentage;
+          //NEWSTYLES
+          if(percentage > 33) {
+            $scope.products[i].progressBarColor = "#e31b1b";
+          }
+          if(percentage >= 34 && percentage <= 66) {
+            $scope.products[i].progressBarColor = "#e3cf1b";
+          }
+          if( percentage > 66) {
+            $scope.products[i].progressBarColor = "#1be36b";
+          }
+          
+          if($scope.products[i].ORDER_PRODUCT_STATUS == 'em_producao') {
+            $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
+            $scope.products[i].ORDER_PRODUCT_STATUS = 'Em Produção';        
+          } else if ($scope.products[i].ORDER_PRODUCT_STATUS == 'em_pintura') {
+            $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
+            $scope.products[i].ORDER_PRODUCT_STATUS = 'Em Pintura';  
+          } else {
+            $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
+            $scope.products[i].ORDER_PRODUCT_STATUS = 'Fechado na Encomenda';  
+          }
+      }
        return  $scope.products; 
    },
    function errorCallback(data){
@@ -596,7 +610,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
   //CREATE PRODDUCT IN THE ORDER
   $scope.save = function () {
-    $scope.orderproductstatus = 'Em Produção';
+    $scope.orderproductstatus = 'em_producao';
 
     var dataObj = {
       ORDER_ID: $scope.orderid,
@@ -764,7 +778,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   if($scope.totalquantityproduced <= products_still_to_produce) 
   {
    
-    $scope.orderproductstatus = 'EM PRODUÇÂO';
+    $scope.orderproductstatus = 'em_producao';
     
     var dataObj = {
       ORDER_ID: $scope.orderid,
@@ -2963,7 +2977,7 @@ $scope.yes = function () {
   };	
 
   var dataUpdateOrderProductStatus = {
-    ORDER_PRODUCT_STATUS: 'Em Pintura',
+    ORDER_PRODUCT_STATUS: 'em_pintura',
     ORDER_ID: $scope.orderid,
     CUSTOMER_PRODUCT_ID: $scope.customerproductid,
   };
@@ -3213,7 +3227,7 @@ $scope.yes = function () {
   };	
 
   var dataUpdateOrderProductStatus = {
-    ORDER_PRODUCT_STATUS: 'Fechado em Pintura',
+    ORDER_PRODUCT_STATUS: 'fechado_na_encomenda',
     ORDER_ID: $scope.orderid,
     INTERNAL_PRODUCT_ID: $scope.internalproductid,
   };
