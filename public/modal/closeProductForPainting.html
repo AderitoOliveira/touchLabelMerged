@@ -3,12 +3,11 @@
       <div class="modal-content">
         <div class="modal-header">
           <span class="warning-text"><img src="assets/icons/warning-yellow.svg" width="28px" height="28px" /> Aviso</span>
-          <button type="button" class="close" ng-click="close(false)" data-dismiss="modal" aria-hidden="true">&times;</button>
-          
+          <button type="button" class="close" ng-click="close(false)" data-dismiss="modal" aria-hidden="true"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" /></button>
         </div>
         <div class="modal-body">
             <h4 class="modal-title">Está prestes a fechar em pintura:</h4>
-            <h2 class="modal-title">{{productname}}</h2>
+            <h2 class="modal-subtitle">{{productname}}</h2>
         </div>
         <div class="modal-footer">
               <button type="submit" ng-click="close()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" />Cancelar</button>           

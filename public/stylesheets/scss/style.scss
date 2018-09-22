@@ -1491,6 +1491,43 @@ a.btn.btn-sm {
     button img{
         margin-right:6px;
     }
+    button.close {
+        color: #fff;
+        background: #000;
+        width: 24px;
+        height: 24px;
+        border-radius: 100%;
+        text-align: center;
+        line-height: 20px;
+        opacity: 1;
+        img {
+            margin: 0 auto;
+        }
+    }
+    .modal-header, .modal-footer{
+        border: 0px !important;
+    }
+    .warning-text{
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        font-size: 18px;
+        color: #222222;
+    }
+    h4.modal-title{
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        font-size: 20px;
+        color: #222222;
+    }
+    h2.modal-subtitle{
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        font-size: 28px;
+        color: #222222;
+    }
 }
 
 .header-label-checkbox, .item-label-checkbox{
@@ -1511,6 +1548,13 @@ a.btn.btn-sm {
 
 .header-label-client-ref, .header-label-inner-ref, .header-label-amount, .header-label-checkbox {
     line-height:1 !important;
+}
+
+.item-inner-wrap.em_pintura {
+    background-color: #D9FED6;
+    .table-item {
+        color: #158B47 !important;
+    }
 }
 
 .checkbox-wrap{
