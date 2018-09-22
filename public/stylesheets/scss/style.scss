@@ -1557,6 +1557,13 @@ a.btn.btn-sm {
     }
 }
 
+.item-inner-wrap.fechado_na_encomenda {
+    background-color: #EEEBEB;
+    .table-item {
+        color: rgba(0,0,0,0.5) !important;
+    }
+}
+
 .checkbox-wrap{
     position:relative;
     input.special-checkbox, .checkbox-all{
