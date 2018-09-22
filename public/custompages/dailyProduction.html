@@ -46,7 +46,14 @@
                                         <div class="col-md-2 table-item item-label-prodname">{{productsProduced.PRODUCT_NAME}}</div>
                                         <div class="col-md-2 table-item item-label-workername">{{productsProduced.EMPLOYEE_NAME}}</div>
                                         <div class="col-md-1 table-item item-label-quantity"><strong>{{productsProduced.TOTAL_PRODUCTS_PRODUCED}}</strong></div>
-                                        <div class="col-md-2 table-item item-label-date">{{productsProduced.CREATED_DATE}}</div>
+                                        <div class="col-md-2 table-item item-label-date short">
+                                            {{productsProduced.CREATED_DATE}}
+                                            <div class="item-order-actions">
+                                                <a class="btn btn-sm btn-danger" ng-click="" data-toggle="tooltip" title="Remover Produto">
+                                                    <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
