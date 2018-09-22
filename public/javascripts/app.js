@@ -3544,7 +3544,7 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
 
     var documentToPrint = JSON.parse(documentDefinitionToJSON); 
 
-    var filename = 'Encomenda_Caixas_' + _clientname + '_' + dateToPrintInFileName;
+    var filename = 'Encomenda_Caixas_' + _clientname.replace(/\./g,'_').replace(/\s/g,'_') + '_' + dateToPrintInFileName;
     pdfMake.createPdf(documentToPrint).download(filename);
 
     localCopyBoxesToSendInOrder = [];
