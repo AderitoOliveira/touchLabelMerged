@@ -1556,7 +1556,17 @@ a.btn.btn-sm {
         color: #158B47 !important;
     }
 }
-
+.item-label-date.short{
+    padding-right:60px;
+}
+.short{
+    .item-order-actions {
+        position: absolute;
+        right: 40px;
+        top: 50%;
+        transform: translateY(-12px);
+    }
+}
 .item-inner-wrap.fechado_na_encomenda {
     background-color: #EEEBEB;
     .table-item {
