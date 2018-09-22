@@ -1057,9 +1057,19 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
       }
 
-      var requestPDFTemplate = $http.get('/getPDFTemplate/' +  encodeURIComponent('paiting_products_in_order'));    
+      /* var requestPDFTemplate = $http.get('/getPDFTemplate/' +  encodeURIComponent('paiting_products_in_order'));    
       requestPDFTemplate.then(function successCallback(response) {
          var pdfTemplatePaiting  = response.data[0].template_definition;
+         
+         //var orderProductPaintingPDFToJSON = JSON.parse(pdfTemplatePaiting);
+         var orderProductPaintingPDFToJSON = JSON.stringify(pdfTemplatePaiting);
+         var orderProductPaintingPDFBuildJSON = JSON.parse(orderProductPaintingPDFToJSON);
+
+         orderProductPaintingPDFBuildJSON.content[1] = Object.values(buildTables(arrayForAll));
+
+         var dataToInsert = buildTables(arrayForAll);
+         pdfTemplatePaiting.replace('DATA_TO_INJECT', dataToInsert);
+         pdfMake.createPdf(orderProductPaintingPDFBuildJSON).download(filename);
 
         //var orderProductPaintingPDFToJSON = JSON.parse(pdfTemplatePaiting);
 
@@ -1071,7 +1081,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       },
       function errorCallback(data){
       console.log('Error: ' + data);
-      });
+      }); */
 
       var paintingPDFTemplate = {
         content: [
@@ -1113,9 +1123,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                   {
                       text: [
                           {text: '\nCLIENTE', style: 'label'},
-                          {text: '\nEdelman B.V.', style: 'client'},
+                          {text: '\n_CLIENT_NAME_', style: 'client'},
                           {text: '\n\nDATA DA ENCOMENDA', style: 'label'},
-                          {text: '\n31.07.2018', style: 'date'},
+                          {text: '\n_CURRENT_DATE_', style: 'date'},
                       ], style : 'orderDetails'
                   },
                   {
@@ -1262,9 +1272,35 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       pageSize: 'A4',
     };
     
-    //paintingPDFTemplate.content[1] = Object.values(buildTables(arrayForAll));
+    function replaceAll(str, map){
+      for(key in map){
+          str2 = str.replace(key, map[key]);
+          str=str2;
+          str2=null;
+      }
+      return str;
+    }
 
-    //pdfMake.createPdf(paintingPDFTemplate).download();
+    var currentDate = new Date();
+    var day = currentDate.getDate();
+    var month = currentDate.getMonth() + 1;
+    var year = currentDate.getFullYear();
+    var dateToPrint = day + "/" + month + "/" + year;
+
+    var map = {
+      '_CLIENT_NAME_'    : $scope.clientname,
+      '_CURRENT_DATE_'     : dateToPrint
+    };
+
+    paintingPDFTemplate.content[1] = Object.values(buildTables(arrayForAll));
+
+    var paintingPDFTemplateToString = JSON.stringify(paintingPDFTemplate);
+    var paintingPDFTemplateToStringReplaced = replaceAll(paintingPDFTemplateToString, map);
+
+    var paintingPDFTemplateToJSON = JSON.parse(paintingPDFTemplateToStringReplaced); 
+
+    var filename = 'Encomenda_' + orderId;
+    pdfMake.createPdf(paintingPDFTemplateToJSON).download(filename);
 
     },
     function errorCallback(data){
