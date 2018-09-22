@@ -3229,7 +3229,7 @@ $scope.yes = function () {
   var dataUpdateOrderProductStatus = {
     ORDER_PRODUCT_STATUS: 'fechado_na_encomenda',
     ORDER_ID: $scope.orderid,
-    INTERNAL_PRODUCT_ID: $scope.internalproductid,
+    CUSTOMER_PRODUCT_ID: $scope.customerproductid,
   };
   
   var res = $http.post('/insertLabelsToPrint', dataObj).then(function(data, status, headers, config) {
