@@ -2333,7 +2333,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
           '_REF_PAINT_SMOKED_' : $scope.refPaintSmoked,
           '_GLASSED_' : $scope.glassed,
           '_REF_GLASSED_' : $scope.refGlassed,
-          '_FINISH_TYPE_OBS_' : $scope.finishTypeObs,
+          '_FINISH_TYPE_OBS_' : $scope.finishTypeObs.replace(/(?:\r\n|\r|\n)/g, ' # '),
           '_BAR_CODE_TECH_SHEET_' : $scope.barCodeTechSheet,
           '_LABEL_WATER_PROOF_' : $scope.labelWaterProof,
           '_FELTS_' : $scope.felts,
@@ -2344,7 +2344,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
           '_QTY_BY_BOX_' : $scope.qtyByBox,
           '_QTY_BY_PALLET_' : $scope.qtyByPallet,
           '_DISPOSITION_BY_ROW_' : $scope.dispositionByRow,
-          '_FINAL_OBSERVATIONS_' : $scope.finalObservations
+          '_FINAL_OBSERVATIONS_' : $scope.finalObservations.replace(/(?:\r\n|\r|\n)/g, ' # ')
         };
     
     
