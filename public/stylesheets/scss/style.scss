@@ -1449,6 +1449,47 @@ a.btn.btn-sm {
     }
 }
 
+#image-edit-wrap{
+    button.btn-cancel {
+        height: 48px;
+        width: 100%;
+        text-align: center;
+        border-radius: 2px;
+        background-color: #c21414;
+        font-size: 16px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        color: #ffffff;
+        border: 0px;
+    }
+    
+    button.btn-save {
+        height: 48px;
+        width: 100%;
+        text-align: center;
+        border-radius: 2px;
+        background-color: #27ae60;
+        font-size: 16px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        color: #ffffff;
+        border: 0px;
+        width: 100%;
+    }
+    button img{
+        margin-right:6px;
+    }
+    .button-holder {
+        padding-top: 12px;
+    }
+}
+
 .modal{
     button.btn-cancel, button.btn-save{
         max-width:170px;
