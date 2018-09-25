@@ -333,7 +333,7 @@ insertPrintedLables = function(req, res) {
     console.log("PRECO_1: " + req.body.preco1);
     console.log("PRECO_2: " + req.body.preco2);
     con.connect(function(err) {
-    con.query('UPDATE products SET ProductName = ?, PRODUCT_NAME_FOR_LABEL = ?, NUM_ARTICLES_IN_BOX = ?, Image_Name = ?, BAR_Code_Number = ?, PrecoEURO1 = ?, PrecoEURO2 = ? where CUSTOMER_PRODUCT_ID = ?',  [req.body.productname, req.body.nameInTheLabel, req.body.numArticleByBox, req.body.imagename, req.body.barcode, req.body.preco1, req.body.preco2, req.body.productid], function (error, results, fields) {
+    con.query('UPDATE products SET PRODUCT_NAME = ?, PRODUCT_NAME_FOR_LABEL = ?, NUM_ARTICLES_IN_BOX = ?, IMAGE_NAME = ?, BAR_CODE_NUMBER = ?, PRECO_EURO_1 = ?, PRECO_EURO_2 = ? where CUSTOMER_PRODUCT_ID = ?',  [req.body.productname, req.body.nameInTheLabel, req.body.numArticleByBox, req.body.imagename, req.body.barcode, req.body.preco1, req.body.preco2, req.body.productid], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });
@@ -627,7 +627,7 @@ deleteDailyProduction = function(req, res) {
 //GET DAILY PRODUCTION - order_products_production_registry
 fetchDailyProduction = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_ID, EMPLOYEE_NAME, TOTAL_PRODUCTS_PRODUCED, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE FROM order_products_production_registry', function(err, rows) {
+    con.query('SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_ID, EMPLOYEE_NAME, TOTAL_PRODUCTS_PRODUCED, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE FROM order_products_production_registry ORDER BY CREATED_DATE DESC', function(err, rows) {
         if (err) {
             throw err;
         } else

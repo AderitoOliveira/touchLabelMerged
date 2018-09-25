@@ -36,11 +36,11 @@
             <div class="col-md-3 client-item"  dir-paginate="product in products | orderBy : 'ProductID' |filter:searchChar | itemsPerPage:20">
                 <div class="item-card">
                     <div class="image-wrapper">
-                        <div class="image-inner" style="background-image:url({{product.Image_Path}}/{{product.Image_Name}});"></div>
+                        <div class="image-inner" style="background-image:url({{product.IMAGE_PATH}}/{{product.IMAGE_NAME}});"></div>
                     </div>
                     <div class="info-wrapper">
                         <div class="name">
-                            {{product.ProductName}}
+                            {{product.PRODUCT_NAME}}
                         </div>
                         <div class="card-actions">
                             <a class="btn btn-card" ng-click="removeRow(client.ClientID)"><img src="assets/icons/card-info.svg" width="30px" height="30px" /></a>
@@ -49,7 +49,7 @@
                     <div class="item-hover">
                         <div class="top-overlay">
                             <div class="item-name">
-                                {{product.ProductName}}
+                                {{product.PRODUCT_NAME}}
                             </div>
                             <div class="item-text item-reference ref-int">
                                 <span class="label">Referência Interna</span>
@@ -62,19 +62,19 @@
                             <div class="item-text item-price">
                                 <div class="price-half price-left">
                                     <span class="label">Preço 1</span>
-                                    {{product.PrecoEURO1}}€
+                                    {{product.PRECO_EURO_1}}€
                                 </div>
                                 <div class="price-half price-right">
                                     <span class="label">Preço 2</span>
-                                    {{product.PrecoEURO2}}€
+                                    {{product.PRECO_EURO_2}}€
                                 </div>
                             </div>
                         </div>
                         <div class="info-wrapper hover-actions">
-                            <a class="btn btn-card btn-left" ng-click="printLabelProduct(product.ProductID, product.ProductName)">
+                            <a class="btn btn-card btn-left" ng-click="printLabelProduct(product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME)">
                                 <img src="assets/icons/card-print.svg" width="30px" height="30px" />
                             </a>
-                            <a class="btn btn-card btn-right" ng-click="editProductPath(product.ProductName, product.CUSTOMER_PRODUCT_ID, product.INTERNAL_PRODUCT_ID, product.Image_Name, product.BAR_Code_Number, product.PRODUCT_NAME_FOR_LABEL, product.NUM_ARTICLES_IN_BOX, product.PrecoEURO1, product.PrecoEURO2)">
+                            <a class="btn btn-card btn-right" ng-click="editProductPath(product.PRODUCT_NAME, product.CUSTOMER_PRODUCT_ID, product.INTERNAL_PRODUCT_ID, product.IMAGE_NAME, product.BAR_CODE_NUMBER, product.PRODUCT_NAME_FOR_LABEL, product.NUM_ARTICLES_IN_BOX, product.PRECO_EURO_1, product.PRECO_EURO_2)">
                                 <img src="assets/icons/card-edit.svg" width="30px" height="30px" />
                             </a>
                         </div>
