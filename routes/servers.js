@@ -609,15 +609,15 @@ insertDailyProduction = function(req, res) {
 
 //DELETE DAILY PRODUCTION - order_products_production_registry
 deleteDailyProduction = function(req, res) {
-    console.log("#################################### POSTDATA #################################");
-    console.log(req.body);
-    console.log("#################################### POSTDATA #################################");
+    console.log("ORDER_ID ------->> ", req.body.ORDER_ID);
+    console.log("CUSTOMER_PRODUCT_ID ------->> ", req.body.CUSTOMER_PRODUCT_ID);
+    console.log("EMPLOYEE_NAME ------->> ", req.body.EMPLOYEE_NAME);
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     con.connect(function(err) {
-    con.query('DELETE from order_products_production_registry where ORDER_ID = ? and INTERNAL_PRODUCT_ID = ? and EMPLOYEE_ID = ?', [req.body.ORDER_ID, req.body.PRODUCT_ID, req.body.EMPLOYEE_ID], function (error, results, fields) {
+    con.query('DELETE from order_products_production_registry where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ? and EMPLOYEE_NAME = ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID, req.body.EMPLOYEE_NAME], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });

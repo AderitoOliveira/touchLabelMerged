@@ -179,6 +179,9 @@ app.controller('insertClient', function ($scope, $http, $rootScope, $rootScope, 
   $scope.data = [];
   $rootScope.name="Inserir um novo cliente";
 
+  var clientImageDefault = 'client-default.png';
+  $scope.image = '/images' + '/' + clientImageDefault;
+
 /*   $scope.CLIENT_ID = CLIENT_ID;
   $scope.CLIENT_NAME = CLIENT_NAME;
   $scope.FIRST_ADDRESS = FIRST_ADDRESS;
@@ -202,7 +205,8 @@ app.controller('insertClient', function ($scope, $http, $rootScope, $rootScope, 
       NIF: $scope.nif,
       COIN: $scope.coin,
       PHONE_NUMBER: $scope.phonenumber,
-      PERSON_TO_CONTACT: $scope.persontocontact 
+      PERSON_TO_CONTACT: $scope.persontocontact,
+      IMAGE_NAME : $scope.image 
     };
 
     var res = $http.post('/insertClient', dataObj).then(function(data, status, headers, config) {
@@ -211,6 +215,10 @@ app.controller('insertClient', function ($scope, $http, $rootScope, $rootScope, 
       $state.transitionTo("clientstate", {}) ;
 
     });
+  };
+
+  $scope.editImage = function () {
+    $state.transitionTo("editImageClient", {'clientid': $scope.clientid, 'clientname': $scope.clientname, 'imagename': $scope.image}) ;
   };
 
   $scope.goBack = function() {
@@ -2314,6 +2322,19 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
           return str;
         }
     
+
+        if($scope.finishTypeObs != null) {
+           $scope.finishTypeObs = $scope.finishTypeObs.replace(/(?:\r\n|\r|\n)/g, ' # ');
+        } else {
+          $scope.finishTypeObs = '';
+        }
+
+        if($scope.finalObservations != null) {
+          $scope.finalObservations = $scope.finalObservations.replace(/(?:\r\n|\r|\n)/g, ' # ')
+        } else {
+         $scope.finalObservations = '';
+        }
+
         var map = {
           '_PRODUCT_NAME_' : $scope.productName,
           '_RAW_MATERIAL_' : $scope.rawMaterial,
@@ -2333,7 +2354,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
           '_REF_PAINT_SMOKED_' : $scope.refPaintSmoked,
           '_GLASSED_' : $scope.glassed,
           '_REF_GLASSED_' : $scope.refGlassed,
-          '_FINISH_TYPE_OBS_' : $scope.finishTypeObs.replace(/(?:\r\n|\r|\n)/g, ' # '),
+          '_FINISH_TYPE_OBS_' : $scope.finishTypeObs,
           '_BAR_CODE_TECH_SHEET_' : $scope.barCodeTechSheet,
           '_LABEL_WATER_PROOF_' : $scope.labelWaterProof,
           '_FELTS_' : $scope.felts,
@@ -2344,7 +2365,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
           '_QTY_BY_BOX_' : $scope.qtyByBox,
           '_QTY_BY_PALLET_' : $scope.qtyByPallet,
           '_DISPOSITION_BY_ROW_' : $scope.dispositionByRow,
-          '_FINAL_OBSERVATIONS_' : $scope.finalObservations.replace(/(?:\r\n|\r|\n)/g, ' # ')
+          '_FINAL_OBSERVATIONS_' : $scope.finalObservations
         };
     
     
@@ -3576,7 +3597,7 @@ app.controller('labelsToPrint', function($scope, $http, $rootScope) {
 
 
 //DAILY ORDER PRODUCTION - Controller
-app.controller('dailyProduction', function($scope, $http, $rootScope) {
+app.controller('dailyProduction', function($scope, $http, $rootScope, $state) {
   $rootScope.name= "Registo Produção Diária";
   $scope.dailyProduction = [];
     var request = $http.get('/getDailyProduction');    
@@ -3587,6 +3608,20 @@ app.controller('dailyProduction', function($scope, $http, $rootScope) {
   function errorCallback(data){
       console.log('Error: ' + data);
   });
+
+  $scope.delete = function(order_id, customer_product_id, employee_name) {
+
+    var dataToDelete = {
+      ORDER_ID : order_id,
+      CUSTOMER_PRODUCT_ID : customer_product_id,
+      EMPLOYEE_NAME : employee_name
+    };
+
+    var res = $http.post('/deleteDailyProduction', dataToDelete).then(function(data, status, headers, config) {
+      $state.go("listDailyProduction", null, { reload: true });
+    });
+
+  }
 });
 
 
