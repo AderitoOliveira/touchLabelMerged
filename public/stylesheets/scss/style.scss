@@ -1226,7 +1226,9 @@ a.btn.btn-sm {
         width: calc(100% - 8px);
     }
 }
-
+#add-order{
+    display:none;
+}
 #add-order  .col-md-4:first-child input{
     margin-left: 8px !important;
     width: calc(100% - 8px);
