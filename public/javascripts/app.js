@@ -218,7 +218,7 @@ app.controller('insertClient', function ($scope, $http, $rootScope, $rootScope, 
   };
 
   $scope.editImage = function () {
-    $state.transitionTo("editImageClient", {'clientid': $scope.clientid, 'clientname': $scope.clientname, 'imagename': $scope.image}) ;
+    $state.transitionTo("editImageClient", {'clientid': $scope.clientid, 'clientname': $scope.clientname, 'imagename': $scope.clientImageDefault}) ;
   };
 
   $scope.goBack = function() {
@@ -2611,7 +2611,7 @@ app.controller('createproducts', ['$http', '$scope', '$rootScope', '$state', '$s
 
   $scope.editarImagem = function () {
     //$state.go("editImage", null, { reload: true });
-    $state.transitionTo("editImage", {'productName': $scope.productName, 'productId': $scope.productId, 'imageName':  $scope.image, 'barCode': $scope.barCode}) ;
+    $state.transitionTo("editImage", {'productName': $scope.productName, 'productId': $scope.productId, 'imageName':  $scope.productImageDefault, 'barCode': $scope.barCode}) ;
   };
 
   $scope.back = function () {
@@ -2914,10 +2914,19 @@ app.controller('editImageCtrl', [ '$http', '$state', '$scope', 'Upload', '$timeo
 //EDIT CLIENT IMAGE CONTROLLER
 app.controller('editImageClientCtrl', [ '$http', '$state', '$rootScope','$scope', 'Upload', '$timeout', '$stateParams', '$templateCache', function ($http, $state, $rootScope, $scope, Upload, $timeout, $stateParams, $templateCache) {
   
-  $rootScope.name = 'Editar Imagem do Cliente ' + $stateParams.clientname;
+  if($stateParams.clientname == null) {
+    $rootScope.name = 'Inserir Imagem do Novo Cliente';
+  } else {
+    $rootScope.name = 'Editar Imagem do Cliente ' + $stateParams.clientname;
+  }
+
+  if($stateParams.imagename == null) {
+    $scope.image = '/images' + '/' + 'client-default.png';
+  } else {
+    $scope.image = '/images' + '/' + $stateParams.imagename;
+  }
+
   $scope.clientid = $stateParams.clientid;
- 
-  $scope.image = '/images' + '/' + $stateParams.imagename;
   
   $scope.uploadPic = function(file) {
   file.upload = Upload.upload({
