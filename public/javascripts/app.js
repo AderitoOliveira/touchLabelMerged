@@ -3556,6 +3556,7 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
     pdfMake.createPdf(documentToPrint).download(filename);
 
     localCopyBoxesToSendInOrder = [];
+    boxesToSendInOrder = [];
   }
 
 }]);
