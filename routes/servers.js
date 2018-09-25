@@ -333,7 +333,7 @@ insertPrintedLables = function(req, res) {
     console.log("PRECO_1: " + req.body.preco1);
     console.log("PRECO_2: " + req.body.preco2);
     con.connect(function(err) {
-    con.query('UPDATE products SET PRODUCT_NAME = ?, PRODUCT_NAME_FOR_LABEL = ?, NUM_ARTICLES_IN_BOX = ?, IMAGE_NAME = ?, BAR_CODE_NUMBER = ?, PRECO_EURO_1 = ?, PRECO_EURO_2 = ? where CUSTOMER_PRODUCT_ID = ?',  [req.body.productname, req.body.nameInTheLabel, req.body.numArticleByBox, req.body.imagename, req.body.barcode, req.body.preco1, req.body.preco2, req.body.productid], function (error, results, fields) {
+    con.query('UPDATE products SET PRODUCT_NAME = ?, PRODUCT_NAME_FOR_LABEL = ?, NUM_ARTICLES_IN_BOX = ?, IMAGE_NAME = ?, BAR_CODE_NUMBER = ?, PRICE_EURO_1 = ?, PRICE_EURO_2 = ? where CUSTOMER_PRODUCT_ID = ?',  [req.body.productname, req.body.nameInTheLabel, req.body.numArticleByBox, req.body.imagename, req.body.barcode, req.body.preco1, req.body.preco2, req.body.productid], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });
