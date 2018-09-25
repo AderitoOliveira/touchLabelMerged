@@ -1,33 +1,54 @@
-<div class="container" style="padding-top:16px;">
-<body ng-controller="editImageCtrl">
-    <div class="col-md-6">
-        <legend>Mudar a imagem do Producto</legend>
-        <input type="file" ngf-select ng-model="picFile" name="file"    
-        accept="image/*" ngf-max-size="2MB">
-        <i ng-show="myForm.file.$error.maxSize">File too large 
-            {{errorFile.size / 1000000|number:1}}MB: max 2M</i>
-        <img ngf-thumbnail="picFile" class="thumb"> 
-        <button ng-click="picFile = null" ng-show="picFile" class="btn btn-default btn-danger">Remover Imagem</button>
-        <br>
-        <br>
-        <br>
-        <br>
-        <button ng-click="uploadPic(picFile)" class="btn btn-default btn-success">Alterar Imagem</button>
-        <span class="progress" ng-show="picFile.progress >= 0">
-          <div style="width:{{picFile.progress}}%" 
-              ng-bind="picFile.progress + '%'"></div>
-        </span>
-        <span ng-show="picFile.result">Upload Successful</span>
-        <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
-      <br>
-  </div>
-  <div class="col-md-6">
-      <legend>Imagem Actual do Produto</legend>
-      <div class="image-wrapper">
-        <a ng-href="{{image}}" target="_blank">
-          <img ng-src={{image}} height="150" width="150">
-        </a>
-      </div>
-  </div>
-  </body>
+<div id="image-edit-wrap" ng-controller="editImageCtrl">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div id="image-change" class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3 class="section-title">Nova Imagem</h3>
+                            <input type="file" ngf-select ng-model="picFile" name="file"    
+                            accept="image/*" ngf-max-size="2MB">
+                            <i ng-show="myForm.file.$error.maxSize">File too large 
+                                {{errorFile.size / 1000000|number:1}}MB: max 2M</i>
+                            <img ngf-thumbnail="picFile" class="thumb"> 
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6 button-holder">
+                                        <button ng-click="picFile = null" ng-show="picFile" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" />Remover Imagem</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <span class="progress" ng-show="picFile.progress >= 0">
+                                <div style="width:{{picFile.progress}}%" 
+                                    ng-bind="picFile.progress + '%'"></div>
+                            </span>
+                            <span ng-show="picFile.result">Upload Successful</span>
+                            <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6 button-holder">
+                                    <button type="submit" ng-click="uploadPic(picFile)" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar Imagem</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-8">
+                    <h3 class="section-title">Imagem Actual</h3>
+                    <div class="image-wrapper">
+                    <a ng-href="{{image}}" target="_blank">
+                        <img ng-src={{image}} height="150" width="150">
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
 </div>
