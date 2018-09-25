@@ -37,7 +37,7 @@
                         </div>
                     </div>
                     <div class="order-labels-content row">
-                            <div class="col-md-12" dir-paginate="productsProduced in dailyProduction | orderBy : 'CREATED_DATE' | filter:searchChar | itemsPerPage:7">
+                            <div class="col-md-12" dir-paginate="productsProduced in dailyProduction | filter:searchChar | itemsPerPage:7">
                                 <div class="row">
                                     <div class="item-inner-wrap">
                                         <div class="col-md-1 table-item item-label-order">{{productsProduced.ORDER_ID}}</div>

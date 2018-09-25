@@ -2586,16 +2586,20 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
 //CRIAR Produtos - Controller
 app.controller('createproducts', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', function($http, $scope, $rootScope, $state ,$stateParams, $templateCache) {
 
+  var productImageDefault = 'products_default.png';
+  $scope.image = '/images' + '/' + productImageDefault;
+
   $scope.submit = function () {
     var dataObj = {
-      productname: $scope.product_name,
-      productid: $scope.product_id,
-      image_name: $scope.image_name,
-      bar_code_number: $scope.bar_code,
-      num_articles_in_box: $scope.num_article_by_box,
-      product_name_for_label: $scope.name_in_the_label,
-      precoEURO1: preco1,
-      precoEURO12: preco2
+      PRODUCT_NAME: $scope.product_name,
+      INTERNAL_PRODUCT_ID: $scope.product_id,
+      CUSTOMER_PRODUCT_ID : $scope.customerproductId,
+      IMAGE_NAME: $scope.image,
+      BAR_CODE_NUMBER: $scope.bar_code,
+      NUM_ARTICLES_IN_BOX: $scope.num_article_by_box,
+      PRODUCT_NAME_FOR_LABEL: $scope.name_in_the_label,
+      PRICE_EURO_1: preco1,
+      PRICE_EURO_2: preco2
     };	
 
     var res = $http.post('/insertProduct', dataObj).then(function(data, status, headers, config) {
@@ -2607,7 +2611,7 @@ app.controller('createproducts', ['$http', '$scope', '$rootScope', '$state', '$s
 
   $scope.editarImagem = function () {
     //$state.go("editImage", null, { reload: true });
-    $state.transitionTo("editImage", {'productName': $scope.productName, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode}) ;
+    $state.transitionTo("editImage", {'productName': $scope.productName, 'productId': $scope.productId, 'imageName':  $scope.image, 'barCode': $scope.barCode}) ;
   };
 
   $scope.back = function () {

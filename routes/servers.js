@@ -627,7 +627,7 @@ deleteDailyProduction = function(req, res) {
 //GET DAILY PRODUCTION - order_products_production_registry
 fetchDailyProduction = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_ID, EMPLOYEE_NAME, TOTAL_PRODUCTS_PRODUCED, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE FROM order_products_production_registry', function(err, rows) {
+    con.query('SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_ID, EMPLOYEE_NAME, TOTAL_PRODUCTS_PRODUCED, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE FROM order_products_production_registry ORDER BY CREATED_DATE DESC', function(err, rows) {
         if (err) {
             throw err;
         } else
