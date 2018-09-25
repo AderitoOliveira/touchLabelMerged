@@ -3272,12 +3272,11 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
   var rowValues = [];
   var boxesToSendInOrder = [];
   var _clientname = "";
-  $scope.changeValue = function (box, ORDER_ID, CUSTOMER_PRODUCT_ID, CLIENT_NAME, PRODUCT_NAME, TOTAL_BOXES_TO_ORDER) {
+  $scope.changeValue = function (box, ORDER_ID, CUSTOMER_PRODUCT_ID, CLIENT_NAME, PRODUCT_NAME, BOX_MEASURES,TOTAL_BOXES_TO_ORDER) {
       console.log(box);
       if(box == true) {
-        rowValues.push(ORDER_ID);
         rowValues.push(TOTAL_BOXES_TO_ORDER);
-        rowValues.push(CUSTOMER_PRODUCT_ID);
+        rowValues.push(BOX_MEASURES);
         rowValues.push(PRODUCT_NAME);
         boxesToSendInOrder.push(rowValues);
         _clientname = CLIENT_NAME;
@@ -3286,7 +3285,7 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
       } else if (box == false && boxesToSendInOrder.length > 0) {
         //boxesToSendInOrder = $filter('filter')(boxesToSendInOrder, {'CUSTOMER_PRODUCT_ID': CUSTOMER_PRODUCT_ID});
         boxesToSendInOrder = boxesToSendInOrder.filter(function(el) {
-          return el[1] !== CUSTOMER_PRODUCT_ID;
+          return el[2] !== PRODUCT_NAME;
         });
       }
   }
@@ -3406,12 +3405,11 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
             table: {
               
               headerRows: 1,
-              widths: [ '*', '*', '*', '*' ],
+              widths: [ '*', '*', '*'],
               body: [
                 [ 
-                {text: 'REF. CAIXA', style: "tblHeader"},
                 {text: 'QUANT. CAIXAS', style: "tblHeader"},
-                {text: 'DIMENSÕES', style: "tblHeader"},
+                {text: 'MEDIDAS', style: "tblHeader"},
                 {text: 'DESCRIÇÃO', style: "tblHeader"}
                 ]
               ]
