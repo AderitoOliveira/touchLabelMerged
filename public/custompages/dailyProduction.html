@@ -49,7 +49,7 @@
                                         <div class="col-md-2 table-item item-label-date short">
                                             {{productsProduced.CREATED_DATE}}
                                             <div class="item-order-actions">
-                                                <a class="btn btn-sm btn-danger" ng-click="" data-toggle="tooltip" title="Remover Produto">
+                                                <a class="btn btn-sm btn-danger" ng-click="delete(productsProduced.ORDER_ID, productsProduced.CUSTOMER_PRODUCT_ID, productsProduced.EMPLOYEE_NAME)" data-toggle="tooltip" title="Remover Produto">
                                                     <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
                                                 </a>
                                             </div>
@@ -62,7 +62,6 @@
                 </div>
             </div>
         </div>
-    </div>
     <div id="pagination">
         <div class="row">
             <div class="container">
