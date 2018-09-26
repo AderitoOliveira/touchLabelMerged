@@ -93,5 +93,9 @@
         }
     })
 
+    $(document).on('click','#add-order-toggle',function(){
+        $('#add-order').slideToggle(200);
+    })
+
     
 })(jQuery);
