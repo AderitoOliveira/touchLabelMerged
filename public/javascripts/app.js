@@ -1407,7 +1407,7 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
   
   $scope.clients = [];
   
-  var request = $http.get('/clients');    
+  var request = $http.get('clientstypeahed');    
   request.then(function successCallback(response) {
    $scope.clients  = response.data;
    return  $scope.clients; 

@@ -80,6 +80,11 @@ router.get('/clients', function(req,res){
   fetchAllClients(req,res);  
 });
 
+//Get All Clients for the UIB_TYPE_AHEAD
+router.get('/clientstypeahed', function(req,res){
+  fetchAllClientsForTypeAhed(req,res);  
+});
+
 //Get Single Client by ID
 router.get('/clients/:id', function(req,res){
   fetchSingleClient(req,res);  

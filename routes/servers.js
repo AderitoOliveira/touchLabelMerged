@@ -35,6 +35,24 @@ fetchAllClients = function(data, callback) {
 });
 }
 
+//GET ALL CLIENTS FOR THE UIB-TYPEAHED WITH ONLY CLIENT_ID AND CLIENT_NAME
+fetchAllClientsForTypeAhed = function(data, callback) {
+    con.connect(function(err) {
+    con.query('SELECT CLIENT_ID, CLIENT_NAME FROM clients', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET ALL CLIENTS");   
+
+    });
+});
+}
+
 fetchSingleClient = function(data, callback) {
     con.connect(function(err) {
     con.query('SELECT * FROM clients where clientid=?', [data.params.id], function(err, rows) {
