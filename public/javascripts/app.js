@@ -2873,8 +2873,12 @@ app.controller('editImageCtrl', [ '$http', '$state', '$scope', 'Upload', '$timeo
   $scope.imageName = $stateParams.imageName;
   $scope.barCode = $stateParams.barCode;
 
-  $scope.image = '/images' + '/' + $stateParams.imageName;
-  
+  if($stateParams.imageName == null) {
+    $scope.image = '/images' + '/' + 'products_default.png';
+  }else {
+    $scope.image = '/images' + '/' + $stateParams.imageName;
+  }
+    
   $scope.uploadPic = function(file) {
   file.upload = Upload.upload({
     url: 'http://localhost:3700/upload',
