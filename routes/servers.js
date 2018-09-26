@@ -132,7 +132,7 @@ fetchAllProducts = function(data, callback) {
 
 fetchProductsForOrderModal = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, ProductName FROM products', function(err, rows) {
+    con.query('SELECT INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME FROM products', function(err, rows) {
         if (err) {
             throw err;
         } else
