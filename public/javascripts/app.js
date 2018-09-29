@@ -624,7 +624,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       ORDER_ID: $scope.orderid,
       INTERNAL_PRODUCT_ID : $scope.productid.INTERNAL_PRODUCT_ID,
       CUSTOMER_PRODUCT_ID: $scope.productid.CUSTOMER_PRODUCT_ID,
-      PRODUCT_NAME: $scope.productid.ProductName,
+      PRODUCT_NAME: $scope.productid.PRODUCT_NAME,
       TOTAL_QUANTITY_ORDERED: $scope.qtyencomenda,
       QUANTITY_PRODUCED: $scope.qtyproduzida,
       ORDER_PRODUCT_STATUS: $scope.orderproductstatus
