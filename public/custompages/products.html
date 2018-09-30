@@ -1,4 +1,4 @@
-<div class="wrap">
+<div class="wrap" ng-controller="ProductsController">
     <div id="actions">
         <div class="row">
             <div class="col-md-12">
@@ -31,7 +31,7 @@
             </div>
         </div>
     </div>
-    <div id="card-content" ng-controller="products">
+    <div id="card-content">
         <div class="row">
             <div class="col-md-3 client-item"  dir-paginate="product in products | orderBy : 'ProductID' |filter:searchChar | itemsPerPage:20">
                 <div class="item-card">
@@ -62,11 +62,11 @@
                             <div class="item-text item-price">
                                 <div class="price-half price-left">
                                     <span class="label">Preço 1</span>
-                                    {{product.PRECO_EURO_1}}€
+                                    {{product.PRICE_EURO_1}}€
                                 </div>
                                 <div class="price-half price-right">
                                     <span class="label">Preço 2</span>
-                                    {{product.PRECO_EURO_2}}€
+                                    {{product.PRICE_EURO_2}}€
                                 </div>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                             <a class="btn btn-card btn-left" ng-click="printLabelProduct(product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME)">
                                 <img src="assets/icons/card-print.svg" width="30px" height="30px" />
                             </a>
-                            <a class="btn btn-card btn-right" ng-click="editProductPath(product.PRODUCT_NAME, product.CUSTOMER_PRODUCT_ID, product.INTERNAL_PRODUCT_ID, product.IMAGE_NAME, product.BAR_CODE_NUMBER, product.PRODUCT_NAME_FOR_LABEL, product.NUM_ARTICLES_IN_BOX, product.PRECO_EURO_1, product.PRECO_EURO_2)">
+                            <a class="btn btn-card btn-right" ng-click="editProductPath(product.PRODUCT_NAME, product.CUSTOMER_PRODUCT_ID, product.INTERNAL_PRODUCT_ID, product.IMAGE_NAME, product.BAR_CODE_NUMBER, product.PRODUCT_NAME_FOR_LABEL, product.NUM_ARTICLES_IN_BOX, product.PRICE_EURO_1, product.PRICE_EURO_2)">
                                 <img src="assets/icons/card-edit.svg" width="30px" height="30px" />
                             </a>
                         </div>

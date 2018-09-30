@@ -22,7 +22,7 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
     .state('listProducts', {
 		url: '/listProducts',
         templateUrl : '../custompages/products.html',
-        controller : 'products'
+        controller : 'ProductsController'
     })
     .state('createProduct', {
 	  url: '/createProduct',
@@ -744,7 +744,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
    //INSERT DAILY PRODUCTION
-   $scope.insertDailyProduction = function(internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced,totalquantityproduced, employyee_name) {
+   $scope.insertDailyProduction = function(internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced,totalquantityproduced, employyee_name, priceEuro) {
 
     //$scope.title = title;
     $scope.orderid = $scope.orderid;
@@ -753,6 +753,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     $scope.productnameinternal = productName;
     $scope.totalquantityordered = totalquantityordered;
     $scope.totalquantityproduced = totalquantityproduced;
+    $scope.priceEuro = priceEuro;
 
     //PRODUCTS STILL TO PRODUCE
   var products_still_to_produce = totalquantityordered - totalproductsproduced;
@@ -787,6 +788,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   {
    
     $scope.orderproductstatus = 'em_producao';
+    var valueProducedByTheEmployee = $scope.totalquantityproduced * $scope.priceEuro;
     
     var dataObj = {
       ORDER_ID: $scope.orderid,
@@ -796,12 +798,15 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
       EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
       TOTAL_PRODUCTS_PRODUCED: $scope.totalquantityproduced,
+      PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
     };	
     
     var res = $http.post('/insertDailyProduction', dataObj).then(function(data, status, headers, config) {
       $state.reload();
     });
   } else {
+
+    var valueProducedByTheEmployee = products_still_to_produce * $scope.priceEuro;
 
     //THE NUMBER OF PRODUCTS products_still_to_produce ARE THE NUMBER OF PRODUCTS STILL TO REGISTER IN THIS ORDER.
     var dataObj = {
@@ -812,6 +817,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
       EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
       TOTAL_PRODUCTS_PRODUCED: products_still_to_produce,
+      PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
     };	
 
     
@@ -854,6 +860,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
         if(number_of_products_to_close_order <= products_remaining_from_daily_production) { 
 
+          var valueProducedByTheEmployee = number_of_products_to_close_order * $scope.priceEuro;
+
           products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
            var insertProductsInTheSameOrder = {
                ORDER_ID: order_id,
@@ -863,11 +871,14 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
                EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
                TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
+               PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
              };	
  
              var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
             });
         } else {
+
+            var valueProducedByTheEmployee = products_remaining_from_daily_production * $scope.priceEuro;
             //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
             //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
             //DAILY PRODUCTION
@@ -879,6 +890,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
               EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
               TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
+              PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
             };	
 
             var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
@@ -893,7 +905,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
        //ALL THE ORDERS TO CHECK IF THE SAME INTERNAL PRODUCT ID IS OPENED TO BE REGISTERED
         if(products_remaining_from_daily_production > 0) {
 
-          productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name);
+          productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro);
         
         } //if
 
@@ -901,7 +913,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       else {
         //IN THIS ORDER THERE IS NOT A PRODUCT FOR THE SAME INTERNAL PRODUCT ID
         //WE NEED TO CHECK IF THERE'S ANTOHER ORDER WITH THE SAME INTERNAL PRODUCT ID
-        productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name);        
+        productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro);        
     }
 
       $state.reload();
@@ -2414,7 +2426,7 @@ app.controller('clients', function($scope, $http, $rootScope, $state) {
 });
 
 //GET ALL PRODUCTS - CONTROLLER
-app.controller('products', function($scope, $http,  $location, $rootScope,  $state, $stateParams, productsAPI, ModalService) {
+app.controller('ProductsController', function($scope, $http,  $location, $rootScope,  $state, $stateParams, productsAPI, ModalService) {
     $rootScope.name="Lista de todos os Produtos";
     $scope.products = [];
     
@@ -3648,7 +3660,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', function($http) {
     //return {
       var alertMsg = new Array();
       //insertProduction : function ($scope, orderid, internalproductid, products_remaining_from_daily_production, alertMsg) { 
-      function insertProduction($scope, orderid, internalproductid, products_remaining_from_daily_production, employyee_name) { 
+      function insertProduction($scope, orderid, internalproductid, products_remaining_from_daily_production, employyee_name, productPriceInEuro) { 
   
         //INITIALIZE OVERPRODUCTION VARIABLE
         $scope.overProduction = products_remaining_from_daily_production;
@@ -3681,6 +3693,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', function($http) {
 
                 products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
                 $scope.overProduction = products_remaining_from_daily_production;
+                var valueProducedByTheEmployee = number_of_products_to_close_order * productPriceInEuro;
 
                 var insertProductsInTheSameOrder = {
                     ORDER_ID: order_id,
@@ -3690,6 +3703,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', function($http) {
                     EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
                     EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
                     TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
+                    PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
                   };	
       
                   var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
@@ -3702,6 +3716,8 @@ app.factory('productInOtherOpenOrdersOrOverProduction', function($http) {
                   alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
                   alert(alertMsg.toString());
 
+                  var valueProducedByTheEmployee = products_remaining_from_daily_production * productPriceInEuro;
+
                   var insertProductsInTheSameOrder = {
                     ORDER_ID: order_id,
                     INTERNAL_PRODUCT_ID : $scope.internalproductid,
@@ -3710,6 +3726,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', function($http) {
                     EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
                     EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
                     TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
+                    PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
                   };	
 
                   var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
