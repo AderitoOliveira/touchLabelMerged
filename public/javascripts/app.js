@@ -1530,9 +1530,15 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
   //GET DETAILS FOR THE DAILY PRODUCTION FOR A PRODUCT IN AN ORDER
   var customer_product_id = 0;
+  var alreadySelected = false;
   $scope.dailyProductionDetails = function (customerproductid) {
 
     customer_product_id = customerproductid;
+    if(alreadySelected===false){
+      alreadySelected = true;
+    } else {
+      alreadySelected = false;
+    }
     
     $scope.dailyProduction = [];
     var request = $http.get('/getDailyProductionOrderProduct/' +  encodeURIComponent(orderId) + '/'+ encodeURIComponent(customerproductid));    
@@ -1555,7 +1561,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   //FUNCTION TO SEE THE DETAILS ABOUT THE PRODUCT IN THE ORDER
   $scope.seeProductDetailInOrder = function (customerproductid) {
 
-    return customer_product_id===customerproductid;
+    return (customer_product_id===customerproductid && alreadySelected === true);
 
   };
   
