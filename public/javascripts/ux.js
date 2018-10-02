@@ -97,5 +97,14 @@
         $('#add-order').slideToggle(200);
     })
 
-    
+     $(document).on('click','#order-products-table .item-inner-wrap',function(){
+         if(!$(this).hasClass('expanded')){
+            $('#order-products-table .item-inner-wrap').removeClass('expanded');
+            $(this).addClass('expanded');
+         } else {
+            $('#order-products-table .item-inner-wrap').removeClass('expanded');
+         }
+        
+    })
+
 })(jQuery);

@@ -1704,6 +1704,13 @@ a.btn.btn-sm {
     background-color: #fff;
     border: 1px solid #ddd;
 }
+.item-inner-wrap ~ .order-product-details{
+    display:none;
+}
+
+.item-inner-wrap.expanded ~ .order-product-details{
+    display:block;
+}
 
 @media screen and (max-width:1024px){
     .nav-toggle{
