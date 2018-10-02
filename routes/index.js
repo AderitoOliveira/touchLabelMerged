@@ -340,6 +340,14 @@ router.get('/getAllOrdersForOpenInternalProductId/:orderid/:productid', function
   fetchAllOrdersForOpenInternalProductId(req,res);  
 });
 
+//PAINTING - GET ALL ORDER's FOR A SPECIFIC INTERNAL PRODUCT ID AND THAT PRODUCT ISN'T CLOSED - order_products_painting_registry
+router.get('/getAllOrdersForPaintingInternalProductId/:orderid/:productid', function(req,res){
+  console.log("GET DAILY PRODUCTION FOR AN PRODUCT IN AN ORDER 1");
+  console.log("REQ.BODY: " + req.params.orderid);
+  console.log("REQ.INTERNAL_PRODUCT_ID: " + req.params.productid);
+  fetchAllOrdersForPaintingInternalProductId(req,res);  
+});
+
 //INSERT LABELS TO PRINT - order_products_labels_to_print
 router.post('/insertLabelsToPrint', function(req,res){
   console.log("INSERT ORDER PRODUCTS DAILY PRODUCTION");

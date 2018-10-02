@@ -512,7 +512,7 @@ app.controller('labels', function ($scope, $http, $rootScope) {
 });
 
 //Controller for All the Orders
-app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams', '$state', 'ModalService', 'productInOtherOpenOrdersOrOverProduction', function ($scope, $http, $rootScope, $stateParams, $state, ModalService, productInOtherOpenOrdersOrOverProduction) {
+app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams', '$state', 'ModalService', 'productInOtherOpenOrdersOrOverProduction', 'productInOtherOpenOrdersForPainting', function ($scope, $http, $rootScope, $stateParams, $state, ModalService, productInOtherOpenOrdersOrOverProduction) {
    
   $rootScope.name= "Lista de Produtos da Encomenda " + $stateParams.orderId;
   $scope.products = [];
@@ -744,7 +744,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
    //INSERT DAILY PRODUCTION
-   $scope.insertDailyProduction = function(internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced,totalquantityproduced, employyee_name, priceEuro, statusProductInOrder) {
+   $scope.insertDailyProduction = function(internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced,totalquantityproduced, employyee_name, priceEuro) {
 
     //$scope.title = title;
     $scope.orderid = $scope.orderid;
@@ -915,6 +915,195 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         //IN THIS ORDER THERE IS NOT A PRODUCT FOR THE SAME INTERNAL PRODUCT ID
         //WE NEED TO CHECK IF THERE'S ANTOHER ORDER WITH THE SAME INTERNAL PRODUCT ID
         productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro);        
+    }
+
+      $state.reload();
+
+    },
+    function errorCallback(data){
+      console.log('Error: ' + data);
+    });
+
+    console.log("ANTES DO ÚLTIMO STATE RELOAD!!!!");
+    $state.reload();
+
+   }//ELSE
+
+  };
+
+
+  //INSERT DAILY PAINTING REGISTRY
+  $scope.insertDailyPainting = function(internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced,totalquantityproduced, employyee_name, priceEuro) {
+
+    //$scope.title = title;
+    $scope.orderid = $scope.orderid;
+    $scope.internalproductid = internalproductid;
+    $scope.customerproductid = customerproductid;
+    $scope.productnameinternal = productName;
+    $scope.totalquantityordered = totalquantityordered;
+    $scope.totalquantityproduced = totalquantityproduced;
+    $scope.priceEuro = priceEuro;
+    
+
+    //PRODUCTS STILL TO PRODUCE
+  var products_still_to_produce = totalquantityordered - totalproductsproduced;
+
+  if(products_still_to_produce == 0){
+
+     ModalService.showModal({
+      templateUrl: "../modal/genericModal.html",
+      controller: "GenericController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        message: 'A quantidade de artigos a pintar para o produto ' + productName + ' na encomenda ' +  $scope.orderid + ' já foi atingida!'
+      }
+      }).then(function(modal) {
+            modal.element.modal();
+            modal.close.then(function(result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+            }
+            });
+      });
+
+      $state.reload();
+
+      return true;
+  };
+
+  //THE NUMBER OF PRODUCTS TO REGISTER ARE STILL INFERIOR TO THE NUMBER OF PRODUCTS TO PRODUCE
+  if($scope.totalquantityproduced <= products_still_to_produce) 
+  {
+   
+    $scope.orderproductstatus = 'em_producao';
+    var valueProducedByTheEmployee = $scope.totalquantityproduced * $scope.priceEuro;
+    
+    var dataObj = {
+      ORDER_ID: $scope.orderid,
+      INTERNAL_PRODUCT_ID : $scope.internalproductid,
+      CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+      PRODUCT_NAME: $scope.productnameinternal,
+      EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+      EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+      TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
+      PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+    };	
+    
+    var res = $http.post('/insertDailyPainting', dataObj).then(function(data, status, headers, config) {
+      $state.reload();
+    });
+  } else {
+
+    var valueProducedByTheEmployee = products_still_to_produce * $scope.priceEuro;
+
+    //THE NUMBER OF PRODUCTS products_still_to_produce ARE THE NUMBER OF PRODUCTS STILL TO REGISTER IN THIS ORDER.
+    var dataObj = {
+      ORDER_ID: $scope.orderid,
+      INTERNAL_PRODUCT_ID : $scope.internalproductid,
+      CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+      PRODUCT_NAME: $scope.productnameinternal,
+      EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+      EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+      TOTAL_PRODUCTS_PAINTED: products_still_to_produce,
+      PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+    };	
+
+    
+    var res = $http.post('/insertDailyPainting', dataObj).then(function(data, status, headers, config) {
+      //$state.reload;
+    });
+
+
+    //THE NUMBER OF PRODUCTS FROM THE DAILY PRODUCTION THAT WE STILL NEED TO REGISTE IN ANOTHER ORDER
+    var products_remaining_from_daily_production = $scope.totalquantityproduced - products_still_to_produce;
+
+    //var xyz = productInTheSameOrder.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production);
+
+    //WE NEED TO CHECK IF IN THE SAME ORDER TERE ARE PRODUCTS STILL TO ADD FOR THE SAME INTERNAL PRODUCT ID
+    $scope.productsToClose = [];
+    var xpto = new Array();
+    
+    var request = $http.get('/productstilltocloseinthisorder/' +  encodeURIComponent($scope.orderid) + '/'+ encodeURIComponent($scope.internalproductid));    
+    request.then(function successCallback(response) {
+    $scope.productsToClose  = response.data;
+
+      console.log("productsToClose.length: " + $scope.productsToClose.length);
+
+    if($scope.productsToClose.length > 0) { 
+      ///################################################################################////
+      for(i=0; i < $scope.productsToClose.length; i++) {
+        var orderproduct = $scope.productsToClose[i];
+ 
+        var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PAINTED;
+ 
+        var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
+        var order_id = orderproduct.ORDER_ID;
+ 
+        console.log("orderproduct: " + orderproduct);
+        console.log("customer_product_id: " + customer_product_id);
+        console.log("order_id: " + order_id);
+        console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
+
+        //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
+        //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
+        if(number_of_products_to_close_order <= products_remaining_from_daily_production) { 
+
+          var valueProducedByTheEmployee = number_of_products_to_close_order * $scope.priceEuro;
+
+          products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
+           var insertProductsInTheSameOrder = {
+               ORDER_ID: order_id,
+               INTERNAL_PRODUCT_ID : $scope.internalproductid,
+               CUSTOMER_PRODUCT_ID: customer_product_id,
+               PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+               EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+               EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+               TOTAL_PRODUCTS_PAINTED: number_of_products_to_close_order,
+               PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+             };	
+ 
+             var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
+            });
+        } else {
+
+            var valueProducedByTheEmployee = products_remaining_from_daily_production * $scope.priceEuro;
+            //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
+            //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
+            //DAILY PRODUCTION
+            var insertProductsInTheSameOrder = {
+              ORDER_ID: order_id,
+              INTERNAL_PRODUCT_ID : $scope.internalproductid,
+              CUSTOMER_PRODUCT_ID: customer_product_id,
+              PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+              EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+              EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+              TOTAL_PRODUCTS_PAINTED: products_remaining_from_daily_production,
+              PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+            };	
+
+            var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
+           });
+
+           products_remaining_from_daily_production = 0;
+
+       }
+ 
+       }//FOR
+       //IF WE STILL HAVE PRODUCTS TO REGISTER IN THE DAILY PRODUCTION AND THEY CAN'T BE ADDED INTO THIS ORDER, WE NEED TO ITERATE OVER 
+       //ALL THE ORDERS TO CHECK IF THE SAME INTERNAL PRODUCT ID IS OPENED TO BE REGISTERED
+        if(products_remaining_from_daily_production > 0) {
+
+          productInOtherOpenOrdersForPainting.insertPaiting($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro);
+        
+        } //if
+
+      } //IF 
+      else {
+        //IN THIS ORDER THERE IS NOT A PRODUCT FOR THE SAME INTERNAL PRODUCT ID
+        //WE NEED TO CHECK IF THERE'S ANTOHER ORDER WITH THE SAME INTERNAL PRODUCT ID
+        productInOtherOpenOrdersForPainting.insertPaiting($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro);        
     }
 
       $state.reload();
@@ -3782,4 +3971,133 @@ app.factory('productInOtherOpenOrdersOrOverProduction', function($http) {
         insertProduction: insertProduction,
         returAlertMsg: returAlertMsg
       };
+}); //app.factory
+
+//FACTORY TO SEARCH FOR THE SAME PRODUCT INTERNAL ID IN ALL OPEN ORDERS AND REGISTER THE DAILY PAINTING
+app.factory('productInOtherOpenOrdersForPainting', function($http) { 
+
+  //return {
+    var alertMsg = new Array();
+    //insertProduction : function ($scope, orderid, internalproductid, products_remaining_from_daily_production, alertMsg) { 
+    function insertPaiting($scope, orderid, internalproductid, products_remaining_from_daily_production, employyee_name, productPriceInEuro) { 
+
+      //INITIALIZE OVERPRODUCTION VARIABLE
+      $scope.overProduction = products_remaining_from_daily_production;
+      $scope.ordersWithThisInternalProductId = [];
+      var request = $http.get('/getAllOrdersForPaintingInternalProductId/' +  encodeURIComponent(orderid) + '/'+ encodeURIComponent(internalproductid));  
+      request.then(function successCallback(response) {
+        $scope.ordersWithThisInternalProductId  = response.data;
+
+        console.log("ordersWithThisInternalProductId.length: " + $scope.ordersWithThisInternalProductId.length);
+        if($scope.ordersWithThisInternalProductId.length > 0) {
+          for(i=0; i < $scope.ordersWithThisInternalProductId.length; i++) {
+            var orderproduct = $scope.ordersWithThisInternalProductId[i];
+     
+            var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PAINTED;
+     
+            var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
+            var order_id = orderproduct.ORDER_ID;
+
+            console.log("orderproduct: " + orderproduct);
+            console.log("customer_product_id: " + customer_product_id);
+            console.log("order_id: " + order_id);
+            console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
+
+            //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
+            //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
+            if(number_of_products_to_close_order <= products_remaining_from_daily_production) { 
+
+              alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + number_of_products_to_close_order);
+              alert(alertMsg);
+
+              products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
+              $scope.overProduction = products_remaining_from_daily_production;
+              var valueProducedByTheEmployee = number_of_products_to_close_order * productPriceInEuro;
+
+              var insertProductsInTheSameOrder = {
+                  ORDER_ID: order_id,
+                  INTERNAL_PRODUCT_ID : $scope.internalproductid,
+                  CUSTOMER_PRODUCT_ID: customer_product_id,
+                  PRODUCT_NAME: $scope.productnameinternal,
+                  EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+                  EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+                  TOTAL_PRODUCTS_PAINTED: number_of_products_to_close_order,
+                  PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+                };	
+    
+                var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
+                });
+            } else {
+                //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
+                //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
+                //DAILY PRODUCTION
+               if(products_remaining_from_daily_production > 0) {
+                alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
+                alert(alertMsg.toString());
+
+                var valueProducedByTheEmployee = products_remaining_from_daily_production * productPriceInEuro;
+
+                var insertProductsInTheSameOrder = {
+                  ORDER_ID: order_id,
+                  INTERNAL_PRODUCT_ID : $scope.internalproductid,
+                  CUSTOMER_PRODUCT_ID: customer_product_id,
+                  PRODUCT_NAME: $scope.productnameinternal,
+                  EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+                  EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+                  TOTAL_PRODUCTS_PAINTED: products_remaining_from_daily_production,
+                  PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+                };	
+
+                var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
+                });
+
+                products_remaining_from_daily_production = 0; 
+              }    
+          }
+        } //for
+        //WE NEED TO CHECK IF WE STILL HAVE PRODUCTS TO REGISTER AS OVER PRODUCTION
+        if($scope.overProduction > 0) {
+          var insertOverProductionData = {
+            INTERNAL_PRODUCT_ID : $scope.internalproductid,
+            PRODUCT_NAME: $scope.productnameinternal,
+            EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+            EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+            PRODUCTS_PRODUCED: $scope.overProduction,
+          };
+  
+          var res = $http.post('/insertOverProductionStockTable', insertOverProductionData).then(function(data, status, headers, config) {
+          });
+        }
+
+       } //if 
+       //WE NEED TO CHECK IF WE STILL HAVE PRODUCTS TO REGISTER AS OVER PRODUCTION
+       else {
+                if($scope.overProduction > 0) {
+                  var insertOverProductionData = {
+                    INTERNAL_PRODUCT_ID : $scope.internalproductid,
+                    PRODUCT_NAME: $scope.productnameinternal,
+                    EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+                    EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+                    EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
+                    PRODUCTS_PRODUCED: $scope.overProduction,
+                  };
+          
+                  var res = $http.post('/insertOverProductionStockTable', insertOverProductionData).then(function(data, status, headers, config) {
+                  });
+                }
+       }
+      },
+      function errorCallback(data){
+        console.log('Error: ' + data);
+      });
+    } //function
+
+    function returAlertMsg () {
+        return alertMsg;
+    }
+  //}//return
+    return {
+      insertPaiting: insertPaiting,
+      returAlertMsg: returAlertMsg
+    };
 }); //app.factory
