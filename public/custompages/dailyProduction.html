@@ -29,11 +29,11 @@
                         <div class="inner-wrap">
                             <div class="col-md-1 label-header-item header-label-order">Encomenda</div>
                             <div class="col-md-2 label-header-item header-label-clientref">Ref. Cliente</div>
-                            <div class="col-md-2 label-header-item header-label-innerref">Ref. Interna</div>
+                            <div class="col-md-1 label-header-item header-label-innerref">Ref. Interna</div>
                             <div class="col-md-2 label-header-item header-label-prodname">Nome Produto</div>
                             <div class="col-md-2 label-header-item header-label-workername">Nome Rodista</div>
                             <div class="col-md-1 label-header-item header-label-quantity">Quantidade Produzida</div>
-                            <div class="col-md-2 label-header-item header-label-quantity">Valor em Euros</div>                            
+                            <div class="col-md-1 label-header-item header-label-value">Valor em Euros</div>                            
                             <div class="col-md-2 label-header-item header-label-date">Data de Registo</div>
                         </div>
                     </div>
@@ -43,11 +43,11 @@
                                     <div class="item-inner-wrap">
                                         <div class="col-md-1 table-item item-label-order">{{productsProduced.ORDER_ID}}</div>
                                         <div class="col-md-2 table-item item-label-clientref">{{productsProduced.CUSTOMER_PRODUCT_ID}}</div>
-                                        <div class="col-md-2 table-item item-label-innerref">{{productsProduced.INTERNAL_PRODUCT_ID}}</div>
+                                        <div class="col-md-1 table-item item-label-innerref">{{productsProduced.INTERNAL_PRODUCT_ID}}</div>
                                         <div class="col-md-2 table-item item-label-prodname">{{productsProduced.PRODUCT_NAME}}</div>
                                         <div class="col-md-2 table-item item-label-workername">{{productsProduced.EMPLOYEE_NAME}}</div>
                                         <div class="col-md-1 table-item item-label-quantity"><strong>{{productsProduced.TOTAL_PRODUCTS_PRODUCED}}</strong></div>
-                                        <div class="col-md-1 table-item item-label-quantity"><strong>{{productsProduced.PRODUCED_VALUE_IN_EURO}}</strong></div>
+                                        <div class="col-md-1 table-item item-label-value"><strong>{{productsProduced.PRODUCED_VALUE_IN_EURO}}</strong></div>
                                         <div class="col-md-2 table-item item-label-date short">
                                             {{productsProduced.CREATED_DATE}}
                                             <div class="item-order-actions">
