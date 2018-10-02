@@ -660,6 +660,21 @@ fetchDailyProduction = function(data, callback) {
 });
 }
 
+//INSERT DAILY PAINTING - order_products_painting_registry
+insertDailyPainting = function(req, res) {
+    var postData  = req.body;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    con.query('INSERT INTO order_products_painting_registry SET ?', postData, function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
 //GET SAME INTERNAL PRODUCT ID IN AN ORDER THAT HASN'T BEEN CLOSED - order_products_production_registry
 fetchDailyProductionOrderProduct = function(req, callback) {
     var orderid = req.params.orderid;

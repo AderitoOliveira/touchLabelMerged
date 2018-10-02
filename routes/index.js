@@ -311,6 +311,12 @@ router.get('/getDailyProduction', function(req,res){
   fetchDailyProduction(req,res);  
 });
 
+//INSERT DAILY PAINTING - order_products_painting_registry
+router.post('/insertDailyPainting', function(req,res){
+  console.log("INSERT ORDER PRODUCTS DAILY PAINTING REGISTER");
+  insertDailyPainting(req,res);  
+});
+
 //GET SAME INTERNAL PRODUCT ID IN AN ORDER THAT HASN'T BEEN CLOSED - order_products_production_registry
 router.get('/getDailyProductionOrderProduct/:orderid/:productid', function(req,res){
   console.log("GET DAILY PRODUCTION FOR AN PRODUCT IN AN ORDER 1");

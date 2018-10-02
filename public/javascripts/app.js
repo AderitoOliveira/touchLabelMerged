@@ -744,7 +744,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
    //INSERT DAILY PRODUCTION
-   $scope.insertDailyProduction = function(internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced,totalquantityproduced, employyee_name, priceEuro) {
+   $scope.insertDailyProduction = function(internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced,totalquantityproduced, employyee_name, priceEuro, statusProductInOrder) {
 
     //$scope.title = title;
     $scope.orderid = $scope.orderid;
@@ -754,6 +754,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     $scope.totalquantityordered = totalquantityordered;
     $scope.totalquantityproduced = totalquantityproduced;
     $scope.priceEuro = priceEuro;
+    
 
     //PRODUCTS STILL TO PRODUCE
   var products_still_to_produce = totalquantityordered - totalproductsproduced;
