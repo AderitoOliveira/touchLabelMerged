@@ -10,6 +10,12 @@
     }
 }
 
+button, a{
+    &:focus{
+        outline:none;
+    }
+}
+
 $background: #000;
 
 .techSheetDiv {
@@ -1099,7 +1105,11 @@ a.btn.btn-sm {
     line-height: normal;
     letter-spacing: normal;
     color: #222;
-    line-height:2
+    line-height:2;
+}
+
+.table-item.item-order-nr{
+    overflow-x:hidden;
 }
 
 .item-order-actions a {
@@ -1593,19 +1603,30 @@ a.btn.btn-sm {
     line-height:1 !important;
 }
 
-.item-inner-wrap.em_pintura {
-    background-color: #D9FED6;
-    .table-item {
-        color: #158B47 !important;
+.em_pintura {
+    .item-inner-wrap{
+        background-color: #D9FED6;
+        .table-item {
+            color: #158B47 !important;
+        }
+        #btn-close-production{
+            display:none;
+        }
     }
-    #btn-close-production{
+    .ptype-toggle.prod{
         display:none;
     }
 }
-.item-inner-wrap.em_producao{
-    #btn-close-paint{
+.em_producao{
+    .item-inner-wrap{
+        #btn-close-paint{
+            display:none;
+        }
+    }
+    .ptype-toggle.paint{
         display:none;
     }
+    
 }
 .item-label-date.short{
     padding-right:60px;
@@ -1619,12 +1640,17 @@ a.btn.btn-sm {
     }
 }
 
-.item-inner-wrap.fechado_na_encomenda {
-    background-color: #EEEBEB;
-    .table-item {
-        color: rgba(0,0,0,0.5) !important;
+.fechado_na_encomenda {
+    .item-inner-wrap{
+        background-color: #EEEBEB;
+        .table-item {
+            color: rgba(0,0,0,0.5) !important;
+        }
+        #btn-close-production,  #btn-close-paint{
+            display:none;
+        }
     }
-    #btn-close-production,  #btn-close-paint{
+    .ptype-toggle.paint{
         display:none;
     }
 }

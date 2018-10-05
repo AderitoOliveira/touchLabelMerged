@@ -77,7 +77,7 @@
                         <div class="col-md-12" dir-paginate="order in orders |filter:searchChar | itemsPerPage:7">
                             <div class="row">
                                 <div class="item-inner-wrap">
-                                    <div class="col-md-1 table-item item-order-nr">{{order.ORDER_ID}}</div>
+                                    <div class="col-md-1 table-item item-order-nr" title="{{order.ORDER_ID}}">{{order.ORDER_ID}}</div>
                                     <div class="col-md-2 table-item item-order-client">{{order.CLIENT_NAME}}</div>
                                     <div class="col-md-2 table-item item-order-date">{{order.CREATED_DATE}}</div>
                                     <div class="col-md-2 table-item item-order-date-end">{{order.MODIFIED_DATE}}</div>
