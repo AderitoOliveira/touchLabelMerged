@@ -1137,10 +1137,13 @@ a.btn.btn-sm {
     }
     
     .item-order-actions {
-        width: 50%;
+        width: auto;
         float: right;
+        margin-right: 7.5px;
+        max-width: 50%;
     }
 }
+
 
 .add-product-label, .add-order-label{
     h2 {
