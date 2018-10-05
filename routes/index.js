@@ -317,7 +317,7 @@ router.post('/insertDailyPainting', function(req,res){
   insertDailyPainting(req,res);  
 });
 
-//GET SAME INTERNAL PRODUCT ID IN AN ORDER THAT HASN'T BEEN CLOSED - order_products_production_registry
+//GET THE DAILY PRODUCTION RECORDS THAT HAVE BEEN SAVED FOR THIS ORDER - order_products_production_registry
 router.get('/getDailyProductionOrderProduct/:orderid/:productid', function(req,res){
   console.log("GET DAILY PRODUCTION FOR AN PRODUCT IN AN ORDER 1");
   console.log("REQ.BODY: " + req.params.orderid);
@@ -347,6 +347,15 @@ router.get('/getAllOrdersForPaintingInternalProductId/:orderid/:productid', func
   console.log("REQ.INTERNAL_PRODUCT_ID: " + req.params.productid);
   fetchAllOrdersForPaintingInternalProductId(req,res);  
 });
+
+//GET THE DAILY PAINTING RECORDS THAT HAVE BEEN SAVED FOR THIS ORDER - order_products_painting_registry
+router.get('/getDailyPaintingOrderProduct/:orderid/:productid', function(req,res){
+  console.log("GET DAILY PAINTING FOR AN PRODUCT IN AN ORDER 1");
+  console.log("REQ.BODY: " + req.params.orderid);
+  console.log("REQ.INTERNAL_PRODUCT_ID: " + req.params.productid);
+  fetchDailyPaintingOrderProduct(req,res);  
+});
+
 
 //INSERT LABELS TO PRINT - order_products_labels_to_print
 router.post('/insertLabelsToPrint', function(req,res){
