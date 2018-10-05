@@ -571,7 +571,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           $scope.products[i].ORDER_PRODUCT_STATUS = 'Em Produção';
           $scope.products[i].INSERT_PRODUCTION = true;  
 
-          $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PAINTED;            
+          $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PRODUCED;            
         }
         
         //IF em_pintura
