@@ -84,7 +84,20 @@
         }
     });
 
-    $(document).on('click','li.notification', function(){
+    $(window).on('load',function(){
+        $('li.notification').each(function(){
+            var notifLines = $(this).find('.notification-item');
+            var notifAmt = notifLines.length;
+            if (notifAmt >= 1){
+                $(this).find('.notification-label').html(notifAmt);
+                $(this).addClass('has-children');
+            } else {
+                $(this).find('.notification-label').hide();
+            }
+        })  
+    })
+
+    $(document).on('click','li.notification.has-children', function(){
         if($(this).hasClass('expanded')){
             $('li.notification').removeClass('expanded');
         } else {
