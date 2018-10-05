@@ -77,7 +77,11 @@
                         </div>
                     </div>
                     <div class="order-table-content row">
+<<<<<<< HEAD
                         <div class="col-md-12" dir-paginate="product in products | orderBy : 'QUANTITY_PRODUCED' |filter:searchChar | itemsPerPage:7" ng-click="dailyProductionDetails(product.CUSTOMER_PRODUCT_ID, product.ORDER_PRODUCT_STATUS_RAW)">
+=======
+                        <div class="col-md-12 {{product.ORDER_PRODUCT_STATUS_RAW}}" dir-paginate="product in products | orderBy : 'QUANTITY_PRODUCED' |filter:searchChar | itemsPerPage:7" ng-click="dailyProductionDetails(product.CUSTOMER_PRODUCT_ID, product.ORDER_PRODUCT_STATUS_RAW)">
+>>>>>>> e5c14bee25fdaf6d1101c77693086d0dac030849
                             <div class="row">
                                 <div class="item-inner-wrap {{product.ORDER_PRODUCT_STATUS_RAW}}">
                                     <div class="col-md-1 table-item item-order-nr"><img src="{{product.IMAGE_PATH}}/{{product.IMAGE_NAME}}" class="img-product img-rounded" height="50" width="50"/></div>
@@ -113,10 +117,12 @@
                                                 <div class="header-inner">
                                                     <div class="row">
                                                         <div class="col-md-2">
-                                                            Produção Diária
+                                                            <span class="ptype-toggle prod">Produção Diária</span>
+                                                            <span class="ptype-toggle paint">Pintura Diária</span>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            Rodista
+                                                            <span class="ptype-toggle prod">Rodista</span>
+                                                            <span class="ptype-toggle paint">Pintor</span>
                                                         </div>
                                                         <div class="col-md-4">
                                                             Data
