@@ -95,10 +95,10 @@
                                             <a class="btn btn-sm btn-warning" ng-click="showEditProductModal(product.INTERNAL_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.QUANTITY_PRODUCED)" data-toggle="tooltip" title="Editar Produto.">
                                                 <img src="assets/icons/btn-edit.svg" width="24px" height="24px" />
                                             </a>
-                                            <a class="btn btn-sm btn-success" ng-click="closeProductInProduction(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME,  product.TOTAL_QUANTITY_ORDERED, product.TOTAL_PRODUCTS_PRODUCED)" data-toggle="tooltip" title="Fechar Produção">
+                                            <a id="btn-close-production" class="btn btn-sm btn-success" ng-click="closeProductInProduction(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME,  product.TOTAL_QUANTITY_ORDERED, product.TOTAL_PRODUCTS_PRODUCED)" data-toggle="tooltip" title="Fechar Produção">
                                                 <img src="assets/icons/btn-success.svg" width="24px" height="24px" />
                                             </a>
-                                            <a class="btn btn-sm btn-success" ng-click="closeProductPainting(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_PRODUCTS_PRODUCED)" data-toggle="tooltip" title="Fechar Produto em Pintura">
+                                            <a id="btn-close-paint" class="btn btn-sm btn-success" ng-click="closeProductPainting(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_PRODUCTS_PRODUCED)" data-toggle="tooltip" title="Fechar Produto em Pintura">
                                                 <img src="assets/icons/btn-success-paint.svg" width="24px" height="24px" />
                                             </a>
                                             <a class="btn btn-sm btn-success" ng-click="seeProductDetailInOrder(product.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="Ver Detalhes de Produção do Produto">
