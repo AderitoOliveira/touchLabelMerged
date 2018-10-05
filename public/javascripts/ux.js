@@ -116,8 +116,14 @@
             $(this).addClass('expanded');
          } else {
             $('#order-products-table .item-inner-wrap').removeClass('expanded');
-         }
-        
+         }  
+    })
+
+    $(document).on('click', '#conf-save', function(){
+        $('#conf-notification').addClass('active');
+        setTimeout(function(){
+            $('#conf-notification').removeClass('active');
+        },3000);
     })
 
 })(jQuery);

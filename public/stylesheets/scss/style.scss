@@ -1750,6 +1750,47 @@ a.btn.btn-sm {
     display:block;
 }
 
+#conf-notification {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    border: 1px solid #dedede;
+    padding: 24px;
+    border-radius: 3px;
+    box-shadow: 2px 2px 2px #dedede;
+    font-weight: bold;
+    color: #222;
+    display:none;
+    opacity:0;
+    transition:all 0.6s ease-in-out;
+    &.active{
+        display:block;
+        opacity:1;
+        transition:all 0.3s ease-in-out;
+        animation-name: activate-border;
+        animation-duration:1s;
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+    }
+}
+
+@keyframes activate-border{
+    0%{
+        border-color:#dedede;
+    }
+    25%{
+        border-color:rgb(41, 151, 19);
+    }
+    50%{
+        border-color:#dedede;
+    }
+    75%{
+        border-color:rgb(41, 151, 19);
+    }
+    100%{
+        border-color:#dedede;
+    }
+}
+
 @media screen and (max-width:1024px){
     .nav-toggle{
         display:block;
