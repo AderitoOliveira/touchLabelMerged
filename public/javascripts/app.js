@@ -1560,19 +1560,44 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
   //GET DETAILS FOR THE DAILY PRODUCTION FOR A PRODUCT IN AN ORDER
   var customer_product_id = 0;
-  $scope.dailyProductionDetails = function (customerproductid) {
+  $scope.dailyProductionDetails = function (customerproductid, orderproductstatusraw) {
 
     customer_product_id = customerproductid;
     
-    $scope.dailyProduction = [];
-    var request = $http.get('/getDailyProductionOrderProduct/' +  encodeURIComponent(orderId) + '/'+ encodeURIComponent(customerproductid));    
-    request.then(function successCallback(response) {
-      $scope.dailyProduction  = response.data;
-      return  $scope.dailyProduction; 
-    },
-    function errorCallback(data){
-      console.log('Error: ' + data);
-    });
+    if(orderproductstatusraw == 'em_producao')
+    {
+      $scope.dailyProduction = [];
+      var request = $http.get('/getDailyProductionOrderProduct/' +  encodeURIComponent(orderId) + '/'+ encodeURIComponent(customerproductid));    
+      request.then(function successCallback(response) {
+        $scope.dailyProduction  = response.data;
+        
+        for(i=0; i < $scope.dailyProduction.length; i++) {
+          $scope.dailyProduction[i].TOTAL_PRODUCTS_DAILY_REGISTERED = $scope.dailyProduction[i].TOTAL_PRODUCTS_PRODUCED;
+        }
+        
+        return  $scope.dailyProduction; 
+      },
+      function errorCallback(data){
+        console.log('Error: ' + data);
+      });
+    }
+    if(orderproductstatusraw == 'em_pintura')
+    {
+      $scope.dailyProduction = [];
+      var request = $http.get('/getDailyPaintingOrderProduct/' +  encodeURIComponent(orderId) + '/'+ encodeURIComponent(customerproductid));    
+      request.then(function successCallback(response) {
+        $scope.dailyProduction  = response.data;
+
+        for(i=0; i < $scope.dailyProduction.length; i++) {
+          $scope.dailyProduction[i].TOTAL_PRODUCTS_DAILY_REGISTERED = $scope.dailyProduction[i].TOTAL_PRODUCTS_PAINTED;
+        }
+
+        return  $scope.dailyProduction; 
+      },
+      function errorCallback(data){
+        console.log('Error: ' + data);
+      });
+    }
 
   };
   //FUNCTION TO CHECK IS THE DETAILS OF THE DAILY PRODUCTION SHOULD BE SHOWN

@@ -697,7 +697,7 @@ insertDailyPainting = function(req, res) {
  });
 }
 
-//GET SAME INTERNAL PRODUCT ID IN AN ORDER THAT HASN'T BEEN CLOSED - order_products_production_registry
+//GET THE DAILY PRODUCTION RECORDS THAT HAVE BEEN SAVED FOR THIS ORDER - order_products_production_registry
 fetchDailyProductionOrderProduct = function(req, callback) {
     var orderid = req.params.orderid;
     var productid = req.params.productid;
@@ -719,6 +719,27 @@ fetchDailyProductionOrderProduct = function(req, callback) {
 });
 }
 
+//GET THE DAILY PAINTING RECORDS THAT HAVE BEEN SAVED FOR THIS ORDER - order_products_painting_registry
+fetchDailyPaintingOrderProduct = function(req, callback) {
+    var orderid = req.params.orderid;
+    var productid = req.params.productid;
+    console.log("ORDER_ID ON SERVERS.JS: " + orderid);
+    console.log("INTERNAL_PRODUCT_ID: " + productid);
+    con.connect(function(err) {
+    con.query('SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_ID, EMPLOYEE_NAME, TOTAL_PRODUCTS_PAINTED, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE FROM order_products_painting_registry where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ? ORDER BY CREATED_DATE DESC', [orderid, productid], function (err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET DAILY PAINTING FOR A PRODUCT IN AN ORDER");   
+
+    });
+});
+}
 
 //INSERT OVER PRODUCTION IN STOCK TABLE - overproduction_in_stock
 insertOverProductionStockTable = function(req, res) {
