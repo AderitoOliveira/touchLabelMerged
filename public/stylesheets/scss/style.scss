@@ -1598,6 +1598,14 @@ a.btn.btn-sm {
     .table-item {
         color: #158B47 !important;
     }
+    #btn-close-production{
+        display:none;
+    }
+}
+.item-inner-wrap.em_producao{
+    #btn-close-paint{
+        display:none;
+    }
 }
 .item-label-date.short{
     padding-right:60px;
@@ -1610,10 +1618,14 @@ a.btn.btn-sm {
         transform: translateY(-12px);
     }
 }
+
 .item-inner-wrap.fechado_na_encomenda {
     background-color: #EEEBEB;
     .table-item {
         color: rgba(0,0,0,0.5) !important;
+    }
+    #btn-close-production,  #btn-close-paint{
+        display:none;
     }
 }
 
