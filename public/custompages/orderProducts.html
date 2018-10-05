@@ -85,11 +85,11 @@
                                     <div class="col-md-1 table-item item-order-client">{{product.INTERNAL_PRODUCT_ID}}</div>
                                     <div class="col-md-2 table-item item-order-date">{{product.PRODUCT_NAME}}</div>
                                     <div class="col-md-2 table-item item-order-date-end">{{product.CREATED_DATE}}</div>
-                                    <div class="col-md-2 table-item item-order-products">{{product.TOTAL_QUANTITY_ORDERED}}<strong> / {{product.TOTAL_PRODUCTS_PRODUCED}}</strong></div>
+                                    <div class="col-md-2 table-item item-order-products">{{product.TOTAL_QUANTITY_ORDERED}}<strong> / {{product.TOTAL_PRODUCTS_COMPLETED}}</strong></div>
                                     <div class="col-md-3 table-item item-order-state">
                                         <span class="order-status">{{product.ORDER_PRODUCT_STATUS}}</span>
                                         <div class="item-order-actions">
-                                            <a class="btn btn-sm btn-danger" ng-click="deleteProductInOrder(product.INTERNAL_PRODUCT_ID, product.PRODUCT_NAME)" data-toggle="tooltip" title="Remover Produto.">
+                                            <a class="btn btn-sm btn-danger" ng-click="deleteProductInOrder(product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME)" data-toggle="tooltip" title="Remover Produto.">
                                                 <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
                                             </a>
                                             <a class="btn btn-sm btn-warning" ng-click="showEditProductModal(product.INTERNAL_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.QUANTITY_PRODUCED)" data-toggle="tooltip" title="Editar Produto.">
@@ -135,7 +135,9 @@
                                                 </div>                                                
                                             </div>
                                             <!-- REPEATABLE ITEM-->
-                                                <div class="col-md-12 order-product-details-item" ng-repeat="detail in dailyProduction" ng-if="isSelectedOrder(product.CUSTOMER_PRODUCT_ID)">
+                                                <!--div class="col-md-12 order-product-details-item" ng-repeat="detail in dailyProduction" ng-if="isSelectedOrder(product.CUSTOMER_PRODUCT_ID)"-->
+                                                <div class="col-md-12 order-product-details-item" ng-repeat="detail in dailyProduction">
+
                                                     <div class="item-row-inner">
                                                         <div class="row">
                                                             <div class="col-md-2 item-amount">
@@ -166,7 +168,8 @@
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="add-actions-wrap">
-                                                                <button type="submit" ng-click="insertDailyProduction(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.TOTAL_PRODUCTS_PRODUCED, qtyproduzida, nameemployee, product.PRICE_EURO_1)" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px" />Adicionar</button>
+                                                                <button type="submit" ng-show="product.INSERT_PRODUCTION == true" ng-click="insertDailyProduction(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.TOTAL_PRODUCTS_COMPLETED, qtyproduzida, nameemployee, product.PRICE_EURO_1)" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px" />Adicionar</button>
+                                                                <button type="submit" ng-show="product.INSERT_PAINTING == true" ng-click="insertDailyPainting(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.TOTAL_PRODUCTS_COMPLETED, qtyproduzida, nameemployee, product.PRICE_EURO_1)" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px" />Adicionar</button>
                                                                 <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" /></button>
                                                             </div>
                                                         </div>
