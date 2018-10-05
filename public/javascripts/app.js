@@ -550,6 +550,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
 
        for(i=0; i < $scope.products.length; i++) {
+        //IF em_producao
+        if($scope.products[i].ORDER_PRODUCT_STATUS == 'em_producao')
+        {
           var percentage = Math.round( $scope.products[i].TOTAL_PRODUCTS_PRODUCED  / $scope.products[i].TOTAL_QUANTITY_ORDERED * 100);
           $scope.products[i].percent= percentage;
           $scope.products[i].width= percentage;
@@ -563,17 +566,44 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           if( percentage > 66) {
             $scope.products[i].progressBarColor = "#1be36b";
           }
-          
-          if($scope.products[i].ORDER_PRODUCT_STATUS == 'em_producao') {
-            $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
-            $scope.products[i].ORDER_PRODUCT_STATUS = 'Em Produção';        
-          } else if ($scope.products[i].ORDER_PRODUCT_STATUS == 'em_pintura') {
-            $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
-            $scope.products[i].ORDER_PRODUCT_STATUS = 'Em Pintura';  
-          } else {
-            $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
-            $scope.products[i].ORDER_PRODUCT_STATUS = 'Fechado na Encomenda';  
+  
+          $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
+          $scope.products[i].ORDER_PRODUCT_STATUS = 'Em Produção';
+          $scope.products[i].INSERT_PRODUCTION = true;  
+
+          $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PAINTED;            
+        }
+        
+        //IF em_pintura
+        if($scope.products[i].ORDER_PRODUCT_STATUS == 'em_pintura')
+        {
+          var percentage = Math.round( $scope.products[i].TOTAL_PRODUCTS_PAINTED  / $scope.products[i].TOTAL_QUANTITY_ORDERED * 100);
+          $scope.products[i].percent= percentage;
+          $scope.products[i].width= percentage;
+          //NEWSTYLES
+          if(percentage > 33) {
+            $scope.products[i].progressBarColor = "#e31b1b";
           }
+          if(percentage >= 34 && percentage <= 66) {
+            $scope.products[i].progressBarColor = "#e3cf1b";
+          }
+          if( percentage > 66) {
+            $scope.products[i].progressBarColor = "#1be36b";
+          }
+          
+          $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
+          $scope.products[i].ORDER_PRODUCT_STATUS = 'Em Pintura';
+          $scope.products[i].INSERT_PAINTING = true;    
+
+          $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PAINTED;
+        }
+
+        //IF fechado_na_encomenda
+        if($scope.products[i].ORDER_PRODUCT_STATUS == 'fechado_na_encomenda'){
+          $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
+          $scope.products[i].ORDER_PRODUCT_STATUS = 'Fechado na Encomenda';
+        }
+
       }
        return  $scope.products; 
    },
