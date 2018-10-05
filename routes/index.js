@@ -356,6 +356,12 @@ router.get('/getDailyPaintingOrderProduct/:orderid/:productid', function(req,res
   fetchDailyPaintingOrderProduct(req,res);  
 });
 
+//INSERT PALLETES QUANTITY AVAILABLE
+router.post('/insertPalletesQuantity', function(req,res){
+  console.log("INSERT PALLETES QUANTITY AVAILABLE");
+  console.log(req.body);
+  insertPalletesQuantity(req,res);  
+});
 
 //INSERT LABELS TO PRINT - order_products_labels_to_print
 router.post('/insertLabelsToPrint', function(req,res){

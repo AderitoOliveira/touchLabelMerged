@@ -963,7 +963,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
 
   //INSERT DAILY PAINTING REGISTRY
-  $scope.insertDailyPainting = function(internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced,totalquantityproduced, employyee_name, priceEuro) {
+  $scope.insertDailyPainting = function(internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced,totalquantityproduced, employyee_name, priceEuro, qtyByPallet) {
 
     //$scope.title = title;
     $scope.orderid = $scope.orderid;
@@ -973,6 +973,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     $scope.totalquantityordered = totalquantityordered;
     $scope.totalquantityproduced = totalquantityproduced;
     $scope.priceEuro = priceEuro;
+    $scope.qtybypallet = qtyByPallet;
     
 
     //PRODUCTS STILL TO PRODUCE
@@ -1009,6 +1010,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
    
     $scope.orderproductstatus = 'em_producao';
     var valueProducedByTheEmployee = $scope.totalquantityproduced * $scope.priceEuro;
+    var palletQuantity = $scope.totalquantityproduced / $scope.qtybypallet;
     
     var dataObj = {
       ORDER_ID: $scope.orderid,
@@ -1022,8 +1024,22 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     };	
     
     var res = $http.post('/insertDailyPainting', dataObj).then(function(data, status, headers, config) {
+      //$state.reload();
+    });
+
+    var dataObjPallet = {
+      ORDER_ID: $scope.orderid,
+      CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+      INTERNAL_PRODUCT_ID : $scope.internalproductid,
+      PRODUCT_NAME: $scope.productnameinternal,
+      TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
+      QUANTITY_IN_PALLETES: palletQuantity,
+    };
+
+    var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function(data, status, headers, config) {
       $state.reload();
     });
+
   } else {
 
     var valueProducedByTheEmployee = products_still_to_produce * $scope.priceEuro;
