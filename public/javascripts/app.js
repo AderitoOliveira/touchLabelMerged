@@ -110,17 +110,22 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
     })
     .state('configuration', {
       url: '/configuration',
-        templateUrl : '../custompages/configurations.html',
-        controller : 'configurations',
-        params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null}
+      templateUrl : '../custompages/configurations.html',
+      controller : 'configurations',
+      params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null}
     })
     .state('listOrders', {
-	  url: '/listOrders',
+	    url: '/listOrders',
       templateUrl : '../custompages/orders.html',
       controller : 'ordersController'
-  });
+    })
+    .state('/otherwise', {
+      url: '/configuration',
+      templateUrl : '../custompages/configurations.html',
+      controller : 'configurations'
+    });
   
-  $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise('/otherwise');
    
     // remove o # da url
   $locationProvider.html5Mode(true);
