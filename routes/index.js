@@ -299,14 +299,14 @@ router.post('/insertDailyProduction', function(req,res){
 
 //DELETE DAILY PRODUCTION - order_products_production_registry
 router.post('/deleteDailyProduction', function(req,res){
-  console.log("GET ORDER PRODUCTS DAILY PRODUCTION");
+  console.log("DELETE ORDER PRODUCTS FROM DAILY PRODUCTION");
   console.log(req.body);
   deleteDailyProduction(req,res);  
 });
 
 //GET DAILY PRODUCTION - order_products_production_registry
 router.get('/getDailyProduction', function(req,res){
-  console.log("GET LABELS TO PRINT");
+  console.log("GET DAILY PRODUCTION");
   console.log(req.body);
   fetchDailyProduction(req,res);  
 });
@@ -315,6 +315,20 @@ router.get('/getDailyProduction', function(req,res){
 router.post('/insertDailyPainting', function(req,res){
   console.log("INSERT ORDER PRODUCTS DAILY PAINTING REGISTER");
   insertDailyPainting(req,res);  
+});
+
+//GET DAILY PAINTING - order_products_painting_registry
+router.get('/getDailyPainting', function(req,res){
+  console.log("GET DAILY PAINTING");
+  console.log(req.body);
+  fetchDailyPainting(req,res);  
+});
+
+//DELETE DAILY PAINTING - order_products_painting_registry
+router.post('/deleteDailyPainting', function(req,res){
+  console.log("DELETE ORDER PRODUCTS FROM DAILY PAINTING");
+  console.log(req.body);
+  deleteDailyPainting(req,res);  
 });
 
 //GET THE DAILY PRODUCTION RECORDS THAT HAVE BEEN SAVED FOR THIS ORDER - order_products_production_registry
