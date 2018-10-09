@@ -1,4 +1,4 @@
-<div class="wrap" ng-controller="dailyPaint">
+<div class="wrap" ng-controller="dailyPaintingController">
     <div id="actions">
         <div class="row">
             <div class="col-md-12">
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div class="order-labels-content row">
-                            <div class="col-md-12" dir-paginate="productsProduced in dailyPaint | filter:searchChar | itemsPerPage:20">
+                            <div class="col-md-12" dir-paginate="productsProduced in dailyPainting | filter:searchChar | itemsPerPage:20">
                                 <div class="row">
                                     <div class="item-inner-wrap">
                                         <div class="col-md-1 table-item item-label-order">{{productsProduced.ORDER_ID}}</div>
@@ -46,7 +46,7 @@
                                         <div class="col-md-1 table-item item-label-innerref">{{productsProduced.INTERNAL_PRODUCT_ID}}</div>
                                         <div class="col-md-2 table-item item-label-prodname">{{productsProduced.PRODUCT_NAME}}</div>
                                         <div class="col-md-2 table-item item-label-workername">{{productsProduced.EMPLOYEE_NAME}}</div>
-                                        <div class="col-md-1 table-item item-label-quantity"><strong>{{productsProduced.TOTAL_PRODUCTS_PRODUCED}}</strong></div>
+                                        <div class="col-md-1 table-item item-label-quantity"><strong>{{productsProduced.TOTAL_PRODUCTS_PAINTED}}</strong></div>
                                         <div class="col-md-1 table-item item-label-value"><strong>{{productsProduced.PRODUCED_VALUE_IN_EURO}}</strong></div>
                                         <div class="col-md-2 table-item item-label-date short">
                                             {{productsProduced.CREATED_DATE}}

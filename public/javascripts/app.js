@@ -67,6 +67,11 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
         templateUrl : '../custompages/dailyProduction.html',
         controller : 'dailyProduction'
     })
+    .state('listDailyPaint', {
+      url: '/listDailyPaint',
+        templateUrl : '../custompages/dailyPaint.html',
+        controller : 'dailyPaintingController'
+    })
     .state('printLabel', {
       url: '/printLabel',
         templateUrl : '../custompages/productLabel.html',
@@ -3226,10 +3231,9 @@ $scope.no = function() {
 
 
 //Generic Modal for deleting/confirming operation where we receive the dataObj array and the operation to execute
-app.controller('genericModalController',  ['$scope','$http', '$state', 'title', 'operationURL', 'dataObj', 'question', 'message', 
-                                          function($scope,$http, $state, title, operationURL, dataObj, question, message){
+app.controller('genericModalController',  ['$scope','$http', '$state', 'operationURL', 'dataObj', 'question', 'message', 
+                                          function($scope,$http, $state, operationURL, dataObj, question, message){
 
-$scope.title = title;
 $scope.question = question; 
 $scope.message = message;
 $scope.operationURL = operationURL;
@@ -4069,7 +4073,7 @@ app.controller('dailyProduction', function($scope, $http, $rootScope, ModalServi
   });
 
 
-  //Delete dialy production registry
+  //Delete daily production registry
   $scope.delete = function(order_id, customer_product_id, employee_name) {
     
     var dataToDelete = {
@@ -4101,6 +4105,52 @@ app.controller('dailyProduction', function($scope, $http, $rootScope, ModalServi
   };
 });
 
+
+//DAILY PAINTING - Controller
+app.controller('dailyPaintingController', function($scope, $http, $rootScope, ModalService) {
+  $rootScope.name= "Registo Pintura Diária";
+  $scope.dailyPainting = [];
+    var request = $http.get('/getDailyPainting');    
+  request.then(function successCallback(response) {
+      $scope.dailyPainting  = response.data;
+      return  $scope.dailyPainting; 
+  },
+  function errorCallback(data){
+      console.log('Error: ' + data);
+  });
+
+
+  //Delete daily painting registry
+  $scope.delete = function(order_id, customer_product_id, employee_name) {
+    
+    var dataToDelete = {
+    ORDER_ID : order_id,
+    CUSTOMER_PRODUCT_ID : customer_product_id,
+    EMPLOYEE_NAME : employee_name
+    };
+
+    ModalService.showModal({
+      templateUrl: "../modal/yesNoGeneric.html",
+      controller: "genericModalController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        question: "Deseja mesmo apagar o registo de Produção Diária",
+        message: "do produto " + customer_product_id + "na encomenda " + order_id,
+        operationURL: '/deleteDailyPainting',
+        dataObj: dataToDelete
+      }
+    }).then(function(modal) {
+    modal.element.modal();
+    modal.close.then(function(result) {
+      if (!result) {
+        $scope.complexResult = "Modal forcibly closed..."
+      } else {
+        $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+      }
+    });
+   });
+  };
+});
 
 //FACTORY TO SEARCH FOR THE SAME PRODUCT INTERNAL ID IN ALL OPEN ORDERS AND REGISTER THE DAILY PRODUCTION
 app.factory('productInOtherOpenOrdersOrOverProduction', function($http) { 
