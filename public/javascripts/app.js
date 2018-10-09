@@ -1058,7 +1058,6 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
     
     var res = $http.post('/insertDailyPainting', dataObj).then(function(data, status, headers, config) {
-      //$state.reload;
     });
 
     var dataObjPallet = {
@@ -1071,7 +1070,6 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     };
 
     var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function(data, status, headers, config) {
-      //$state.reload();
     });
 
     //THE NUMBER OF PRODUCTS FROM THE DAILY PRODUCTION THAT WE STILL NEED TO REGISTE IN ANOTHER ORDER
@@ -1109,6 +1107,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         if(number_of_products_to_close_order <= products_remaining_from_daily_production) { 
 
           var valueProducedByTheEmployee = number_of_products_to_close_order * $scope.priceEuro;
+          var palletQuantity = number_of_products_to_close_order / $scope.qtybypallet;
 
           products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
            var insertProductsInTheSameOrder = {
@@ -1124,9 +1123,23 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
  
              var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
             });
+
+            var dataObjPallet = {
+              ORDER_ID: order_id,
+              CUSTOMER_PRODUCT_ID: customer_product_id,
+              INTERNAL_PRODUCT_ID : $scope.internalproductid,
+              PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+              TOTAL_PRODUCTS_PAINTED: number_of_products_to_close_order,
+              QUANTITY_IN_PALLETES: palletQuantity,
+            };
+        
+            var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function(data, status, headers, config) {
+            });
+
         } else {
 
             var valueProducedByTheEmployee = products_remaining_from_daily_production * $scope.priceEuro;
+            var palletQuantity = products_remaining_from_daily_production / $scope.qtybypallet;
             //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
             //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
             //DAILY PRODUCTION
@@ -1144,6 +1157,18 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
            });
 
+           var dataObjPallet = {
+            ORDER_ID: order_id,
+            CUSTOMER_PRODUCT_ID: customer_product_id,
+            INTERNAL_PRODUCT_ID : $scope.internalproductid,
+            PRODUCT_NAME: orderproduct.PRODUCT_NAM,
+            TOTAL_PRODUCTS_PAINTED: products_remaining_from_daily_production,
+            QUANTITY_IN_PALLETES: palletQuantity,
+          };
+      
+          var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function(data, status, headers, config) {
+          });
+
            products_remaining_from_daily_production = 0;
 
        }
@@ -1153,7 +1178,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
        //ALL THE ORDERS TO CHECK IF THE SAME INTERNAL PRODUCT ID IS OPENED TO BE REGISTERED
         if(products_remaining_from_daily_production > 0) {
 
-          productInOtherOpenOrdersForPainting.insertPaiting($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro);
+          productInOtherOpenOrdersForPainting.insertPaiting($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro, $scope.qtybypallet);
         
         } //if
 
@@ -1161,7 +1186,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       else {
         //IN THIS ORDER THERE IS NOT A PRODUCT FOR THE SAME INTERNAL PRODUCT ID
         //WE NEED TO CHECK IF THERE'S ANTOHER ORDER WITH THE SAME INTERNAL PRODUCT ID
-        productInOtherOpenOrdersForPainting.insertPaiting($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro);        
+        productInOtherOpenOrdersForPainting.insertPaiting($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro, $scope.qtybypallet);        
     }
 
       $state.reload();
@@ -4170,7 +4195,7 @@ app.factory('productInOtherOpenOrdersForPainting', function($http) {
   //return {
     var alertMsg = new Array();
     //insertProduction : function ($scope, orderid, internalproductid, products_remaining_from_daily_production, alertMsg) { 
-    function insertPaiting($scope, orderid, internalproductid, products_remaining_from_daily_production, employyee_name, productPriceInEuro) { 
+    function insertPaiting($scope, orderid, internalproductid, products_remaining_from_daily_production, employyee_name, productPriceInEuro, qtybypallet) { 
 
       //INITIALIZE OVERPRODUCTION VARIABLE
       $scope.overProduction = products_remaining_from_daily_production;
@@ -4204,6 +4229,7 @@ app.factory('productInOtherOpenOrdersForPainting', function($http) {
               products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
               $scope.overProduction = products_remaining_from_daily_production;
               var valueProducedByTheEmployee = number_of_products_to_close_order * productPriceInEuro;
+              var palletQuantity = number_of_products_to_close_order / qtybypallet;
 
               var insertProductsInTheSameOrder = {
                   ORDER_ID: order_id,
@@ -4218,6 +4244,18 @@ app.factory('productInOtherOpenOrdersForPainting', function($http) {
     
                 var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
                 });
+
+                var dataObjPallet = {
+                  ORDER_ID: order_id,
+                  CUSTOMER_PRODUCT_ID: customer_product_id,
+                  INTERNAL_PRODUCT_ID : $scope.internalproductid,
+                  PRODUCT_NAME: $scope.productnameinternal,
+                  TOTAL_PRODUCTS_PAINTED: number_of_products_to_close_order,
+                  QUANTITY_IN_PALLETES: palletQuantity,
+                };
+            
+                var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function(data, status, headers, config) {
+                });
             } else {
                 //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
                 //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
@@ -4227,6 +4265,7 @@ app.factory('productInOtherOpenOrdersForPainting', function($http) {
                 alert(alertMsg.toString());
 
                 var valueProducedByTheEmployee = products_remaining_from_daily_production * productPriceInEuro;
+                var palletQuantity = products_remaining_from_daily_production / $scope.qtybypallet;
 
                 var insertProductsInTheSameOrder = {
                   ORDER_ID: order_id,
@@ -4240,6 +4279,18 @@ app.factory('productInOtherOpenOrdersForPainting', function($http) {
                 };	
 
                 var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
+                });
+
+                var dataObjPallet = {
+                  ORDER_ID: order_id,
+                  CUSTOMER_PRODUCT_ID: customer_product_id,
+                  INTERNAL_PRODUCT_ID : $scope.internalproductid,
+                  PRODUCT_NAME: $scope.productnameinternal,
+                  TOTAL_PRODUCTS_PAINTED: products_remaining_from_daily_production,
+                  QUANTITY_IN_PALLETES: palletQuantity,
+                };
+            
+                var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function(data, status, headers, config) {
                 });
 
                 products_remaining_from_daily_production = 0; 
