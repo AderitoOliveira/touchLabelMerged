@@ -3211,7 +3211,6 @@ $scope.yes = function () {
   });
 
 };
-
 //  This cancel function must use the bootstrap, 'modal' function because
 //  the doesn't have the 'data-dismiss' attribute.
 $scope.no = function() {
@@ -3223,6 +3222,31 @@ $scope.no = function() {
 };
 
 }]);
+
+
+
+//Generic Modal for deleting/confirming operation where we receive the dataObj array and the operation to execute
+app.controller('genericModalController',  ['$scope','$http', '$state', 'title', 'operationURL', 'dataObj', 'question', 'message', 
+                                          function($scope,$http, $state, title, operationURL, dataObj, question, message){
+
+$scope.title = title;
+$scope.question = question; 
+$scope.message = message;
+$scope.operationURL = operationURL;
+$scope.data = dataObj;
+//  This close function doesn't need to use jQuery or bootstrap, because
+//  the button has the 'data-dismiss' attribute.
+
+//Save Content Modal  
+$scope.yes = function () {
+
+  var res = $http.post($scope.operationURL, $scope.data).then(function(data, status, headers, config) {
+    $state.reload();
+  });
+
+};
+}]);
+
 
 
 /*------------------ Controller for the CREATE MODAL of the ORDER-----------------------*/
@@ -4032,7 +4056,7 @@ app.controller('labelsToPrint', function($scope, $http, $rootScope) {
 
 
 //DAILY ORDER PRODUCTION - Controller
-app.controller('dailyProduction', function($scope, $http, $rootScope, $state) {
+app.controller('dailyProduction', function($scope, $http, $rootScope, ModalService) {
   $rootScope.name= "Registo Produção Diária";
   $scope.dailyProduction = [];
     var request = $http.get('/getDailyProduction');    
@@ -4044,19 +4068,37 @@ app.controller('dailyProduction', function($scope, $http, $rootScope, $state) {
       console.log('Error: ' + data);
   });
 
-  $scope.delete = function(order_id, customer_product_id, employee_name) {
 
+  //Delete dialy production registry
+  $scope.delete = function(order_id, customer_product_id, employee_name) {
+    
     var dataToDelete = {
-      ORDER_ID : order_id,
-      CUSTOMER_PRODUCT_ID : customer_product_id,
-      EMPLOYEE_NAME : employee_name
+    ORDER_ID : order_id,
+    CUSTOMER_PRODUCT_ID : customer_product_id,
+    EMPLOYEE_NAME : employee_name
     };
 
-    var res = $http.post('/deleteDailyProduction', dataToDelete).then(function(data, status, headers, config) {
-      $state.go("listDailyProduction", null, { reload: true });
+    ModalService.showModal({
+      templateUrl: "../modal/yesNoGeneric.html",
+      controller: "genericModalController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        question: "Deseja mesmo apagar o registo de Produção Diária",
+        message: "do produto " + customer_product_id + "na encomenda " + order_id,
+        operationURL: '/deleteDailyProduction',
+        dataObj: dataToDelete
+      }
+    }).then(function(modal) {
+    modal.element.modal();
+    modal.close.then(function(result) {
+      if (!result) {
+        $scope.complexResult = "Modal forcibly closed..."
+      } else {
+        $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+      }
     });
-
-  }
+   });
+  };
 });
 
 
