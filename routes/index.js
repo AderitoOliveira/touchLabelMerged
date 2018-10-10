@@ -6,7 +6,6 @@ var fs = require('fs');
 var nodemailer = require('nodemailer');
 var Printer = require('pdfmake');
 
-
 //Get images from the public/images directory
 router.use('/images', express.static(__dirname+'/uploads/'));
 
@@ -72,7 +71,7 @@ router.post('/sendMail', function(req, res) {
 
 /* GET home page.  */
 router.get('/', function(req, res, next) {
-  res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
+  res.sendFile(path.join(__dirname, '../', 'public', 'index.html'));
 });
  
 //Get All Clients

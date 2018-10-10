@@ -118,14 +118,9 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
 	    url: '/listOrders',
       templateUrl : '../custompages/orders.html',
       controller : 'ordersController'
-    })
-    .state('/otherwise', {
-      url: '/configuration',
-      templateUrl : '../custompages/configurations.html',
-      controller : 'configurations'
     });
   
-  $urlRouterProvider.otherwise('/otherwise');
+  $urlRouterProvider.otherwise('/');
    
     // remove o # da url
   $locationProvider.html5Mode(true);
