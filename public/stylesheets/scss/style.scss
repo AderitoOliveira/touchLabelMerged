@@ -12,7 +12,7 @@
 
 button, a{
     &:focus{
-        outline:none;
+        outline:none !important;
     }
 }
 
@@ -24,6 +24,17 @@ $background: #000;
 
 body{
     background:$background;
+}
+
+button, input{
+    &:focus{
+        outline:none !important;
+    }
+}
+input.form-control{
+    &:focus{
+        border-color:#222222 !important;
+    }
 }
 
 .ng-untouched {
