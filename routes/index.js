@@ -110,9 +110,9 @@ router.get('/productForModal', function(req,res){
 });
 
 
-//Get Single Product information
-router.get('/products/:id', function(req,res){
-  fetchSingleProduct(req,res);  
+//GET COMPLETE INFORMATION OF A PRODUCT FOR THE LABELS PRINTING
+router.get('/labelToPrintForProduct/:id', function(req,res){
+  fetchSingleProductLabels(req,res);  
 });
 
 //List Labels Configuration
