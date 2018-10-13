@@ -65,6 +65,8 @@ app.use(function(req, res, next) {
   //var err = new Error('Not Found');
   //err.status = 404;
   //next(err);
+  //If rereshing the browser we have an erro, we need to send the request
+  //to the index.html again so that it can render correctly the page again.
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
