@@ -1,55 +1,74 @@
-<div class="container">
-    <div ng-controller="productLabels" ng-repeat="product in data">
-      <div class="row">
-        <!--div class="container"-->
-          <div class="col-xs-4 col-md-4 bg-info" style="height:400px">
-              <div class="row">
-                <!--p>Imagem do Produto</p-->
+<div class="wrap">
+  <div id="label-print">
+    <div ng-controller="productLabels" ng-repeat="product in data" class="row">
+      <!--div class="container"-->
+      <div class="form-photo col-md-3">
+          <div class="form-item-inner">
+              <div class="photo-wrap">
+                <img ng-src={{product.IMAGE_PATH}}/{{product.IMAGE_NAME}} class="product-image-label">
+                <!--<a ng-href="http://api.labelary.com/v1/printers/12dpmm/labels/3.5x1.5/0/%5EXA~TA000~JSN%5ELT0%5EMNW%5EMTD%5EPOI%5EPMN%5ELH0,0%5EJMA%5EPR2,2~SD15%5EJUS%5ELRN%5ECI0%5EXZ%5EXA%5EMMT%5EPW609%5ELL0406%5ELS0%5EFO448,224%5EGFA,02560,02560,00020,:Z64:eJzt0rFOwzAQBuAgBo8ZuyD8EKyV8ghMUSeUsQ+QASGBPHToBq/Ao1Ri8GgxMLdVBtZYDBh09XEOinMpEyrqgHyT9em3dT5dlqU6sK7H1ZnCUSVLdlzzbEGLX9qhvXzu2wxnq8muLFG+qN6WeJ+d4GKDso05jWdypbRF6aI1OEVXmNbng1m8RZDaevERbeun6HPTAjMLd4hCtzDnRj0KyjWDudC3ppzlRv0vjXPbweCKTJvWshzckD0Z17i3aL4z7WpuF32uHqwO72mYQ/0jdxkO/Uwn37kKmYmuF5dze9h1ORkuRAP6R7DF2OQphIlz8+cZFMyqNShflDznc5q8o28rfOUmnhHp0Xdm+Cj29qD62x1PluxI9m/rC6xTQdQ=:B188%5EFT569,77%5EA0I,32,31%5EFH/%5EFD(02)08712799413795(37)0002%5EFS%5EBY3,3,114%5EFT570,109%5EBCI,,N,N%5EFD%3E;%3E80208712799413795370002%5EFS%5EFT460,269%5EA0I,28,28%5EFH/%5EFDRef.143432%20Pot%20Lloyd%2022%20Anthracite%5EFS%5EFT110,44%5EA0I,28,24%5EFH/%5EFDQty:2%5EFS%5EPQ1,0,1,Y%5EXZ" target="_blank">
+                  <img ng-src="http://api.labelary.com/v1/printers/12dpmm/labels/3.5x1.5/0/%5EXA~TA000~JSN%5ELT0%5EMNW%5EMTD%5EPOI%5EPMN%5ELH0,0%5EJMA%5EPR2,2~SD15%5EJUS%5ELRN%5ECI0%5EXZ%5EXA%5EMMT%5EPW609%5ELL0406%5ELS0%5EFO448,224%5EGFA,02560,02560,00020,:Z64:eJzt0rFOwzAQBuAgBo8ZuyD8EKyV8ghMUSeUsQ+QASGBPHToBq/Ao1Ri8GgxMLdVBtZYDBh09XEOinMpEyrqgHyT9em3dT5dlqU6sK7H1ZnCUSVLdlzzbEGLX9qhvXzu2wxnq8muLFG+qN6WeJ+d4GKDso05jWdypbRF6aI1OEVXmNbng1m8RZDaevERbeun6HPTAjMLd4hCtzDnRj0KyjWDudC3ppzlRv0vjXPbweCKTJvWshzckD0Z17i3aL4z7WpuF32uHqwO72mYQ/0jdxkO/Uwn37kKmYmuF5dze9h1ORkuRAP6R7DF2OQphIlz8+cZFMyqNShflDznc5q8o28rfOUmnhHp0Xdm+Cj29qD62x1PluxI9m/rC6xTQdQ=:B188%5EFT569,77%5EA0I,32,31%5EFH/%5EFD(02)08712799413795(37)0002%5EFS%5EBY3,3,114%5EFT570,109%5EBCI,,N,N%5EFD%3E;%3E80208712799413795370002%5EFS%5EFT460,269%5EA0I,28,28%5EFH/%5EFDRef.143432%20Pot%20Lloyd%2022%20Anthracite%5EFS%5EFT110,44%5EA0I,28,24%5EFH/%5EFDQty:2%5EFS%5EPQ1,0,1,Y%5EXZ" class="img-thumbnail center-block productLabelEmptySpace" height="400" width="200">
+                </a>-->
               </div>
-                <a ng-href="{{product.IMAGE_PATH}}/{{product.IMAGE_NAME}}" target="_blank">
-                  <img ng-src={{product.IMAGE_PATH}}/{{product.IMAGE_NAME}} class="img-thumbnail img-responsive center-block productLabelEmptySpace" height="200" width="200">
-                </a>
-                  <a ng-href="http://api.labelary.com/v1/printers/12dpmm/labels/3.5x1.5/0/%5EXA~TA000~JSN%5ELT0%5EMNW%5EMTD%5EPOI%5EPMN%5ELH0,0%5EJMA%5EPR2,2~SD15%5EJUS%5ELRN%5ECI0%5EXZ%5EXA%5EMMT%5EPW609%5ELL0406%5ELS0%5EFO448,224%5EGFA,02560,02560,00020,:Z64:eJzt0rFOwzAQBuAgBo8ZuyD8EKyV8ghMUSeUsQ+QASGBPHToBq/Ao1Ri8GgxMLdVBtZYDBh09XEOinMpEyrqgHyT9em3dT5dlqU6sK7H1ZnCUSVLdlzzbEGLX9qhvXzu2wxnq8muLFG+qN6WeJ+d4GKDso05jWdypbRF6aI1OEVXmNbng1m8RZDaevERbeun6HPTAjMLd4hCtzDnRj0KyjWDudC3ppzlRv0vjXPbweCKTJvWshzckD0Z17i3aL4z7WpuF32uHqwO72mYQ/0jdxkO/Uwn37kKmYmuF5dze9h1ORkuRAP6R7DF2OQphIlz8+cZFMyqNShflDznc5q8o28rfOUmnhHp0Xdm+Cj29qD62x1PluxI9m/rC6xTQdQ=:B188%5EFT569,77%5EA0I,32,31%5EFH/%5EFD(02)08712799413795(37)0002%5EFS%5EBY3,3,114%5EFT570,109%5EBCI,,N,N%5EFD%3E;%3E80208712799413795370002%5EFS%5EFT460,269%5EA0I,28,28%5EFH/%5EFDRef.143432%20Pot%20Lloyd%2022%20Anthracite%5EFS%5EFT110,44%5EA0I,28,24%5EFH/%5EFDQty:2%5EFS%5EPQ1,0,1,Y%5EXZ" target="_blank">
-                    <img ng-src="http://api.labelary.com/v1/printers/12dpmm/labels/3.5x1.5/0/%5EXA~TA000~JSN%5ELT0%5EMNW%5EMTD%5EPOI%5EPMN%5ELH0,0%5EJMA%5EPR2,2~SD15%5EJUS%5ELRN%5ECI0%5EXZ%5EXA%5EMMT%5EPW609%5ELL0406%5ELS0%5EFO448,224%5EGFA,02560,02560,00020,:Z64:eJzt0rFOwzAQBuAgBo8ZuyD8EKyV8ghMUSeUsQ+QASGBPHToBq/Ao1Ri8GgxMLdVBtZYDBh09XEOinMpEyrqgHyT9em3dT5dlqU6sK7H1ZnCUSVLdlzzbEGLX9qhvXzu2wxnq8muLFG+qN6WeJ+d4GKDso05jWdypbRF6aI1OEVXmNbng1m8RZDaevERbeun6HPTAjMLd4hCtzDnRj0KyjWDudC3ppzlRv0vjXPbweCKTJvWshzckD0Z17i3aL4z7WpuF32uHqwO72mYQ/0jdxkO/Uwn37kKmYmuF5dze9h1ORkuRAP6R7DF2OQphIlz8+cZFMyqNShflDznc5q8o28rfOUmnhHp0Xdm+Cj29qD62x1PluxI9m/rC6xTQdQ=:B188%5EFT569,77%5EA0I,32,31%5EFH/%5EFD(02)08712799413795(37)0002%5EFS%5EBY3,3,114%5EFT570,109%5EBCI,,N,N%5EFD%3E;%3E80208712799413795370002%5EFS%5EFT460,269%5EA0I,28,28%5EFH/%5EFDRef.143432%20Pot%20Lloyd%2022%20Anthracite%5EFS%5EFT110,44%5EA0I,28,24%5EFH/%5EFDQty:2%5EFS%5EPQ1,0,1,Y%5EXZ" class="img-thumbnail center-block productLabelEmptySpace" height="400" width="200">
-                  </a>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="row">
+          <div class="col-md-12" id="product-label-print">
+            <div class="label-wrap">
+              <div class="label-left">
+                <div class="label-title">
+                  Etiquetas de Produto
+                </div>
+                <div class="label-quantity">
+                    <label class="control-label" for="qtyArticle">Quantidade</label>
+                    <div class="input-wrap-inner">
+                      <input type="qtyArticle" class="form-control" id="qtyArticle" placeholder="Número Etiquetas" ng-model="qtyArticle">
+                    </div>
+                </div>
+              </div>
+              <div class="label-right">
+                <img class="label-detail" src="assets/icons/bc_label_product.svg" width="244px" height="129px">
+              </div>
+              <div class="label-bottom">
+                <div class="label-options">
+                    <div class="checkbox-wrap">
+                      <input id="label-type" name="label-type" class="special-checkbox" type="checkbox" ng-model="box" ng-change=""/>
+                      <span class="checkbox-item"></span>
+                      <label for="label-type">2 etiquetas por linha</label>
+                    </div>
+                </div>
+                <div class="label-button">
+                    <button type="submit" ng-click="printLabelArticle(product.ARTICLE_PRINTER_IP_ADDRESS, product.ARTICLE_PRINTER_PORT, product.BAR_CODE_NUMBER, product.PRODUCT_NAME_FOR_LABEL, product.CUSTOMER_PRODUCT_ID, product.ZPL_STRING_ARTICLE, product.ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, product.ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, product.ARTICLE_BARCODE_TYPE, qtyArticle)" class="btn btn-default btn-save"><img src="assets/icons/symbol-print.svg" width="20px" height="18px" />Imprimir</button>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <div class="col-xs-8 col-md-8" style="height:400px;">             
-              <div class="row">
-                  <div class="col-xs-6" style="height:200px;">
-                      <a>
-                        <img ng-src="/images/flowerpot-vector.jpg" class="img-thumbnail productLabelEmptySpace" height="200" width="200">
-                      </a>
+          <div class="col-md-12" id="box-label-print">
+            <div class="label-wrap">
+                <div class="label-left">
+                  <div class="label-title">
+                    Etiquetas de Caixa
                   </div>
-                  <div class="col-xs-6" style="height:200px;">
-
-                      <label class="control-label col-xs-4 productLabelTextBoxTMarginTop" for="qtyArticle">Quantidade a Imprimir:</label>
-                      <div class="col-xs-6 productLabelTextBoxTMarginTop">
-                        <input type="qtyArticle" class="form-control" id="qtyArticle" placeholder="Número Etiquetas" ng-model="qtyArticle">
-                      </div>
-
-                      <a class="btn btn-md btn-success pull-right productLabelButtonBox" ng-click="printLabelArticle(product.ARTICLE_PRINTER_IP_ADDRESS, product.ARTICLE_PRINTER_PORT, product.BAR_CODE_NUMBER, product.PRODUCT_NAME_FOR_LABEL, product.CUSTOMER_PRODUCT_ID, product.ZPL_STRING_ARTICLE, product.ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, product.ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, product.ARTICLE_BARCODE_TYPE, qtyArticle)" data-toggle="tooltip" title="Imprimir Etiquetas do Artigo.">Imprimir Etiquetas</a>
-                  </div>
-              </div>
-              <div class="row">
-                  <div class="col-xs-6" style="height:200px;">
-                    <a>
-                      <img ng-src="/images/box-vector.jpg" class="img-thumbnail productLabelEmptySpace" height="200" width="200">
-                    </a>
-                  </div>
-                  <div class="col-xs-6" style="height:200px;">
-
-                      <label class="control-label col-xs-4 productLabelTextBoxTMarginTop" for="qtyBox">Quantidade a Imprimir:</label>
-                      <div class="col-xs-6 productLabelTextBoxTMarginTop">
+                  <div class="label-quantity">
+                      <label class="control-label" for="qtyBox">Quantidade</label>
+                      <div class="input-wrap-inner">
                         <input type="qtyBox" class="form-control" id="qtyBox" placeholder="Número Etiquetas" ng-model="qtyBox">
                       </div>
-
-                    <a class="btn btn-md btn-success pull-right productLabelButtonBox" ng-click="printLabelBox(product.BOX_PRINTER_IP_ADDRESS, product.BOX_PRINTER_PORT, product.BAR_CODE_NUMBER, product.PRODUCT_NAME_FOR_LABEL, product.CUSTOMER_PRODUCT_ID, product.ZPL_STRING_BOX, product.BOX_BARCODE_TYPE, product.NUM_ARTICLES_IN_BOX, qtyBox)" data-toggle="tooltip" title="Imprimir Etiquetas de Caixa.">Imprimir Etiquetas</a>
                   </div>
+                </div>
+                <div class="label-right">
+                  <img class="label-detail" src="assets/icons/bc_label_box.svg" width="244px" height="129px">
+                </div>
+                <div class="label-bottom">
+                  <div class="label-button">
+                      <button type="submit" ng-click="printLabelBox(product.BOX_PRINTER_IP_ADDRESS, product.BOX_PRINTER_PORT, product.BAR_CODE_NUMBER, product.PRODUCT_NAME_FOR_LABEL, product.CUSTOMER_PRODUCT_ID, product.Zpl_String_Box, product.BOX_BARCODE_TYPE, product.NUM_ARTICLES_IN_BOX, qtyBox)" class="btn btn-default btn-save"><img src="assets/icons/symbol-print.svg" width="20px" height="18px" />Imprimir</button>
+                  </div>
+                </div>
               </div>
           </div>
-      </div> 
-       <!--/div-->
-      <!--/div-->
+        </div>
+      </div>
     </div>
+  </div>
 </div>

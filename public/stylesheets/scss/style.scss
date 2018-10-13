@@ -1144,6 +1144,13 @@ a.btn.btn-sm {
     }
 }
 
+.product-image-label{
+    width:100%;
+    height:auto;
+    float:left;
+    border-radius:4px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
 
 .add-product-label, .add-order-label{
     h2 {
@@ -1343,7 +1350,7 @@ a.btn.btn-sm {
     }
 }
 
-.form-wrap {
+.form-wrap, .label-quantity {
     padding-top: 36px;
     label.control-label {
         width: 100%;
@@ -1793,6 +1800,83 @@ a.btn.btn-sm {
         border-color:#dedede;
     }
 }
+
+.label-left {
+    max-width: 50%;
+    float: left;
+    padding-right: 20px;
+    .label-quantity {
+        padding-top: 22px;
+    }
+}
+
+#box-label-print{
+    padding-top:36px;
+}
+
+img.label-detail {
+    max-width: 100%;
+}
+
+.label-right {
+    max-width: 50%;
+    float: left;
+}
+
+.label-bottom {
+    width: 100%;
+    float: left;
+}
+
+.label-wrap {
+    width: 100%;
+    float: left;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    padding: 15px;
+    background: #E5E1E1;
+}
+
+.label-button{
+    button.btn-save {
+        height: 48px;
+        width: 100%;
+        text-align: center;
+        border-radius: 2px;
+        background-color: #27ae60;
+        font-size: 16px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        color: #ffffff;
+        border: 0px;
+        width: 100%;
+        max-width:50%;
+    }
+    button img{
+        margin-right:6px;
+    }
+}
+
+.label-title {
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    font-size: 18px;
+    color: #222222;
+}
+.label-options {
+    padding-top: 12px;
+    padding-bottom: 24px;
+    label {
+        margin-left: 29px;
+        line-height: 26px;
+        cursor: pointer;
+    }
+}
+
 
 @media screen and (max-width:1024px){
     .nav-toggle{
