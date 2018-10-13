@@ -302,7 +302,7 @@ app.controller('editclient', function ($scope, $http, $rootScope, $state, $state
 });
 
 
-app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$stateParams', function ($scope, $http, $rootScope, $state, $stateParams) {
+app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$stateParams', 'sendZPLCodeToPrinter', function ($scope, $http, $rootScope, $state, $stateParams, sendZPLCodeToPrinter) {
   
   $rootScope.name="Imprimir etiquetas do Produto " + $stateParams.productName;
   $scope.data = [];
@@ -427,7 +427,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
 }
 
 //PRINT LABEL ARTICLE
-$scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductName, ProductID, ZPLString, BoxBarCodeType, Quantity) {
+$scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductName, ProductID, ZPLString, ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, BoxBarCodeType, Quantity) {
 
 	if( BarCodeNumber.charAt( 0 ) === '0' ) {
 		BarCodeNumber = BarCodeNumber.slice( 1 );
@@ -435,13 +435,15 @@ $scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumbe
 
     alert("ZPL: " + ZPLString);
     //var cd = eanCheckDigit("0871886150940");
-    alert("Bar Code Number: " + BarCodeNumber);
+    //alert("Bar Code Number: " + BarCodeNumber);
     var checkDigit = eanCheckDigit( '' + BarCodeNumber);
-    alert("CheckDigit: " + checkDigit);
+    //alert("CheckDigit: " + checkDigit);
     
     //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
     //GS1-128 BarCode
     var EanWithCheckDigit = BarCodeNumber + checkDigit;
+    var quantityToReplace = 0;
+    var labelsWith2Columns = false;
 
     function replaceAll(str, map){
       for(key in map){
@@ -454,12 +456,36 @@ $scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumbe
 
     var map = {
       '_EAN_CHECK_DIGIT' : EanWithCheckDigit,
-      '_NUM_ARTIGO' : ProductID
+      '_NUM_ARTIGO' : ProductID,
+      '_PRINT_QUANTITY' : quantityToReplace
     };
 
-    var sendToPrinter = replaceAll(ZPLString, map);
+    if(labelsWith2Columns == false)
+    {
+      quantityToReplace = Quantity;
+      var sendToPrinter = replaceAll(ZPLString, map);
+    } else {
+      if(Quantity == 1) {
+        //ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL  --> Only 1 label is written and the other is blank
+        //ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL --> Both Labels are written
+        quantityToReplace = 1;
+        var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
+        return;
+      }
+      if(Quantity % 2 == 0) {
+        quantityToReplace = Quantity / 2;
+        var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
+      }
+      if(Quantity % 2 != 0) {
+        quantityToReplace = Quantity / 2;
+        var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
 
-    sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
+        quantityToReplace = 1;
+        var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
+      }
+
+    }
+    sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
 }
 
 
@@ -4434,4 +4460,38 @@ app.factory('productInOtherOpenOrdersForPainting', function($http) {
       insertPaiting: insertPaiting,
       returAlertMsg: returAlertMsg
     };
+}); //app.factory
+
+//FACTORY TO SEARCH FOR THE SAME PRODUCT INTERNAL ID IN ALL OPEN ORDERS AND REGISTER THE DAILY PAINTING
+app.factory('sendZPLCodeToPrinter', function($http) { 
+
+  function sendZplToPrinter(PrinterIPAddress, PrinterPort, Zpl) { 
+    console.log("Zpl Enviado para a Impressora" + Zpl);
+
+    var url = "http://" + PrinterIPAddress + ":" + PrinterPort;
+    var method = "POST";
+    var async = true;
+    var request = new XMLHttpRequest();
+
+    request.onload = function () {
+     var status = request.status; // HTTP response status, e.g., 200 for "200 OK"
+     var data = request.responseText; // Returned data, e.g., an HTML document.
+     output.innerHTML = "Status: " + status + "<br>" + data;
+    }
+
+    request.open(method, url, async);
+   
+    // Actually sends the request to the server.
+  
+    console.log('sending...');
+    request.timeout = 100;
+    request.send(Zpl);
+    //request.done;
+   
+    console.log('end');
+  }
+
+  return {
+    sendZplToPrinter: sendZplToPrinter
+  };
 }); //app.factory

@@ -149,7 +149,7 @@ fetchProductsForOrderModal = function(data, callback) {
 
 fetchSingleProduct = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT prod.CUSTOMER_PRODUCT_ID, prod.PRODUCT_NAME, prod.PRODUCT_NAME_FOR_LABEL, prod.NUM_ARTICLES_IN_BOX, prod.IMAGE_PATH, prod.IMAGE_NAME, prod.BAR_CODE_NUMBER, label.ARTICLE_BARCODE_TYPE,  label.BOX_BARCODE_TYPE, label.Zpl_String_Article, label.Zpl_String_Box, printers.ARTICLE_PRINTER_IP_ADDRESS, printers.BOX_PRINTER_IP_ADDRESS, printers.ARTICLE_PRINTER_PORT, printers.BOX_PRINTER_PORT FROM products prod, label_templates label, client_product cliprod, printers_ip_address printers WHERE prod.CUSTOMER_PRODUCT_ID = ? and cliprod.PRODUCT_ID = ? and label.ClientID = cliprod.CLIENT_ID', [data.params.id, data.params.id], function(err, rows) {
+    con.query('SELECT prod.CUSTOMER_PRODUCT_ID, prod.PRODUCT_NAME, prod.PRODUCT_NAME_FOR_LABEL, prod.NUM_ARTICLES_IN_BOX, prod.IMAGE_PATH, prod.IMAGE_NAME, prod.BAR_CODE_NUMBER, label.ARTICLE_BARCODE_TYPE,  label.BOX_BARCODE_TYPE, label.ZPL_STRING_ARTICLE, label.ZPL_STRING_BOX, label.ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, label.ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL ,printers.ARTICLE_PRINTER_IP_ADDRESS, printers.BOX_PRINTER_IP_ADDRESS, printers.ARTICLE_PRINTER_PORT, printers.BOX_PRINTER_PORT FROM products prod, label_templates label, client_product cliprod, printers_ip_address printers WHERE prod.CUSTOMER_PRODUCT_ID = ? and cliprod.PRODUCT_ID = ? and label.ClientID = cliprod.CLIENT_ID', [data.params.id, data.params.id], function(err, rows) {
         if (err) {
             throw err;
         } else
