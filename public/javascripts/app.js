@@ -3257,10 +3257,9 @@ $scope.no = function() {
 
 
 //Generic Modal for deleting/confirming operation where we receive the dataObj array and the operation to execute
-app.controller('genericModalController',  ['$scope','$http', '$state', 'operationURL', 'dataObj', 'question', 'message', 
-                                          function($scope,$http, $state, operationURL, dataObj, question, message){
+app.controller('genericModalController',  ['$scope','$http', '$state', 'operationURL', 'dataObj', 'message', 
+                                          function($scope,$http, $state, operationURL, dataObj, message){
 
-$scope.question = question; 
 $scope.message = message;
 $scope.operationURL = operationURL;
 $scope.data = dataObj;
@@ -4214,8 +4213,7 @@ app.controller('dailyProduction', function($scope, $http, $rootScope, ModalServi
       controller: "genericModalController",
       preClose: (modal) => { modal.element.modal('hide'); },
       inputs: {
-        question: "Deseja mesmo apagar o registo de Produção Diária",
-        message: "do produto " + customer_product_id + "na encomenda " + order_id,
+        message: "Deseja mesmo apagar o registo de Produção Diária do produto " + customer_product_id + " na encomenda " + order_id + " ?",
         operationURL: '/deleteDailyProduction',
         dataObj: dataToDelete
       }
@@ -4261,8 +4259,7 @@ app.controller('dailyPaintingController', function($scope, $http, $rootScope, Mo
       controller: "genericModalController",
       preClose: (modal) => { modal.element.modal('hide'); },
       inputs: {
-        question: "Deseja mesmo apagar o registo de Produção Diária",
-        message: "do produto " + customer_product_id + "na encomenda " + order_id,
+        message: " Deseja mesmo apagar o registo de Produção Diária do produto " + customer_product_id + " na encomenda " + order_id,
         operationURL: '/deleteDailyPainting',
         dataObj: dataToDelete
       }
