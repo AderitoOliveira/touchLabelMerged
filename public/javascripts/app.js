@@ -779,28 +779,47 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   //CLOSE THE PRODUCT FOR PAITING - CREATE THE LABELS RECORD TO PRINT
   $scope.closeProductPainting = function(internalproductid, customerproductid, productName, qtyproduced) {
 
-    ModalService.showModal({
-      templateUrl: "../modal/closeProductForPainting.html",
-      controller: "closeProductInOrderForPainting",
-      preClose: (modal) => { modal.element.modal('hide'); },
-      inputs: {
-        title: "Fechar Producto em Pintura",
-        orderid: $stateParams.orderId,
-        internalproductid: internalproductid,
-        customerproductid: customerproductid,
-        productname: productName,
-        totalproductsproduced: qtyproduced
+    $scope.productTechSheet = [];
+    var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerproductid));    
+    request.then(function successCallback(response) {
+        $scope.productTechSheet  = response.data;
+
+        //IF the Qty_By_Box value is not defined in the TechSheet we cannot close the Product in Painting
+        if($scope.productTechSheet[0].Qty_By_Box != null){
+          var qtyBoxLabelsToPrint = $scope.totalproductsproduced / $scope.productTechSheet[0].Qty_By_Box;
+
+          ModalService.showModal({
+            templateUrl: "../modal/closeProductForPainting.html",
+            controller: "closeProductInOrderForPainting",
+            preClose: (modal) => { modal.element.modal('hide'); },
+            inputs: {
+              title: "Fechar Producto em Pintura",
+              orderid: $stateParams.orderId,
+              internalproductid: internalproductid,
+              customerproductid: customerproductid,
+              productname: productName,
+              totalproductsproduced: qtyproduced,
+              qtyBoxLabelsToPrint : qtyBoxLabelsToPrint
+            }
+          }).then(function(modal) {
+          modal.element.modal();
+          modal.close.then(function(result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+          }
+          });
+          });
       }
-    }).then(function(modal) {
-    modal.element.modal();
-    modal.close.then(function(result) {
-      if (!result) {
-        $scope.complexResult = "Modal forcibly closed..."
-      } else {
-        $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+      else {
+          alert("Na ficha técnica do produto " + customerproductid + " - " + productName + " não está definido o valor no campo Quantidade por caixa. \n É necessário definir a quantidade de artigos por caixa");
       }
+        
+    },
+    function errorCallback(data){
+        console.log('Error: ' + data);
     });
-   });
 
   };
 
@@ -3703,8 +3722,8 @@ $scope.cancel = function() {
 /*------------------ Controller for the MODAL to CLOSE the PRODUCT for PAITING in the ORDER-----------------------*/
 
 app.controller('closeProductInOrderForPainting',  [
-  '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid' ,'productname', 'totalproductsproduced', 
-  function($scope,$http, $element, $urlRouter, $templateCache, $state, title, close , orderid, internalproductid, customerproductid, productname, totalproductsproduced){
+  '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid' ,'productname', 'totalproductsproduced', 'qtyBoxLabelsToPrint', 
+  function($scope,$http, $element, $urlRouter, $templateCache, $state, title, close , orderid, internalproductid, customerproductid, productname, totalproductsproduced, qtyBoxLabelsToPrint){
 
 $scope.title = title;
 $scope.orderid = orderid;
@@ -3715,15 +3734,15 @@ $scope.totalproductsproduced = totalproductsproduced;
 //  This close function doesn't need to use jQuery or bootstrap, because
 //  the button has the 'data-dismiss' attribute.
 
-$scope.productTechSheet = [];
-var request = $http.get('/getProductTechSheet/' + $scope.internalproductid);    
+/* $scope.productTechSheet = [];
+var request = $http.get('/getProductTechSheet/' + $scope.customerproductid);    
 request.then(function successCallback(response) {
     $scope.productTechSheet  = response.data;
     return  $scope.productTechSheet; 
     },
     function errorCallback(data){
         console.log('Error: ' + data);
-});
+}); */
 
 
 //Save Content Modal  
@@ -3734,7 +3753,8 @@ $scope.yes = function () {
     CUSTOMER_PRODUCT_ID: $scope.customerproductid,
     INTERNAL_PRODUCT_ID: $scope.internalproductid,
     PRODUCT_NAME: $scope.productname,
-    QTY_LABELS_TO_PRINT: $scope.totalproductsproduced,
+    QTY_LABELS_TO_PRINT_ARTICLE: $scope.totalproductsproduced,
+    QTY_LABELS_TO_PRINT_BOX: qtyBoxLabelsToPrint,
   };	
 
   var dataUpdateOrderProductStatus = {
