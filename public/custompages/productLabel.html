@@ -28,7 +28,7 @@
                         <input type="qtyArticle" class="form-control" id="qtyArticle" placeholder="Número Etiquetas" ng-model="qtyArticle">
                       </div>
 
-                      <a class="btn btn-md btn-success pull-right productLabelButtonBox" ng-click="printLabelArticle(product.ARTICLE_PRINTER_IP_ADDRESS, product.ARTICLE_PRINTER_PORT, product.BAR_Code_Number, product.PRODUCT_NAME_FOR_LABEL, product.ProductID, product.Zpl_String_Article, product.ARTICLE_BARCODE_TYPE, qtyArticle)" data-toggle="tooltip" title="Imprimir Etiquetas do Artigo.">Imprimir Etiquetas</a>
+                      <a class="btn btn-md btn-success pull-right productLabelButtonBox" ng-click="printLabelArticle(product.ARTICLE_PRINTER_IP_ADDRESS, product.ARTICLE_PRINTER_PORT, product.BAR_CODE_NUMBER, product.PRODUCT_NAME_FOR_LABEL, product.CUSTOMER_PRODUCT_ID, product.ZPL_STRING_ARTICLE, product.ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, product.ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, product.ARTICLE_BARCODE_TYPE, qtyArticle)" data-toggle="tooltip" title="Imprimir Etiquetas do Artigo.">Imprimir Etiquetas</a>
                   </div>
               </div>
               <div class="row">
@@ -44,7 +44,7 @@
                         <input type="qtyBox" class="form-control" id="qtyBox" placeholder="Número Etiquetas" ng-model="qtyBox">
                       </div>
 
-                    <a class="btn btn-md btn-success pull-right productLabelButtonBox" ng-click="printLabelBox(product.BOX_PRINTER_IP_ADDRESS, product.BOX_PRINTER_PORT, product.BAR_CODE_NUMBER, product.PRODUCT_NAME_FOR_LABEL, product.CUSTOMER_PRODUCT_ID, product.Zpl_String_Box, product.BOX_BARCODE_TYPE, product.NUM_ARTICLES_IN_BOX, qtyBox)" data-toggle="tooltip" title="Imprimir Etiquetas de Caixa.">Imprimir Etiquetas</a>
+                    <a class="btn btn-md btn-success pull-right productLabelButtonBox" ng-click="printLabelBox(product.BOX_PRINTER_IP_ADDRESS, product.BOX_PRINTER_PORT, product.BAR_CODE_NUMBER, product.PRODUCT_NAME_FOR_LABEL, product.CUSTOMER_PRODUCT_ID, product.ZPL_STRING_BOX, product.BOX_BARCODE_TYPE, product.NUM_ARTICLES_IN_BOX, qtyBox)" data-toggle="tooltip" title="Imprimir Etiquetas de Caixa.">Imprimir Etiquetas</a>
                   </div>
               </div>
           </div>
