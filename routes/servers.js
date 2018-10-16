@@ -868,3 +868,21 @@ fecthNextValueFromPDFReqIdSequence = function(data, callback) {
     });
 });
 }
+
+//GET PALLETES READY FOR SHIPPING - palletes_ready_for_shipping
+getPalletesReadyForShipping = function(data, callback) {
+    con.connect(function(err) {
+    con.query('SELECT * FROM palletes_ready_for_shipping', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET ALL LABELS TO PRINT");   
+
+    });
+});
+}

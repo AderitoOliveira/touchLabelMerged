@@ -1,0 +1,77 @@
+<div class="wrap" ng-controller="PalletesController">
+    <div id="actions">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header-actions">
+                    <div class="row">
+                        <div class="col-md-6">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6 vert-spacer"></div>
+                                <div class="col-md-6">
+                                    <div class="search-wrap">
+                                        <input type="text" name="Pesquisa" ng-model="searchChar" placeholder=" Pesquisar">  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="list-content">
+        <div class="row">
+            <div ng-table="dailyProductionTable" id="order-table" class="col-md-12">
+                <div class="label-table-wrap">
+                    <div class="label-table-header row">
+                        <div class="inner-wrap">
+                            <div class="col-md-1 label-header-item header-label-order">Encomenda</div>
+                            <div class="col-md-2 label-header-item header-label-clientref">Ref. Cliente</div>
+                            <div class="col-md-1 label-header-item header-label-innerref">Ref. Interna</div>
+                            <div class="col-md-2 label-header-item header-label-prodname">Nome Produto</div>
+                            <div class="col-md-2 label-header-item header-label-workername">Total Produto Pintados</div>
+                            <div class="col-md-1 label-header-item header-label-quantity">Quantidade Palletes produzidas</div>
+                        </div>
+                    </div>
+                    <div class="order-labels-content row">
+                            <div class="col-md-12" dir-paginate="product in palletes | filter:searchChar | itemsPerPage:20">
+                                <div class="row">
+                                    <div class="item-inner-wrap">
+                                        <div class="col-md-1 table-item item-label-order">{{product.ORDER_ID}}</div>
+                                        <div class="col-md-2 table-item item-label-clientref">{{product.CUSTOMER_PRODUCT_ID}}</div>
+                                        <div class="col-md-1 table-item item-label-innerref">{{product.INTERNAL_PRODUCT_ID}}</div>
+                                        <div class="col-md-2 table-item item-label-prodname">{{product.PRODUCT_NAME}}</div>
+                                        <div class="col-md-2 table-item item-label-workername">{{product.TOTAL_PRODUCTS_PAINTED}}</div>
+                                        <div class="col-md-1 table-item item-label-quantity"><strong>{{product.QUANTITY_IN_PALLETES}}</strong></div>
+                                        <div class="col-md-2 table-item item-label-date short">
+                                            {{product.CREATED_DATE}}
+                                            <div class="item-order-actions">
+                                                <a class="btn btn-sm btn-danger" ng-click="delete(productsProduced.ORDER_ID, productsProduced.CUSTOMER_PRODUCT_ID, productsProduced.EMPLOYEE_NAME)" data-toggle="tooltip" title="Remover Produto">
+                                                    <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div id="pagination">
+        <div class="row">
+            <div class="container">
+                <div align="center">
+                    <dir-pagination-controls
+                            max-size="100"
+                            direction-links="true"
+                            boundary-links="true" >
+                    </dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

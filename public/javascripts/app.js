@@ -118,6 +118,11 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
 	    url: '/listOrders',
       templateUrl : '../custompages/orders.html',
       controller : 'ordersController'
+    })
+    .state('palletesReadyForShipping', {
+	    url: '/palletesReadyForShipping',
+      templateUrl : '../custompages/palletesReadyForShipping.html',
+      controller : 'PalletesController'
     });
   
   $urlRouterProvider.otherwise('/');
@@ -3130,12 +3135,12 @@ app.controller('createproducts', ['$http', '$scope', '$rootScope', '$state', '$s
   
 }]);
 
-//ENCOMENDAS - Controller
-app.controller('orders', function($scope, $http) {
-  $scope.data = [];
-  var request = $http.get('/clients');    
+//LIST ALL THE PALLETES READY TO BE SHIPPED - PalletesController
+app.controller('PalletesController', function($scope, $http) {
+  $scope.palletes = [];
+  var request = $http.get('/getPalletesReadyForShipping');    
   request.then(function successCallback(response) {
-      $scope.data  = response.data;
+      $scope.palletes  = response.data;
       return  $scope.data; 
   },
   function errorCallback(data){

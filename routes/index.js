@@ -404,4 +404,11 @@ router.get('/getPDFRequistionIdSequence', function(req,res){
   fecthNextValueFromPDFReqIdSequence(req,res);  
 });
 
+//GET PALLETES READY FOR SHIPPING - palletes_ready_for_shipping
+router.get('/getPalletesReadyForShipping', function(req,res){
+  console.log("GET PALLETES READY FOR SHIPPING");
+  console.log(req.body);
+  getPalletesReadyForShipping(req,res);  
+});
+
 module.exports = router;
