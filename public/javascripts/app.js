@@ -373,7 +373,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
   //PRINT LABEL BOX
   $scope.printLabelBox = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductName, ProductID, ZPLString, BoxBarCodeType, Quantity, NumLabelsToPrint) {
   
-  if(BoxBarCodeType='GS1-128')
+  if(BoxBarCodeType == 'GS1-128')
   {
     
     alert("ZPL: " + ZPLString);
@@ -420,8 +420,50 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
     sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
   }
 
-  if(BoxBarCodeType='EAN13')
+  if(BoxBarCodeType == 'EAN13')
   {
+    alert("ZPL: " + ZPLString);
+    //var cd = eanCheckDigit("0871886150940");
+    alert("Bar Code Number: " + BarCodeNumber);
+    var checkDigit = eanCheckDigit( '' + BarCodeNumber);
+    alert("CheckDigit: " + checkDigit);
+
+    
+    function padDigits(number, digits) {
+      return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+    }
+
+    var Quantity_full = padDigits(Quantity, 4);
+
+    //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
+    //GS1-128 BarCode
+    var EanWithCheckDigit = BarCodeNumber + checkDigit;
+    //var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
+
+    alert("fullEan: " + FullEan);
+
+    function replaceAll(str, map){
+      for(key in map){
+          str2 = str.replace(key, map[key]);
+          str=str2;
+          str2=null;
+      }
+      return str;
+    }
+
+    var map = {
+      '_EAN_CHECK_DIGIT' : EanWithCheckDigit,
+      '_QUANTIDADE_EXTENDIDA' : Quantity_full,
+      '_FULL_EAN' : FullEan,
+      '_NUM_ARTIGO' : ProductID,
+      '_NOME_ARTIGO' : ProductName,
+      '_QUANTIDADE' : Quantity,
+      '_PRINT_QUANTITY'  : NumLabelsToPrint
+    };
+
+    var sendToPrinter = replaceAll(ZPLString, map);
+
+    sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
   }
 
 }
