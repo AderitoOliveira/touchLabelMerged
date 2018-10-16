@@ -7,7 +7,7 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
       url: '/editProduct',
       templateUrl: '../custompages/editProduct.html',
       controller: 'editproducts',
-      params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox:null, preco1: null, preco2: null}
+      params: {productName: null, customerProductId: null, productId: null, clientname:null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox:null, preco1: null, preco2: null}
     })
     .state('home', {
       url: '/',
@@ -1865,6 +1865,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
 
   $scope.productName     = 	$stateParams.productName;
   $scope.productId       = 	$stateParams.productId;
+  $scope.clientname      =  stateParams.clientname;
   $scope.imageName       = 	$stateParams.imageName;
   $scope.barCode         = 	$stateParams.barCode;
   $scope.nameInTheLabel  =	$stateParams.nameInTheLabel;
@@ -1958,7 +1959,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
     var res = $http.post('/insertProductTechSheet', dataObj).then(function(data, status, headers, config) {
       var currentPageTemplate = $state.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
-      $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
+      $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname':$scope.clientname , 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
 
     });
 
@@ -2269,7 +2270,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
   $scope.back = function () {
     var currentPageTemplate = $state.current.templateUrl;
     $templateCache.remove(currentPageTemplate);
-    $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId,'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
+    $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId,'productId': $scope.productId, 'clientname':$scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
    };
 
 });
@@ -2283,6 +2284,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
 
   $scope.productName      = 	$stateParams.productName;
   $scope.productId        = 	$stateParams.productId;
+  $scope.clientname       = 	$stateParams.clientname;
   $scope.imageName        = 	$stateParams.imageName;
   $scope.barCode          = 	$stateParams.barCode;
   $scope.nameInTheLabel   =	  $stateParams.nameInTheLabel;
@@ -2377,7 +2379,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
     var res = $http.post('/updateProductTechSheet', dataObj).then(function(data, status, headers, config) {
       var currentPageTemplate = $state.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
-      $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
+      $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname':$scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
 
     });
 
@@ -2386,7 +2388,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
    $scope.back = function () {
     var currentPageTemplate = $state.current.templateUrl;
     $templateCache.remove(currentPageTemplate);
-    $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId,'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
+    $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId,'productId': $scope.productId, 'clientname':$scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
    };
 
 
@@ -2948,8 +2950,8 @@ app.controller('ProductsController', function($scope, $http,  $location, $rootSc
 
 
     //EDITAR Produto
-    $scope.editProductPath= function(productName, customerProductId, productId, imageName, barCode, nameInTheLabel, numArticleByBox, preco1, preco2){
-      $state.transitionTo("editProduct", {'productName': productName, 'customerProductId': customerProductId,'productId': productId, 'imageName': imageName, 'barCode': barCode, 'nameInTheLabel':nameInTheLabel , 'numArticleByBox': numArticleByBox, 'preco1':  preco1, 'preco2':  preco2}) ;
+    $scope.editProductPath= function(productName, customerProductId, productId, clientname, imageName, barCode, nameInTheLabel, numArticleByBox, preco1, preco2){
+      $state.transitionTo("editProduct", {'productName': productName, 'customerProductId': customerProductId, 'productId': productId, 'clientname':clientname, 'imageName': imageName, 'barCode': barCode, 'nameInTheLabel':nameInTheLabel , 'numArticleByBox': numArticleByBox, 'preco1':  preco1, 'preco2':  preco2}) ;
     }
 
     //IMPRIMIR ETIQUETAS do Produto
@@ -3020,6 +3022,7 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
   $scope.productName = $stateParams.productName;
   $scope.customerProductId = $stateParams.customerProductId; 
   $scope.productId = $stateParams.productId;
+  $scope.clientname = $stateParams.clientname;
   $scope.imageName = $stateParams.imageName;
   $scope.barCode = $stateParams.barCode;
   $scope.numArticleByBox = $stateParams.numArticleByBox;
@@ -3050,6 +3053,18 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
     console.log('Error: ' + data);
   });
 
+  //GET ALL CLIENT_ID, CLIENT_NAME FOR THE TYPEAHEAD
+  $scope.clients = [];
+	var URIClients = '/clientstypeahed';
+	var request = $http.get(URIClients);    
+	request.then(function successCallback(response) {
+    $scope.clients  = response.data;
+    return  $scope.clients; 
+	},
+	function errorCallback(data){
+    console.log('Error: ' + data);
+	});
+
   $scope.submit = function () {
     //var currentPageTemplate = $state.current.templateUrl;
     //$templateCache.remove(currentPageTemplate);
@@ -3057,6 +3072,7 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
     var dataObj = {
       productname     : $scope.productName,
       productid       : $scope.customerProductId,
+      clientname      : $scope.clientname.CLIENT_NAME,
       imagename       : $scope.imageName,
       barcode         : $scope.barCode,
       numArticleByBox : $scope.numArticleByBox,
@@ -3104,11 +3120,24 @@ app.controller('createproducts', ['$http', '$scope', '$rootScope', '$state', '$s
   var productImageDefault = 'products_default.png';
   $scope.image = '/images' + '/' + productImageDefault;
 
+  //GET ALL CLIENT_ID, CLIENT_NAME FOR THE TYPEAHEAD
+  $scope.clients = [];
+	var URIClients = '/clientstypeahed';
+	var request = $http.get(URIClients);    
+	request.then(function successCallback(response) {
+    $scope.clients  = response.data;
+    return  $scope.clients; 
+	},
+	function errorCallback(data){
+    console.log('Error: ' + data);
+	});
+
   $scope.submit = function () {
     var dataObj = {
       PRODUCT_NAME: $scope.product_name,
       INTERNAL_PRODUCT_ID: $scope.product_id,
       CUSTOMER_PRODUCT_ID : $scope.customerproductId,
+      CLIENT_NAME : $scope.clientname,
       IMAGE_NAME: $scope.image,
       BAR_CODE_NUMBER: $scope.bar_code,
       NUM_ARTICLES_IN_BOX: $scope.num_article_by_box,

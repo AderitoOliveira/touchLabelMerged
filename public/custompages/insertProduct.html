@@ -69,7 +69,7 @@
                       <div class="form-input-item col-md-6">
                           <label class="control-label" for="customerProductId">Cliente</label>
                           <div class="input-wrap-inner">
-                          <input type="customerProductId" class="form-control" id="customerProductId" placeholder="Nome Cliente" ng-model="customerProductId">
+                            <input type="text" autocomplete="off" class="form-control" id="clientname" placeholder="Nome Cliente" ng-model="clientname" uib-typeahead="client as client.CLIENT_NAME for client in clients | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}" typeahead-editable="false">
                           </div>
                       </div>
                       <div class="form-input-item col-md-6">
