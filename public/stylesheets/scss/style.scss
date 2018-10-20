@@ -1051,7 +1051,7 @@ button.button {
         > div {
             padding-top: 5px;
             padding-bottom: 5px;
-            line-height: 1;
+            line-height: 2;
             span.light{
                 font-weight:normal;
             }
@@ -1077,6 +1077,14 @@ button.button {
         overflow: hidden;
     }
 }
+div[ng-table="boxesToOrderTable"]{
+    .item-inner-wrap>div:first-child {
+        text-indent: 12px;
+        overflow: initial;
+    }
+}
+
+
 a.btn.btn-sm {
     padding: 0px;
     background: transparent !important;
@@ -1621,6 +1629,32 @@ $colorVariable: var(--value);
     line-height:  1 !important;
 }
 
+.header-label-innerref, .header-label-quantity, .header-label-value, .header-label-clientref, .header-label-workername  {
+    line-height: 1.2 !important;
+}
+div[ng-table="dailyProductionTable"], div[ng-table="dailyPaintTable"]{
+    .label-header-item{
+        line-height:2 !important;
+    }
+    .header-label-innerref, .header-label-quantity, .header-label-value{
+        line-height: 1.2 !important;
+    }
+}
+
+div[ng-controller="PalletesController"] div[ng-table="dailyProductionTable"]{
+    .label-header-item{
+        line-height:2 !important;
+    }
+    .header-label-clientref, .header-label-innerref, .header-label-total-painted, .header-label-value{
+        line-height: 1.2 !important;
+    }
+}
+
+div[ng-controller="OverProductionController"] div[ng-table="dailyProductionTable"]{
+    .inner-wrap .label-header-item{
+        line-height:2 !important;
+    }
+}
 .label-header-item:first-child {
     text-indent: 8px;
 }

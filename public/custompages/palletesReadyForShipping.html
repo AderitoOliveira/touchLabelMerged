@@ -30,9 +30,10 @@
                             <div class="col-md-1 label-header-item header-label-order">Encomenda</div>
                             <div class="col-md-1 label-header-item header-label-clientref">Ref. Cliente</div>
                             <div class="col-md-1 label-header-item header-label-innerref">Ref. Interna</div>
-                            <div class="col-md-3 label-header-item header-label-prodname">Nome Produto</div>
-                            <div class="col-md-2 label-header-item header-label-workername">Total Produto Pintados</div>
-                            <div class="col-md-3 label-header-item header-label-quantity">Quantidade Palletes produzidas</div>
+                            <div class="col-md-2 label-header-item header-label-prodname">Nome Produto</div>
+                            <div class="col-md-2 label-header-item header-label-total-painted">Total Produtos Pintados</div>
+                            <div class="col-md-2 label-header-item header-label-quantity-pallet">Paletes Completas</div>
+                            <div class="col-md-3 label-header-item header-label-date">Data</div>
                         </div>
                     </div>
                     <div class="order-labels-content row">
@@ -42,14 +43,14 @@
                                         <div class="col-md-1 table-item item-label-order" title="{{product.ORDER_ID}}">{{product.ORDER_ID}}</div>
                                         <div class="col-md-1 table-item item-label-clientref">{{product.CUSTOMER_PRODUCT_ID}}</div>
                                         <div class="col-md-1 table-item item-label-innerref">{{product.INTERNAL_PRODUCT_ID}}</div>
-                                        <div class="col-md-3 table-item item-label-prodname">{{product.PRODUCT_NAME}}</div>
-                                        <div class="col-md-2 table-item item-label-workername">{{product.TOTAL_PRODUCTS_PAINTED}}</div>
-                                        <div class="col-md-2 table-item item-label-quantity"><strong>{{product.QUANTITY_IN_PALLETES}}</strong></div>
-                                        <div class="col-md-2 table-item item-label-date short">
+                                        <div class="col-md-2 table-item item-label-prodname">{{product.PRODUCT_NAME}}</div>
+                                        <div class="col-md-2 table-item item-label-total-painted">{{product.TOTAL_PRODUCTS_PAINTED}}</div>
+                                        <div class="col-md-2 table-item item-label-quantity-pallet"><strong>{{product.QUANTITY_IN_PALLETES}}</strong></div>
+                                        <div class="col-md-3 table-item item-label-date short">
                                             {{product.CREATED_DATE}}
                                             <div class="item-order-actions">
                                                 <a class="btn btn-sm btn-danger" ng-click="delete(productsProduced.ORDER_ID, productsProduced.CUSTOMER_PRODUCT_ID, productsProduced.EMPLOYEE_NAME)" data-toggle="tooltip" title="Remover Produto">
-                                                    <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
+                                                    <img src="assets/icons/btn-success.svg" width="24px" height="24px" />
                                                 </a>
                                             </div>
                                         </div>
