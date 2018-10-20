@@ -27,13 +27,13 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
     .state('createProduct', {
 	  url: '/createProduct',
       templateUrl : '../custompages/insertProduct.html',
-      controller : 'createproducts',
+      controller : 'CreateProductController',
       params: {product_id: null, product_name: null, image_name: null, bar_code: null, name_in_the_label: null, num_article_by_box:null}
     })
     .state('createClient', {
       url: '/createClient',
         templateUrl : '../custompages/createClient.html',
-        controller : 'insertClient',
+        controller : 'InsertClientController',
         params: {}
     })
     .state('editClient', {
@@ -123,6 +123,11 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
 	    url: '/palletesReadyForShipping',
       templateUrl : '../custompages/palletesReadyForShipping.html',
       controller : 'PalletesController'
+    })
+    .state('overproductionstate', {
+	    url: '/overProduction',
+      templateUrl : '../custompages/overProductionInStock.html',
+      controller : 'OverProductionController'
     });
   
   $urlRouterProvider.otherwise('/');
@@ -184,7 +189,7 @@ app.controller('homeController', function ($scope, $http, $rootScope) {
 
 
 //INSERT CLIENT CONTROLLER
-app.controller('insertClient', function ($scope, $http, $rootScope, $rootScope, $state, $templateCache) {
+app.controller('InsertClientController', function ($scope, $http, $rootScope, $rootScope, $state, $templateCache) {
 
   $scope.data = [];
   $rootScope.name="Inserir um novo cliente";
@@ -3114,8 +3119,27 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
 }]);
 
 
-//CRIAR Produtos - Controller
-app.controller('createproducts', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', function($http, $scope, $rootScope, $state ,$stateParams, $templateCache) {
+//GET OVERPRODUCTION CONTROLER
+app.controller('OverProductionController', function($http, $scope, $rootScope) {
+  $rootScope.name = "Excesso de Produção em Stock";
+
+  //GET THE PRODUCTS IN OVER PRODUTCION IN STCOK
+  $scope.productInStock = [];
+	var URIClients = '/getOverProductionInStock';
+	var request = $http.get(URIClients);    
+	request.then(function successCallback(response) {
+    $scope.productInStock  = response.data;
+    return  $scope.clients; 
+	},
+	function errorCallback(data){
+    console.log('Error: ' + data);
+	});
+
+
+});
+
+//CREATE PRODUCT - Controller
+app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', function($http, $scope, $rootScope, $state ,$stateParams, $templateCache) {
 
   var productImageDefault = 'products_default.png';
   $scope.image = '/images' + '/' + productImageDefault;
