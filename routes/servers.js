@@ -149,7 +149,7 @@ fetchProductsForOrderModal = function(data, callback) {
 
 fetchSingleProductLabels = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT prod.CUSTOMER_PRODUCT_ID, prod.PRODUCT_NAME, prod.PRODUCT_NAME_FOR_LABEL, prod.NUM_ARTICLES_IN_BOX, prod.IMAGE_PATH, prod.IMAGE_NAME, prod.BAR_CODE_NUMBER, label.ARTICLE_BARCODE_TYPE,  label.BOX_BARCODE_TYPE, label.ZPL_STRING_ARTICLE, label.ZPL_STRING_BOX, label.ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, label.ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL ,printers.ARTICLE_PRINTER_IP_ADDRESS, printers.BOX_PRINTER_IP_ADDRESS, printers.ARTICLE_PRINTER_PORT, printers.BOX_PRINTER_PORT FROM products prod, label_templates label, client_product cliprod, printers_ip_address printers WHERE prod.CUSTOMER_PRODUCT_ID = ? and cliprod.PRODUCT_ID = ? and label.ClientID = cliprod.CLIENT_ID', [data.params.id, data.params.id], function(err, rows) {
+    con.query('SELECT prod.CUSTOMER_PRODUCT_ID, prod.PRODUCT_NAME, prod.PRODUCT_NAME_FOR_LABEL, tecsheet.Qty_By_Box, prod.IMAGE_PATH, prod.IMAGE_NAME, prod.BAR_CODE_NUMBER, label.ARTICLE_BARCODE_TYPE,  label.BOX_BARCODE_TYPE, label.ZPL_STRING_ARTICLE, label.ZPL_STRING_BOX, label.ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, label.ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL ,printers.ARTICLE_PRINTER_IP_ADDRESS, printers.BOX_PRINTER_IP_ADDRESS, printers.ARTICLE_PRINTER_PORT, printers.BOX_PRINTER_PORT FROM products prod, products_technical_sheet tecsheet, label_templates label, client_product cliprod, printers_ip_address printers WHERE prod.CUSTOMER_PRODUCT_ID = ? and cliprod.PRODUCT_ID = ? and label.ClientID = cliprod.CLIENT_ID and prod.CUSTOMER_PRODUCT_ID = tecsheet.CUSTOMER_PRODUCT_ID', [data.params.id, data.params.id], function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -373,7 +373,7 @@ insertPrintedLables = function(req, res) {
     console.log("PRECO_1: " + req.body.preco1);
     console.log("PRECO_2: " + req.body.preco2);
     con.connect(function(err) {
-    con.query('UPDATE products SET PRODUCT_NAME = ?, PRODUCT_NAME_FOR_LABEL = ?, NUM_ARTICLES_IN_BOX = ?, IMAGE_NAME = ?, BAR_CODE_NUMBER = ?, PRICE_EURO_1 = ?, PRICE_EURO_2 = ? where CUSTOMER_PRODUCT_ID = ?',  [req.body.productname, req.body.nameInTheLabel, req.body.numArticleByBox, req.body.imagename, req.body.barcode, req.body.preco1, req.body.preco2, req.body.productid], function (error, results, fields) {
+    con.query('UPDATE products SET PRODUCT_NAME = ?, PRODUCT_NAME_FOR_LABEL = ?, NUM_ARTICLES_IN_BOX = ?, IMAGE_NAME = ?, BAR_CODE_NUMBER = ?, PRICE_EURO_1 = ?, PRICE_EURO_2 = ?, CLIENT_NAME = ? where CUSTOMER_PRODUCT_ID = ?',  [req.body.productname, req.body.nameInTheLabel, req.body.numArticleByBox, req.body.imagename, req.body.barcode, req.body.preco1, req.body.preco2, req.body.clientname, req.body.productid], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });
@@ -864,6 +864,42 @@ fecthNextValueFromPDFReqIdSequence = function(data, callback) {
         callback.end(JSON.stringify(rows));
         callback = rows;
         console.log("GET VALUE FROM THE pdf_requistion_id_sequence");   
+
+    });
+});
+}
+
+//GET PALLETES READY FOR SHIPPING - palletes_ready_for_shipping
+getPalletesReadyForShipping = function(data, callback) {
+    con.connect(function(err) {
+    con.query('SELECT * FROM palletes_ready_for_shipping', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET ALL LABELS TO PRINT");   
+
+    });
+});
+}
+
+//GET OVERPRODUCTION IN STOCK - overproduction_in_stock
+getOverProductionInStock = function(data, callback) {
+    con.connect(function(err) {
+    con.query('SELECT * FROM overproduction_in_stock', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET OVERPRODUCTION IN STOCK");   
 
     });
 });

@@ -404,4 +404,18 @@ router.get('/getPDFRequistionIdSequence', function(req,res){
   fecthNextValueFromPDFReqIdSequence(req,res);  
 });
 
+//GET PALLETES READY FOR SHIPPING - palletes_ready_for_shipping
+router.get('/getPalletesReadyForShipping', function(req,res){
+  console.log("GET PALLETES READY FOR SHIPPING");
+  console.log(req.body);
+  getPalletesReadyForShipping(req,res);  
+});
+
+//GET OVERPRODUCTION IN STOCK - overproduction_in_stock
+router.get('/getOverProductionInStock', function(req,res){
+  console.log("GET OVERPRODUCTION IN STOCK");
+  console.log(req.body);
+  getOverProductionInStock(req,res);  
+});
+
 module.exports = router;

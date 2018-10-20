@@ -7,7 +7,7 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
       url: '/editProduct',
       templateUrl: '../custompages/editProduct.html',
       controller: 'editproducts',
-      params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox:null, preco1: null, preco2: null}
+      params: {productName: null, customerProductId: null, productId: null, clientname:null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox:null, preco1: null, preco2: null}
     })
     .state('home', {
       url: '/',
@@ -27,13 +27,13 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
     .state('createProduct', {
 	  url: '/createProduct',
       templateUrl : '../custompages/insertProduct.html',
-      controller : 'createproducts',
+      controller : 'CreateProductController',
       params: {product_id: null, product_name: null, image_name: null, bar_code: null, name_in_the_label: null, num_article_by_box:null}
     })
     .state('createClient', {
       url: '/createClient',
         templateUrl : '../custompages/createClient.html',
-        controller : 'insertClient',
+        controller : 'InsertClientController',
         params: {}
     })
     .state('editClient', {
@@ -118,6 +118,16 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
 	    url: '/listOrders',
       templateUrl : '../custompages/orders.html',
       controller : 'ordersController'
+    })
+    .state('palletesReadyForShipping', {
+	    url: '/palletesReadyForShipping',
+      templateUrl : '../custompages/palletesReadyForShipping.html',
+      controller : 'PalletesController'
+    })
+    .state('overproductionstate', {
+	    url: '/overProduction',
+      templateUrl : '../custompages/overProductionInStock.html',
+      controller : 'OverProductionController'
     });
   
   $urlRouterProvider.otherwise('/');
@@ -179,7 +189,7 @@ app.controller('homeController', function ($scope, $http, $rootScope) {
 
 
 //INSERT CLIENT CONTROLLER
-app.controller('insertClient', function ($scope, $http, $rootScope, $rootScope, $state, $templateCache) {
+app.controller('InsertClientController', function ($scope, $http, $rootScope, $rootScope, $state, $templateCache) {
 
   $scope.data = [];
   $rootScope.name="Inserir um novo cliente";
@@ -373,7 +383,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
   //PRINT LABEL BOX
   $scope.printLabelBox = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductName, ProductID, ZPLString, BoxBarCodeType, Quantity, NumLabelsToPrint) {
   
-  if(BoxBarCodeType='GS1-128')
+  if(BoxBarCodeType == 'GS1-128')
   {
     
     alert("ZPL: " + ZPLString);
@@ -420,8 +430,50 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
     sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
   }
 
-  if(BoxBarCodeType='EAN13')
+  if(BoxBarCodeType == 'EAN13')
   {
+    alert("ZPL: " + ZPLString);
+    //var cd = eanCheckDigit("0871886150940");
+    alert("Bar Code Number: " + BarCodeNumber);
+    var checkDigit = eanCheckDigit( '' + BarCodeNumber);
+    alert("CheckDigit: " + checkDigit);
+
+    
+    function padDigits(number, digits) {
+      return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+    }
+
+    var Quantity_full = padDigits(Quantity, 4);
+
+    //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
+    //GS1-128 BarCode
+    var EanWithCheckDigit = BarCodeNumber + checkDigit;
+    //var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
+
+    alert("fullEan: " + FullEan);
+
+    function replaceAll(str, map){
+      for(key in map){
+          str2 = str.replace(key, map[key]);
+          str=str2;
+          str2=null;
+      }
+      return str;
+    }
+
+    var map = {
+      '_EAN_CHECK_DIGIT' : EanWithCheckDigit,
+      '_QUANTIDADE_EXTENDIDA' : Quantity_full,
+      '_FULL_EAN' : FullEan,
+      '_NUM_ARTIGO' : ProductID,
+      '_NOME_ARTIGO' : ProductName,
+      '_QUANTIDADE' : Quantity,
+      '_PRINT_QUANTITY'  : NumLabelsToPrint
+    };
+
+    var sendToPrinter = replaceAll(ZPLString, map);
+
+    sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
   }
 
 }
@@ -779,28 +831,47 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   //CLOSE THE PRODUCT FOR PAITING - CREATE THE LABELS RECORD TO PRINT
   $scope.closeProductPainting = function(internalproductid, customerproductid, productName, qtyproduced) {
 
-    ModalService.showModal({
-      templateUrl: "../modal/closeProductForPainting.html",
-      controller: "closeProductInOrderForPainting",
-      preClose: (modal) => { modal.element.modal('hide'); },
-      inputs: {
-        title: "Fechar Producto em Pintura",
-        orderid: $stateParams.orderId,
-        internalproductid: internalproductid,
-        customerproductid: customerproductid,
-        productname: productName,
-        totalproductsproduced: qtyproduced
+    $scope.productTechSheet = [];
+    var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerproductid));    
+    request.then(function successCallback(response) {
+        $scope.productTechSheet  = response.data;
+
+        //IF the Qty_By_Box value is not defined in the TechSheet we cannot close the Product in Painting
+        if($scope.productTechSheet[0].Qty_By_Box != null){
+          var qtyBoxLabelsToPrint = $scope.totalproductsproduced / $scope.productTechSheet[0].Qty_By_Box;
+
+          ModalService.showModal({
+            templateUrl: "../modal/closeProductForPainting.html",
+            controller: "closeProductInOrderForPainting",
+            preClose: (modal) => { modal.element.modal('hide'); },
+            inputs: {
+              title: "Fechar Producto em Pintura",
+              orderid: $stateParams.orderId,
+              internalproductid: internalproductid,
+              customerproductid: customerproductid,
+              productname: productName,
+              totalproductsproduced: qtyproduced,
+              qtyBoxLabelsToPrint : qtyBoxLabelsToPrint
+            }
+          }).then(function(modal) {
+          modal.element.modal();
+          modal.close.then(function(result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+          }
+          });
+          });
       }
-    }).then(function(modal) {
-    modal.element.modal();
-    modal.close.then(function(result) {
-      if (!result) {
-        $scope.complexResult = "Modal forcibly closed..."
-      } else {
-        $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+      else {
+          alert("Na ficha técnica do produto " + customerproductid + " - " + productName + " não está definido o valor no campo Quantidade por caixa. \n É necessário definir a quantidade de artigos por caixa");
       }
+        
+    },
+    function errorCallback(data){
+        console.log('Error: ' + data);
     });
-   });
 
   };
 
@@ -1800,6 +1871,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
 
   $scope.productName     = 	$stateParams.productName;
   $scope.productId       = 	$stateParams.productId;
+  $scope.clientname      =  stateParams.clientname;
   $scope.imageName       = 	$stateParams.imageName;
   $scope.barCode         = 	$stateParams.barCode;
   $scope.nameInTheLabel  =	$stateParams.nameInTheLabel;
@@ -1893,7 +1965,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
     var res = $http.post('/insertProductTechSheet', dataObj).then(function(data, status, headers, config) {
       var currentPageTemplate = $state.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
-      $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
+      $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname':$scope.clientname , 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
 
     });
 
@@ -2204,7 +2276,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
   $scope.back = function () {
     var currentPageTemplate = $state.current.templateUrl;
     $templateCache.remove(currentPageTemplate);
-    $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId,'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
+    $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId,'productId': $scope.productId, 'clientname':$scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
    };
 
 });
@@ -2218,6 +2290,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
 
   $scope.productName      = 	$stateParams.productName;
   $scope.productId        = 	$stateParams.productId;
+  $scope.clientname       = 	$stateParams.clientname;
   $scope.imageName        = 	$stateParams.imageName;
   $scope.barCode          = 	$stateParams.barCode;
   $scope.nameInTheLabel   =	  $stateParams.nameInTheLabel;
@@ -2312,7 +2385,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
     var res = $http.post('/updateProductTechSheet', dataObj).then(function(data, status, headers, config) {
       var currentPageTemplate = $state.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
-      $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
+      $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname':$scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
 
     });
 
@@ -2321,7 +2394,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
    $scope.back = function () {
     var currentPageTemplate = $state.current.templateUrl;
     $templateCache.remove(currentPageTemplate);
-    $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId,'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
+    $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId,'productId': $scope.productId, 'clientname':$scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
    };
 
 
@@ -2883,8 +2956,8 @@ app.controller('ProductsController', function($scope, $http,  $location, $rootSc
 
 
     //EDITAR Produto
-    $scope.editProductPath= function(productName, customerProductId, productId, imageName, barCode, nameInTheLabel, numArticleByBox, preco1, preco2){
-      $state.transitionTo("editProduct", {'productName': productName, 'customerProductId': customerProductId,'productId': productId, 'imageName': imageName, 'barCode': barCode, 'nameInTheLabel':nameInTheLabel , 'numArticleByBox': numArticleByBox, 'preco1':  preco1, 'preco2':  preco2}) ;
+    $scope.editProductPath= function(productName, customerProductId, productId, clientname, imageName, barCode, nameInTheLabel, numArticleByBox, preco1, preco2){
+      $state.transitionTo("editProduct", {'productName': productName, 'customerProductId': customerProductId, 'productId': productId, 'clientname':clientname, 'imageName': imageName, 'barCode': barCode, 'nameInTheLabel':nameInTheLabel , 'numArticleByBox': numArticleByBox, 'preco1':  preco1, 'preco2':  preco2}) ;
     }
 
     //IMPRIMIR ETIQUETAS do Produto
@@ -2955,6 +3028,7 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
   $scope.productName = $stateParams.productName;
   $scope.customerProductId = $stateParams.customerProductId; 
   $scope.productId = $stateParams.productId;
+  $scope.clientname = $stateParams.clientname;
   $scope.imageName = $stateParams.imageName;
   $scope.barCode = $stateParams.barCode;
   $scope.numArticleByBox = $stateParams.numArticleByBox;
@@ -2985,6 +3059,18 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
     console.log('Error: ' + data);
   });
 
+  //GET ALL CLIENT_ID, CLIENT_NAME FOR THE TYPEAHEAD
+  $scope.clients = [];
+	var URIClients = '/clientstypeahed';
+	var request = $http.get(URIClients);    
+	request.then(function successCallback(response) {
+    $scope.clients  = response.data;
+    return  $scope.clients; 
+	},
+	function errorCallback(data){
+    console.log('Error: ' + data);
+	});
+
   $scope.submit = function () {
     //var currentPageTemplate = $state.current.templateUrl;
     //$templateCache.remove(currentPageTemplate);
@@ -2992,6 +3078,7 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
     var dataObj = {
       productname     : $scope.productName,
       productid       : $scope.customerProductId,
+      clientname      : $scope.clientname.CLIENT_NAME,
       imagename       : $scope.imageName,
       barcode         : $scope.barCode,
       numArticleByBox : $scope.numArticleByBox,
@@ -3033,17 +3120,49 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
 }]);
 
 
-//CRIAR Produtos - Controller
-app.controller('createproducts', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', function($http, $scope, $rootScope, $state ,$stateParams, $templateCache) {
+//GET OVERPRODUCTION CONTROLER
+app.controller('OverProductionController', function($http, $scope, $rootScope) {
+  $rootScope.name = "Excesso de Produção em Stock";
+
+  //GET THE PRODUCTS IN OVER PRODUTCION IN STCOK
+  $scope.productInStock = [];
+	var URIClients = '/getOverProductionInStock';
+	var request = $http.get(URIClients);    
+	request.then(function successCallback(response) {
+    $scope.productInStock  = response.data;
+    return  $scope.clients; 
+	},
+	function errorCallback(data){
+    console.log('Error: ' + data);
+	});
+
+
+});
+
+//CREATE PRODUCT - Controller
+app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', function($http, $scope, $rootScope, $state ,$stateParams, $templateCache) {
 
   var productImageDefault = 'products_default.png';
   $scope.image = '/images' + '/' + productImageDefault;
+
+  //GET ALL CLIENT_ID, CLIENT_NAME FOR THE TYPEAHEAD
+  $scope.clients = [];
+	var URIClients = '/clientstypeahed';
+	var request = $http.get(URIClients);    
+	request.then(function successCallback(response) {
+    $scope.clients  = response.data;
+    return  $scope.clients; 
+	},
+	function errorCallback(data){
+    console.log('Error: ' + data);
+	});
 
   $scope.submit = function () {
     var dataObj = {
       PRODUCT_NAME: $scope.product_name,
       INTERNAL_PRODUCT_ID: $scope.product_id,
       CUSTOMER_PRODUCT_ID : $scope.customerproductId,
+      CLIENT_NAME : $scope.clientname,
       IMAGE_NAME: $scope.image,
       BAR_CODE_NUMBER: $scope.bar_code,
       NUM_ARTICLES_IN_BOX: $scope.num_article_by_box,
@@ -3070,12 +3189,12 @@ app.controller('createproducts', ['$http', '$scope', '$rootScope', '$state', '$s
   
 }]);
 
-//ENCOMENDAS - Controller
-app.controller('orders', function($scope, $http) {
-  $scope.data = [];
-  var request = $http.get('/clients');    
+//LIST ALL THE PALLETES READY TO BE SHIPPED - PalletesController
+app.controller('PalletesController', function($scope, $http) {
+  $scope.palletes = [];
+  var request = $http.get('/getPalletesReadyForShipping');    
   request.then(function successCallback(response) {
-      $scope.data  = response.data;
+      $scope.palletes  = response.data;
       return  $scope.data; 
   },
   function errorCallback(data){
@@ -3704,8 +3823,8 @@ $scope.cancel = function() {
 /*------------------ Controller for the MODAL to CLOSE the PRODUCT for PAITING in the ORDER-----------------------*/
 
 app.controller('closeProductInOrderForPainting',  [
-  '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid' ,'productname', 'totalproductsproduced', 
-  function($scope,$http, $element, $urlRouter, $templateCache, $state, title, close , orderid, internalproductid, customerproductid, productname, totalproductsproduced){
+  '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid' ,'productname', 'totalproductsproduced', 'qtyBoxLabelsToPrint', 
+  function($scope,$http, $element, $urlRouter, $templateCache, $state, title, close , orderid, internalproductid, customerproductid, productname, totalproductsproduced, qtyBoxLabelsToPrint){
 
 $scope.title = title;
 $scope.orderid = orderid;
@@ -3716,15 +3835,15 @@ $scope.totalproductsproduced = totalproductsproduced;
 //  This close function doesn't need to use jQuery or bootstrap, because
 //  the button has the 'data-dismiss' attribute.
 
-$scope.productTechSheet = [];
-var request = $http.get('/getProductTechSheet/' + $scope.internalproductid);    
+/* $scope.productTechSheet = [];
+var request = $http.get('/getProductTechSheet/' + $scope.customerproductid);    
 request.then(function successCallback(response) {
     $scope.productTechSheet  = response.data;
     return  $scope.productTechSheet; 
     },
     function errorCallback(data){
         console.log('Error: ' + data);
-});
+}); */
 
 
 //Save Content Modal  
@@ -3735,7 +3854,8 @@ $scope.yes = function () {
     CUSTOMER_PRODUCT_ID: $scope.customerproductid,
     INTERNAL_PRODUCT_ID: $scope.internalproductid,
     PRODUCT_NAME: $scope.productname,
-    QTY_LABELS_TO_PRINT: $scope.totalproductsproduced,
+    QTY_LABELS_TO_PRINT_ARTICLE: $scope.totalproductsproduced,
+    QTY_LABELS_TO_PRINT_BOX: qtyBoxLabelsToPrint,
   };	
 
   var dataUpdateOrderProductStatus = {
