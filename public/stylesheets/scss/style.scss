@@ -1074,6 +1074,7 @@ button.button {
     padding: 9px 0 0px;
     > div:first-child {
         text-indent: 12px;
+        overflow: hidden;
     }
 }
 a.btn.btn-sm {
