@@ -122,7 +122,7 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
     .state('palletesReadyForShipping', {
 	    url: '/palletesReadyForShipping',
       templateUrl : '../custompages/palletesReadyForShipping.html',
-      controller : 'PalletesController'
+      controller: 'PalletesController'
     })
     .state('overproductionstate', {
 	    url: '/overProduction',
@@ -3190,7 +3190,10 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
 }]);
 
 //LIST ALL THE PALLETES READY TO BE SHIPPED - PalletesController
-app.controller('PalletesController', function($scope, $http) {
+app.controller('PalletesController', function($scope, $http, $rootScope) {
+
+  $rootScope.name = "Lista Paletes prontas para enviar"
+
   $scope.palletes = [];
   var request = $http.get('/getPalletesReadyForShipping');    
   request.then(function successCallback(response) {
