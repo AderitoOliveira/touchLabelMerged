@@ -1085,6 +1085,8 @@ a.btn.btn-sm {
         margin-right:0px;
     }
 }
+
+$colorVariable: var(--value);
 .progress-bar-wrap {
     width: 100%;
     float: left;
@@ -1095,9 +1097,11 @@ a.btn.btn-sm {
     box-shadow:0 1px 2px 0 rgba(0, 0, 0, 0.25);
     .progressbar-inner{
         background:#cd1919;
-        transition: all 3s ease-in-out;
+        //transition: all 3s ease-in-out;
         height:12px;
         width:0px;
+        /* width: calc(var(--value) * 1%);
+	    background: hsl(calc($colorVariable * 0.9), 50%, 50%); */
         &.full{
             background:#27ae60;
             transition: all 3s ease-in-out;

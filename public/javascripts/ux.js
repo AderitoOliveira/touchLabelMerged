@@ -126,4 +126,19 @@
         },3000);
     })
 
+    $(document).on('click', '.nav-link', function(){
+        $('.progressbar-inner').each(function () {
+            $(this).prop('progression',0).animate({
+                progression: $(this).attr('data-status')
+            }, {
+                duration: 800,
+                easing: 'linear',
+                step: function (now) {
+                    $(this).css('width',Math.ceil(now)+'%');
+                    $(this).css('background-color', "hsl(calc("+Math.ceil(now)+" * .9), 50%, 50%)");
+                }
+            });
+        });
+    });
+
 })(jQuery);

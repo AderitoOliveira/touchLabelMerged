@@ -588,7 +588,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           $scope.products[i].percent= percentage;
           $scope.products[i].width= percentage;
           //NEWSTYLES
-          if(percentage > 33) {
+          /* if(percentage > 33) {
             $scope.products[i].progressBarColor = "#e31b1b";
           }
           if(percentage >= 34 && percentage <= 66) {
@@ -596,7 +596,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           }
           if( percentage > 66) {
             $scope.products[i].progressBarColor = "#1be36b";
-          }
+          } */
   
           $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
           $scope.products[i].ORDER_PRODUCT_STATUS = 'Em Produção';
@@ -1716,7 +1716,7 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
             $scope.orders[i].percent= percentage;
             $scope.orders[i].width= percentage;
             //NEWSTYLES
-            if(percentage > 33) {
+           /*  if(percentage > 33) {
               $scope.orders[i].progressBarColor = "#e31b1b";
             }
             if(percentage >= 34 && percentage <= 66) {
@@ -1726,7 +1726,8 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
               $scope.orders[i].progressBarColor = "#1be36b";
             }
             console.log("SCOPE CLIENT NAME: " + $scope.orders[i].CLIENT_NAME)
-            console.log("Percentagem Total: " + percentage);
+            console.log("Percentagem Total: " + percentage); */
+
        }
        return  $scope.orders; 
    },
