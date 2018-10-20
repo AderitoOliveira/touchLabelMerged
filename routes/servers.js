@@ -872,7 +872,7 @@ fecthNextValueFromPDFReqIdSequence = function(data, callback) {
 //GET PALLETES READY FOR SHIPPING - palletes_ready_for_shipping
 getPalletesReadyForShipping = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT * FROM palletes_ready_for_shipping', function(err, rows) {
+    con.query('select ORDER_ID, CUSTOMER_PRODUCT_ID,  INTERNAL_PRODUCT_ID, PRODUCT_NAME, TOTAL_PRODUCTS_PAINTED, QUANTITY_IN_PALLETES, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE FROM palletes_ready_for_shipping', function(err, rows) {
         if (err) {
             throw err;
         } else
