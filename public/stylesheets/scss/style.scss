@@ -31,9 +31,12 @@ button, input{
         outline:none !important;
     }
 }
-input.form-control{
+input.form-control, textarea{
+    border:solid 1px #c4c4c4 !important;
     &:focus{
         border-color:#222222 !important;
+        outline:none !important;
+        box-shadow:inset -1px -1px 2px 0 rgba(118,118,118,0.25) !important;
     }
 }
 
