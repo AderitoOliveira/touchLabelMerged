@@ -838,7 +838,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
         //IF the Qty_By_Box value is not defined in the TechSheet we cannot close the Product in Painting
         if($scope.productTechSheet[0].Qty_By_Box != null){
-          var qtyBoxLabelsToPrint = $scope.totalproductsproduced / $scope.productTechSheet[0].Qty_By_Box;
+          var qtyBoxLabelsToPrint = qtyproduced / $scope.productTechSheet[0].Qty_By_Box;
 
           ModalService.showModal({
             templateUrl: "../modal/closeProductForPainting.html",
