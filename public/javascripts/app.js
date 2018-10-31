@@ -1871,7 +1871,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
 
   $scope.productName     = 	$stateParams.productName;
   $scope.productId       = 	$stateParams.productId;
-  $scope.clientname      =  stateParams.clientname;
+  $scope.clientname      =  $stateParams.clientname;
   $scope.imageName       = 	$stateParams.imageName;
   $scope.barCode         = 	$stateParams.barCode;
   $scope.nameInTheLabel  =	$stateParams.nameInTheLabel;
