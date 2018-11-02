@@ -160,7 +160,8 @@ app.controller('chartsTest', function ($scope, $http, $rootScope) {
 
 //CONFIGURATIONS  CONTROLER
 app.controller('configurations', function ($scope, $http, $rootScope) {
-   
+
+  $rootScope.class = 'not-home'; 
   $rootScope.name= "Configurar Parâmetros do Sistema";
 
 });
@@ -168,6 +169,7 @@ app.controller('configurations', function ($scope, $http, $rootScope) {
 //CONFIGURATIONS  CONTROLER
 app.controller('homeController', function ($scope, $http, $rootScope) {
    
+  $rootScope.class = 'home-page';
 
   $rootScope.name= "TouchLabel";
 
@@ -192,6 +194,7 @@ app.controller('homeController', function ($scope, $http, $rootScope) {
 app.controller('InsertClientController', function ($scope, $http, $rootScope, $rootScope, $state, $templateCache) {
 
   $scope.data = [];
+  $rootScope.class = 'not-home';
   $rootScope.name="Inserir um novo cliente";
 
   var clientImageDefault = 'client-default.png';
@@ -244,7 +247,8 @@ app.controller('InsertClientController', function ($scope, $http, $rootScope, $r
 
 //EDIT CLIENT CONTROLLER
 app.controller('editclient', function ($scope, $http, $rootScope, $state, $stateParams) {
-
+  
+  $rootScope.class = 'not-home';
   $rootScope.name="Editar o cliente " + $stateParams.clientname;
   $scope.clientid = $stateParams.clientid;
 
@@ -314,6 +318,7 @@ app.controller('editclient', function ($scope, $http, $rootScope, $state, $state
 
 app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$stateParams', 'sendZPLCodeToPrinter', function ($scope, $http, $rootScope, $state, $stateParams, sendZPLCodeToPrinter) {
   
+  $rootScope.class = 'not-home';
   $rootScope.name="Imprimir etiquetas do Produto " + $stateParams.productName;
   $scope.data = [];
   var productId = $stateParams.productId;
@@ -545,6 +550,7 @@ $scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumbe
 
 app.controller('labels', function ($scope, $http, $rootScope) {
    
+  $rootScope.class = 'not-home';
   $rootScope.name= "Listar Encomendas para o Cliente";
   //var image = '/images' + '/' + 'edelmanLogo.jpg';
    $scope.data = [];
@@ -597,6 +603,7 @@ app.controller('labels', function ($scope, $http, $rootScope) {
 //Controller for All the Orders
 app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams', '$state', 'ModalService', 'productInOtherOpenOrdersOrOverProduction', 'productInOtherOpenOrdersForPainting', function ($scope, $http, $rootScope, $stateParams, $state, ModalService, productInOtherOpenOrdersOrOverProduction) {
    
+  $rootScope.class = 'not-home';
   $rootScope.name= "Lista de Produtos da Encomenda " + $stateParams.orderId;
   $scope.products = [];
   var orderId = $stateParams.orderId;
@@ -1773,6 +1780,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 //CONTROLLER FOR ALL THE ORDERS
 app.controller('ordersController', ['$scope', '$http', '$rootScope', '$stateParams', '$state', 'ModalService', function ($scope, $http, $rootScope, $stateParams, $state, ModalService) {
    
+  $rootScope.class = 'not-home';
   $rootScope.name= "Lista de todas as Encomendas";
    $scope.orders = [];
      var request = $http.get('/orders');    
@@ -1849,6 +1857,7 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
 
 app.controller('panels', function ($scope, $http, $rootScope) {
    
+  $rootScope.class = 'not-home';
    $rootScope.name= "Listar Encomendas para o Cliente";
    $scope.image = '/images' + '/' + 'edelmanLogo.jpg';
     $scope.data = [];
@@ -1866,6 +1875,7 @@ app.controller('panels', function ($scope, $http, $rootScope) {
 //CREATE Technical Sheet
 app.controller('createTechSheet', function ($scope, $http, $rootScope, $stateParams, $state, $templateCache) {
    
+  $rootScope.class = 'not-home';
   $rootScope.name= "Criar Ficha Técnica";
   $scope.data = [];
 
@@ -2285,6 +2295,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
 //EDIT Technical Sheet Controller
 app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParams, $state, $templateCache) {
    
+  $rootScope.class = 'not-home';
   $rootScope.name= "Editar Ficha Técnica";
   $scope.data = [];
 
@@ -2916,6 +2927,8 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
 
 //GET ALL CLIENTES - Controller
 app.controller('clients', function($scope, $http, $rootScope, $state) {
+
+    $rootScope.class = 'not-home';
     $rootScope.name= "Lista de todos os Clientes";
     $scope.data = [];
       var request = $http.get('/clients');    
@@ -2938,6 +2951,8 @@ app.controller('clients', function($scope, $http, $rootScope, $state) {
 
 //GET ALL PRODUCTS - CONTROLLER
 app.controller('ProductsController', function($scope, $http,  $location, $rootScope,  $state, $stateParams, productsAPI, ModalService) {
+    
+    $rootScope.class = 'not-home';
     $rootScope.name="Lista de todos os Produtos";
     $scope.products = [];
     
@@ -3024,6 +3039,8 @@ app.controller('ProductsController', function($scope, $http,  $location, $rootSc
 
 //EDITAR Produtos - Controller
 app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', function($http, $scope, $rootScope, $state ,$stateParams, $templateCache) {
+  
+  $rootScope.class = 'not-home';
   $rootScope.name="Editar Produto " + $stateParams.productName;
   $scope.productName = $stateParams.productName;
   $scope.customerProductId = $stateParams.customerProductId; 
@@ -3122,6 +3139,8 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
 
 //GET OVERPRODUCTION CONTROLER
 app.controller('OverProductionController', function($http, $scope, $rootScope) {
+  
+  $rootScope.class = 'not-home';
   $rootScope.name = "Excesso de Produção em Stock";
 
   //GET THE PRODUCTS IN OVER PRODUTCION IN STCOK
@@ -3192,6 +3211,7 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
 //LIST ALL THE PALLETES READY TO BE SHIPPED - PalletesController
 app.controller('PalletesController', function($scope, $http, $rootScope) {
 
+  $rootScope.class = 'not-home';
   $rootScope.name = "Lista Paletes prontas para enviar"
 
   $scope.palletes = [];
@@ -3513,8 +3533,12 @@ app.controller('editImageCtrl', [ '$http', '$state', '$scope', 'Upload', '$timeo
 app.controller('editImageClientCtrl', [ '$http', '$state', '$rootScope','$scope', 'Upload', '$timeout', '$stateParams', '$templateCache', function ($http, $state, $rootScope, $scope, Upload, $timeout, $stateParams, $templateCache) {
   
   if($stateParams.clientname == null) {
+
+    $rootScope.class = 'not-home';
     $rootScope.name = 'Inserir Imagem do Novo Cliente';
   } else {
+
+    $rootScope.class = 'not-home';
     $rootScope.name = 'Editar Imagem do Cliente ' + $stateParams.clientname;
   }
 
@@ -3882,6 +3906,8 @@ $scope.yes = function () {
 
 //ALL BOXES TO ORDER - Controller
 app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', function($scope, $http, $rootScope, $filter) {
+  
+  $rootScope.class = 'not-home';
   $rootScope.name= "Lista de todas as caixas a encomendar";
   $scope.boxesToOrder = [];
   $scope.sequence_value = 0;
@@ -4194,6 +4220,8 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
 
 //ALL LABELS TO PRINT - Controller
 app.controller('labelsToPrint', ['$scope', '$http', '$rootScope','sendZPLCodeToPrinter', function($scope, $http, $rootScope, sendZPLCodeToPrinter) {
+  
+  $rootScope.class = 'not-home';
   $rootScope.name= "Lista de todas as etiquetas a imprimir";
   $scope.labelsToPrint = [];
   var request = $http.get('/getLabelsToPrint');    
@@ -4311,6 +4339,8 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope','sendZPLCodeToP
 
 //DAILY ORDER PRODUCTION - Controller
 app.controller('dailyProduction', function($scope, $http, $rootScope, ModalService) {
+  
+  $rootScope.class = 'not-home';
   $rootScope.name= "Registo Produção Diária";
   $scope.dailyProduction = [];
     var request = $http.get('/getDailyProduction');    
@@ -4357,6 +4387,8 @@ app.controller('dailyProduction', function($scope, $http, $rootScope, ModalServi
 
 //DAILY PAINTING - Controller
 app.controller('dailyPaintingController', function($scope, $http, $rootScope, ModalService) {
+
+  $rootScope.class = 'not-home';
   $rootScope.name= "Registo Pintura Diária";
   $scope.dailyPainting = [];
     var request = $http.get('/getDailyPainting');    

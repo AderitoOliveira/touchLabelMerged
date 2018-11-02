@@ -1,18 +1,148 @@
-<div ng-controller="chartsTest">
-    <div class="row" style="height:400px;">
-        <div class="col-xs-6 col-md-6 paddingTop30Px"> 
-            <canvas id="bar" class="chart chart-bar"chart-data="data" chart-labels="labels" chart-series="series" chart-colors="colours"> 
-            </canvas>   
-        </div>
-        <div class="col-xs-6 col-md-6 paddingTop30Px"> 
-            <canvas id="bar" class="chart chart-bar"chart-data="data" chart-labels="labels" chart-series="series" > 
-            </canvas>   
+<div id="home" class="home-page row">
+    <div id="home-chart" class="col-md-6">
+        <div class="home-block" ng-controller="chartsTest">
+            <div class="block-heading">
+                <h2 class="block-heading-title">Estatísticas de Produção</h2>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-md-6 paddingTop30Px"> 
+                    <canvas id="bar" class="chart chart-bar"chart-data="data" chart-labels="labels" chart-series="series" chart-colors="colours"> 
+                    </canvas>   
+                </div>
+                <div class="col-xs-6 col-md-6 paddingTop30Px"> 
+                    <canvas id="bar" class="chart chart-bar"chart-data="data" chart-labels="labels" chart-series="series" > 
+                    </canvas>   
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-md-6 paddingTop30Px"> 
+                    <canvas id="bar" class="chart chart-bar"chart-data="data" chart-labels="labels" chart-series="series" > 
+                    </canvas>   
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row" style="height:400px;">
-        <div class="col-xs-6 col-md-6 paddingTop30Px"> 
-            <canvas id="bar" class="chart chart-bar"chart-data="data" chart-labels="labels" chart-series="series" > 
-            </canvas>   
+    <div id="home-labels" class="col-md-6">
+        <div class="home-block" id="home-labels-inner" ng-controller="labelsToPrint">
+            <div class="block-heading">
+                <h2 class="block-heading-title">Etiquetas a imprimir</h2>
+                <span class="table-number">12</span>
+            </div>
+            <div class="row">
+                <div id="label-table" class="col-md-12">
+                    <div class="label-table-wrap">
+                        <div class="label-table-header row">
+                            <div class="inner-wrap">
+                                <div class="col-md-2 label-header-item header-label-nr">Encomenda</div>
+                                <div class="col-md-2 label-header-item  header-label-customer-id">Ref. Cliente</div>
+                                <div class="col-md-2 label-header-item  header-label-own-id">Ref. Interna</div>
+                                <div class="col-md-2 label-header-item  header-label-name">Nome Produto</div>
+                                <div class="col-md-4 label-header-item  header-label-qty"><span class="light">Etiquetas Artigo</span><br>Etiquetas Caixa</div>
+                            </div>
+                        </div>
+                        <div class="order-labels-content row">
+                            <div class="col-md-12" dir-paginate="productLabel in labelsToPrint | orderBy : 'TOTAL_BOXES_TO_ORDER' | filter:searchChar | itemsPerPage:4">
+                                <div class="row">
+                                    <div class="item-inner-wrap">
+                                        <div class="col-md-2 table-item item-label-nr">{{productLabel.ORDER_ID}}</div>
+                                        <div class="col-md-2 table-item item-label-customer-id">{{productLabel.CUSTOMER_PRODUCT_ID}}</div>
+                                        <div class="col-md-2 table-item item-label-own-id">{{productLabel.INTERNAL_PRODUCT_ID}}</div>
+                                        <div class="col-md-2 table-item item-label-name">{{productLabel.PRODUCT_NAME}}</div>
+                                        <div class="col-md-4 table-item item-label-qty">{{productLabel.QTY_LABELS_TO_PRINT_ARTICLE}} <strong>/ {{productLabel.QTY_LABELS_TO_PRINT_BOX}}</strong></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <div id="home-boxes" class="col-md-12">
+        <div class="home-block" id="home-boxes-inner" ng-controller="boxesToOrder">
+            <div class="block-heading">
+                <h2 class="block-heading-title">Caixas a encomendar</h2>
+                <span class="table-number">12</span>
+            </div>
+            <div class="row">
+                <div ng-table="boxesToOrderTable" id="boxes-table" class="col-md-12">
+                    <div class="label-table-wrap">  
+                        <div class="label-table-header row">
+                            <div class="inner-wrap">
+                                <div class="col-md-1 label-header-item header-label-ordernr">Encomenda</div>
+                                <div class="col-md-1 label-header-item header-label-client-ref">Ref. <br>Cliente</div>
+                                <div class="col-md-1 label-header-item header-label-inner-ref">Ref. <br>Interna</div>
+                                <div class="col-md-2 label-header-item header-label-client">Cliente</div>
+                                <div class="col-md-2 label-header-item header-label-product">Nome Produto</div>
+                                <div class="col-md-1 label-header-item header-label-box-size">Dimensões Caixa</div>
+                                <div class="col-md-2 label-header-item header-label-amount"><span class="light">Produtos por Caixa / </span><br>Total Produzido</div>
+                                <div class="col-md-1 label-header-item header-label-boxes-amount">Caixas a encomendar</div>
+                            </div>
+                        </div>
+                        <div class="order-labels-content row">
+                            <div class="col-md-12" dir-paginate="boxesForProduct in boxesToOrder | orderBy : 'TOTAL_BOXES_TO_ORDER' | filter:searchChar | itemsPerPage:5">
+                                <div class="row">
+                                    <div class="item-inner-wrap">
+                                        <div class="col-md-1 table-item item-label-ordernr">{{boxesForProduct.ORDER_ID}}</div>
+                                        <div class="col-md-1 table-item item-label-client-ref">{{boxesForProduct.CUSTOMER_PRODUCT_ID}}</div>
+                                        <div class="col-md-1 table-item item-label-inner-ref">{{boxesForProduct.INTERNAL_PRODUCT_ID}}</div>
+                                        <div class="col-md-2 table-item item-label-client" style="text-align:left">{{boxesForProduct.CLIENT_NAME}}</div>
+                                        <div class="col-md-2 table-item item-label-product">{{boxesForProduct.PRODUCT_NAME}}</div>
+                                        <div class="col-md-1 table-item item-label-product">{{boxesForProduct.BOX_MEASURES}}</div>
+                                        <div class="col-md-2 table-item item-label-amount">{{boxesForProduct.QTY_BY_BOX}}<strong> / {{boxesForProduct.TOTAL_PRODUCTS_PRODUCED}}</strong></div>
+                                        <div class="col-md-1 table-item item-label-boxes-amount">{{boxesForProduct.TOTAL_BOXES_TO_ORDER}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="home-production" class="col-md-12">
+        <div class="home-block" id="home-daily-production-inner" ng-controller="dailyProduction">
+            <div class="block-heading">
+                <h2 class="block-heading-title">Produção Actual</h2>
+                <span class="table-number">12</span>
+            </div>
+            <div class="row">
+                <div ng-table="dailyProductionTable" id="order-table" class="col-md-12">
+                    <div class="label-table-wrap">
+                        <div class="label-table-header row">
+                            <div class="inner-wrap">
+                                <div class="col-md-1 label-header-item header-label-order">Encomenda</div>
+                                <div class="col-md-2 label-header-item header-label-clientref">Ref. Cliente</div>
+                                <div class="col-md-1 label-header-item header-label-innerref">Ref. Interna</div>
+                                <div class="col-md-2 label-header-item header-label-prodname">Nome Produto</div>
+                                <div class="col-md-2 label-header-item header-label-workername">Nome Rodista</div>
+                                <div class="col-md-1 label-header-item header-label-quantity">Quantidade Produzida</div>
+                                <div class="col-md-1 label-header-item header-label-value">Valor em Euros</div>                            
+                                <div class="col-md-2 label-header-item header-label-date">Data de Registo</div>
+                            </div>
+                        </div>
+                        <div class="order-labels-content row">
+                            <div class="col-md-12" dir-paginate="productsProduced in dailyProduction | filter:searchChar | itemsPerPage:5">
+                                <div class="row">
+                                    <div class="item-inner-wrap">
+                                        <div class="col-md-1 table-item item-label-order">{{productsProduced.ORDER_ID}}</div>
+                                        <div class="col-md-2 table-item item-label-clientref">{{productsProduced.CUSTOMER_PRODUCT_ID}}</div>
+                                        <div class="col-md-1 table-item item-label-innerref">{{productsProduced.INTERNAL_PRODUCT_ID}}</div>
+                                        <div class="col-md-2 table-item item-label-prodname">{{productsProduced.PRODUCT_NAME}}</div>
+                                        <div class="col-md-2 table-item item-label-workername">{{productsProduced.EMPLOYEE_NAME}}</div>
+                                        <div class="col-md-1 table-item item-label-quantity"><strong>{{productsProduced.TOTAL_PRODUCTS_PRODUCED}}</strong></div>
+                                        <div class="col-md-1 table-item item-label-value"><strong>{{productsProduced.PRODUCED_VALUE_IN_EURO}}</strong></div>
+                                        <div class="col-md-2 table-item item-label-date short">
+                                            {{productsProduced.CREATED_DATE}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-controller="homeController"></div>
 </div>

@@ -141,4 +141,10 @@
         });
     });
 
+    $(document).on('change',function(){
+        if($('#home').hasClass('home-page')){
+            console.log('is home');
+        }
+    })
+
 })(jQuery);
