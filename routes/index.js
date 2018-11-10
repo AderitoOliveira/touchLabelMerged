@@ -247,7 +247,7 @@ router.post('/updateProductTechSheet', function(req,res){
 //GET PRODUCT TECHNICAL SHEET
 router.get('/getProductTechSheet/:productid', function(req,res){
   console.log("GET PRODUCT TECHNICAL SHEET");
-  console.log(req.body);
+  //console.log(req.body);
   getProductTechSheet (req,res);  
 });
 
@@ -416,6 +416,13 @@ router.get('/getOverProductionInStock', function(req,res){
   console.log("GET OVERPRODUCTION IN STOCK");
   console.log(req.body);
   getOverProductionInStock(req,res);  
+});
+
+//GET BOX_MEASURES AND ID FROM BOX_MEASURES FOR TYPEAHEAD
+router.get('/getBoxMeasures', function(req,res){
+  console.log("GET BOX_MEASURES AND ID FROM BOX_MEASURES");
+  //console.log(req.body);
+  getBoxMeasures(req,res);  
 });
 
 module.exports = router;

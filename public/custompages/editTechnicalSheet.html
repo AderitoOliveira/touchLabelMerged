@@ -238,13 +238,13 @@
                         <div class="col-md-2 form-input-item">
                             <label class="control-label" for="boxMeasures">Medidas de Caixa</label>
                             <div class="input-wrap-inner">
-                              <input type="text" class="form-control" id="boxMeasures" placeholder="Medidas de Caixa" ng-model="boxMeasures">
+                              <input type="text" autocomplete="off" class="form-control" id="boxMeasures" placeholder="Medidas de Caixa" ng-model="boxMeasures" uib-typeahead="box as box.MEASURES for box in boxSize | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}" typeahead-editable="false">
                             </div>                  
                         </div>
                         <div class="col-md-1 form-input-item">
-                            <label class="control-label" for="bag">ID Caixa</label>
+                            <label class="control-label" for="boxId">ID Caixa</label>
                             <div class="input-wrap-inner">
-                              <input type="text" class="form-control" id="box-id" placeholder="ID Caixa" ng-model="bag">
+                              <input type="text" class="form-control" id="boxId" placeholder="ID Caixa" ng-model="boxId" uib-typeahead="box as box.ID for box in boxSize | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}" typeahead-editable="false">
                             </div>                  
                         </div>
                     </div>

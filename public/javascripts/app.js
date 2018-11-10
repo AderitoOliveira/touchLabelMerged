@@ -2342,6 +2342,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
       $scope.bagSize				    =	$scope.data[0].Bag_Size;
       $scope.qtyByBox				    =	$scope.data[0].Qty_By_Box;
       $scope.boxMeasures			  =	$scope.data[0].Box_Measures;
+      $scope.boxId       			  =	$scope.data[0].Box_Id;
       $scope.dispositionByRow		=	$scope.data[0].Disposition_By_Row;
       $scope.qtyByPallet			  =	$scope.data[0].Qty_By_Pallet;
       $scope.finalObservations	=	$scope.data[0].Final_Observations;
@@ -2353,10 +2354,19 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
       console.log('Error: ' + data);
   });
 
-   $scope.$watch('rawMaterial', function(){
-    console.log($scope.rawMaterial);
+  $scope.boxSize = [];
+  var request = $http.get('/getBoxMeasures');    
+  request.then(function successCallback(response) {
+    $scope.boxSize  = response.data;
+  },
+  function errorCallback(data){
+    console.log('Error: ' + data);
   });
-  
+
+  $scope.$watch('boxMeasures', function(){
+    $scope.boxId = $scope.boxMeasures;
+  });  
+
    $scope.saveTechSheet = function() {
 
     var dataObj = {
@@ -2387,7 +2397,8 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
       Bag:					        $scope.bag,
       Bag_Size:				      $scope.bagSize,
       Qty_By_Box:				    $scope.qtyByBox,
-      Box_Measures:			    $scope.boxMeasures,
+      Box_Measures:			    $scope.boxMeasures.MEASURES,
+      Box_Id:     			    $scope.boxMeasures.ID,
       Disposition_By_Row:		$scope.dispositionByRow,
       Qty_By_Pallet:			  $scope.qtyByPallet,
       Final_Observations:		$scope.finalObservations

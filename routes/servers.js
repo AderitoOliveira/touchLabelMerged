@@ -496,7 +496,7 @@ updateProductTechSheet = function(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     con.connect(function(err) {
-     con.query('UPDATE products_technical_sheet SET Raw_Material = ? ,Raw_Material_Extra = ? ,Product_Height = ? ,Product_Width = ? ,Top_Width = ? ,Bottom_Width = ? ,Relief = ? ,Sponge = ? ,Cooking = ? ,Cooking_Temperature = ? ,Painted_Cold = ? ,Ref_Paint = ? ,Ref_Paint_Qty = ? ,Glassed = ? ,Ref_Glassed = ? ,Ref_Paint_Smoked = ? ,Ref_Paint_Smoked_Qty = ? ,Finish_Type_Obs = ? ,Bar_Code_Tech_Sheet = ? ,Label_Water_Proof = ? ,Felts = ? ,Felts_Qty = ? ,Bag = ? ,Bag_Size = ? ,Qty_By_Box = ? ,Box_Measures = ? ,Disposition_By_Row = ? ,Qty_By_Pallet = ? ,Final_Observations = ?  WHERE CUSTOMER_PRODUCT_ID = ?',  [req.body.Raw_Material, req.body.Raw_Material_Extra, req.body.Product_Height, req.body.Product_Width, req.body.Top_Width, req.body.Bottom_Width, req.body.Relief, req.body.Sponge, req.body.Cooking, req.body.Cooking_Temperature, req.body.Painted_Cold, req.body.Ref_Paint, req.body.Ref_Paint_Qty, req.body.Glassed,	req.body.Ref_Glassed, req.body.Ref_Paint_Smoked, req.body.Ref_Paint_Smoked_Qty, req.body.Finish_Type_Obs, req.body.Bar_Code_Tech_Sheet, req.body.Label_Water_Proof, req.body.Felts,	req.body.Felts_Qty,	req.body.Bag, req.body.Bag_Size, req.body.Qty_By_Box, req.body.Box_Measures, req.body.Disposition_By_Row, req.body.Qty_By_Pallet, req.body.Final_Observations, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+     con.query('UPDATE products_technical_sheet SET Raw_Material = ? ,Raw_Material_Extra = ? ,Product_Height = ? ,Product_Width = ? ,Top_Width = ? ,Bottom_Width = ? ,Relief = ? ,Sponge = ? ,Cooking = ? ,Cooking_Temperature = ? ,Painted_Cold = ? ,Ref_Paint = ? ,Ref_Paint_Qty = ? ,Glassed = ? ,Ref_Glassed = ? ,Ref_Paint_Smoked = ? ,Ref_Paint_Smoked_Qty = ? ,Finish_Type_Obs = ? ,Bar_Code_Tech_Sheet = ? ,Label_Water_Proof = ? ,Felts = ? ,Felts_Qty = ? ,Bag = ? ,Bag_Size = ? ,Qty_By_Box = ? ,Box_Measures = ?, Box_Id = ? ,Disposition_By_Row = ? ,Qty_By_Pallet = ? ,Final_Observations = ?  WHERE CUSTOMER_PRODUCT_ID = ?',  [req.body.Raw_Material, req.body.Raw_Material_Extra, req.body.Product_Height, req.body.Product_Width, req.body.Top_Width, req.body.Bottom_Width, req.body.Relief, req.body.Sponge, req.body.Cooking, req.body.Cooking_Temperature, req.body.Painted_Cold, req.body.Ref_Paint, req.body.Ref_Paint_Qty, req.body.Glassed,	req.body.Ref_Glassed, req.body.Ref_Paint_Smoked, req.body.Ref_Paint_Smoked_Qty, req.body.Finish_Type_Obs, req.body.Bar_Code_Tech_Sheet, req.body.Label_Water_Proof, req.body.Felts,	req.body.Felts_Qty,	req.body.Bag, req.body.Bag_Size, req.body.Qty_By_Box, req.body.Box_Measures, req.body.Box_Id, req.body.Disposition_By_Row, req.body.Qty_By_Pallet, req.body.Final_Observations, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });
@@ -514,11 +514,11 @@ getProductTechSheet = function(data, callback) {
         callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
         callback.end(JSON.stringify(rows));
-        console.log(data); 
+        //console.log(data); 
         callback = rows;
-        console.log("--------------------------------------------------");   
-        console.log(rows);   
-        console.log("--------------------------------------------------");    
+        //console.log("--------------------------------------------------");   
+        //console.log(rows);   
+        //console.log("--------------------------------------------------");    
     });
 });
 }
@@ -900,6 +900,24 @@ getOverProductionInStock = function(data, callback) {
         callback.end(JSON.stringify(rows));
         callback = rows;
         console.log("GET OVERPRODUCTION IN STOCK");   
+
+    });
+});
+}
+
+//GET BOX_MEASURES AND ID FROM BOX_MEASURES FOR TYPEAHEAD
+getBoxMeasures = function(data, callback) {
+    con.connect(function(err) {
+    con.query('select MEASURES, ID from box_measures', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET BOX_MEASURES AND ID FROM BOX_MEASURES");   
 
     });
 });
