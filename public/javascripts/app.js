@@ -808,30 +808,72 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
     alert($stateParams.orderId);
 
-    ModalService.showModal({
-      templateUrl: "../modal/closeProductInProduction.html",
-      controller: "closeProductInOrderToProduction",
-      preClose: (modal) => { modal.element.modal('hide'); },
-      inputs: {
-        title: "Apagar Produto",
-        orderid: $stateParams.orderId,
-        internalproductid: internalproductid,
-        customerproductid: customerproductid,
-        productname: productName,
-        quantityordered: qtyorder,
-        totalproductsproduced: qtyproduced,
-        clientname: $scope.clientname
-      }
-    }).then(function(modal) {
-    modal.element.modal();
-    modal.close.then(function(result) {
-      if (!result) {
-        $scope.complexResult = "Modal forcibly closed..."
+    $scope.productTechSheet = [];
+    var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerproductid));    
+    request.then(function successCallback(response) {
+       $scope.productTechSheet  = response.data;
+
+      //IF THE BOX_ID OR BOX_MEASURES ARE NOT DEFINED IN THE PRODUCT TECHNICAL SHEET OF THE PRODUCT
+      //THE PRODUCT CANNOT BE CLOSED IN THIS ORDER
+      if($scope.productTechSheet[0].Box_Id == null || $scope.productTechSheet[0].Box_Measures == null) {
+
+        var messageToSend = "";
+        if($scope.productTechSheet[0].Box_Id == null) {
+          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o número da Caixa. Edite a ficha técnica do produto e adicione o número da caixa para poder fechar o produto nesta encomenda."
+        }
+        if($scope.productTechSheet[0].Box_Measures == null && messageToSend == "") {
+          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido as MEDIDAS da Caixa. Edite a ficha técnica do produto e adicione o número da caixa para poder fechar o produto nesta encomenda."
+        }
+      
+        ModalService.showModal({
+        templateUrl: "../modal/genericModal.html",
+        controller: "GenericController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: messageToSend
+        }
+        }).then(function(modal) {
+            modal.element.modal();
+            modal.close.then(function(result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+            }
+            });
+        });
       } else {
-        $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+          //SHOW THE MODAL TO CLOSE THE PRODUCT IN PRODUCTION
+          ModalService.showModal({
+            templateUrl: "../modal/closeProductInProduction.html",
+            controller: "closeProductInOrderToProduction",
+            preClose: (modal) => { modal.element.modal('hide'); },
+            inputs: {
+              title: "Apagar Produto",
+              orderid: $stateParams.orderId,
+              internalproductid: internalproductid,
+              customerproductid: customerproductid,
+              productname: productName,
+              quantityordered: qtyorder,
+              totalproductsproduced: qtyproduced,
+              clientname: $scope.clientname
+            }
+          }).then(function(modal) {
+          modal.element.modal();
+          modal.close.then(function(result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
+         });
       }
+      return  $scope.productTechSheet; 
+    },
+        function errorCallback(data){
+        console.log('Error: ' + data);
     });
-   });
 
   };
 
@@ -3594,8 +3636,8 @@ app.controller('editImageClientCtrl', [ '$http', '$state', '$rootScope','$scope'
 /*------------------ Controller for the MODAL to CLOSE the PRODUCT for PRODUCTION in the ORDER-----------------------*/
 
 app.controller('closeProductInOrderToProduction',  [
-  '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid' ,'productname', 'quantityordered', 'totalproductsproduced', 'clientname', 
-  function($scope,$http, $element, $urlRouter, $templateCache, $state, title, close , orderid, internalproductid, customerproductid, productname, quantityordered, totalproductsproduced, clientname){
+  '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'ModalService','title', 'close', 'orderid', 'internalproductid', 'customerproductid' ,'productname', 'quantityordered', 'totalproductsproduced', 'clientname', 
+  function($scope,$http, $element, $urlRouter, $templateCache, $state, ModalService,title, close , orderid, internalproductid, customerproductid, productname, quantityordered, totalproductsproduced, clientname){
 
 $scope.title = title;
 $scope.orderid = orderid;
@@ -3607,17 +3649,6 @@ $scope.totalproductsproduced = totalproductsproduced;
 $scope.clientname = clientname;
 //  This close function doesn't need to use jQuery or bootstrap, because
 //  the button has the 'data-dismiss' attribute.
-
-$scope.productTechSheet = [];
-var request = $http.get('/getProductTechSheet/' + encodeURIComponent($scope.customerproductid));    
-request.then(function successCallback(response) {
-    $scope.productTechSheet  = response.data;
-    return  $scope.productTechSheet; 
-    },
-    function errorCallback(data){
-        console.log('Error: ' + data);
-});
-
 
 //Save Content Modal  
 $scope.yes = function () {
