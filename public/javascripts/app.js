@@ -1813,12 +1813,6 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
    function errorCallback(data){
        console.log('Error: ' + data);
    });
-
-
-  $scope.$watch('clientname', function(){
-  $scope.clientid = $scope.clientname.CLIENT_NAME;
-    console.log($scope.selected);
-  });
   
   
   $scope.dataProducts = [];
