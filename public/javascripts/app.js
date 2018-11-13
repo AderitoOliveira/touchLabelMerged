@@ -3624,6 +3624,7 @@ $scope.yes = function () {
 
   var qtyProductsByBox = $scope.productTechSheet[0].Qty_By_Box;
   var boxMeasures = $scope.productTechSheet[0].Box_Measures;
+  var boxId = $scope.productTechSheet[0].Box_Id;
 
   var numBoxesToOrder = $scope.totalproductsproduced/qtyProductsByBox;
 
@@ -3636,7 +3637,8 @@ $scope.yes = function () {
     QTY_BY_BOX: qtyProductsByBox,
     TOTAL_BOXES_TO_ORDER: numBoxesToOrder,
     CLIENT_NAME: $scope.clientname,
-    BOX_MEASURES: boxMeasures
+    BOX_MEASURES: boxMeasures,
+    BOX_ID: boxId
   };	
 
   var dataUpdateOrderProductStatus = {
