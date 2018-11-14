@@ -32,10 +32,17 @@
             });
             $(this).addClass('active');
             var activeForm = $(this).attr('data-target');
-            $('.inner-form-wrap').each(function(){
-                $(this).removeClass('active');
-            });
-            $(activeForm).addClass('active');
+            if($(this).hasClass('secondary-conf')){
+                $('#primary-config').hide();
+                $('#conf-boxes-wrap').show();
+            } else {
+                $('#conf-boxes-wrap').hide();
+                $('#primary-config').show();
+                $('.inner-form-wrap').each(function(){
+                    $(this).removeClass('active');
+                });
+                $(activeForm).addClass('active');
+            }
         });
 
         $(document).on('click','.checkbox-all', function(){

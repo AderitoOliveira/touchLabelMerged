@@ -1674,6 +1674,19 @@ $colorVariable: var(--value);
     }
 }
 
+.modal-generic{
+    h2.modal-subtitle{
+        font-size: 24px;
+        padding-top: 36px;
+        padding-bottom: 12px;
+        line-height: 1.4;
+    }
+    button.btn-cancel{
+        margin-right:0px !important;
+
+    }
+}
+
 .header-label-checkbox, .item-label-checkbox{
     max-width:40px;
 }
@@ -1808,7 +1821,7 @@ div[ng-controller="OverProductionController"] div[ng-table="dailyProductionTable
             list-style-type:  none;
         }
         a.toggle-button {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 500;
             font-style: normal;
             font-stretch: normal;
@@ -1834,6 +1847,24 @@ div[ng-controller="OverProductionController"] div[ng-table="dailyProductionTable
     &.active{
         display:block;
     }
+}
+
+#conf-boxes-wrap{
+    display:none;
+    h4.block-title {
+        font-weight: 500;
+        line-height: normal;
+        font-size: 24px;
+        color: #222222;
+    }
+    
+
+}
+.form-boxes-wrap .form-input-item {
+    margin-bottom: 24px;
+}
+.btn-margin{
+    margin-top:12px;
 }
 
 .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
