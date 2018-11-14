@@ -3969,9 +3969,10 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
   var rowValues = [];
   var boxesToSendInOrder = [];
   var _clientname = "";
-  $scope.changeValue = function (box, ORDER_ID, CUSTOMER_PRODUCT_ID, CLIENT_NAME, PRODUCT_NAME, BOX_MEASURES,TOTAL_BOXES_TO_ORDER) {
+  $scope.changeValue = function (box, ORDER_ID, CUSTOMER_PRODUCT_ID, CLIENT_NAME, PRODUCT_NAME, BOX_MEASURES, BOX_ID, TOTAL_BOXES_TO_ORDER) {
       console.log(box);
       if(box == true) {
+        rowValues.push(BOX_ID);
         rowValues.push(TOTAL_BOXES_TO_ORDER);
         rowValues.push(BOX_MEASURES);
         rowValues.push(PRODUCT_NAME);
@@ -4102,9 +4103,10 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
             table: {
               
               headerRows: 1,
-              widths: [ '*', '*', '*'],
+              widths: [ '*','*', '*', '*'],
               body: [
                 [ 
+                {text: 'Num. Caixa', style: "tblHeader"},
                 {text: 'QUANT. CAIXAS', style: "tblHeader"},
                 {text: 'MEDIDAS', style: "tblHeader"},
                 {text: 'DESCRIÇÃO', style: "tblHeader"}
@@ -4112,6 +4114,9 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
               ]
             },
             layout: 'lightHorizontalLines'
+          },
+          {
+            text: '\n\n ENTREGA, SE POSSÍVEL, NO DECORRER DA PRÒXIMA SEMANA', style: 'bottomMessage',
           }
         ],
     styles: {
@@ -4144,6 +4149,13 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
       },
       table: {
         margin: [0, 20, 0, 20]  
+      },
+      bottomMessage: {
+        fontSize:14,
+        color: 'black',
+        bold: true,
+        lineHeight: 1.25,
+        margin: [40,0,0,0]
       },
       'contacts': {
           fontSize:12,
