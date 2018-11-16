@@ -284,6 +284,13 @@ router.get('/getAllOrderBoxes', function(req,res){
   fetchAllOrderBoxesToOrder(req,res);  
 });
 
+//DELETE ROWS FROM ORDER BOXES AFTER THE ORDER IS PLACED
+router.post('/deleteOrderBoxes', function(req,res){
+  console.log("DELETE ORDER BOXES AFTER THE ORDER IS PLACED");
+  console.log(req.body);
+  deleteOrderBoxAfterOrderPlaced(req,res);  
+});
+
 //GET ALL EMPLOYEES
 router.get('/employees', function(req,res){
   fetchAllEmployees(req,res);  

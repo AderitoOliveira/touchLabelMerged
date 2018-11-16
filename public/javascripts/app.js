@@ -3968,22 +3968,36 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
 
   var rowValues = [];
   var boxesToSendInOrder = [];
+  var orderProductToDelete = [];
+  var arrayOrderProductToDelete = [];
   var _clientname = "";
   $scope.changeValue = function (box, ORDER_ID, CUSTOMER_PRODUCT_ID, CLIENT_NAME, PRODUCT_NAME, BOX_MEASURES, BOX_ID, TOTAL_BOXES_TO_ORDER) {
       console.log(box);
       if(box == true) {
+        //PUSH TO rowValues the RECORDS TO SEND IN THE PDF
         rowValues.push(BOX_ID);
         rowValues.push(TOTAL_BOXES_TO_ORDER);
         rowValues.push(BOX_MEASURES);
         rowValues.push(PRODUCT_NAME);
         boxesToSendInOrder.push(rowValues);
+
+        //PUSH TO arrayOrderProductToDelete THE COMBINATION ORDER_ID - CUSTOMER_PRODCUT_ID THAT SHOULD BE DELETED AFTER THE ORDER IS GENERATED
+        orderProductToDelete.push(ORDER_ID);
+        orderProductToDelete.push(CUSTOMER_PRODUCT_ID);
+        arrayOrderProductToDelete.push(orderProductToDelete);
+
         _clientname = CLIENT_NAME;
 
         rowValues = [];
+        orderProductToDelete = [];
       } else if (box == false && boxesToSendInOrder.length > 0) {
         //boxesToSendInOrder = $filter('filter')(boxesToSendInOrder, {'CUSTOMER_PRODUCT_ID': CUSTOMER_PRODUCT_ID});
         boxesToSendInOrder = boxesToSendInOrder.filter(function(el) {
-          return el[2] !== PRODUCT_NAME;
+          return el[3] !== PRODUCT_NAME;
+        });
+
+        arrayOrderProductToDelete = arrayOrderProductToDelete.filter(function(el) {
+          return el[1] !== CUSTOMER_PRODUCT_ID;
         });
       }
   }
@@ -4029,6 +4043,8 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
   $scope.generateOrder = function() {
 
     var localCopyBoxesToSendInOrder = angular.copy(boxesToSendInOrder);
+    var localCopyArrayOrderProductToDelete = angular.copy(arrayOrderProductToDelete);
+  
     var docDefinition = {
       content: [
         {
@@ -4262,7 +4278,30 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
     var filename = 'Encomenda_Caixas_' + _clientname.replace(/\./g,'_').replace(/\s/g,'_') + '_' + dateToPrintInFileName;
     pdfMake.createPdf(documentToPrint).download(filename);
 
+    //DELETE THE ORDER_ID - CUSTOMER_PRODUCT_ID FROM THE order_boxes_closed_production_products TABLE
+    var orderIdToDeleteArray = [];
+    var customerProductIdToDeleteArray = [];
+    for(i=0; i<localCopyArrayOrderProductToDelete.length; i++) {
+            var orderProductToDelete = localCopyArrayOrderProductToDelete[i];
+            var orderID = orderProductToDelete[0];
+            var customerProductID = orderProductToDelete[1];
+
+            //FUNCIONA
+            orderIdToDeleteArray.push(orderID);
+            customerProductIdToDeleteArray.push(customerProductID);
+    }
+    
+    var arrayToSendToMySQL = {
+      orderIdArray : orderIdToDeleteArray,
+      customerProductIdArray : customerProductIdToDeleteArray
+    }
+
+    
+    var res = $http.post('/deleteOrderBoxes', arrayToSendToMySQL).then(function(data, status, headers, config) {
+    });
+
     localCopyBoxesToSendInOrder = [];
+    localCopyArrayOrderProductToDelete = [];
     boxesToSendInOrder = [];
   }
 
