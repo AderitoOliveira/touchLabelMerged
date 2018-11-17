@@ -186,12 +186,12 @@
             }
         } );
 
-        if(!$("#product-create-form").valid()){
+        /* if(!$("#product-create-form").valid()){
             console.log('form invalid');
         } else {
             console.log('form valid');
             return true;
-        }
+        } */
     })
 
     $(document).on('click', '#product-edit-btn', function(e){
