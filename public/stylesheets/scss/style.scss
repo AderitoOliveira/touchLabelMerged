@@ -40,6 +40,17 @@ input.form-control, textarea{
     }
 }
 
+.input-wrap-inner{
+    label.error {
+        color: #c21414;
+        font-size: 14px;
+        font-weight: normal;
+        width: 100%;
+        float: left;
+        padding: 6px 0 6px;
+    }
+}
+
 .ng-untouched {
     border:1px;
     border-style: solid;
@@ -1858,8 +1869,6 @@ div[ng-controller="OverProductionController"] div[ng-table="dailyProductionTable
         font-size: 24px;
         color: #222222;
     }
-    
-
 }
 .form-boxes-wrap .form-input-item {
     margin-bottom: 24px;

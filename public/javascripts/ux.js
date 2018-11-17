@@ -154,4 +154,79 @@
         }
     })
 
+    //Form Validation
+
+    function isFieldFilled() {
+        return $('#nameInTheLabel').val().length > 0;
+    }
+    
+
+    $(document).on('click', '#product-create-btn', function(e){
+        e.preventDefault();
+        $( "#product-create-form" ).validate( {
+            rules: {
+                productId: "required",
+                customerproductId: "required",
+                clientname: "required",
+                productName: "required",
+                nameInTheLabel: {
+                    required: false,
+                    maxlength: {
+                        depends: isFieldFilled,
+                        param: 24
+                    }
+                }
+            },
+            messages: {
+                productId: "Por favor insira a referência interna",
+                customerproductId: "Por favor insira a referência do cliente",
+                clientname: "Por favor insira o nome do cliente",
+                productName: "Por favor insira o nome do produto",
+                nameInTheLabel: "Máximo de 24 Caracteres"
+            }
+        } );
+
+        if(!$("#product-create-form").valid()){
+            console.log('form invalid');
+        } else {
+            console.log('form valid');
+            return true;
+        }
+    })
+
+    $(document).on('click', '#product-edit-btn', function(e){
+        //e.preventDefault();
+        $( "#product-edit-form" ).validate( {
+            rules: {
+                productId: "required",
+                customerproductId: "required",
+                clientname: "required",
+                productName: "required",
+                nameInTheLabel: {
+                    required: false,
+                    maxlength: {
+                        depends: isFieldFilled,
+                        param: 24
+                    }
+                }
+            },
+            messages: {
+                productId: "Por favor insira a referência interna",
+                customerproductId: "Por favor insira a referência do cliente",
+                clientname: "Por favor insira o nome do cliente",
+                productName: "Por favor insira o nome do produto",
+                nameInTheLabel: "Máximo de 24 Caracteres"
+            }
+        } );
+
+        /* if(!$("#product-edit-form").valid()){
+            //return true;
+            alert('form invalid');
+            return false;
+        } else {
+            alert('form valid');
+            return true;
+        } */
+    })
+
 })(jQuery);
