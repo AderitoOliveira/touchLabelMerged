@@ -856,7 +856,10 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               productname: productName,
               quantityordered: qtyorder,
               totalproductsproduced: qtyproduced,
-              clientname: $scope.clientname
+              clientname: $scope.clientname,
+              boxmeasures: $scope.productTechSheet[0].Box_Measures,
+              boxid: $scope.productTechSheet[0].Box_Id,
+              qtybybox: $scope.productTechSheet[0].Qty_By_Box
             }
           }).then(function(modal) {
           modal.element.modal();
@@ -3139,10 +3142,18 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
     //var currentPageTemplate = $state.current.templateUrl;
     //$templateCache.remove(currentPageTemplate);
     //$state.go("listProducts", null, { reload: true });
+    //WE NEED TO VALIDATE IF THE CLIENT_NAME COMES FROM THE TYPEAHEAD OR OF IT THE CLIENT_NAME ALREADY 
+    //EXISTS IN THE DATABASE
+    if(!$scope.clientname.CLIENT_NAME) {
+      $scope.clientname = $scope.clientname;
+    } else {
+      $scope.clientname = $scope.clientname.CLIENT_NAME;
+    }
+
     var dataObj = {
       productname     : $scope.productName,
       productid       : $scope.customerProductId,
-      clientname      : $scope.clientname.CLIENT_NAME,
+      clientname      : $scope.clientname,
       imagename       : $scope.imageName,
       barcode         : $scope.barCode,
       numArticleByBox : $scope.numArticleByBox,
@@ -3636,8 +3647,8 @@ app.controller('editImageClientCtrl', [ '$http', '$state', '$rootScope','$scope'
 /*------------------ Controller for the MODAL to CLOSE the PRODUCT for PRODUCTION in the ORDER-----------------------*/
 
 app.controller('closeProductInOrderToProduction',  [
-  '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'ModalService','title', 'close', 'orderid', 'internalproductid', 'customerproductid' ,'productname', 'quantityordered', 'totalproductsproduced', 'clientname', 
-  function($scope,$http, $element, $urlRouter, $templateCache, $state, ModalService,title, close , orderid, internalproductid, customerproductid, productname, quantityordered, totalproductsproduced, clientname){
+  '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'ModalService','title', 'close', 'orderid', 'internalproductid', 'customerproductid' ,'productname', 'quantityordered', 'totalproductsproduced', 'clientname', 'boxmeasures', 'boxid', 'qtybybox',
+  function($scope,$http, $element, $urlRouter, $templateCache, $state, ModalService,title, close , orderid, internalproductid, customerproductid, productname, quantityordered, totalproductsproduced, clientname, boxmeasures, boxid, qtybybox){
 
 $scope.title = title;
 $scope.orderid = orderid;
@@ -3647,17 +3658,16 @@ $scope.productname = productname;
 $scope.quantityordered = quantityordered;
 $scope.totalproductsproduced = totalproductsproduced;
 $scope.clientname = clientname;
+$scope.boxmeasures = boxmeasures;
+$scope.boxid = boxid;
+$scope.qtybybox = qtybybox;
 //  This close function doesn't need to use jQuery or bootstrap, because
 //  the button has the 'data-dismiss' attribute.
 
 //Save Content Modal  
 $scope.yes = function () {
 
-  var qtyProductsByBox = $scope.productTechSheet[0].Qty_By_Box;
-  var boxMeasures = $scope.productTechSheet[0].Box_Measures;
-  var boxId = $scope.productTechSheet[0].Box_Id;
-
-  var numBoxesToOrder = $scope.totalproductsproduced/qtyProductsByBox;
+  var numBoxesToOrder = $scope.totalproductsproduced/$scope.qtybybox;
 
   var dataObj = {
     ORDER_ID: $scope.orderid,
@@ -3665,11 +3675,11 @@ $scope.yes = function () {
     INTERNAL_PRODUCT_ID: $scope.internalproductid,
     PRODUCT_NAME: $scope.productname,
     TOTAL_PRODUCTS_PRODUCED: $scope.totalproductsproduced,
-    QTY_BY_BOX: qtyProductsByBox,
+    QTY_BY_BOX: $scope.qtybybox,
     TOTAL_BOXES_TO_ORDER: numBoxesToOrder,
     CLIENT_NAME: $scope.clientname,
-    BOX_MEASURES: boxMeasures,
-    BOX_ID: boxId
+    BOX_MEASURES: $scope.boxmeasures,
+    BOX_ID: $scope.boxid
   };	
 
   var dataUpdateOrderProductStatus = {
@@ -3943,7 +3953,7 @@ $scope.yes = function () {
 
 
 //ALL BOXES TO ORDER - Controller
-app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', function($scope, $http, $rootScope, $filter) {
+app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', '$timeout', function($scope, $http, $rootScope, $filter, $timeout) {
   
   $rootScope.class = 'not-home';
   $rootScope.name= "Lista de todas as caixas a encomendar";
@@ -3968,22 +3978,36 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
 
   var rowValues = [];
   var boxesToSendInOrder = [];
+  var orderProductToDelete = [];
+  var arrayOrderProductToDelete = [];
   var _clientname = "";
   $scope.changeValue = function (box, ORDER_ID, CUSTOMER_PRODUCT_ID, CLIENT_NAME, PRODUCT_NAME, BOX_MEASURES, BOX_ID, TOTAL_BOXES_TO_ORDER) {
       console.log(box);
       if(box == true) {
+        //PUSH TO rowValues the RECORDS TO SEND IN THE PDF
         rowValues.push(BOX_ID);
         rowValues.push(TOTAL_BOXES_TO_ORDER);
         rowValues.push(BOX_MEASURES);
         rowValues.push(PRODUCT_NAME);
         boxesToSendInOrder.push(rowValues);
+
+        //PUSH TO arrayOrderProductToDelete THE COMBINATION ORDER_ID - CUSTOMER_PRODCUT_ID THAT SHOULD BE DELETED AFTER THE ORDER IS GENERATED
+        orderProductToDelete.push(ORDER_ID);
+        orderProductToDelete.push(CUSTOMER_PRODUCT_ID);
+        arrayOrderProductToDelete.push(orderProductToDelete);
+
         _clientname = CLIENT_NAME;
 
         rowValues = [];
+        orderProductToDelete = [];
       } else if (box == false && boxesToSendInOrder.length > 0) {
         //boxesToSendInOrder = $filter('filter')(boxesToSendInOrder, {'CUSTOMER_PRODUCT_ID': CUSTOMER_PRODUCT_ID});
         boxesToSendInOrder = boxesToSendInOrder.filter(function(el) {
-          return el[2] !== PRODUCT_NAME;
+          return el[3] !== PRODUCT_NAME;
+        });
+
+        arrayOrderProductToDelete = arrayOrderProductToDelete.filter(function(el) {
+          return el[1] !== CUSTOMER_PRODUCT_ID;
         });
       }
   }
@@ -4029,6 +4053,8 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
   $scope.generateOrder = function() {
 
     var localCopyBoxesToSendInOrder = angular.copy(boxesToSendInOrder);
+    var localCopyArrayOrderProductToDelete = angular.copy(arrayOrderProductToDelete);
+  
     var docDefinition = {
       content: [
         {
@@ -4262,7 +4288,52 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
     var filename = 'Encomenda_Caixas_' + _clientname.replace(/\./g,'_').replace(/\s/g,'_') + '_' + dateToPrintInFileName;
     pdfMake.createPdf(documentToPrint).download(filename);
 
+    //DELETE THE ORDER_ID - CUSTOMER_PRODUCT_ID FROM THE order_boxes_closed_production_products TABLE
+    var orderIdToDeleteArray = [];
+    var customerProductIdToDeleteArray = [];
+    for(i=0; i<localCopyArrayOrderProductToDelete.length; i++) {
+            var orderProductToDelete = localCopyArrayOrderProductToDelete[i];
+            var orderID = orderProductToDelete[0];
+            var customerProductID = orderProductToDelete[1];
+
+            //FUNCIONA
+            orderIdToDeleteArray.push(orderID);
+            customerProductIdToDeleteArray.push(customerProductID);
+    }
+    
+    var arrayToSendToMySQL = {
+      orderIdArray : orderIdToDeleteArray,
+      customerProductIdArray : customerProductIdToDeleteArray
+    }
+
+    
+    var res = $http.post('/deleteOrderBoxes', arrayToSendToMySQL).then(function(data, status, headers, config) {
+    });
+
+    $timeout(function() { $scope.displayErrorMsg = false;}, 2000);
+
+    //SEND EMAIL
+    var mailOptions = {
+      from: 'aderito.nelson1@gmail.com',
+      to: 'aderito1@gmail.com',
+      subject: 'Email sent by ',
+      attachments: [{
+        filename: filename + '.pdf',
+        path: 'C:/Users/anoliveira/Downloads/',
+        contentType: 'application/pdf'
+      }],
+      text: "<b>Hello world?</b>",
+      html: "<b>Hello world?</b>"
+    };
+    //$http.post('/sendmail', {params: {name: 'ABCXYZ'}}).then(res=>{
+    $http.post('/sendmail', {params: {mailOptions}}).then(res=>{
+        $scope.loading = false;
+        $scope.serverMessage = 'Foi enviado um email para a sua caixa de email com a informação da encomenda!!!!';
+        //alert($scope.serverMessage);
+    });
+
     localCopyBoxesToSendInOrder = [];
+    localCopyArrayOrderProductToDelete = [];
     boxesToSendInOrder = [];
   }
 
@@ -4383,6 +4454,121 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope','sendZPLCodeToP
       console.log('Error: ' + data);
   });
 }
+
+//PRINT LABEL BOX
+$scope.printProductBoxLabels = function (customer_product_id, quantity_box_labels) {
+
+  $scope.productLabel = [];
+  var request = $http.get('/labelToPrintForProduct/'+  encodeURIComponent(customer_product_id));     
+  request.then(function successCallback(response) {
+    $scope.productLabel  = response.data;
+
+    var barCodeNumber 		  = $scope.productLabel[0].BAR_CODE_NUMBER;
+    var qtyByBox				    = $scope.productLabel[0].Qty_By_Box;
+    var productNameForLabel	= $scope.productLabel[0].PRODUCT_NAME_FOR_LABEL;
+    var boxBarCodeType      = $scope.productLabel[0].BOX_BARCODE_TYPE;
+    var ZPLString     		  = $scope.productLabel[0].ZPL_STRING_BOX;
+    var PrinterIPAddress 		= $scope.productLabel[0].ARTICLE_PRINTER_IP_ADDRESS;
+    var PrinterPort 			  = $scope.productLabel[0].ARTICLE_PRINTER_PORT;
+
+if(boxBarCodeType == 'GS1-128')
+{
+  
+  alert("ZPL: " + ZPLString);
+  //var cd = eanCheckDigit("0871886150940");
+  alert("Bar Code Number: " + barCodeNumber);
+  var checkDigit = eanCheckDigit( '' + barCodeNumber);
+  alert("CheckDigit: " + checkDigit);
+
+  
+  function padDigits(number, digits) {
+    return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+  }
+
+  var Quantity_full = padDigits(qtyByBox, 4);
+
+  //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
+  //GS1-128 BarCode
+  var EanWithCheckDigit = barCodeNumber + checkDigit;
+  var FullEan = "802" + barCodeNumber + checkDigit + "37" + Quantity_full;
+
+  alert("fullEan: " + FullEan);
+
+  function replaceAll(str, map){
+    for(key in map){
+    str2 = str.replace(key, map[key]);
+    str=str2;
+    str2=null;
+    }
+  return str;
+  }
+
+  var map = {
+  '_EAN_CHECK_DIGIT' : EanWithCheckDigit,
+  '_QUANTIDADE_EXTENDIDA' : Quantity_full,
+  '_FULL_EAN' : FullEan,
+  '_NUM_ARTIGO' : customer_product_id,
+  '_NOME_ARTIGO' : productNameForLabel,
+  '_QUANTIDADE' : qtyByBox,
+  '_PRINT_QUANTITY'  : quantity_box_labels
+  };
+
+  var sendToPrinter = replaceAll(ZPLString, map);
+
+  sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
+}
+
+if(boxBarCodeType == 'EAN13')
+{
+  alert("ZPL: " + ZPLString);
+  //var cd = eanCheckDigit("0871886150940");
+  alert("Bar Code Number: " + barCodeNumber);
+  var checkDigit = eanCheckDigit( '' + barCodeNumber);
+  alert("CheckDigit: " + checkDigit);
+
+  
+  function padDigits(number, digits) {
+    return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+  }
+
+  var Quantity_full = padDigits(qtyByBox, 4);
+
+  //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
+  //GS1-128 BarCode
+  var EanWithCheckDigit = barCodeNumber + checkDigit;
+  //var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
+
+  alert("fullEan: " + FullEan);
+
+  function replaceAll(str, map){
+    for(key in map){
+      str2 = str.replace(key, map[key]);
+      str=str2;
+      str2=null;
+    }
+  return str;
+  }	
+
+  var map = {
+  '_EAN_CHECK_DIGIT' : EanWithCheckDigit,
+  '_QUANTIDADE_EXTENDIDA' : Quantity_full,
+  '_NUM_ARTIGO' : customer_product_id ,
+  '_NOME_ARTIGO' : productNameForLabel,
+  '_QUANTIDADE' : qtyByBox,
+  '_PRINT_QUANTITY'  : quantity_box_labels
+  };
+
+  var sendToPrinter = replaceAll(ZPLString, map);
+
+  sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
+}
+
+},
+function errorCallback(data){
+    console.log('Error: ' + data);
+});
+}
+
 
 }]);
 

@@ -614,6 +614,28 @@ fetchAllOrderBoxesToOrder = function(data, callback) {
 });
 }
 
+//DELETE ROWS FROM ORDER BOXES AFTER THE ORDER IS PLACED
+deleteOrderBoxAfterOrderPlaced = function(req, res) {
+    var postData  = req.body;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    console.log("##########################################################");
+    console.log(postData.orderIdArray);
+    console.log(postData.customerProductIdArray);
+    console.log("##########################################################");
+    con.connect(function(err) {
+    var query = con.query('delete from order_boxes_closed_production_products where ORDER_ID in (?) and CUSTOMER_PRODUCT_ID in (?)', [postData.orderIdArray, postData.customerProductIdArray], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+    console.log("##########################################################");
+    console.log("QUERY: " + query.sql);
+    console.log("##########################################################");
+  });
+ });
+}
+
 //GET EMPLOYEES FROM TABLE
 fetchAllEmployees = function(data, callback) {
     con.connect(function(err) {
