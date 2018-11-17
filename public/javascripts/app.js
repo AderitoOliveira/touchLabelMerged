@@ -3142,10 +3142,18 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
     //var currentPageTemplate = $state.current.templateUrl;
     //$templateCache.remove(currentPageTemplate);
     //$state.go("listProducts", null, { reload: true });
+    //WE NEED TO VALIDATE IF THE CLIENT_NAME COMES FROM THE TYPEAHEAD OR OF IT THE CLIENT_NAME ALREADY 
+    //EXISTS IN THE DATABASE
+    if(!$scope.clientname.CLIENT_NAME) {
+      $scope.clientname = $scope.clientname;
+    } else {
+      $scope.clientname = $scope.clientname.CLIENT_NAME;
+    }
+
     var dataObj = {
       productname     : $scope.productName,
       productid       : $scope.customerProductId,
-      clientname      : $scope.clientname.CLIENT_NAME,
+      clientname      : $scope.clientname,
       imagename       : $scope.imageName,
       barcode         : $scope.barCode,
       numArticleByBox : $scope.numArticleByBox,
