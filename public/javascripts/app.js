@@ -856,7 +856,10 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               productname: productName,
               quantityordered: qtyorder,
               totalproductsproduced: qtyproduced,
-              clientname: $scope.clientname
+              clientname: $scope.clientname,
+              boxmeasures: $scope.productTechSheet[0].Box_Measures,
+              boxid: $scope.productTechSheet[0].Box_Id,
+              qtybybox: $scope.productTechSheet[0].Qty_By_Box
             }
           }).then(function(modal) {
           modal.element.modal();
@@ -3636,8 +3639,8 @@ app.controller('editImageClientCtrl', [ '$http', '$state', '$rootScope','$scope'
 /*------------------ Controller for the MODAL to CLOSE the PRODUCT for PRODUCTION in the ORDER-----------------------*/
 
 app.controller('closeProductInOrderToProduction',  [
-  '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'ModalService','title', 'close', 'orderid', 'internalproductid', 'customerproductid' ,'productname', 'quantityordered', 'totalproductsproduced', 'clientname', 
-  function($scope,$http, $element, $urlRouter, $templateCache, $state, ModalService,title, close , orderid, internalproductid, customerproductid, productname, quantityordered, totalproductsproduced, clientname){
+  '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'ModalService','title', 'close', 'orderid', 'internalproductid', 'customerproductid' ,'productname', 'quantityordered', 'totalproductsproduced', 'clientname', 'boxmeasures', 'boxid', 'qtybybox',
+  function($scope,$http, $element, $urlRouter, $templateCache, $state, ModalService,title, close , orderid, internalproductid, customerproductid, productname, quantityordered, totalproductsproduced, clientname, boxmeasures, boxid, qtybybox){
 
 $scope.title = title;
 $scope.orderid = orderid;
@@ -3647,17 +3650,16 @@ $scope.productname = productname;
 $scope.quantityordered = quantityordered;
 $scope.totalproductsproduced = totalproductsproduced;
 $scope.clientname = clientname;
+$scope.boxmeasures = boxmeasures;
+$scope.boxid = boxid;
+$scope.qtybybox = qtybybox;
 //  This close function doesn't need to use jQuery or bootstrap, because
 //  the button has the 'data-dismiss' attribute.
 
 //Save Content Modal  
 $scope.yes = function () {
 
-  var qtyProductsByBox = $scope.productTechSheet[0].Qty_By_Box;
-  var boxMeasures = $scope.productTechSheet[0].Box_Measures;
-  var boxId = $scope.productTechSheet[0].Box_Id;
-
-  var numBoxesToOrder = $scope.totalproductsproduced/qtyProductsByBox;
+  var numBoxesToOrder = $scope.totalproductsproduced/$scope.qtybybox;
 
   var dataObj = {
     ORDER_ID: $scope.orderid,
@@ -3665,11 +3667,11 @@ $scope.yes = function () {
     INTERNAL_PRODUCT_ID: $scope.internalproductid,
     PRODUCT_NAME: $scope.productname,
     TOTAL_PRODUCTS_PRODUCED: $scope.totalproductsproduced,
-    QTY_BY_BOX: qtyProductsByBox,
+    QTY_BY_BOX: $scope.qtybybox,
     TOTAL_BOXES_TO_ORDER: numBoxesToOrder,
     CLIENT_NAME: $scope.clientname,
-    BOX_MEASURES: boxMeasures,
-    BOX_ID: boxId
+    BOX_MEASURES: $scope.boxmeasures,
+    BOX_ID: $scope.boxid
   };	
 
   var dataUpdateOrderProductStatus = {
@@ -3943,7 +3945,7 @@ $scope.yes = function () {
 
 
 //ALL BOXES TO ORDER - Controller
-app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', function($scope, $http, $rootScope, $filter) {
+app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', '$timeout', function($scope, $http, $rootScope, $filter, $timeout) {
   
   $rootScope.class = 'not-home';
   $rootScope.name= "Lista de todas as caixas a encomendar";
@@ -4298,6 +4300,28 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', func
 
     
     var res = $http.post('/deleteOrderBoxes', arrayToSendToMySQL).then(function(data, status, headers, config) {
+    });
+
+    $timeout(function() { $scope.displayErrorMsg = false;}, 2000);
+
+    //SEND EMAIL
+    var mailOptions = {
+      from: 'aderito.nelson1@gmail.com',
+      to: 'aderito1@gmail.com',
+      subject: 'Email sent by ',
+      attachments: [{
+        filename: filename + '.pdf',
+        path: 'C:/Users/anoliveira/Downloads/',
+        contentType: 'application/pdf'
+      }],
+      text: "<b>Hello world?</b>",
+      html: "<b>Hello world?</b>"
+    };
+    //$http.post('/sendmail', {params: {name: 'ABCXYZ'}}).then(res=>{
+    $http.post('/sendmail', {params: {mailOptions}}).then(res=>{
+        $scope.loading = false;
+        $scope.serverMessage = 'Foi enviado um email para a sua caixa de email com a informação da encomenda!!!!';
+        //alert($scope.serverMessage);
     });
 
     localCopyBoxesToSendInOrder = [];
