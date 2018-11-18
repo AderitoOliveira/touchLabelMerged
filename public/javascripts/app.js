@@ -3960,7 +3960,7 @@ $scope.yes = function () {
 
 
 //ALL BOXES TO ORDER - Controller
-app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', '$timeout', function($scope, $http, $rootScope, $filter, $timeout) {
+app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$state', function($scope, $http, $rootScope, $timeout, $state) {
   
   $rootScope.class = 'not-home';
   $rootScope.name= "Lista de todas as caixas a encomendar";
@@ -4342,6 +4342,8 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', '$ti
     localCopyBoxesToSendInOrder = [];
     localCopyArrayOrderProductToDelete = [];
     boxesToSendInOrder = [];
+
+    $state.reload(); //FINALLY RELOAD THE STATE
   }
 
 }]);
@@ -4382,7 +4384,7 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
   }
 
 //PRINT LABEL ARTICLE
-  $scope.printLabelArticle = function (customer_product_id, order_id,quantity_article_labels) {
+  $scope.printLabelArticle = function (customer_product_id, order_id,quantity_article_labels, box_label_already_printed) {
 
     $scope.productLabel = [];
     var request = $http.get('/labelToPrintForProduct/'+  encodeURIComponent(customer_product_id));     
@@ -4431,26 +4433,27 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
     
         if(labelsWith2Columns == false)
         {
-          quantityToReplace = quantity_article_labels;
+          //The _PRINT_QUANTITY in the map can only be changed directly
+          map._PRINT_QUANTITY = quantity_article_labels;
           var sendToPrinter = replaceAll(ZPLString, map);
         } else {
           if(Quantity == 1) {
             //ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL  --> Only 1 label is written and the other is blank
             //ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL --> Both Labels are written
-            quantityToReplace = 1;
-            var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
+            map._PRINT_QUANTITY = 1;
+            var sendToPrinter   = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
             return;
           }
           if(Quantity % 2 == 0) {
-            quantityToReplace = quantity_article_labels / 2;
-            var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
+            map._PRINT_QUANTITY = quantity_article_labels / 2;
+            var sendToPrinter   = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
           }
           if(Quantity % 2 != 0) {
-            quantityToReplace = quantity_article_labels / 2;
-            var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
+            map._PRINT_QUANTITY = quantity_article_labels / 2;
+            var sendToPrinter   = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
     
-            quantityToReplace = 1;
-            var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
+            map._PRINT_QUANTITY = 1;
+            var sendToPrinter   = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
           }
     
         }
@@ -4462,9 +4465,16 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
           CUSTOMER_PRODUCT_ID   : customer_product_id
         };
 
-        var res = $http.post('/updateLabelAlreadyPrinted', dataToUpdate).then(function(data, status, headers, config) {
-          $state.reload();
-        });
+        //IF THE BOX LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
+        if(box_label_already_printed === 'true') {
+          var res = $http.post('/deleteLabelsToPrint', dataToUpdate).then(function(data, status, headers, config) {
+            $state.reload();
+          });
+        } else {
+          var res = $http.post('/updateLabelAlreadyPrinted', dataToUpdate).then(function(data, status, headers, config) {
+            $state.reload();
+          });
+        }
 
   },
   function errorCallback(data){
@@ -4473,7 +4483,7 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
 }
 
 //PRINT LABEL BOX
-$scope.printProductBoxLabels = function (customer_product_id, order_id,quantity_box_labels) {
+$scope.printProductBoxLabels = function (customer_product_id, order_id,quantity_box_labels, article_label_already_printed) {
 
   $scope.productLabel = [];
   var request = $http.get('/labelToPrintForProduct/'+  encodeURIComponent(customer_product_id));     
@@ -4590,9 +4600,16 @@ $scope.printProductBoxLabels = function (customer_product_id, order_id,quantity_
     CUSTOMER_PRODUCT_ID   : customer_product_id
   };
 
-  var res = $http.post('/updateLabelAlreadyPrinted', dataToUpdate).then(function(data, status, headers, config) {
-    $state.reload();
-  });
+  //IF THE ARTICLE LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
+  if(article_label_already_printed === 'true') {
+    var res = $http.post('/deleteLabelsToPrint', dataToUpdate).then(function(data, status, headers, config) {
+      $state.reload();
+    });
+  } else {
+    var res = $http.post('/updateLabelAlreadyPrinted', dataToUpdate).then(function(data, status, headers, config) {
+      $state.reload();
+    });
+  }
 
 }
 }]);
