@@ -3151,15 +3151,16 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
     }
 
     var dataObj = {
-      productname     : $scope.productName,
-      productid       : $scope.customerProductId,
-      clientname      : $scope.clientname,
-      imagename       : $scope.imageName,
-      barcode         : $scope.barCode,
-      numArticleByBox : $scope.numArticleByBox,
-      nameInTheLabel  : $scope.nameInTheLabel,
-      preco1          : $scope.preco1,
-      preco2          : $scope.preco2
+      productname       : $scope.productName,
+      internalproductid : $scope.productId,
+      productid         : $scope.customerProductId,
+      clientname        : $scope.clientname,
+      imagename         : $scope.imageName,
+      barcode           : $scope.barCode,
+      numArticleByBox   : $scope.numArticleByBox,
+      nameInTheLabel    : $scope.nameInTheLabel,
+      preco1            : $scope.preco1,
+      preco2            : $scope.preco2
     };	
     
     //var res = $http.post('/updateproduct', dataObj);
@@ -3235,17 +3236,23 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
 	});
 
   $scope.submit = function () {
+
+    if(!$scope.clientname.CLIENT_NAME) {
+      $scope.clientname = $scope.clientname;
+    } else {
+      $scope.clientname = $scope.clientname.CLIENT_NAME;
+    }
+
     var dataObj = {
-      PRODUCT_NAME: $scope.product_name,
-      INTERNAL_PRODUCT_ID: $scope.product_id,
+      PRODUCT_NAME: $scope.productName,
+      INTERNAL_PRODUCT_ID: $scope.productId,
       CUSTOMER_PRODUCT_ID : $scope.customerproductId,
       CLIENT_NAME : $scope.clientname,
       IMAGE_NAME: $scope.image,
-      BAR_CODE_NUMBER: $scope.bar_code,
-      NUM_ARTICLES_IN_BOX: $scope.num_article_by_box,
-      PRODUCT_NAME_FOR_LABEL: $scope.name_in_the_label,
-      PRICE_EURO_1: preco1,
-      PRICE_EURO_2: preco2
+      BAR_CODE_NUMBER: $scope.barCode,
+      PRODUCT_NAME_FOR_LABEL: $scope.nameInTheLabel,
+      PRICE_EURO_1: $scope.preco1,
+      PRICE_EURO_2: $scope.preco2
     };	
 
     var res = $http.post('/insertProduct', dataObj).then(function(data, status, headers, config) {
