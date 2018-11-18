@@ -872,12 +872,21 @@ fetchAllLabelsToPrint = function(data, callback) {
 
 //UPDATE LABELS ALREADY PRINTED - order_products_labels_to_print
 updateLabelAlreadyPrinted = function(req, res) {
+    var queryToExecute = "";
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    if(req.body.COLUMN_TO_UPDATE === 'ARTICLE_LABEL_ALREADY_PRINTED') {
+     queryToExecute = 'update order_products_labels_to_print set ARTICLE_LABEL_ALREADY_PRINTED = \'true\' where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?';
+     console.log("QUERY_ARTICLE ---> " + queryToExecute);
+    } else {
+     queryToExecute = 'update order_products_labels_to_print set BOX_LABEL_ALREADY_PRINTED = \'true\' where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?';
+     console.log("QUERY_BOX ---> " + queryToExecute);
+    }
     con.connect(function(err) {
-    con.query('DELETE from order_products_labels_to_print where ORDER_ID = ? and INTERNAL_PRODUCT_ID = ?', [req.body.ORDER_ID, req.body.PRODUCT_ID], function (error, results, fields) {
+    con.query(queryToExecute, [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+    console.log(queryToExecute.sql);
     if (error) throw error;
     res.end(JSON.stringify(results));
   });
