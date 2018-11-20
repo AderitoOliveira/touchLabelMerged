@@ -596,7 +596,7 @@ insertOrderBoxProductClosed = function(req, res) {
 //GET ORDER BOXES CLOSED PRODUCTION PRODUCT
 fetchAllOrderBoxesToOrder = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT * FROM order_boxes_closed_production_products group by ORDER_ID, CLIENT_NAME order by CREATED_DATE', function(err, rows) {
+    con.query('SELECT * FROM order_boxes_closed_production_products group by ORDER_ID, CLIENT_NAME, CUSTOMER_PRODUCT_ID order by ORDER_ID', function(err, rows) {
         if (err) {
             throw err;
         } else
