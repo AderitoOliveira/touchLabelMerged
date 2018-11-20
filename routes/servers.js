@@ -544,7 +544,7 @@ checkIfProductTechSheetExists = function(data, callback) {
 //GET TECHNICAL SHEET INFORMATION FOR THE PRODUCTS IN THE ORDER TO SEND IT FOR PAINTING
 getTechSheetForPaiting = function(data, callback) {
     con.connect(function(err) {
-    con.query('select ordProd.CUSTOMER_PRODUCT_ID, ordProd.PRODUCT_NAME, techSheet.Painted_Cold, techSheet.Ref_Paint, techSheet.Ref_Paint_Qty, techSheet.Glassed, techSheet.Ref_Glassed, techSheet.Ref_Paint_Smoked, techSheet.Ref_Paint_Smoked_Qty, techSheet.Finish_Type_Obs from  products_technical_sheet techSheet, orders_products ordProd where ordProd.ORDER_ID = ? and ordProd.CUSTOMER_PRODUCT_ID = techSheet.CUSTOMER_PRODUCT_ID', [data.params.orderid], function(err, rows) {
+    con.query('select ordProd.CUSTOMER_PRODUCT_ID, ordProd.PRODUCT_NAME, ordProd.TOTAL_QUANTITY_ORDERED, techSheet.Painted_Cold, techSheet.Ref_Paint, techSheet.Ref_Paint_Qty, techSheet.Glassed, techSheet.Ref_Glassed, techSheet.Ref_Paint_Smoked, techSheet.Ref_Paint_Smoked_Qty, techSheet.Finish_Type_Obs  from  products_technical_sheet techSheet, orders_products ordProd  where ordProd.ORDER_ID = ? and ordProd.CUSTOMER_PRODUCT_ID = techSheet.CUSTOMER_PRODUCT_ID', [data.params.orderid], function(err, rows) {
         if (err) {
             throw err;
         } else

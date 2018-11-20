@@ -1374,14 +1374,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                               [ 
                                 {text: 'Ref Produto', style: "tblSmallHeader"},
                                 {text: 'Nome Produto', style: "tblSmallHeader"},
-                                //{text: 'Pintado a Frio', style: "tblSmallHeader"},
-                                //{text: 'Vidrado', style: "tblSmallHeader"},
-                                //{text: 'Ref Vidrado', style: "tblSmallHeader"},
+                                {text: 'Quantidade', style: "tblSmallHeader"},
                                 {text: 'Ref Tinta Fuminho', style: "tblSmallHeader"},
                                 {text: 'Observações', style: "tblSmallHeader"},
                                 {text: 'Nome Pintor', style: "tblSmallHeader"},
-                                {text: 'Data Pintura', style: "tblSmallHeader"},
-                                {text: 'Quantidade', style: "tblSmallHeader"}
+                                {text: 'Data Pintura', style: "tblSmallHeader"}
                              ]
                             ]
                         },
@@ -1391,25 +1388,20 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       for(j=0; j < allValuesForKey.length ; j++) 
       {
         console.log("j: " + j + "  " + formattedArr.length);
-        var CUSTOMER_PRODUCT_ID = allValuesForKey[j].CUSTOMER_PRODUCT_ID;
-        var PRODUCT_NAME 		    = allValuesForKey[j].PRODUCT_NAME;
-        var Painted_Cold 		    = allValuesForKey[j].Painted_Cold;
-        var Glassed 			      = allValuesForKey[j].Glassed;
-        var Ref_Glassed 		    = allValuesForKey[j].Ref_Glassed;
-        var Ref_Paint_Smoked 	  = allValuesForKey[j].Ref_Paint_Smoked;
-        var Finish_Type_Obs 	  = allValuesForKey[j].Finish_Type_Obs;
+        var CUSTOMER_PRODUCT_ID     = allValuesForKey[j].CUSTOMER_PRODUCT_ID;
+        var PRODUCT_NAME 		        = allValuesForKey[j].PRODUCT_NAME;
+        var TOTAL_QUANTITY_ORDERED 	= allValuesForKey[j].TOTAL_QUANTITY_ORDERED;
+        var Ref_Paint_Smoked 	      = allValuesForKey[j].Ref_Paint_Smoked;
+        var Finish_Type_Obs 	      = allValuesForKey[j].Finish_Type_Obs;
       
         formattedArr.push({table: { headerRows: 1, widths: [ '*', '*', '*', '*', '*', '*', '*'],
                        body: [
                               [ 
                                 {text: CUSTOMER_PRODUCT_ID, style: "tblRows"},
                                 {text: PRODUCT_NAME, style: "tblRows"},
-                                //{text: Painted_Cold, style: "tblRows"},
-                                //{text: Glassed, style: "tblRows"},
-                                //{text: Ref_Glassed, style: "tblRows"},
+                                {text: TOTAL_QUANTITY_ORDERED, style: "tblRows"},
                                 {text: Ref_Paint_Smoked, style: "tblRows"},
                                 {text: Finish_Type_Obs, style: "tblRows"},
-                                {text: "", style: "tblRows"},
                                 {text: "", style: "tblRows"},
                                 {text: "", style: "tblRows"}
                              ]
@@ -1452,8 +1444,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 //Glassed : $scope.productTechSheet[i].Glassed,
                 CUSTOMER_PRODUCT_ID : $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
                 PRODUCT_NAME : $scope.productTechSheet[i].PRODUCT_NAME,
-                //Painted_Cold : $scope.productTechSheet[i].Painted_Cold,
-                //Ref_Glassed : $scope.productTechSheet[i].Ref_Glassed,
+                TOTAL_QUANTITY_ORDERED :  $scope.productTechSheet[i].TOTAL_QUANTITY_ORDERED,
                 Ref_Paint_Smoked : $scope.productTechSheet[i].Ref_Paint_Smoked
               };
 
@@ -1467,8 +1458,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 //Glassed : $scope.productTechSheet[i].Glassed,
                 CUSTOMER_PRODUCT_ID : $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
                 PRODUCT_NAME : $scope.productTechSheet[i].PRODUCT_NAME,
-                //Painted_Cold : $scope.productTechSheet[i].Painted_Cold,
-                //Ref_Glassed : $scope.productTechSheet[i].Ref_Glassed,
+                TOTAL_QUANTITY_ORDERED :  $scope.productTechSheet[i].TOTAL_QUANTITY_ORDERED,
                 Ref_Paint_Smoked : $scope.productTechSheet[i].Ref_Paint_Smoked
               };
               internalArray.push(dataTechSheet);
