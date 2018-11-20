@@ -1423,6 +1423,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   //GET TECHNICAL SHEET INFORMATION FOR THE PRODUCTS IN THE ORDER TO SEND IT FOR PAINTING
   $scope.getTechSheetForPaiting = function () {
     $scope.productTechSheet = [];
+    var arrayProductMissingArguments = [];
     var currentRefPaint = "";
     var request = $http.get('/getTechSheetForPaiting/' + encodeURIComponent(orderId));    
     request.then(function successCallback(response) {
@@ -1441,7 +1442,6 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
               var dataTechSheet = {
                 Finish_Type_Obs : $scope.productTechSheet[i].Finish_Type_Obs,
-                //Glassed : $scope.productTechSheet[i].Glassed,
                 CUSTOMER_PRODUCT_ID : $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
                 PRODUCT_NAME : $scope.productTechSheet[i].PRODUCT_NAME,
                 TOTAL_QUANTITY_ORDERED :  $scope.productTechSheet[i].TOTAL_QUANTITY_ORDERED,
@@ -1455,7 +1455,6 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               var internalArray = [];
               var dataTechSheet = {
                 Finish_Type_Obs : $scope.productTechSheet[i].Finish_Type_Obs,
-                //Glassed : $scope.productTechSheet[i].Glassed,
                 CUSTOMER_PRODUCT_ID : $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
                 PRODUCT_NAME : $scope.productTechSheet[i].PRODUCT_NAME,
                 TOTAL_QUANTITY_ORDERED :  $scope.productTechSheet[i].TOTAL_QUANTITY_ORDERED,
@@ -1500,8 +1499,43 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               arrayForAll[currentRefPaint] = internalArray;
             };
 
-        }        
+        }
+        
+        //The product doesn't contain the Ref_Glassed or Ref_Paint the productTechSheet shouldn't be printed
+        if($scope.productTechSheet[i].Ref_Glassed == null && $scope.productTechSheet[i].Ref_Paint == null) {
+              arrayProductMissingArguments.push($scope.productTechSheet[i].CUSTOMER_PRODUCT_ID);
+        }
 
+      }
+
+      //If at least 1 product is missing the Ref_Glassed or Ref_Paint then we should send a message and stop the printing at this point
+      if(arrayProductMissingArguments.length > 0) {
+
+        if(arrayProductMissingArguments.length == 1){
+          var messageToSend = "O produto " + arrayProductMissingArguments.toString() + " não tem preenchido os atributos Referência Tinta e Referência Vidrado";
+        } else {
+          var messageToSend = "Os produtos " + arrayProductMissingArguments.toString() + " não têm preenchidos os atributos Referência Tinta e Referência Vidrado";
+        }
+
+        ModalService.showModal({
+          templateUrl: "../modal/genericModal.html",
+          controller: "GenericController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: messageToSend
+          }
+          }).then(function(modal) {
+              modal.element.modal();
+              modal.close.then(function(result) {
+              if (!result) {
+                $scope.complexResult = "Modal forcibly closed..."
+              } else {
+                $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+              }
+              });
+          });
+
+          return;
       }
 
       /* var requestPDFTemplate = $http.get('/getPDFTemplate/' +  encodeURIComponent('paiting_products_in_order'));    
