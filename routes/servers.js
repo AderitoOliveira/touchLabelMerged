@@ -36,7 +36,7 @@ fetchAllClients = function(data, callback) {
 }
 
 //GET ALL CLIENTS FOR THE UIB-TYPEAHED WITH ONLY CLIENT_ID AND CLIENT_NAME
-fetchAllClientsForTypeAhed = function(data, callback) {
+fetchAllClientsForTypeAhead = function(data, callback) {
     con.connect(function(err) {
     con.query('SELECT CLIENT_ID, CLIENT_NAME FROM clients', function(err, rows) {
         if (err) {
@@ -370,10 +370,11 @@ insertPrintedLables = function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
-    console.log("PRECO_1: " + req.body.preco1);
-    console.log("PRECO_2: " + req.body.preco2);
     con.connect(function(err) {
-    con.query('UPDATE products SET PRODUCT_NAME = ?, PRODUCT_NAME_FOR_LABEL = ?, NUM_ARTICLES_IN_BOX = ?, IMAGE_NAME = ?, BAR_CODE_NUMBER = ?, PRICE_EURO_1 = ?, PRICE_EURO_2 = ?, CLIENT_NAME = ? where CUSTOMER_PRODUCT_ID = ?',  [req.body.productname, req.body.nameInTheLabel, req.body.numArticleByBox, req.body.imagename, req.body.barcode, req.body.preco1, req.body.preco2, req.body.clientname, req.body.productid], function (error, results, fields) {
+    var query =con.query('UPDATE products SET INTERNAL_PRODUCT_ID = ?, PRODUCT_NAME = ?, PRODUCT_NAME_FOR_LABEL = ?, IMAGE_NAME = ?, BAR_CODE_NUMBER = ?, PRICE_EURO_1 = ?, PRICE_EURO_2 = ?, CLIENT_NAME = ? where CUSTOMER_PRODUCT_ID = ?',  [req.body.internalproductid, req.body.productname, req.body.nameInTheLabel, req.body.imagename, req.body.barcode, req.body.preco1, req.body.preco2, req.body.clientname, req.body.productid], function (error, results, fields) {
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log(query.sql);
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     if (error) throw error;
     res.end(JSON.stringify(results));
   });
@@ -534,11 +535,7 @@ checkIfProductTechSheetExists = function(data, callback) {
         callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
         callback.end(JSON.stringify(rows));
-        console.log(data); 
-        callback = rows;
-        console.log("--------------------------------------------------");   
-        console.log(rows);   
-        console.log("--------------------------------------------------");    
+        callback = rows;   
     });
 });
 }
@@ -848,7 +845,7 @@ deleteLabelsToPrint = function(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     con.connect(function(err) {
-    con.query('DELETE from order_products_labels_to_print where ORDER_ID = ? and INTERNAL_PRODUCT_ID = ?', [req.body.ORDER_ID, req.body.PRODUCT_ID], function (error, results, fields) {
+    con.query('DELETE from order_products_labels_to_print where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });
@@ -871,6 +868,29 @@ fetchAllLabelsToPrint = function(data, callback) {
 
     });
 });
+}
+
+//UPDATE LABELS ALREADY PRINTED - order_products_labels_to_print
+updateLabelAlreadyPrinted = function(req, res) {
+    var queryToExecute = "";
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    if(req.body.COLUMN_TO_UPDATE === 'ARTICLE_LABEL_ALREADY_PRINTED') {
+     queryToExecute = 'update order_products_labels_to_print set ARTICLE_LABEL_ALREADY_PRINTED = \'true\' where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?';
+     console.log("QUERY_ARTICLE ---> " + queryToExecute);
+    } else {
+     queryToExecute = 'update order_products_labels_to_print set BOX_LABEL_ALREADY_PRINTED = \'true\' where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?';
+     console.log("QUERY_BOX ---> " + queryToExecute);
+    }
+    con.connect(function(err) {
+    con.query(queryToExecute, [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+    console.log(queryToExecute.sql);
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
 }
 
 //GET NEXT VALUE FROM THE pdf_requistion_id_sequence SEQUENCE

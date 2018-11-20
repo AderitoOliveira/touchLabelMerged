@@ -81,7 +81,7 @@ router.get('/clients', function(req,res){
 
 //Get All Clients for the UIB_TYPE_AHEAD
 router.get('/clientstypeahed', function(req,res){
-  fetchAllClientsForTypeAhed(req,res);  
+  fetchAllClientsForTypeAhead(req,res);  
 });
 
 //Get Single Client by ID
@@ -182,7 +182,6 @@ router.post('/insertProduct', function(req,res){
 //Update Products
 router.post('/updateproduct', function(req,res){
   console.log("STARTING TO UPDATE PRODUCT " + req.body.productid);
-  console.log(req.body);
   updateProduct(req,res);  
 });
 
@@ -254,7 +253,6 @@ router.get('/getProductTechSheet/:productid', function(req,res){
 //CHECK IF PRODUCT TECHNICAL SHEET EXISTS
 router.get('/checkIfProductTechSheetExists/:productid', function(req,res){
   console.log("GET PRODUCT TECHNICAL SHEET");
-  console.log(req.body);
   checkIfProductTechSheetExists (req,res);  
 });
 
@@ -403,6 +401,13 @@ router.get('/getLabelsToPrint', function(req,res){
   console.log(req.body);
   fetchAllLabelsToPrint(req,res);  
 });
+
+//UPDATE LABELS ALREADY PRINTED - order_products_labels_to_print
+router.post('/updateLabelAlreadyPrinted', function(req,res){
+  console.log("UPDATE LABELS ALREADY PRINTED in order_products_labels_to_print");
+  updateLabelAlreadyPrinted(req,res);  
+});
+
 
 //GET NEXT VALUE FROM THE pdf_requistion_id_sequence SEQUENCE
 router.get('/getPDFRequistionIdSequence', function(req,res){

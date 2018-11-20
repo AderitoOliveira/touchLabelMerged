@@ -3151,15 +3151,16 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
     }
 
     var dataObj = {
-      productname     : $scope.productName,
-      productid       : $scope.customerProductId,
-      clientname      : $scope.clientname,
-      imagename       : $scope.imageName,
-      barcode         : $scope.barCode,
-      numArticleByBox : $scope.numArticleByBox,
-      nameInTheLabel  : $scope.nameInTheLabel,
-      preco1          : $scope.preco1,
-      preco2          : $scope.preco2
+      productname       : $scope.productName,
+      internalproductid : $scope.productId,
+      productid         : $scope.customerProductId,
+      clientname        : $scope.clientname,
+      imagename         : $scope.imageName,
+      barcode           : $scope.barCode,
+      numArticleByBox   : $scope.numArticleByBox,
+      nameInTheLabel    : $scope.nameInTheLabel,
+      preco1            : $scope.preco1,
+      preco2            : $scope.preco2
     };	
     
     //var res = $http.post('/updateproduct', dataObj);
@@ -3235,17 +3236,23 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
 	});
 
   $scope.submit = function () {
+
+    if(!$scope.clientname.CLIENT_NAME) {
+      $scope.clientname = $scope.clientname;
+    } else {
+      $scope.clientname = $scope.clientname.CLIENT_NAME;
+    }
+
     var dataObj = {
-      PRODUCT_NAME: $scope.product_name,
-      INTERNAL_PRODUCT_ID: $scope.product_id,
+      PRODUCT_NAME: $scope.productName,
+      INTERNAL_PRODUCT_ID: $scope.productId,
       CUSTOMER_PRODUCT_ID : $scope.customerproductId,
       CLIENT_NAME : $scope.clientname,
       IMAGE_NAME: $scope.image,
-      BAR_CODE_NUMBER: $scope.bar_code,
-      NUM_ARTICLES_IN_BOX: $scope.num_article_by_box,
-      PRODUCT_NAME_FOR_LABEL: $scope.name_in_the_label,
-      PRICE_EURO_1: preco1,
-      PRICE_EURO_2: preco2
+      BAR_CODE_NUMBER: $scope.barCode,
+      PRODUCT_NAME_FOR_LABEL: $scope.nameInTheLabel,
+      PRICE_EURO_1: $scope.preco1,
+      PRICE_EURO_2: $scope.preco2
     };	
 
     var res = $http.post('/insertProduct', dataObj).then(function(data, status, headers, config) {
@@ -3953,7 +3960,7 @@ $scope.yes = function () {
 
 
 //ALL BOXES TO ORDER - Controller
-app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', '$timeout', function($scope, $http, $rootScope, $filter, $timeout) {
+app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$state', function($scope, $http, $rootScope, $timeout, $state) {
   
   $rootScope.class = 'not-home';
   $rootScope.name= "Lista de todas as caixas a encomendar";
@@ -4335,12 +4342,14 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$filter', '$ti
     localCopyBoxesToSendInOrder = [];
     localCopyArrayOrderProductToDelete = [];
     boxesToSendInOrder = [];
+
+    $state.reload(); //FINALLY RELOAD THE STATE
   }
 
 }]);
 
 //ALL LABELS TO PRINT - Controller
-app.controller('labelsToPrint', ['$scope', '$http', '$rootScope','sendZPLCodeToPrinter', function($scope, $http, $rootScope, sendZPLCodeToPrinter) {
+app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sendZPLCodeToPrinter', function($scope, $http, $rootScope, $state, sendZPLCodeToPrinter) {
   
   $rootScope.class = 'not-home';
   $rootScope.name= "Lista de todas as etiquetas a imprimir";
@@ -4375,7 +4384,7 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope','sendZPLCodeToP
   }
 
 //PRINT LABEL ARTICLE
-  $scope.printLabelArticle = function (customer_product_id, quantity_article_labels) {
+  $scope.printLabelArticle = function (customer_product_id, order_id,quantity_article_labels, box_label_already_printed) {
 
     $scope.productLabel = [];
     var request = $http.get('/labelToPrintForProduct/'+  encodeURIComponent(customer_product_id));     
@@ -4424,30 +4433,48 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope','sendZPLCodeToP
     
         if(labelsWith2Columns == false)
         {
-          quantityToReplace = quantity_article_labels;
+          //The _PRINT_QUANTITY in the map can only be changed directly
+          map._PRINT_QUANTITY = quantity_article_labels;
           var sendToPrinter = replaceAll(ZPLString, map);
         } else {
           if(Quantity == 1) {
             //ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL  --> Only 1 label is written and the other is blank
             //ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL --> Both Labels are written
-            quantityToReplace = 1;
-            var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
+            map._PRINT_QUANTITY = 1;
+            var sendToPrinter   = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
             return;
           }
           if(Quantity % 2 == 0) {
-            quantityToReplace = quantity_article_labels / 2;
-            var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
+            map._PRINT_QUANTITY = quantity_article_labels / 2;
+            var sendToPrinter   = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
           }
           if(Quantity % 2 != 0) {
-            quantityToReplace = quantity_article_labels / 2;
-            var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
+            map._PRINT_QUANTITY = quantity_article_labels / 2;
+            var sendToPrinter   = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
     
-            quantityToReplace = 1;
-            var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
+            map._PRINT_QUANTITY = 1;
+            var sendToPrinter   = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
           }
     
         }
         sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
+
+        var dataToUpdate = {
+          COLUMN_TO_UPDATE      : 'ARTICLE_LABEL_ALREADY_PRINTED',
+          ORDER_ID              : order_id,
+          CUSTOMER_PRODUCT_ID   : customer_product_id
+        };
+
+        //IF THE BOX LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
+        if(box_label_already_printed === 'true') {
+          var res = $http.post('/deleteLabelsToPrint', dataToUpdate).then(function(data, status, headers, config) {
+            $state.reload();
+          });
+        } else {
+          var res = $http.post('/updateLabelAlreadyPrinted', dataToUpdate).then(function(data, status, headers, config) {
+            $state.reload();
+          });
+        }
 
   },
   function errorCallback(data){
@@ -4456,12 +4483,12 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope','sendZPLCodeToP
 }
 
 //PRINT LABEL BOX
-$scope.printProductBoxLabels = function (customer_product_id, quantity_box_labels) {
+$scope.printProductBoxLabels = function (customer_product_id, order_id,quantity_box_labels, article_label_already_printed) {
 
   $scope.productLabel = [];
   var request = $http.get('/labelToPrintForProduct/'+  encodeURIComponent(customer_product_id));     
   request.then(function successCallback(response) {
-    $scope.productLabel  = response.data;
+  $scope.productLabel  = response.data;
 
     var barCodeNumber 		  = $scope.productLabel[0].BAR_CODE_NUMBER;
     var qtyByBox				    = $scope.productLabel[0].Qty_By_Box;
@@ -4471,105 +4498,120 @@ $scope.printProductBoxLabels = function (customer_product_id, quantity_box_label
     var PrinterIPAddress 		= $scope.productLabel[0].ARTICLE_PRINTER_IP_ADDRESS;
     var PrinterPort 			  = $scope.productLabel[0].ARTICLE_PRINTER_PORT;
 
-if(boxBarCodeType == 'GS1-128')
-{
+    if(boxBarCodeType == 'GS1-128')
+    {
   
-  alert("ZPL: " + ZPLString);
-  //var cd = eanCheckDigit("0871886150940");
-  alert("Bar Code Number: " + barCodeNumber);
-  var checkDigit = eanCheckDigit( '' + barCodeNumber);
-  alert("CheckDigit: " + checkDigit);
+      alert("ZPL: " + ZPLString);
+      //var cd = eanCheckDigit("0871886150940");
+      alert("Bar Code Number: " + barCodeNumber);
+      var checkDigit = eanCheckDigit( '' + barCodeNumber);
+      alert("CheckDigit: " + checkDigit);
 
   
-  function padDigits(number, digits) {
-    return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
-  }
+      function padDigits(number, digits) {
+        return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+      }
 
-  var Quantity_full = padDigits(qtyByBox, 4);
+      var Quantity_full = padDigits(qtyByBox, 4);
 
-  //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
-  //GS1-128 BarCode
-  var EanWithCheckDigit = barCodeNumber + checkDigit;
-  var FullEan = "802" + barCodeNumber + checkDigit + "37" + Quantity_full;
+      //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
+      //GS1-128 BarCode
+      var EanWithCheckDigit = barCodeNumber + checkDigit;
+      var FullEan = "802" + barCodeNumber + checkDigit + "37" + Quantity_full;
 
-  alert("fullEan: " + FullEan);
+      alert("fullEan: " + FullEan);
 
-  function replaceAll(str, map){
-    for(key in map){
-    str2 = str.replace(key, map[key]);
-    str=str2;
-    str2=null;
+      function replaceAll(str, map){
+        for(key in map){
+          str2 = str.replace(key, map[key]);
+          str=str2;
+          str2=null;
+        }
+      return str;
+      }
+
+      var map = {
+        '_EAN_CHECK_DIGIT' : EanWithCheckDigit,
+        '_QUANTIDADE_EXTENDIDA' : Quantity_full,
+        '_FULL_EAN' : FullEan,
+        '_NUM_ARTIGO' : customer_product_id,
+        '_NOME_ARTIGO' : productNameForLabel,
+        '_QUANTIDADE' : qtyByBox,
+        '_PRINT_QUANTITY'  : quantity_box_labels
+      };
+
+      var sendToPrinter = replaceAll(ZPLString, map);
+
+      sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
     }
-  return str;
-  }
 
-  var map = {
-  '_EAN_CHECK_DIGIT' : EanWithCheckDigit,
-  '_QUANTIDADE_EXTENDIDA' : Quantity_full,
-  '_FULL_EAN' : FullEan,
-  '_NUM_ARTIGO' : customer_product_id,
-  '_NOME_ARTIGO' : productNameForLabel,
-  '_QUANTIDADE' : qtyByBox,
-  '_PRINT_QUANTITY'  : quantity_box_labels
-  };
-
-  var sendToPrinter = replaceAll(ZPLString, map);
-
-  sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
-}
-
-if(boxBarCodeType == 'EAN13')
-{
-  alert("ZPL: " + ZPLString);
-  //var cd = eanCheckDigit("0871886150940");
-  alert("Bar Code Number: " + barCodeNumber);
-  var checkDigit = eanCheckDigit( '' + barCodeNumber);
-  alert("CheckDigit: " + checkDigit);
+    if(boxBarCodeType == 'EAN13')
+    {
+      alert("ZPL: " + ZPLString);
+      //var cd = eanCheckDigit("0871886150940");
+      alert("Bar Code Number: " + barCodeNumber);
+      var checkDigit = eanCheckDigit( '' + barCodeNumber);
+      alert("CheckDigit: " + checkDigit);
 
   
-  function padDigits(number, digits) {
-    return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+      function padDigits(number, digits) {
+        return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+      }
+
+      var Quantity_full = padDigits(qtyByBox, 4);
+
+      //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
+      //GS1-128 BarCode
+      var EanWithCheckDigit = barCodeNumber + checkDigit;
+      //var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
+
+      alert("fullEan: " + FullEan);
+
+      function replaceAll(str, map){
+        for(key in map){
+          str2 = str.replace(key, map[key]);
+          str=str2;
+          str2=null;
+        }
+      return str;
+      }	
+
+      var map = {
+        '_EAN_CHECK_DIGIT' : EanWithCheckDigit,
+        '_QUANTIDADE_EXTENDIDA' : Quantity_full,
+        '_NUM_ARTIGO' : customer_product_id ,
+        '_NOME_ARTIGO' : productNameForLabel,
+        '_QUANTIDADE' : qtyByBox,
+        '_PRINT_QUANTITY'  : quantity_box_labels
+      };
+
+      var sendToPrinter = replaceAll(ZPLString, map);
+
+    sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
   }
-
-  var Quantity_full = padDigits(qtyByBox, 4);
-
-  //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
-  //GS1-128 BarCode
-  var EanWithCheckDigit = barCodeNumber + checkDigit;
-  //var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
-
-  alert("fullEan: " + FullEan);
-
-  function replaceAll(str, map){
-    for(key in map){
-      str2 = str.replace(key, map[key]);
-      str=str2;
-      str2=null;
-    }
-  return str;
-  }	
-
-  var map = {
-  '_EAN_CHECK_DIGIT' : EanWithCheckDigit,
-  '_QUANTIDADE_EXTENDIDA' : Quantity_full,
-  '_NUM_ARTIGO' : customer_product_id ,
-  '_NOME_ARTIGO' : productNameForLabel,
-  '_QUANTIDADE' : qtyByBox,
-  '_PRINT_QUANTITY'  : quantity_box_labels
-  };
-
-  var sendToPrinter = replaceAll(ZPLString, map);
-
-  sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
-}
-
-},
-function errorCallback(data){
+  },
+  function errorCallback(data){
     console.log('Error: ' + data);
-});
+  });
+
+  var dataToUpdate = {
+    COLUMN_TO_UPDATE      : 'BOX_LABEL_ALREADY_PRINTED',
+    ORDER_ID              : order_id,
+    CUSTOMER_PRODUCT_ID   : customer_product_id
+  };
+
+  //IF THE ARTICLE LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
+  if(article_label_already_printed === 'true') {
+    var res = $http.post('/deleteLabelsToPrint', dataToUpdate).then(function(data, status, headers, config) {
+      $state.reload();
+    });
+  } else {
+    var res = $http.post('/updateLabelAlreadyPrinted', dataToUpdate).then(function(data, status, headers, config) {
+      $state.reload();
+    });
+  }
+
 }
-
-
 }]);
 
 
