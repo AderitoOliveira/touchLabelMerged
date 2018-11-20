@@ -53,13 +53,13 @@
                         <div class="form-input-item col-md-6">
                             <label class="control-label" for="productId">Referência Interna</label>
                             <div class="input-wrap-inner">
-                            <input type="text" class="form-control" id="productId" name="productId" placeholder="Referência Produto" ng-model="productId" name="internal-reference">
+                            <input required type="text" class="form-control" id="productId" name="productId" placeholder="Referência Produto" ng-model="productId" name="internal-reference">
                             </div>
                         </div>
                         <div class="form-input-item col-md-6">
                             <label class="control-label" for="customerProductId">Referência Cliente</label>
                             <div class="input-wrap-inner">
-                            <input type="text" class="form-control" id="customerProductId" name="customerProductId" placeholder="Referência Produto" ng-model="customerProductId">
+                            <input required type="text" class="form-control" id="customerProductId" name="customerProductId" placeholder="Referência Produto" ng-model="customerProductId">
                             </div>
                         </div>
                     </div>
@@ -69,13 +69,13 @@
                             <div class="form-input-item col-md-6">
                                 <label class="control-label" for="clientname">Cliente</label>
                                 <div class="input-wrap-inner">
-                                <input type="text" autocomplete="off" class="form-control" id="clientname" name="clientname" placeholder="Nome Cliente" ng-model="clientname" uib-typeahead="client as client.CLIENT_NAME for client in clients | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}" typeahead-editable="false">
+                                <input required type="text" autocomplete="off" class="form-control" id="clientname" name="clientname" placeholder="Nome Cliente" ng-model="clientname" uib-typeahead="client as client.CLIENT_NAME for client in clients | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}" typeahead-editable="false">
                                 </div>
                             </div>
                             <div class="form-input-item col-md-6">
                                 <label class="control-label" for="productName">Nome</label>
                                 <div class="input-wrap-inner">
-                                <input type="text" class="form-control" id="productName" name="productName" placeholder="Nome do Produto" ng-model="productName">
+                                <input required type="text" class="form-control" id="productName" name="productName" placeholder="Nome do Produto" ng-model="productName">
                                 </div>
                             </div>
                         </div>
