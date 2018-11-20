@@ -198,7 +198,7 @@ app.controller('InsertClientController', function ($scope, $http, $rootScope, $r
   $rootScope.name="Inserir um novo cliente";
 
   var clientImageDefault = 'client-default.png';
-  $scope.image = '/images' + '/' + clientImageDefault;
+  $scope.image = clientImageDefault;
 
 /*   $scope.CLIENT_ID = CLIENT_ID;
   $scope.CLIENT_NAME = CLIENT_NAME;
