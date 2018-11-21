@@ -3312,6 +3312,11 @@ app.controller('PalletesController', function($scope, $http, $rootScope) {
   function errorCallback(data){
       console.log('Error: ' + data);
   });
+
+  $scope.delete = function() {
+    
+  };
+
 });
 
 //////////////////////////////////////////////
