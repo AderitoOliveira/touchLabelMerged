@@ -33,7 +33,7 @@
     </div>
   <div class="form-wrap">
       <div class="row">
-          <form class="form-horizontal form-edit col-md-12">
+          <form class="form-horizontal form-edit col-md-12" id="create-client-form">
             <div class="form-group row">
               <div class="form-photo col-md-3">
                 <div class="form-item-inner">
@@ -53,7 +53,7 @@
                       <div class="form-input-item col-md-6">
                           <label class="control-label" for="clientname">Nome do Cliente</label>
                           <div class="input-wrap-inner">
-                            <input required type="text" class="form-control" id="clientname" placeholder="Nome do Cliente" ng-model="clientname">
+                            <input required type="text" class="form-control" id="clientname" name="clientname" placeholder="Nome do Cliente" ng-model="clientname">
                           </div>
                       </div>
                       <div class="form-input-item col-md-6">
@@ -69,7 +69,7 @@
                       <div class="form-input-item col-md-12">
                         <label class="control-label" for="firstaddress">Morada</label>
                         <div class="input-wrap-inner">
-                          <input required type="text" class="form-control" id="firstaddress" placeholder="Morada" ng-model="firstaddress">
+                          <input required type="text" class="form-control" id="firstaddress" name="firstaddress" placeholder="Morada" ng-model="firstaddress">
                         </div>
                       </div>
                     </div>
@@ -79,13 +79,13 @@
                       <div class="form-input-item col-md-6">
                           <label class="control-label" for="location">Cidade / Localidade</label>
                           <div class="input-wrap-inner">
-                            <input required type="text" class="form-control" id="location" placeholder="Cidade" ng-model="location">
+                            <input required type="text" class="form-control" id="location" name="location" placeholder="Cidade" ng-model="location">
                           </div>
                       </div>
                       <div class="form-input-item col-md-6">
                         <label class="control-label" for="postalcode">Código Postal</label>
                         <div class="input-wrap-inner">
-                          <input required type="text" class="form-control" id="postalcode" placeholder="Código Postal" ng-model="postalcode">
+                          <input required type="text" class="form-control" id="postalcode" name="postalcode" placeholder="Código Postal" ng-model="postalcode">
                         </div>
                       </div>
                       
@@ -96,7 +96,7 @@
                       <div class="form-input-item col-md-4">
                           <label class="control-label" for="country">País</label>
                           <div class="input-wrap-inner">
-                              <input required type="text" class="form-control" id="country" placeholder="País" ng-model="country">
+                              <input required type="text" class="form-control" id="country" name="country" placeholder="País" ng-model="country">
                           </div>
                       </div>
                       <div class="form-input-item col-md-4">
@@ -136,7 +136,7 @@
                         <button type="submit" ng-click="goBack()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" />Cancelar</button>
                       </div>
                       <div class="col-md-4">
-                        <button type="submit" ng-click="save()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
+                        <button name="client-create-button" id="client-create-button" type="submit" ng-click="save()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
                       </div>
                     </div>
                   </div>

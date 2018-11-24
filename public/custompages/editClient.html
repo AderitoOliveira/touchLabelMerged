@@ -33,7 +33,7 @@
     </div>
   <div class="form-wrap">
       <div class="row">
-          <form class="form-horizontal form-edit col-md-12">
+          <form class="form-horizontal form-edit col-md-12" id="client-edit-form">
             <div class="form-group row">
               <div class="form-photo col-md-3">
                 <div class="form-item-inner">
@@ -53,13 +53,13 @@
                       <div class="form-input-item col-md-6">
                           <label class="control-label" for="clientname">Nome do Cliente</label>
                           <div class="input-wrap-inner">
-                            <input required type="text" class="form-control" id="clientname" placeholder="Nome do Cliente" ng-model="clientname">
+                            <input required type="text" class="form-control" id="clientname" name="clientname" placeholder="Nome do Cliente" ng-model="clientname">
                           </div>
                       </div>
                       <div class="form-input-item col-md-6">
                         <label class="control-label" for="persontocontact">Nome do cliente a contactar</label>
                         <div class="input-wrap-inner">
-                          <input type="text" class="form-control" id="persontocontact" placeholder="Pessoa a contactar" ng-model="persontocontact">
+                          <input type="text" class="form-control" id="persontocontact" name="persontocontact" placeholder="Pessoa a contactar" ng-model="persontocontact">
                         </div>
                       </div>
                     </div>
@@ -69,7 +69,7 @@
                       <div class="form-input-item col-md-12">
                         <label class="control-label" for="firstaddress">Morada</label>
                         <div class="input-wrap-inner">
-                          <input required type="text" class="form-control" id="firstaddress" placeholder="Morada" ng-model="firstaddress">
+                          <input required type="text" class="form-control" id="firstaddress" name="firstaddress" placeholder="Morada" ng-model="firstaddress">
                         </div>
                       </div>
                     </div>
@@ -79,16 +79,15 @@
                       <div class="form-input-item col-md-6">
                           <label class="control-label" for="location">Cidade / Localidade</label>
                           <div class="input-wrap-inner">
-                            <input required type="text" class="form-control" id="location" placeholder="Cidade" ng-model="location">
+                            <input required type="text" class="form-control" id="location" name="location" placeholder="Cidade" ng-model="location">
                           </div>
                       </div>
                       <div class="form-input-item col-md-6">
                         <label class="control-label" for="postalcode">Código Postal</label>
                         <div class="input-wrap-inner">
-                          <input required type="text" class="form-control" id="postalcode" placeholder="Código Postal" ng-model="postalcode">
+                          <input required type="text" class="form-control" id="postalcode" name="postalcode" placeholder="Código Postal" ng-model="postalcode">
                         </div>
                       </div>
-                      
                     </div>
                   </div>
                   <div class="col-md-12 form-row">
@@ -96,19 +95,19 @@
                       <div class="form-input-item col-md-4">
                           <label class="control-label" for="country">País</label>
                           <div class="input-wrap-inner">
-                              <input required type="text" class="form-control" id="country" placeholder="País" ng-model="country">
+                              <input required type="text" class="form-control" id="country" name="country" placeholder="País" ng-model="country">
                           </div>
                       </div>
                       <div class="form-input-item col-md-4">
                           <label class="control-label" for="countrycode">Código do País</label>
                           <div class="input-wrap-inner">
-                            <input type="text" class="form-control" id="countrycode" placeholder="Código do País" ng-model="countrycode">
+                            <input type="text" class="form-control" id="countrycode" name="countrycode" placeholder="Código do País" ng-model="countrycode">
                           </div>
                       </div>
                       <div class="form-input-item col-md-4">
                           <label class="control-label" for="phonenumber">Telefone</label>
                           <div class="input-wrap-inner">
-                            <input type="text" class="form-control" id="phonenumber" placeholder="Num. Telefone" ng-model="phonenumber">
+                            <input type="text" class="form-control" id="phonenumber" name="phonenumber" placeholder="Num. Telefone" ng-model="phonenumber">
                           </div>
                       </div>
                     </div>
@@ -118,13 +117,13 @@
                       <div class="form-input-item col-md-6">
                           <label class="control-label" for="nif">Número Identificação Fiscal</label>
                           <div class="input-wrap-inner">
-                            <input type="text" class="form-control" id="nif" placeholder="NIF" ng-model="nif">
+                            <input type="text" class="form-control" id="nif" name="nif" placeholder="NIF" ng-model="nif">
                           </div>
                       </div>
                       <div class="form-input-item col-md-4">
                           <label class="control-label" for="coin">Moeda</label>
                           <div class="input-wrap-inner">
-                            <input type="text" class="form-control" id="coin" placeholder="Moeda" ng-model="coin">
+                            <input type="text" class="form-control" id="coin" name="coin" placeholder="Moeda" ng-model="coin">
                           </div>
                       </div>
                     </div>
@@ -136,7 +135,7 @@
                         <button type="submit" ng-click="goBack()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" />Cancelar</button>
                       </div>
                       <div class="col-md-4">
-                        <button type="submit" ng-click="updateClient()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
+                        <button id="client-edit-button" type="submit" ng-click="updateClient()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
                       </div>
                     </div>
                   </div>

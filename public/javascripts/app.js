@@ -227,12 +227,33 @@ app.controller('InsertClientController', function ($scope, $http, $rootScope, $r
       IMAGE_NAME : $scope.image 
     };
 
-    var res = $http.post('/insertClient', dataObj).then(function(data, status, headers, config) {
-      var currentPageTemplate = $state.current.templateUrl;
-      $templateCache.remove(currentPageTemplate);
-      $state.transitionTo("clientstate", {}) ;
+    $( "#create-client-form" ).validate( {
+      rules: {
+          clientname: "required",
+          firstaddress: "required",
+          location: "required",
+          postalcode: "required",
+          country: "required"
+      },
+      messages: {
+          clientname: "Por favor insira o nome do Cliente",
+          firstaddress: "Por favor insira o endereço do Cliente",
+          location: "Por favor insira a cidade do Cliente",
+          postalcode: "Por favor insira o Código Postal do Cliente",
+          country: "Por favor insira o País do Cliente"
+      }
+    } );    
 
-    });
+    if($("#create-client-form").valid()){
+
+      var res = $http.post('/insertClient', dataObj).then(function(data, status, headers, config) {
+        var currentPageTemplate = $state.current.templateUrl;
+        $templateCache.remove(currentPageTemplate);
+        $state.transitionTo("clientstate", {}) ;
+
+      });
+
+    };
   };
 
   $scope.editImage = function () {
@@ -296,11 +317,30 @@ app.controller('editclient', function ($scope, $http, $rootScope, $state, $state
       PHONE_NUMBER: $scope.phonenumber,
       PERSON_TO_CONTACT: $scope.persontocontact
     };	
+
+    $( "#client-edit-form" ).validate( {
+      rules: {
+          clientname: "required",
+          firstaddress: "required",
+          location: "required",
+          postalcode: "required",
+          country: "required"
+      },
+      messages: {
+          clientname: "Por favor insira o nome do Cliente",
+          firstaddress: "Por favor insira o endereço do Cliente",
+          location: "Por favor insira a cidade do Cliente",
+          postalcode: "Por favor insira o Código Postal do Cliente",
+          country: "Por favor insira o País do Cliente"
+      }
+    } );    
     
-    //var res = $http.post('/updateproduct', dataObj);
-    var res = $http.post('/updateClient', dataObj).then(function(data, status, headers, config) {
-      $state.go("clientstate", null, { reload: true });
-    });
+    if($("#client-edit-form").valid()){
+      //var res = $http.post('/updateproduct', dataObj);
+      var res = $http.post('/updateClient', dataObj).then(function(data, status, headers, config) {
+        $state.go("clientstate", null, { reload: true });
+      });
+    };
 
 
   };
@@ -3152,13 +3192,33 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
       preco1            : $scope.preco1,
       preco2            : $scope.preco2
     };	
+
+    $( "#product-edit-form" ).validate( {
+      rules: {
+          productId: "required",
+          customerproductId: "required",
+          productName: "required",
+          clientname:{
+              required: true
+          }
+      },
+      messages: {
+          productId: "Por favor insira a referência interna",
+          customerproductId: "Por favor insira a referência do cliente",
+          productName: "Por favor insira o nome do produto",
+          nameInTheLabel: "Máximo de 24 Caracteres",
+          clientname: "Por favor insira o nome do cliente",
+      }
+    } );
     
+    if($("#product-edit-form").valid()){
     //var res = $http.post('/updateproduct', dataObj);
-    var res = $http.post('/updateproduct', dataObj).then(function(data, status, headers, config) {
-      var currentPageTemplate = $state.current.templateUrl;
-      $templateCache.remove(currentPageTemplate);
-      $state.go("listProducts", null, { reload: true });
-    });
+      var res = $http.post('/updateproduct', dataObj).then(function(data, status, headers, config) {
+        var currentPageTemplate = $state.current.templateUrl;
+        $templateCache.remove(currentPageTemplate);
+        $state.go("listProducts", null, { reload: true });
+      });
+    };
 
   };
   
@@ -3245,11 +3305,31 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
       PRICE_EURO_2: $scope.preco2
     };	
 
-    var res = $http.post('/insertProduct', dataObj).then(function(data, status, headers, config) {
-      var currentPageTemplate = $state.current.templateUrl;
-      $templateCache.remove(currentPageTemplate);
-      $state.go("listProducts", null, { reload: true });
-    });
+    $( "#product-create-form" ).validate( {
+      rules: {
+          productId: "required",
+          customerproductId: "required",
+          productName: "required",
+          clientname:{
+              required: true
+          }
+      },
+      messages: {
+          productId: "Por favor insira a referência interna",
+          customerproductId: "Por favor insira a referência do cliente",
+          productName: "Por favor insira o nome do produto",
+          clientname: "Por favor insira o nome do cliente",
+      }
+    } );
+
+    if($("#product-create-form").valid()){
+      var res = $http.post('/insertProduct', dataObj).then(function(data, status, headers, config) {
+        var currentPageTemplate = $state.current.templateUrl;
+        $templateCache.remove(currentPageTemplate);
+        $state.go("listProducts", null, { reload: true });
+      });
+
+    };
   };
 
   $scope.editarImagem = function () {
