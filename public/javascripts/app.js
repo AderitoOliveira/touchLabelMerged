@@ -86,7 +86,7 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
     })
     .state('editImageClient', {
       url: '/testImage',
-        templateUrl : '../custompages/imageUpload.html',
+        templateUrl : '../custompages/imageUploadClient.html',
         controller : 'editImageClientCtrl',
         params: {clientid: null, clientname: null, imagename: null}
     })
@@ -245,7 +245,7 @@ app.controller('InsertClientController', function ($scope, $http, $rootScope, $r
   $rootScope.name="Inserir um novo cliente";
 
   var clientImageDefault = 'client-default.png';
-  $scope.image = clientImageDefault;
+  $scope.image = '/images/' + clientImageDefault;
 
 /*   $scope.CLIENT_ID = CLIENT_ID;
   $scope.CLIENT_NAME = CLIENT_NAME;
@@ -271,7 +271,7 @@ app.controller('InsertClientController', function ($scope, $http, $rootScope, $r
       COIN: $scope.coin,
       PHONE_NUMBER: $scope.phonenumber,
       PERSON_TO_CONTACT: $scope.persontocontact,
-      IMAGE_NAME : $scope.image 
+      IMAGE_NAME : clientImageDefault
     };
 
     $( "#create-client-form" ).validate( {
@@ -304,7 +304,7 @@ app.controller('InsertClientController', function ($scope, $http, $rootScope, $r
   };
 
   $scope.editImage = function () {
-    $state.transitionTo("editImageClient", {'clientid': $scope.clientid, 'clientname': $scope.clientname, 'imagename': $scope.clientImageDefault}) ;
+    $state.transitionTo("editImageClient", {'clientid': $scope.clientid, 'clientname': $scope.clientname, 'imagename': clientImageDefault}) ;
   };
 
   $scope.goBack = function() {
@@ -1059,14 +1059,23 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     //PRODUCTS STILL TO PRODUCE
   var products_still_to_produce = totalquantityordered - totalproductsproduced;
 
-  if(products_still_to_produce == 0){
+  if(products_still_to_produce == 0 || products_still_to_produce < 0){
 
+     var valueProducedByTheEmployee = $scope.totalquantityproduced * $scope.priceEuro;
      ModalService.showModal({
-      templateUrl: "../modal/genericModal.html",
-      controller: "GenericController",
+      templateUrl: "../modal/registerExtraProductionForClosedProductInOrder.html",
+      controller: "registerExtraProductionForClosedProductInOrderController",
       preClose: (modal) => { modal.element.modal('hide'); },
       inputs: {
-        message: 'A quantidade de artigos a produzir para o produto ' + productName + ' na encomenda ' +  $scope.orderid + ' já foi atingida!'
+        message: 'A quantidade de artigos a produzir para o produto ' + productName + ' na encomenda ' +  $scope.orderid + ' já foi atingida! \n Pretende adicionar a quantidade produzida nesta encomenda?',
+        ORDER_ID: $scope.orderid,
+        INTERNAL_PRODUCT_ID : $scope.internalproductid,
+        CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+        PRODUCT_NAME: $scope.productnameinternal,
+        EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+        EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+        TOTAL_PRODUCTS_PRODUCED: $scope.totalquantityproduced,
+        PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
       }
       }).then(function(modal) {
             modal.element.modal();
@@ -3604,6 +3613,30 @@ app.controller('GenericController', function($scope, message) {
 
 }); 
 
+
+/*------------------------    Controller for the GENERIC MODAL   -----------------------------*/
+app.controller('registerExtraProductionForClosedProductInOrderController', function($scope, $http, $state, message, ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_NAME, EMPLOYEE_ID, TOTAL_PRODUCTS_PRODUCED, PRODUCED_VALUE_IN_EURO) {
+
+  $scope.message = message;
+
+  $scope.yes = function () {
+    var dataObj = {
+      ORDER_ID: ORDER_ID,
+      INTERNAL_PRODUCT_ID : INTERNAL_PRODUCT_ID,
+      CUSTOMER_PRODUCT_ID: CUSTOMER_PRODUCT_ID,
+      PRODUCT_NAME: PRODUCT_NAME,
+      EMPLOYEE_NAME: EMPLOYEE_NAME,
+      EMPLOYEE_ID: EMPLOYEE_ID,
+      TOTAL_PRODUCTS_PRODUCED: TOTAL_PRODUCTS_PRODUCED,
+      PRODUCED_VALUE_IN_EURO: PRODUCED_VALUE_IN_EURO,
+    };	
+    
+    var res = $http.post('/insertDailyProduction', dataObj).then(function(data, status, headers, config) {
+      $state.reload();
+    });
+  };
+
+}); 
 
 /*------------------ Controller for the MODAL to DELETE the PRODUCT in the ORDER-----------------------*/
 
