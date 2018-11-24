@@ -106,7 +106,7 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
       url: '/editTechnicalSheet',
         templateUrl : '../custompages/editTechnicalSheet.html',
         controller : 'editTechSheet',
-        params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null}
+        params: {productName: null, customerProductId: null, productId: null, clientName: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null}
     })
     .state('configuration', {
       url: '/configuration',
@@ -889,37 +889,66 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         $scope.productTechSheet  = response.data;
 
         //IF the Qty_By_Box value is not defined in the TechSheet we cannot close the Product in Painting
-        if($scope.productTechSheet[0].Qty_By_Box != null){
-          var qtyBoxLabelsToPrint = qtyproduced / $scope.productTechSheet[0].Qty_By_Box;
+        //IF THE Qty_By_Box OR Qty_By_Pallet OR Bar_Code_Tech_Sheet ARE NOT DEFINED IN THE PRODUCT TECHNICAL SHEET OF THE PRODUCT
+      //THE PRODUCT CANNOT BE CLOSED FOR PAINTING IN THIS ORDER
+      if($scope.productTechSheet[0].Qty_By_Box == null || $scope.productTechSheet[0].Qty_By_Pallet == null || $scope.productTechSheet[0].Bar_Code_Tech_Sheet ==null) {
 
-          ModalService.showModal({
-            templateUrl: "../modal/closeProductForPainting.html",
-            controller: "closeProductInOrderForPainting",
+        var messageToSend = "";
+        if($scope.productTechSheet[0].Qty_By_Box == null) {
+          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por caixa. Edite a ficha técnica do produto e adicione a Quantidade por caixa para poder fechar o produto nesta encomenda."
+        }
+        if($scope.productTechSheet[0].Qty_By_Pallet == null && messageToSend == "") {
+          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por Palete. Edite a ficha técnica do produto e adicione a Quantidade por Palete para poder fechar o produto nesta encomenda."
+        }
+        if($scope.productTechSheet[0].Bar_Code_Tech_Sheet ==null && messageToSend == "") {
+              messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o Código de Barras. Edite a ficha técnica do produto e adicione o Código de Barras para poder fechar o produto nesta encomenda."
+            }
+          
+            ModalService.showModal({
+            templateUrl: "../modal/genericModal.html",
+            controller: "GenericController",
             preClose: (modal) => { modal.element.modal('hide'); },
             inputs: {
-              title: "Fechar Producto em Pintura",
-              orderid: $stateParams.orderId,
-              internalproductid: internalproductid,
-              customerproductid: customerproductid,
-              productname: productName,
-              totalproductsproduced: qtyproduced,
-              qtyBoxLabelsToPrint : qtyBoxLabelsToPrint
+              message: messageToSend
             }
-          }).then(function(modal) {
-          modal.element.modal();
-          modal.close.then(function(result) {
-          if (!result) {
-            $scope.complexResult = "Modal forcibly closed..."
-          } else {
-            $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+            }).then(function(modal) {
+                modal.element.modal();
+                modal.close.then(function(result) {
+                if (!result) {
+                  $scope.complexResult = "Modal forcibly closed..."
+                } else {
+                  $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+                }
+                });
+            });
+          } 
+          else {
+              var qtyBoxLabelsToPrint = qtyproduced / $scope.productTechSheet[0].Qty_By_Box;
+
+              ModalService.showModal({
+                templateUrl: "../modal/closeProductForPainting.html",
+                controller: "closeProductInOrderForPainting",
+                preClose: (modal) => { modal.element.modal('hide'); },
+                inputs: {
+                  title: "Fechar Producto em Pintura",
+                  orderid: $stateParams.orderId,
+                  internalproductid: internalproductid,
+                  customerproductid: customerproductid,
+                  productname: productName,
+                  totalproductsproduced: qtyproduced,
+                  qtyBoxLabelsToPrint : qtyBoxLabelsToPrint
+                }
+              }).then(function(modal) {
+              modal.element.modal();
+              modal.close.then(function(result) {
+              if (!result) {
+                $scope.complexResult = "Modal forcibly closed..."
+              } else {
+                $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+              }
+              });
+              });
           }
-          });
-          });
-      }
-      else {
-          alert("Na ficha técnica do produto " + customerproductid + " - " + productName + " não está definido o valor no campo Quantidade por caixa. \n É necessário definir a quantidade de artigos por caixa");
-      }
-        
     },
     function errorCallback(data){
         console.log('Error: ' + data);
@@ -2364,7 +2393,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
 
   $scope.productName      = 	$stateParams.productName;
   $scope.productId        = 	$stateParams.productId;
-  $scope.clientname       = 	$stateParams.clientname;
+  $scope.clientname       = 	$stateParams.clientName;
   $scope.imageName        = 	$stateParams.imageName;
   $scope.barCode          = 	$stateParams.barCode;
   $scope.nameInTheLabel   =	  $stateParams.nameInTheLabel;
@@ -2432,6 +2461,16 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
 
    $scope.saveTechSheet = function() {
 
+    //WE NEED TO VALIDATE IF THE BOX_MEASURES COMES FROM THE TYPEAHEAD OR OF IT THE BOX_MEASURES ALREADY 
+    //EXISTS IN THE DATABASE
+    if(!$scope.boxMeasures.MEASURES) {
+      $scope.boxMeasures = $scope.boxMeasures;
+      $scope.boxId       = $scope.boxId;
+    } else {
+      $scope.boxMeasures = $scope.boxMeasures.MEASURES;
+      $scope.boxId       = $scope.boxId.ID;
+    }
+
     var dataObj = {
       CUSTOMER_PRODUCT_ID: customerProductId,
       INTERNAL_PRODUCT_ID:  $scope.productId,
@@ -2460,8 +2499,8 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
       Bag:					        $scope.bag,
       Bag_Size:				      $scope.bagSize,
       Qty_By_Box:				    $scope.qtyByBox,
-      Box_Measures:			    $scope.boxMeasures.MEASURES,
-      Box_Id:     			    $scope.boxMeasures.ID,
+      Box_Measures:			    $scope.boxMeasures,
+      Box_Id:     			    $scope.boxId,
       Disposition_By_Row:		$scope.dispositionByRow,
       Qty_By_Pallet:			  $scope.qtyByPallet,
       Final_Observations:		$scope.finalObservations
@@ -3208,7 +3247,7 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
   
   $scope.editTechnicalSheet = function () {
     //$state.go("editImage", null, { reload: true });
-    $state.transitionTo("editTechnicalSheet", {'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel':$scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
+    $state.transitionTo("editTechnicalSheet", {'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'productId': $scope.productId, 'clientName': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel':$scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
   };
 
   
