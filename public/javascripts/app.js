@@ -164,6 +164,21 @@ app.controller('configurations', function ($scope, $http, $rootScope) {
   $rootScope.class = 'not-home'; 
   $rootScope.name= "Configurar Parâmetros do Sistema";
 
+  $scope.boxes = [];
+  var request = $http.get('/getBoxMeasuresAllFields');    
+  request.then(function successCallback(response) {
+    $scope.boxes  = response.data;
+  },
+  function errorCallback(data){
+    console.log('Error: ' + data);
+  });
+
+  $scope.$watch('boxMeasures', function(){
+    $scope.boxId = $scope.boxMeasures;
+  });
+
+
+
 });
 
 //CONFIGURATIONS  CONTROLER

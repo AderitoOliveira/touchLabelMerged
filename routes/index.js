@@ -433,8 +433,25 @@ router.get('/getOverProductionInStock', function(req,res){
 //GET BOX_MEASURES AND ID FROM BOX_MEASURES FOR TYPEAHEAD
 router.get('/getBoxMeasures', function(req,res){
   console.log("GET BOX_MEASURES AND ID FROM BOX_MEASURES");
-  //console.log(req.body);
   getBoxMeasures(req,res);  
+});
+
+//GET ALL BOX_MEASURES INFORMATION
+router.get('/getBoxMeasuresAllFields', function(req,res){
+  console.log("GET ALL FIELDS FROM BOX_MEASURES");
+  getBoxMeasuresAllFields(req,res);  
+});
+
+//GET PRINTERS CONFIGURATION
+router.get('/getPrintersConfiguration', function(req,res){
+  console.log("GET PRINTERS CONFIGURATION");
+  getPrintersConfiguration(req,res);  
+});
+
+//UPDATE PRINTERS CONFIGURATION
+router.post('/updatePrintersConfiguration', function(req,res){
+  console.log("UPDATE PRINTERS CONFIGURATION");
+  updatePrintersConfiguration(req,res);  
 });
 
 module.exports = router;

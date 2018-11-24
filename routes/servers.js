@@ -964,3 +964,21 @@ getBoxMeasures = function(data, callback) {
     });
 });
 }
+
+//GET ALL BOX_MEASURES INFORMATION
+getBoxMeasuresAllFields = function(data, callback) {
+    con.connect(function(err) {
+    con.query('select * from box_measures', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET ALL FIELDS FROM BOX_MEASURES");   
+
+    });
+});
+}
