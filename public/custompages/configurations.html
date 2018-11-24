@@ -21,34 +21,44 @@
     <div class="form-wrap">
         <div class="row">
             <div id="primary-config">
-            <form class="col-md-12" id="printSectionId" role="form">
+            <div class="col-md-12">
                 <!-- FICHA TÉCNICA PRODUÇÃO-->
-                <div class="inner-form-wrap row active" id="email-configurations">
-                <div class="col-md-12 form-row">
-                    <div class="row">
-                        <div class="col-md-4 form-input-item">
-                            <label class="control-label" for="rawMaterial">Email Primário de Notificações</label>
-                            <div class="input-wrap-inner">
-                            <input type="text" class="form-control" id="rawMaterial" placeholder="email@email.com" ng-model="rawMaterial">
-                            </div>                  
-                        </div>
-                    </div>                
-                </div>
-                <div class="col-md-12 form-row">
-                    <div class="row">
-                        <div class="col-md-4 form-input-item">
-                            <label class="control-label" for="rawMaterial">Email Secundário de Notificações</label>
-                            <div class="input-wrap-inner">
-                            <input type="text" class="form-control" id="rawMaterial" placeholder="email@email.com" ng-model="rawMaterial">
-                            </div>                  
-                        </div>
-                        
+                <form class="inner-form-wrap row active" id="email-configurations" role="form">
+                    <div class="col-md-12 form-row">
+                        <div class="row">
+                            <div class="col-md-4 form-input-item">
+                                <label class="control-label" for="rawMaterial">Email Primário de Notificações</label>
+                                <div class="input-wrap-inner">
+                                <input type="text" class="form-control" id="rawMaterial" placeholder="email@email.com" ng-model="rawMaterial">
+                                </div>                  
+                            </div>
+                        </div>                
                     </div>
-                </div>
-                </div>
+                    <div class="col-md-12 form-row">
+                        <div class="row">
+                            <div class="col-md-4 form-input-item">
+                                <label class="control-label" for="rawMaterial">Email Secundário de Notificações</label>
+                                <div class="input-wrap-inner">
+                                <input type="text" class="form-control" id="rawMaterial" placeholder="email@email.com" ng-model="rawMaterial">
+                                </div>                  
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-12 button-holder">
+                        <div class="row">
+                            <div class="col-md-2">
+                            <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" />Cancelar</button>
+                            </div>
+                            <div class="col-md-2">
+                            <button id="conf-save" type="submit" ng-click="saveTechSheet()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 <!-- FICHA TÉCNICA PINTURA-->
 
-                <div class="inner-form-wrap row" id="printers-configurations">
+                <form class="inner-form-wrap row" id="printers-configurations" role="form">
                     <div class="col-md-12 form-row">
                         <div class="row">
                             <div class="col-md-4 form-input-item">
@@ -69,18 +79,19 @@
                             </div>
                         </div>    
                     </div>
-                </div>
-            </form>  
-            <div class="col-md-12 button-holder">
-                <div class="row">
-                    <div class="col-md-2">
-                    <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" />Cancelar</button>
+                    <div class="col-md-12 button-holder">
+                        <div class="row">
+                            <div class="col-md-2">
+                            <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" />Cancelar</button>
+                            </div>
+                            <div class="col-md-2">
+                            <button id="conf-save" type="submit" ng-click="saveTechSheet()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-2">
-                    <button id="conf-save" type="submit" ng-click="saveTechSheet()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
-                    </div>
-                </div>
-            </div>
+                </form>
+            </div>  
+            
           </div>
           <div id="conf-boxes-wrap">
               <div class="col-md-12">
