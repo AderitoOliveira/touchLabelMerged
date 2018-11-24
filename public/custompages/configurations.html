@@ -54,7 +54,7 @@
                             <div class="col-md-4 form-input-item">
                                 <label class="control-label" for="rawMaterial">Endereço IP Impressora Etiquetas de Produto</label>
                                 <div class="input-wrap-inner">
-                                <input type="text" class="form-control" id="rawMaterial" placeholder="0.0.0.0" ng-model="rawMaterial">
+                                <input type="text" class="form-control" id="articlePrinterIP" placeholder="0.0.0.0" ng-model="articlePrinterIP">
                                 </div>                  
                             </div>
                         </div>                
@@ -64,7 +64,7 @@
                             <div class="col-md-4 form-input-item">
                                 <label class="control-label" for="rawMaterial">Endereço IP Impressora Etiquetas de Caixa</label>
                                 <div class="input-wrap-inner">
-                                <input type="text" class="form-control" id="rawMaterial" placeholder="0.0.0.0" ng-model="rawMaterial">
+                                <input type="text" class="form-control" id="boxPrinterIP" placeholder="0.0.0.0" ng-model="boxPrinterIP">
                                 </div>                  
                             </div>
                         </div>    
@@ -96,13 +96,13 @@
                                             <div class="col-md-5 label-header-item header-label-boxclient">Cliente</div>
                                         </div>
                                     </div>
-                                    <div class="order-labels-content row">
+                                    <div class="order-labels-content row" dir-paginate="box in boxes | orderBy : 'ID' |filter:searchChar | itemsPerPage:20">
                                             <div class="col-md-12">
                                                 <div class="row">
                                                     <div class="item-inner-wrap">
-                                                        <div class="col-md-2 table-item item-label-boxid" title="{{product.ORDER_ID}}">001</div>
-                                                        <div class="col-md-5 table-item item-label-boxdim">34*34*34</div>
-                                                        <div class="col-md-5 table-item item-label-boxclient">Edelman BV</div>
+                                                        <div class="col-md-2 table-item item-label-boxid">{{box.ID}}</div>
+                                                        <div class="col-md-5 table-item item-label-boxdim">{{box.MEASURES}}</div>
+                                                        <div class="col-md-5 table-item item-label-boxclient">{{box.CLIENT_NAME}}</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -115,7 +115,7 @@
                                     <div class="container">
                                         <div align="center">
                                             <dir-pagination-controls
-                                                    max-size="100"
+                                                    max-size="10"
                                                     direction-links="true"
                                                     boundary-links="true" >
                                             </dir-pagination-controls>

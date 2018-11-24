@@ -596,7 +596,7 @@ insertOrderBoxProductClosed = function(req, res) {
 //GET ORDER BOXES CLOSED PRODUCTION PRODUCT
 fetchAllOrderBoxesToOrder = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT * FROM order_boxes_closed_production_products', function(err, rows) {
+    con.query('SELECT * FROM order_boxes_closed_production_products group by ORDER_ID, CLIENT_NAME, CUSTOMER_PRODUCT_ID order by ORDER_ID', function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -963,4 +963,55 @@ getBoxMeasures = function(data, callback) {
 
     });
 });
+}
+
+//GET ALL BOX_MEASURES INFORMATION
+getBoxMeasuresAllFields = function(data, callback) {
+    con.connect(function(err) {
+    con.query('select * from box_measures', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET ALL FIELDS FROM BOX_MEASURES");   
+
+    });
+});
+}
+
+//GET PRINTERS CONFIGURATION
+getPrintersConfiguration = function(data, callback) {
+    con.connect(function(err) {
+    con.query('select * from PRINTERS_IP_ADDRESS', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET PRINTERS CONFIGURATION");   
+
+    });
+});
+}
+
+//UPDATE PRINTERS CONFIGURATION
+updateProductTechSheet = function(req, res) {
+    var postData  = req.body;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+     con.query('update PRINTERS_IP_ADDRESS set ARTICLE_PRINTER_IP_ADDRESS = ?, BOX_PRINTER_IP_ADDRESS = ?, ARTICLE_PRINTER_PORT = ?, BOX_PRINTER_PORT = ?',  [req.body.ARTICLE_PRINTER_IP_ADDRESS, req.body.BOX_PRINTER_IP_ADDRESS, req.body.ARTICLE_PRINTER_PORT, req.body.BOX_PRINTER_PORT], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
 }

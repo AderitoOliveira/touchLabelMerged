@@ -100,13 +100,13 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
       url: '/createTechnicalSheet',
         templateUrl : '../custompages/createTechnicalSheet.html',
         controller : 'createTechSheet',
-        params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null}
+        params: {productName: null, customerProductId: null, internalProductId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null}
     })
     .state('editTechnicalSheet', {
       url: '/editTechnicalSheet',
         templateUrl : '../custompages/editTechnicalSheet.html',
         controller : 'editTechSheet',
-        params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null}
+        params: {productName: null, customerProductId: null, productId: null, clientName: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null}
     })
     .state('configuration', {
       url: '/configuration',
@@ -163,6 +163,53 @@ app.controller('configurations', function ($scope, $http, $rootScope) {
 
   $rootScope.class = 'not-home'; 
   $rootScope.name= "Configurar Parâmetros do Sistema";
+
+  //GET BOXES
+  $scope.boxes = [];
+  var request = $http.get('/getBoxMeasuresAllFields');    
+  request.then(function successCallback(response) {
+    $scope.boxes  = response.data;
+  },
+  function errorCallback(data){
+    console.log('Error: ' + data);
+  });
+
+  //GET PRINTERS 
+  $scope.printers = [];
+  var request = $http.get('/getPrintersConfiguration');    
+  request.then(function successCallback(response) {
+    $scope.printers  = response.data;
+    $scope.articlePrinterIP   = response.data[0].ARTICLE_PRINTER_IP_ADDRESS;
+    $scope.boxPrinterIP       = response.data[0].BOX_PRINTER_IP_ADDRESS;
+    $scope.articlePrinterPort = response.data[0].ARTICLE_PRINTER_PORT;
+    $scope.boxPrinterPort     = response.data[0].BOX_PRINTER_PORT;
+  },
+  function errorCallback(data){
+    console.log('Error: ' + data);
+  });
+
+  //UPDATE PRINTER INFORMATION
+  $scope.updatePrinterIPAddress = function () {
+
+    var data = {
+      ARTICLE_PRINTER_IP_ADDRESS  : $scope.articlePrinterIP,
+      BOX_PRINTER_IP_ADDRESS      : $scope.boxPrinterIP,
+      ARTICLE_PRINTER_PORT        : $scope.articlePrinterPort,
+      BOX_PRINTER_PORT            : $scope.boxPrinterPort
+    }
+
+    //var res = $http.post('/updateproduct', dataObj);
+    var res = $http.post('/updatePrintersConfiguration', dataObj).then(function(data, status, headers, config) {
+      
+    });
+
+  }
+
+  $scope.$watch('boxMeasures', function(){
+    $scope.boxId = $scope.boxMeasures;
+  });
+
+
 
 });
 
@@ -929,37 +976,66 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         $scope.productTechSheet  = response.data;
 
         //IF the Qty_By_Box value is not defined in the TechSheet we cannot close the Product in Painting
-        if($scope.productTechSheet[0].Qty_By_Box != null){
-          var qtyBoxLabelsToPrint = qtyproduced / $scope.productTechSheet[0].Qty_By_Box;
+        //IF THE Qty_By_Box OR Qty_By_Pallet OR Bar_Code_Tech_Sheet ARE NOT DEFINED IN THE PRODUCT TECHNICAL SHEET OF THE PRODUCT
+      //THE PRODUCT CANNOT BE CLOSED FOR PAINTING IN THIS ORDER
+      if($scope.productTechSheet[0].Qty_By_Box == null || $scope.productTechSheet[0].Qty_By_Pallet == null || $scope.productTechSheet[0].Bar_Code_Tech_Sheet ==null) {
 
-          ModalService.showModal({
-            templateUrl: "../modal/closeProductForPainting.html",
-            controller: "closeProductInOrderForPainting",
+        var messageToSend = "";
+        if($scope.productTechSheet[0].Qty_By_Box == null) {
+          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por caixa. Edite a ficha técnica do produto e adicione a Quantidade por caixa para poder fechar o produto nesta encomenda."
+        }
+        if($scope.productTechSheet[0].Qty_By_Pallet == null && messageToSend == "") {
+          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por Palete. Edite a ficha técnica do produto e adicione a Quantidade por Palete para poder fechar o produto nesta encomenda."
+        }
+        if($scope.productTechSheet[0].Bar_Code_Tech_Sheet ==null && messageToSend == "") {
+              messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o Código de Barras. Edite a ficha técnica do produto e adicione o Código de Barras para poder fechar o produto nesta encomenda."
+            }
+          
+            ModalService.showModal({
+            templateUrl: "../modal/genericModal.html",
+            controller: "GenericController",
             preClose: (modal) => { modal.element.modal('hide'); },
             inputs: {
-              title: "Fechar Producto em Pintura",
-              orderid: $stateParams.orderId,
-              internalproductid: internalproductid,
-              customerproductid: customerproductid,
-              productname: productName,
-              totalproductsproduced: qtyproduced,
-              qtyBoxLabelsToPrint : qtyBoxLabelsToPrint
+              message: messageToSend
             }
-          }).then(function(modal) {
-          modal.element.modal();
-          modal.close.then(function(result) {
-          if (!result) {
-            $scope.complexResult = "Modal forcibly closed..."
-          } else {
-            $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+            }).then(function(modal) {
+                modal.element.modal();
+                modal.close.then(function(result) {
+                if (!result) {
+                  $scope.complexResult = "Modal forcibly closed..."
+                } else {
+                  $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+                }
+                });
+            });
+          } 
+          else {
+              var qtyBoxLabelsToPrint = qtyproduced / $scope.productTechSheet[0].Qty_By_Box;
+
+              ModalService.showModal({
+                templateUrl: "../modal/closeProductForPainting.html",
+                controller: "closeProductInOrderForPainting",
+                preClose: (modal) => { modal.element.modal('hide'); },
+                inputs: {
+                  title: "Fechar Producto em Pintura",
+                  orderid: $stateParams.orderId,
+                  internalproductid: internalproductid,
+                  customerproductid: customerproductid,
+                  productname: productName,
+                  totalproductsproduced: qtyproduced,
+                  qtyBoxLabelsToPrint : qtyBoxLabelsToPrint
+                }
+              }).then(function(modal) {
+              modal.element.modal();
+              modal.close.then(function(result) {
+              if (!result) {
+                $scope.complexResult = "Modal forcibly closed..."
+              } else {
+                $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+              }
+              });
+              });
           }
-          });
-          });
-      }
-      else {
-          alert("Na ficha técnica do produto " + customerproductid + " - " + productName + " não está definido o valor no campo Quantidade por caixa. \n É necessário definir a quantidade de artigos por caixa");
-      }
-        
     },
     function errorCallback(data){
         console.log('Error: ' + data);
@@ -1463,6 +1539,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   //GET TECHNICAL SHEET INFORMATION FOR THE PRODUCTS IN THE ORDER TO SEND IT FOR PAINTING
   $scope.getTechSheetForPaiting = function () {
     $scope.productTechSheet = [];
+    var arrayProductMissingArguments = [];
     var currentRefPaint = "";
     var request = $http.get('/getTechSheetForPaiting/' + encodeURIComponent(orderId));    
     request.then(function successCallback(response) {
@@ -1481,7 +1558,6 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
               var dataTechSheet = {
                 Finish_Type_Obs : $scope.productTechSheet[i].Finish_Type_Obs,
-                //Glassed : $scope.productTechSheet[i].Glassed,
                 CUSTOMER_PRODUCT_ID : $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
                 PRODUCT_NAME : $scope.productTechSheet[i].PRODUCT_NAME,
                 TOTAL_QUANTITY_ORDERED :  $scope.productTechSheet[i].TOTAL_QUANTITY_ORDERED,
@@ -1495,7 +1571,6 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               var internalArray = [];
               var dataTechSheet = {
                 Finish_Type_Obs : $scope.productTechSheet[i].Finish_Type_Obs,
-                //Glassed : $scope.productTechSheet[i].Glassed,
                 CUSTOMER_PRODUCT_ID : $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
                 PRODUCT_NAME : $scope.productTechSheet[i].PRODUCT_NAME,
                 TOTAL_QUANTITY_ORDERED :  $scope.productTechSheet[i].TOTAL_QUANTITY_ORDERED,
@@ -1540,8 +1615,43 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               arrayForAll[currentRefPaint] = internalArray;
             };
 
-        }        
+        }
+        
+        //The product doesn't contain the Ref_Glassed or Ref_Paint the productTechSheet shouldn't be printed
+        if($scope.productTechSheet[i].Ref_Glassed == null && $scope.productTechSheet[i].Ref_Paint == null) {
+              arrayProductMissingArguments.push($scope.productTechSheet[i].CUSTOMER_PRODUCT_ID);
+        }
 
+      }
+
+      //If at least 1 product is missing the Ref_Glassed or Ref_Paint then we should send a message and stop the printing at this point
+      if(arrayProductMissingArguments.length > 0) {
+
+        if(arrayProductMissingArguments.length == 1){
+          var messageToSend = "O produto " + arrayProductMissingArguments.toString() + " não tem preenchido os atributos Referência Tinta e Referência Vidrado";
+        } else {
+          var messageToSend = "Os produtos " + arrayProductMissingArguments.toString() + " não têm preenchidos os atributos Referência Tinta e Referência Vidrado";
+        }
+
+        ModalService.showModal({
+          templateUrl: "../modal/genericModal.html",
+          controller: "GenericController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: messageToSend
+          }
+          }).then(function(modal) {
+              modal.element.modal();
+              modal.close.then(function(result) {
+              if (!result) {
+                $scope.complexResult = "Modal forcibly closed..."
+              } else {
+                $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+              }
+              });
+          });
+
+          return;
       }
 
       /* var requestPDFTemplate = $http.get('/getPDFTemplate/' +  encodeURIComponent('paiting_products_in_order'));    
@@ -1949,7 +2059,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
   $scope.data = [];
 
   $scope.productName     = 	$stateParams.productName;
-  $scope.productId       = 	$stateParams.productId;
+  $scope.productId       = 	$stateParams.internalProductId;
   $scope.clientname      =  $stateParams.clientname;
   $scope.imageName       = 	$stateParams.imageName;
   $scope.barCode         = 	$stateParams.barCode;
@@ -1961,51 +2071,35 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
   $scope.data = [];
   var productId = $stateParams.productId;
   var customerProductId = $stateParams.customerProductId;
-  var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerProductId));    
+  
+  $scope.boxSize = [];
+  var request = $http.get('/getBoxMeasures');    
   request.then(function successCallback(response) {
-      $scope.data  = response.data;
-      $scope.rawMaterial 			  = $scope.data[0].Raw_Material;
-      $scope.rawMaterialExtra	  = $scope.data[0].Raw_Material_Extra;
-      $scope.productHeight		  =	$scope.data[0].Product_Height;
-      $scope.productWidth			  =	$scope.data[0].Product_Width;
-      $scope.topWidth				    =	$scope.data[0].Top_Width;
-      $scope.bottomWidth			  =	$scope.data[0].Bottom_Width;
-      $scope.relief				      =	$scope.data[0].Relief;
-      $scope.sponge				      =	$scope.data[0].Sponge;
-      $scope.cooking				    =	$scope.data[0].Cooking;
-      $scope.cookingTemperature	=	$scope.data[0].Cooking_Temperature;
-      $scope.paintedCold			  =	$scope.data[0].Painted_Cold;
-      $scope.refPaint				    =	$scope.data[0].Ref_Paint;
-      $scope.refPaintQty			  =	$scope.data[0].Ref_Paint_Qty;
-      $scope.glassed				    =	$scope.data[0].Glassed;
-      $scope.refGlassed			    =	$scope.data[0].Ref_Glassed;
-      $scope.refPaintSmoked		  =	$scope.data[0].Ref_Paint_Smoked;
-      $scope.refPaintSmokedQty	=	$scope.data[0].Ref_Paint_Smoked_Qty;
-      $scope.finishTypeObs		  =	$scope.data[0].Finish_Type_Obs;
-      $scope.barCodeTechSheet		=	$scope.data[0].Bar_Code_Tech_Sheet;
-      $scope.labelWaterProof		=	$scope.data[0].Label_Water_Proof;
-      $scope.felts				      =	$scope.data[0].Felts;
-      $scope.feltsQty				    =	$scope.data[0].Felts_Qty;
-      $scope.bag					      =	$scope.data[0].Bag;
-      $scope.bagSize				    =	$scope.data[0].Bag_Size;
-      $scope.qtyByBox				    =	$scope.data[0].Qty_By_Box;
-      $scope.boxMeasures			  =	$scope.data[0].Box_Measures;
-      $scope.dispositionByRow		=	$scope.data[0].Disposition_By_Row;
-      $scope.qtyByPallet			  =	$scope.data[0].Qty_By_Pallet;
-      $scope.finalObservations	=	$scope.data[0].Final_Observations;
-      console.log(response.data);
-      //$scope.image = '/images' + '/' + $scope.data.image_name;
-      return  $scope.data; 
+    $scope.boxSize  = response.data;
   },
   function errorCallback(data){
-      console.log('Error: ' + data);
+    console.log('Error: ' + data);
   });
+
+  $scope.$watch('boxMeasures', function(){
+    $scope.boxId = $scope.boxMeasures;
+  });  
 
    $scope.$watch('rawMaterial', function(){
     console.log($scope.rawMaterial);
   });
   
-   $scope.saveTechSheet = function() {
+  $scope.saveTechSheet = function() {
+
+    //WE NEED TO VALIDATE IF THE BOX_MEASURES COMES FROM THE TYPEAHEAD OR OF IT THE BOX_MEASURES ALREADY 
+    //EXISTS IN THE DATABASE
+    if(!$scope.boxMeasures.MEASURES) {
+      $scope.boxMeasures = $scope.boxMeasures;
+      $scope.boxId       = $scope.boxId;
+    } else {
+      $scope.boxMeasures = $scope.boxMeasures.MEASURES;
+      $scope.boxId       = $scope.boxId.ID;
+    }
 
     var dataObj = {
       CUSTOMER_PRODUCT_ID:  customerProductId,
@@ -2036,6 +2130,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
       Bag_Size:				      $scope.bagSize,
       Qty_By_Box:				    $scope.qtyByBox,
       Box_Measures:			    $scope.boxMeasures,
+      Box_Id:     			    $scope.boxId,
       Disposition_By_Row:		$scope.dispositionByRow,
       Qty_By_Pallet:			  $scope.qtyByPallet,
       Final_Observations:		$scope.finalObservations
@@ -2370,7 +2465,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
 
   $scope.productName      = 	$stateParams.productName;
   $scope.productId        = 	$stateParams.productId;
-  $scope.clientname       = 	$stateParams.clientname;
+  $scope.clientname       = 	$stateParams.clientName;
   $scope.imageName        = 	$stateParams.imageName;
   $scope.barCode          = 	$stateParams.barCode;
   $scope.nameInTheLabel   =	  $stateParams.nameInTheLabel;
@@ -2438,6 +2533,16 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
 
    $scope.saveTechSheet = function() {
 
+    //WE NEED TO VALIDATE IF THE BOX_MEASURES COMES FROM THE TYPEAHEAD OR OF IT THE BOX_MEASURES ALREADY 
+    //EXISTS IN THE DATABASE
+    if(!$scope.boxMeasures.MEASURES) {
+      $scope.boxMeasures = $scope.boxMeasures;
+      $scope.boxId       = $scope.boxId;
+    } else {
+      $scope.boxMeasures = $scope.boxMeasures.MEASURES;
+      $scope.boxId       = $scope.boxId.ID;
+    }
+
     var dataObj = {
       CUSTOMER_PRODUCT_ID: customerProductId,
       INTERNAL_PRODUCT_ID:  $scope.productId,
@@ -2466,8 +2571,8 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
       Bag:					        $scope.bag,
       Bag_Size:				      $scope.bagSize,
       Qty_By_Box:				    $scope.qtyByBox,
-      Box_Measures:			    $scope.boxMeasures.MEASURES,
-      Box_Id:     			    $scope.boxMeasures.ID,
+      Box_Measures:			    $scope.boxMeasures,
+      Box_Id:     			    $scope.boxId,
       Disposition_By_Row:		$scope.dispositionByRow,
       Qty_By_Pallet:			  $scope.qtyByPallet,
       Final_Observations:		$scope.finalObservations
@@ -3229,12 +3334,12 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
 
   $scope.createTechnicalSheet = function () {
     //$state.go("editImage", null, { reload: true });
-    $state.transitionTo("createTechnicalSheet", {'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel':$scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
+    $state.transitionTo("createTechnicalSheet", {'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'internalProductId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel':$scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
   };
   
   $scope.editTechnicalSheet = function () {
     //$state.go("editImage", null, { reload: true });
-    $state.transitionTo("editTechnicalSheet", {'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel':$scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
+    $state.transitionTo("editTechnicalSheet", {'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'productId': $scope.productId, 'clientName': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel':$scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
   };
 
   
@@ -3298,7 +3403,7 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
       INTERNAL_PRODUCT_ID: $scope.productId,
       CUSTOMER_PRODUCT_ID : $scope.customerproductId,
       CLIENT_NAME : $scope.clientname,
-      IMAGE_NAME: $scope.image,
+      IMAGE_NAME: productImageDefault,
       BAR_CODE_NUMBER: $scope.barCode,
       PRODUCT_NAME_FOR_LABEL: $scope.nameInTheLabel,
       PRICE_EURO_1: $scope.preco1,
@@ -3358,6 +3463,11 @@ app.controller('PalletesController', function($scope, $http, $rootScope) {
   function errorCallback(data){
       console.log('Error: ' + data);
   });
+
+  $scope.delete = function() {
+    
+  };
+
 });
 
 //////////////////////////////////////////////
