@@ -100,7 +100,7 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
       url: '/createTechnicalSheet',
         templateUrl : '../custompages/createTechnicalSheet.html',
         controller : 'createTechSheet',
-        params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null}
+        params: {productName: null, customerProductId: null, internalProductId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null}
     })
     .state('editTechnicalSheet', {
       url: '/editTechnicalSheet',
@@ -1972,7 +1972,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
   $scope.data = [];
 
   $scope.productName     = 	$stateParams.productName;
-  $scope.productId       = 	$stateParams.productId;
+  $scope.productId       = 	$stateParams.internalProductId;
   $scope.clientname      =  $stateParams.clientname;
   $scope.imageName       = 	$stateParams.imageName;
   $scope.barCode         = 	$stateParams.barCode;
@@ -1984,51 +1984,35 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
   $scope.data = [];
   var productId = $stateParams.productId;
   var customerProductId = $stateParams.customerProductId;
-  var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerProductId));    
+  
+  $scope.boxSize = [];
+  var request = $http.get('/getBoxMeasures');    
   request.then(function successCallback(response) {
-      $scope.data  = response.data;
-      $scope.rawMaterial 			  = $scope.data[0].Raw_Material;
-      $scope.rawMaterialExtra	  = $scope.data[0].Raw_Material_Extra;
-      $scope.productHeight		  =	$scope.data[0].Product_Height;
-      $scope.productWidth			  =	$scope.data[0].Product_Width;
-      $scope.topWidth				    =	$scope.data[0].Top_Width;
-      $scope.bottomWidth			  =	$scope.data[0].Bottom_Width;
-      $scope.relief				      =	$scope.data[0].Relief;
-      $scope.sponge				      =	$scope.data[0].Sponge;
-      $scope.cooking				    =	$scope.data[0].Cooking;
-      $scope.cookingTemperature	=	$scope.data[0].Cooking_Temperature;
-      $scope.paintedCold			  =	$scope.data[0].Painted_Cold;
-      $scope.refPaint				    =	$scope.data[0].Ref_Paint;
-      $scope.refPaintQty			  =	$scope.data[0].Ref_Paint_Qty;
-      $scope.glassed				    =	$scope.data[0].Glassed;
-      $scope.refGlassed			    =	$scope.data[0].Ref_Glassed;
-      $scope.refPaintSmoked		  =	$scope.data[0].Ref_Paint_Smoked;
-      $scope.refPaintSmokedQty	=	$scope.data[0].Ref_Paint_Smoked_Qty;
-      $scope.finishTypeObs		  =	$scope.data[0].Finish_Type_Obs;
-      $scope.barCodeTechSheet		=	$scope.data[0].Bar_Code_Tech_Sheet;
-      $scope.labelWaterProof		=	$scope.data[0].Label_Water_Proof;
-      $scope.felts				      =	$scope.data[0].Felts;
-      $scope.feltsQty				    =	$scope.data[0].Felts_Qty;
-      $scope.bag					      =	$scope.data[0].Bag;
-      $scope.bagSize				    =	$scope.data[0].Bag_Size;
-      $scope.qtyByBox				    =	$scope.data[0].Qty_By_Box;
-      $scope.boxMeasures			  =	$scope.data[0].Box_Measures;
-      $scope.dispositionByRow		=	$scope.data[0].Disposition_By_Row;
-      $scope.qtyByPallet			  =	$scope.data[0].Qty_By_Pallet;
-      $scope.finalObservations	=	$scope.data[0].Final_Observations;
-      console.log(response.data);
-      //$scope.image = '/images' + '/' + $scope.data.image_name;
-      return  $scope.data; 
+    $scope.boxSize  = response.data;
   },
   function errorCallback(data){
-      console.log('Error: ' + data);
+    console.log('Error: ' + data);
   });
+
+  $scope.$watch('boxMeasures', function(){
+    $scope.boxId = $scope.boxMeasures;
+  });  
 
    $scope.$watch('rawMaterial', function(){
     console.log($scope.rawMaterial);
   });
   
-   $scope.saveTechSheet = function() {
+  $scope.saveTechSheet = function() {
+
+    //WE NEED TO VALIDATE IF THE BOX_MEASURES COMES FROM THE TYPEAHEAD OR OF IT THE BOX_MEASURES ALREADY 
+    //EXISTS IN THE DATABASE
+    if(!$scope.boxMeasures.MEASURES) {
+      $scope.boxMeasures = $scope.boxMeasures;
+      $scope.boxId       = $scope.boxId;
+    } else {
+      $scope.boxMeasures = $scope.boxMeasures.MEASURES;
+      $scope.boxId       = $scope.boxId.ID;
+    }
 
     var dataObj = {
       CUSTOMER_PRODUCT_ID:  customerProductId,
@@ -2059,6 +2043,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
       Bag_Size:				      $scope.bagSize,
       Qty_By_Box:				    $scope.qtyByBox,
       Box_Measures:			    $scope.boxMeasures,
+      Box_Id:     			    $scope.boxId,
       Disposition_By_Row:		$scope.dispositionByRow,
       Qty_By_Pallet:			  $scope.qtyByPallet,
       Final_Observations:		$scope.finalObservations
@@ -3242,7 +3227,7 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
 
   $scope.createTechnicalSheet = function () {
     //$state.go("editImage", null, { reload: true });
-    $state.transitionTo("createTechnicalSheet", {'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel':$scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
+    $state.transitionTo("createTechnicalSheet", {'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'internalProductId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel':$scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
   };
   
   $scope.editTechnicalSheet = function () {
