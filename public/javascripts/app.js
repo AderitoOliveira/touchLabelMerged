@@ -164,6 +164,7 @@ app.controller('configurations', function ($scope, $http, $rootScope) {
   $rootScope.class = 'not-home'; 
   $rootScope.name= "Configurar Parâmetros do Sistema";
 
+  //GET BOXES
   $scope.boxes = [];
   var request = $http.get('/getBoxMeasuresAllFields');    
   request.then(function successCallback(response) {
@@ -172,6 +173,37 @@ app.controller('configurations', function ($scope, $http, $rootScope) {
   function errorCallback(data){
     console.log('Error: ' + data);
   });
+
+  //GET PRINTERS 
+  $scope.printers = [];
+  var request = $http.get('/getPrintersConfiguration');    
+  request.then(function successCallback(response) {
+    $scope.printers  = response.data;
+    $scope.articlePrinterIP   = response.data[0].ARTICLE_PRINTER_IP_ADDRESS;
+    $scope.boxPrinterIP       = response.data[0].BOX_PRINTER_IP_ADDRESS;
+    $scope.articlePrinterPort = response.data[0].ARTICLE_PRINTER_PORT;
+    $scope.boxPrinterPort     = response.data[0].BOX_PRINTER_PORT;
+  },
+  function errorCallback(data){
+    console.log('Error: ' + data);
+  });
+
+  //UPDATE PRINTER INFORMATION
+  $scope.updatePrinterIPAddress = function () {
+
+    var data = {
+      ARTICLE_PRINTER_IP_ADDRESS  : $scope.articlePrinterIP,
+      BOX_PRINTER_IP_ADDRESS      : $scope.boxPrinterIP,
+      ARTICLE_PRINTER_PORT        : $scope.articlePrinterPort,
+      BOX_PRINTER_PORT            : $scope.boxPrinterPort
+    }
+
+    //var res = $http.post('/updateproduct', dataObj);
+    var res = $http.post('/updatePrintersConfiguration', dataObj).then(function(data, status, headers, config) {
+      
+    });
+
+  }
 
   $scope.$watch('boxMeasures', function(){
     $scope.boxId = $scope.boxMeasures;
@@ -3311,7 +3343,7 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
       INTERNAL_PRODUCT_ID: $scope.productId,
       CUSTOMER_PRODUCT_ID : $scope.customerproductId,
       CLIENT_NAME : $scope.clientname,
-      IMAGE_NAME: $scope.image,
+      IMAGE_NAME: productImageDefault,
       BAR_CODE_NUMBER: $scope.barCode,
       PRODUCT_NAME_FOR_LABEL: $scope.nameInTheLabel,
       PRICE_EURO_1: $scope.preco1,
