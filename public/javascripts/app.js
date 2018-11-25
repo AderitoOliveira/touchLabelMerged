@@ -191,7 +191,7 @@ app.controller('configurations', function ($scope, $http, $rootScope) {
   //UPDATE PRINTER INFORMATION
   $scope.updatePrinterIPAddress = function () {
 
-    var data = {
+    var dataObj = {
       ARTICLE_PRINTER_IP_ADDRESS  : $scope.articlePrinterIP,
       BOX_PRINTER_IP_ADDRESS      : $scope.boxPrinterIP,
       ARTICLE_PRINTER_PORT        : $scope.articlePrinterPort,
