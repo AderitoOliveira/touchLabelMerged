@@ -2115,6 +2115,8 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
       INTERNAL_PRODUCT_ID:  $scope.productId,
       Raw_Material:			    $scope.rawMaterial,
       Raw_Material_Extra:		$scope.rawMaterialExtra,
+      Dimensions_In_Wet:    $scope.dimensionsInWet,
+      Product_Weight:       $scope.productWeight,
       Product_Height:			  $scope.productHeight,
       Product_Width:			  $scope.productWidth,
       Top_Width:				    $scope.topWidth,
@@ -2491,6 +2493,8 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
       $scope.data  = response.data;
       $scope.rawMaterial 			  = $scope.data[0].Raw_Material;
       $scope.rawMaterialExtra	  = $scope.data[0].Raw_Material_Extra;
+      $scope.dimensionsInWet	  = $scope.data[0].Dimensions_In_Wet;
+      $scope.productWeight	    = $scope.data[0].Product_Weight;
       $scope.productHeight		  =	$scope.data[0].Product_Height;
       $scope.productWidth			  =	$scope.data[0].Product_Width;
       $scope.topWidth				    =	$scope.data[0].Top_Width;
@@ -2557,6 +2561,8 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
       INTERNAL_PRODUCT_ID:  $scope.productId,
       Raw_Material:			    $scope.rawMaterial,
       Raw_Material_Extra:		$scope.rawMaterialExtra,
+      Dimensions_In_Wet:    $scope.dimensionsInWet,
+      Product_Weight:       $scope.productWeight,
       Product_Height:			  $scope.productHeight,
       Product_Width:			  $scope.productWidth,
       Top_Width:				    $scope.topWidth,
@@ -2678,6 +2684,26 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
             "layout": "noBorders",
             "style": "tableRowsTextFirst"
         }, {
+          "table": {
+              "headerRows": 1,
+              "widths": ["*", "*"],
+              "body": [
+                  [{
+                      "text": "Dimensões Pré Secagem",
+                      "style": "tblBigHeader"
+                  }, {
+                      "text": "Peso da peça",
+                      "style": "tblBigHeader"
+                  }],
+                  [
+                      '_DIMENSIONS_IN_WET_',
+                      '_PRODUCT_WEIGHT_'
+                  ]
+              ], "style": "littleMargin",
+          },
+          "layout": "noBorders",
+          "style": "tableRowsText"
+      }, {
             "table": {
                 "headerRows": 1,
                 "widths": ["*", "*", "*", "*"],
@@ -3067,6 +3093,8 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
           '_PRODUCT_NAME_' : $scope.productName,
           '_RAW_MATERIAL_' : $scope.rawMaterial,
           '_RAW_MATERIAL_EXTRA_' : $scope.rawMaterialExtra,
+          '_DIMENSIONS_IN_WET_' : $scope.dimensionsInWet,
+          '_PRODUCT_WEIGHT_' : $scope.productWeight,
           '_PRODUCT_HEIGHT_' : $scope.productHeight,
           '_PRODUCT_WIDHT_' : $scope.productWidth,
           '_TOP_WIDTH_' : $scope.topWidth,
