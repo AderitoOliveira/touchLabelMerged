@@ -381,6 +381,20 @@ router.post('/insertPalletesQuantity', function(req,res){
   insertPalletesQuantity(req,res);  
 });
 
+//GET PALLETES READY FOR SHIPPING - palletes_ready_for_shipping
+router.get('/getPalletesReadyForShipping', function(req,res){
+  console.log("GET PALLETES READY FOR SHIPPING");
+  console.log(req.body);
+  getPalletesReadyForShipping(req,res);  
+});
+
+//DELETE PALLETES READY FOR SHIPPING - palletes_ready_for_shipping
+router.post('/deletePalletesReadyForShipping', function(req,res){
+  console.log("DELETE PALLETES READY FOR SHIPPING");
+  console.log(req.body);
+  deletePalletesReadyForShipping(req,res);  
+});
+
 //INSERT LABELS TO PRINT - order_products_labels_to_print
 router.post('/insertLabelsToPrint', function(req,res){
   console.log("INSERT ORDER PRODUCTS DAILY PRODUCTION");
@@ -414,13 +428,6 @@ router.get('/getPDFRequistionIdSequence', function(req,res){
   console.log("GET VALUE FROM THE pdf_requistion_id_sequence");
   console.log(req.body);
   fecthNextValueFromPDFReqIdSequence(req,res);  
-});
-
-//GET PALLETES READY FOR SHIPPING - palletes_ready_for_shipping
-router.get('/getPalletesReadyForShipping', function(req,res){
-  console.log("GET PALLETES READY FOR SHIPPING");
-  console.log(req.body);
-  getPalletesReadyForShipping(req,res);  
 });
 
 //GET OVERPRODUCTION IN STOCK - overproduction_in_stock

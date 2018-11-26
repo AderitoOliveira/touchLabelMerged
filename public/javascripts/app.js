@@ -3486,7 +3486,7 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
 }]);
 
 //LIST ALL THE PALLETES READY TO BE SHIPPED - PalletesController
-app.controller('PalletesController', function($scope, $http, $rootScope) {
+app.controller('PalletesController', function($scope, $http, $rootScope, ModalService) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Lista Paletes prontas para enviar"
@@ -3501,7 +3501,32 @@ app.controller('PalletesController', function($scope, $http, $rootScope) {
       console.log('Error: ' + data);
   });
 
-  $scope.delete = function() {
+  $scope.delete = function(order_id, customer_product_id) {
+    
+    var dataToDelete = {
+      ORDER_ID            : order_id,
+      CUSTOMER_PRODUCT_ID : customer_product_id
+    };
+
+    ModalService.showModal({
+      templateUrl: "../modal/yesNoGeneric.html",
+      controller: "genericModalController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        message: "Deseja mesmo remover a pallete de stock do produto " + customer_product_id + " na encomenda " + order_id + " ?",
+        operationURL: '/deletePalletesReadyForShipping',
+        dataObj: dataToDelete
+      }
+    }).then(function(modal) {
+        modal.element.modal();
+        modal.close.then(function(result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
+    });
     
   };
 

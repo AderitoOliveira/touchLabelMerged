@@ -805,6 +805,42 @@ insertPalletesQuantity = function(req, res) {
  });
 }
 
+//GET PALLETES READY FOR SHIPPING - palletes_ready_for_shipping
+getPalletesReadyForShipping = function(data, callback) {
+    con.connect(function(err) {
+    con.query('select ORDER_ID, CUSTOMER_PRODUCT_ID,  INTERNAL_PRODUCT_ID, PRODUCT_NAME, TOTAL_PRODUCTS_PAINTED, QUANTITY_IN_PALLETES, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE FROM palletes_ready_for_shipping', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET ALL LABELS TO PRINT");   
+
+    });
+});
+}
+
+//DELETE PALLETES READY FOR SHIPPING - palletes_ready_for_shipping
+deletePalletesReadyForShipping = function(req, res) {
+    console.log("#################################### POSTDATA #################################");
+    console.log(req.body.ORDER_ID);
+    console.log(req.body.CUSTOMER_PRODUCT_ID);
+    console.log("#################################### POSTDATA #################################");
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    con.query('delete from palletes_ready_for_shipping where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
 //INSERT OVER PRODUCTION IN STOCK TABLE - overproduction_in_stock
 insertOverProductionStockTable = function(req, res) {
     var postData  = req.body;
@@ -837,9 +873,6 @@ insertLabelsToPrint = function(req, res) {
 
 //DELETE LABELS TO PRINT - order_products_labels_to_print
 deleteLabelsToPrint = function(req, res) {
-    console.log("#################################### POSTDATA #################################");
-    console.log(req.body);
-    console.log("#################################### POSTDATA #################################");
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
@@ -906,24 +939,6 @@ fecthNextValueFromPDFReqIdSequence = function(data, callback) {
         callback.end(JSON.stringify(rows));
         callback = rows;
         console.log("GET VALUE FROM THE pdf_requistion_id_sequence");   
-
-    });
-});
-}
-
-//GET PALLETES READY FOR SHIPPING - palletes_ready_for_shipping
-getPalletesReadyForShipping = function(data, callback) {
-    con.connect(function(err) {
-    con.query('select ORDER_ID, CUSTOMER_PRODUCT_ID,  INTERNAL_PRODUCT_ID, PRODUCT_NAME, TOTAL_PRODUCTS_PAINTED, QUANTITY_IN_PALLETES, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE FROM palletes_ready_for_shipping', function(err, rows) {
-        if (err) {
-            throw err;
-        } else
-        callback.setHeader('Content-Type', 'application/json');
-        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
-        callback.end(JSON.stringify(rows));
-        callback = rows;
-        console.log("GET ALL LABELS TO PRINT");   
 
     });
 });
