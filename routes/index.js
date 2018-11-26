@@ -278,15 +278,19 @@ router.post('/insertOrderBoxes', function(req,res){
 //GET ORDER BOXES CLOSED PRODUCTION PRODUCT
 router.get('/getAllOrderBoxes', function(req,res){
   console.log("GET BOXES TO ORDER");
-  console.log(req.body);
   fetchAllOrderBoxesToOrder(req,res);  
 });
 
 //DELETE ROWS FROM ORDER BOXES AFTER THE ORDER IS PLACED
 router.post('/deleteOrderBoxes', function(req,res){
   console.log("DELETE ORDER BOXES AFTER THE ORDER IS PLACED");
-  console.log(req.body);
   deleteOrderBoxAfterOrderPlaced(req,res);  
+});
+
+//COUNT ORDER BOXES CLOSED PRODUCTION PRODUCT
+router.get('/countAllOrderBoxes', function(req,res){
+  console.log("COUNT BOXES TO ORDER");
+  countAllOrderBoxes(req,res);  
 });
 
 //GET ALL EMPLOYEES
@@ -414,6 +418,13 @@ router.get('/getLabelsToPrint', function(req,res){
   console.log("GET LABELS TO PRINT");
   console.log(req.body);
   fetchAllLabelsToPrint(req,res);  
+});
+
+//COUNT LABELS TO PRINT - order_products_labels_to_print
+router.get('/countLabelsToPrint', function(req,res){
+  console.log("COUNT LABELS TO PRINT");
+  console.log(req.body);
+  countLabelsToPrint(req,res);  
 });
 
 //UPDATE LABELS ALREADY PRINTED - order_products_labels_to_print

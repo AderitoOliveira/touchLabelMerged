@@ -26,7 +26,7 @@
         <div class="home-block" id="home-labels-inner" ng-controller="labelsToPrint">
             <div class="block-heading">
                 <h2 class="block-heading-title">Etiquetas a imprimir</h2>
-                <span class="table-number">12</span>
+                <span class="table-number">{{numberRecordsLabelTable}}</span>
             </div>
             <div class="row">
                 <div id="label-table" class="col-md-12">
@@ -62,7 +62,7 @@
         <div class="home-block" id="home-boxes-inner" ng-controller="boxesToOrder">
             <div class="block-heading">
                 <h2 class="block-heading-title">Caixas a encomendar</h2>
-                <span class="table-number">12</span>
+                <span class="table-number">{{numberRecordsBoxesOrderTable}}</span>
             </div>
             <div class="row">
                 <div ng-table="boxesToOrderTable" id="boxes-table" class="col-md-12">

@@ -220,6 +220,19 @@ app.controller('homeController', function ($scope, $http, $rootScope) {
 
   $rootScope.name= "TouchLabel";
 
+  $scope.numberRecordsLabelTable = 0;
+  $scope.numberRecordsBoxesOrderTable = 0;
+
+  var request = $http.get('/countAllOrderBoxes');    
+  request.then(function successCallback(response) {
+    $scope.numberRecordsBoxesOrderTable  = response.data[0].RECORDS_IN_BOXES_TO_ORDER_TABLE;
+  });
+
+  var request = $http.get('/countLabelsToPrint');    
+  request.then(function successCallback(response) {
+    $scope.numberRecordsLabelTable  = response.data[0].RECORDS_IN_LABELS_TABLE;
+  });
+
 
   $scope.labels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
   $scope.series = ['Series A', 'Series B',  'Series C',  'Series D'];

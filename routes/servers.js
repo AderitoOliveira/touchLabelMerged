@@ -633,6 +633,24 @@ deleteOrderBoxAfterOrderPlaced = function(req, res) {
  });
 }
 
+//COUNT ORDER BOXES CLOSED PRODUCTION PRODUCT
+countAllOrderBoxes = function(data, callback) {
+    con.connect(function(err) {
+    con.query('select count(*) as RECORDS_IN_BOXES_TO_ORDER_TABLE from order_boxes_closed_production_products', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("COUNT ALL BOXES TO ORDER");   
+
+    });
+});
+}
+
 //GET EMPLOYEES FROM TABLE
 fetchAllEmployees = function(data, callback) {
     con.connect(function(err) {
@@ -898,6 +916,24 @@ fetchAllLabelsToPrint = function(data, callback) {
         callback.end(JSON.stringify(rows));
         callback = rows;
         console.log("GET ALL LABELS TO PRINT");   
+
+    });
+});
+}
+
+//COUNT LABELS TO PRINT - order_products_labels_to_print
+countLabelsToPrint = function(data, callback) {
+    con.connect(function(err) {
+    con.query('select count(*) as RECORDS_IN_LABELS_TABLE from order_products_labels_to_print', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("COUNT LABELS TO PRINT ALL LABELS TO PRINT");   
 
     });
 });
