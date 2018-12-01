@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     <div class="order-labels-content row">
-                            <div class="col-md-12" dir-paginate="boxesForProduct in boxesToOrder | orderBy : 'TOTAL_BOXES_TO_ORDER' | filter:searchChar | itemsPerPage:7">
+                            <div class="col-md-12" dir-paginate="boxesForProduct in boxesToOrder | orderBy : 'Encomenda' | filter:searchChar | itemsPerPage:7">
                                 <div class="row">
                                     <div class="item-inner-wrap">
                                         <div class="col-md-1 table-item item-label-checkbox"><div class="checkbox-wrap"><input class="special-checkbox" type="checkbox" ng-model="box" ng-change="changeValue(box, boxesForProduct.ORDER_ID,boxesForProduct.CUSTOMER_PRODUCT_ID, boxesForProduct.CLIENT_NAME, boxesForProduct.PRODUCT_NAME, boxesForProduct.BOX_MEASURES, boxesForProduct.BOX_ID, boxesForProduct.TOTAL_BOXES_TO_ORDER)"/><span class="checkbox-item"></span></div></div>
