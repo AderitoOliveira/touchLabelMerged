@@ -159,10 +159,22 @@ app.controller('chartsTest', function ($scope, $http, $rootScope) {
 });
 
 //CONFIGURATIONS  CONTROLER
-app.controller('configurations', function ($scope, $http, $rootScope) {
+app.controller('configurations', function ($scope, $http, $rootScope, ModalService) {
 
   $rootScope.class = 'not-home'; 
   $rootScope.name= "Configurar Parâmetros do Sistema";
+
+  //GET ALL CLIENT_ID, CLIENT_NAME FOR THE TYPEAHEAD
+  $scope.clients = [];
+	var URIClients = '/clientstypeahed';
+	var request = $http.get(URIClients);    
+	request.then(function successCallback(response) {
+    $scope.clients  = response.data;
+    return  $scope.clients; 
+	},
+	function errorCallback(data){
+    console.log('Error: ' + data);
+	});
 
   //GET BOXES
   $scope.boxes = [];
@@ -204,6 +216,36 @@ app.controller('configurations', function ($scope, $http, $rootScope) {
     });
 
   }
+    //INSERT BOX MEASURE
+  $scope.saveBoxMeasure = function() {
+    var dataToInsert = {
+      ID          : $scope.boxId,
+      MEASURES    : $scope.boxDimensions,
+      CLIENT_NAME : $scope.clientname.CLIENT_NAME,
+      CLIENT_ID   : $scope.clientname.CLIENT_ID
+    };
+
+    ModalService.showModal({
+      templateUrl: "../modal/yesNoGeneric.html",
+      controller: "genericModalController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        message: "Pretende adicionar a caixa com o número " + $scope.boxId + " e com as dimensões - " + $scope.boxDimensions + " ?",
+        operationURL: '/insertBoxMeasure',
+        dataObj: dataToInsert
+      }
+    }).then(function(modal) {
+        modal.element.modal();
+        modal.close.then(function(result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
+    });
+
+  };
 
   $scope.$watch('boxMeasures', function(){
     $scope.boxId = $scope.boxMeasures;

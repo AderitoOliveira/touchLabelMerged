@@ -998,6 +998,22 @@ getOverProductionInStock = function(data, callback) {
 });
 }
 
+
+//INSERT BOX_MEASURES FROM CONFIGURATIONS
+insertBoxMeasure = function(req, res) {
+    var postData  = req.body;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    con.query('INSERT INTO box_measures SET ?', postData, function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
+
 //GET BOX_MEASURES AND ID FROM BOX_MEASURES FOR TYPEAHEAD
 getBoxMeasures = function(data, callback) {
     con.connect(function(err) {

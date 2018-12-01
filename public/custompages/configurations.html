@@ -145,29 +145,29 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-2 form-input-item">
-                                    <label class="control-label" for="rawMaterial">ID</label>
+                                    <label class="control-label" for="boxId">ID</label>
                                     <div class="input-wrap-inner">
-                                    <input type="text" class="form-control" id="rawMaterial" placeholder="001" ng-model="rawMaterial">
+                                    <input type="text" class="form-control" id="boxId" placeholder="001" ng-model="boxId">
                                     </div>                  
                                 </div>
                                 <div class="col-md-4 form-input-item">
-                                    <label class="control-label" for="rawMaterial">Dimensões</label>
+                                    <label class="control-label" for="boxDimensions">Dimensões</label>
                                     <div class="input-wrap-inner">
-                                    <input type="text" class="form-control" id="rawMaterial" placeholder="00*00*00" ng-model="rawMaterial">
+                                    <input type="text" class="form-control" id="boxDimensions" placeholder="00*00*00" ng-model="boxDimensions">
                                     </div>                  
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 form-input-item">
-                                    <label class="control-label" for="rawMaterial">Cliente</label>
+                                    <label class="control-label" for="clientname">Cliente</label>
                                     <div class="input-wrap-inner">
-                                    <input type="text" class="form-control" id="rawMaterial" placeholder="Nome Cliente" ng-model="rawMaterial">
+                                    <input type="text" autocomplete="off" class="form-control" id="clientname" placeholder="Nome Cliente" ng-model="clientname" uib-typeahead="client as client.CLIENT_NAME for client in clients | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}">
                                     </div>                  
                                 </div>
                             </div>  
                             <div class="row">
                                 <div class="col-md-4">
-                                <button id="conf-save" type="submit" ng-click="saveTechSheet()" class="btn btn-default btn-save btn-margin"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Adicionar</button>
+                                <button id="conf-save" type="submit" ng-click="saveBoxMeasure()" class="btn btn-default btn-save btn-margin"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Adicionar</button>
                                 </div>
                             </div>
                         </div>

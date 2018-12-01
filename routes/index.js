@@ -448,6 +448,13 @@ router.get('/getOverProductionInStock', function(req,res){
   getOverProductionInStock(req,res);  
 });
 
+//INSERT BOX_MEASURES FROM CONFIGURATIONS
+router.post('/insertBoxMeasure', function(req,res){
+  console.log("INSERT NEW BOX MEASURE");
+  console.log(req.body);
+  insertBoxMeasure(req,res);  
+});
+
 //GET BOX_MEASURES AND ID FROM BOX_MEASURES FOR TYPEAHEAD
 router.get('/getBoxMeasures', function(req,res){
   console.log("GET BOX_MEASURES AND ID FROM BOX_MEASURES");
