@@ -298,6 +298,13 @@ router.get('/employees', function(req,res){
   fetchAllEmployees(req,res);  
 });
 
+//INSERT EMPLOYEE
+router.post('/insertEmployee', function(req,res){
+  console.log("INSERT NEM EMPLOYEE");
+  console.log(req.body);
+  insertEmployee(req,res);  
+});
+
 //INSERT DAILY PRODUCTION - order_products_production_registry
 router.post('/insertDailyProduction', function(req,res){
   console.log("INSERT ORDER PRODUCTS DAILY PRODUCTION");

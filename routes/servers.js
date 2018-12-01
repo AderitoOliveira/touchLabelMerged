@@ -669,6 +669,21 @@ fetchAllEmployees = function(data, callback) {
 });
 }
 
+//INSERT EMPLOYEE
+insertEmployee = function(req, res) {
+    var postData  = req.body;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    con.query('INSERT INTO employees SET ?', postData, function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
 //INSERT DAILY PRODUCTION - order_products_production_registry
 insertDailyProduction = function(req, res) {
     var postData  = req.body;

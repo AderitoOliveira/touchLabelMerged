@@ -206,13 +206,13 @@
                                                 <div class="col-md-5 label-header-item header-label-boxclient">Função</div>
                                             </div>
                                         </div>
-                                        <div class="order-labels-content row" dir-paginate="box in boxes | orderBy : 'ID' |filter:searchChar | itemsPerPage:20">
+                                        <div class="order-labels-content row" dir-paginate="employee in employees | orderBy : 'ID' |filter:searchChar | itemsPerPage:20">
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <div class="item-inner-wrap">
-                                                            <div class="col-md-2 table-item item-label-boxid">{{box.ID}}</div>
-                                                            <div class="col-md-5 table-item item-label-boxdim">{{box.MEASURES}}</div>
-                                                            <div class="col-md-5 table-item item-label-boxclient">{{box.CLIENT_NAME}}</div>
+                                                            <div class="col-md-2 table-item item-label-boxid">{{employee.EMPLOYEE_ID}}</div>
+                                                            <div class="col-md-5 table-item item-label-boxdim">{{employee.EMPLOYEE_NAME}}</div>
+                                                            <div class="col-md-5 table-item item-label-boxclient">{{employee.EMPLOYEE_FUNCTION}}</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -234,7 +234,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--Adicionar Caixas-->
+                            <!--Adicionar Funcionário-->
                             <div class="form-boxes-wrap col-md-6">
                                 <div class="row">
                                     <div class="col-md-7 block-heading">
@@ -244,7 +244,7 @@
                                     </div>
                                     <div class="col-md-6 form-input-item">
                                         <div class="input-wrap-inner">
-                                        <input type="text" class="form-control form-search" id="search-boxes" placeholder="Pesquisar Caixas" ng-model="boxDimensions">
+                                        <input type="text" class="form-control form-search" id="search-employee" placeholder="Pesquisar Funcionário" ng-model="searchChar">
                                         </div>                  
                                     </div>
                                 </div>
@@ -257,23 +257,23 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-2 form-input-item">
-                                        <label class="control-label" for="boxId">ID</label>
+                                        <label class="control-label" for="employeeId">ID</label>
                                         <div class="input-wrap-inner">
-                                        <input type="text" class="form-control" id="boxId" placeholder="001" ng-model="boxId">
+                                        <input type="text" class="form-control" id="employeeId" placeholder="001" ng-model="employeeId">
                                         </div>                  
                                     </div>
                                     <div class="col-md-4 form-input-item">
-                                        <label class="control-label" for="boxDimensions">Nome</label>
+                                        <label class="control-label" for="employeeName">Nome</label>
                                         <div class="input-wrap-inner">
-                                        <input type="text" class="form-control" id="boxDimensions" placeholder="00*00*00" ng-model="boxDimensions">
+                                        <input type="text" class="form-control" id="employeeName" placeholder="Nome Funcionário" ng-model="employeeName">
                                         </div>                  
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 form-input-item">
-                                        <label class="control-label" for="clientname">Função</label>
+                                        <label class="control-label" for="employeeFunction">Função</label>
                                         <div class="input-wrap-inner">
-                                        <input type="text" autocomplete="off" class="form-control" id="clientname" placeholder="Nome Cliente" ng-model="clientname" uib-typeahead="client as client.CLIENT_NAME for client in clients | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}">
+                                        <input type="text" autocomplete="off" class="form-control" id="employeeFunction" placeholder="RODISTA/PINTOR" ng-model="employeeFunction">
                                         </div>                  
                                     </div>
                                 </div>  

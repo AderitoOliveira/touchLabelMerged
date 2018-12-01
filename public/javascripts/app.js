@@ -176,11 +176,21 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
     console.log('Error: ' + data);
 	});
 
-  //GET BOXES
+  //GET ALL BOXES
   $scope.boxes = [];
   var request = $http.get('/getBoxMeasuresAllFields');    
   request.then(function successCallback(response) {
     $scope.boxes  = response.data;
+  },
+  function errorCallback(data){
+    console.log('Error: ' + data);
+  });
+
+  //GET ALL EMPLOYEES
+  $scope.employees = [];
+  var request = $http.get('/employees');    
+  request.then(function successCallback(response) {
+    $scope.employees  = response.data;
   },
   function errorCallback(data){
     console.log('Error: ' + data);
@@ -216,7 +226,8 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
     });
 
   }
-    //INSERT BOX MEASURE
+  
+  //INSERT BOX MEASURE
   $scope.saveBoxMeasure = function() {
     var dataToInsert = {
       ID          : $scope.boxId,
@@ -247,9 +258,39 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
 
   };
 
-  $scope.$watch('boxMeasures', function(){
-    $scope.boxId = $scope.boxMeasures;
-  });
+  //INSERT EMPLOYEE
+  $scope.saveBoxMeasure = function() {
+    var dataToInsert = {
+      EMPLOYEE_ID       : $scope.employeeId,
+      EMPLOYEE_NAME     : $scope.employeeName,
+      EMPLOYEE_FUNCTION : $scope.employeeFunction
+    };
+
+    ModalService.showModal({
+      templateUrl: "../modal/yesNoGeneric.html",
+      controller: "genericModalController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        message: "Pretende adicionar o funcionário " + $scope.employeeName + " com a função " + $scope.employeeFunction + " ?",
+        operationURL: '/insertEmployee',
+        dataObj: dataToInsert
+      }
+    }).then(function(modal) {
+        modal.element.modal();
+        modal.close.then(function(result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
+    });
+
+  };
+
+  //$scope.$watch('boxMeasures', function(){
+  //  $scope.boxId = $scope.boxMeasures;
+  //});
 
 
 
