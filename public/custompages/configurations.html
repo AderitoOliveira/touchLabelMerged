@@ -13,6 +13,9 @@
               <li class="toggle-item col-md-2">
                 <a class="toggle-button secondary-conf" data-target="#boxes-configurations">Medidas de Caixa</a>
               </li>
+              <li class="toggle-item col-md-2">
+                <a class="toggle-button secondary-conf" data-target="#workers-configurations">Funcionários</a>
+              </li>
             </div>
           </ul>
         </div>
@@ -20,80 +23,82 @@
     </div>
     <div class="form-wrap">
         <div class="row">
-            <div id="primary-config">
-            <div class="col-md-12">
-                <!-- FICHA TÉCNICA PRODUÇÃO-->
-                <form class="inner-form-wrap row active" id="email-configurations" role="form">
-                    <div class="col-md-12 form-row">
-                        <div class="row">
-                            <div class="col-md-4 form-input-item">
-                                <label class="control-label" for="rawMaterial">Email Primário de Notificações</label>
-                                <div class="input-wrap-inner">
-                                <input type="text" class="form-control" id="rawMaterial" placeholder="email@email.com" ng-model="rawMaterial">
-                                </div>                  
-                            </div>
-                        </div>                
-                    </div>
-                    <div class="col-md-12 form-row">
-                        <div class="row">
-                            <div class="col-md-4 form-input-item">
-                                <label class="control-label" for="rawMaterial">Email Secundário de Notificações</label>
-                                <div class="input-wrap-inner">
-                                <input type="text" class="form-control" id="rawMaterial" placeholder="email@email.com" ng-model="rawMaterial">
-                                </div>                  
-                            </div>
-                            
+            <div id="email-configurations" class="configurations-panel active">
+                <div class="col-md-12">
+                    <!-- FICHA TÉCNICA PRODUÇÃO-->
+                    <form class="inner-form-wrap row" role="form">
+                        <div class="col-md-12 form-row">
+                            <div class="row">
+                                <div class="col-md-4 form-input-item">
+                                    <label class="control-label" for="rawMaterial">Email Primário de Notificações</label>
+                                    <div class="input-wrap-inner">
+                                    <input type="text" class="form-control" id="rawMaterial" placeholder="email@email.com" ng-model="rawMaterial">
+                                    </div>                  
+                                </div>
+                            </div>                
                         </div>
-                    </div>
-                    <div class="col-md-12 button-holder">
-                        <div class="row">
-                            <div class="col-md-2">
-                            <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" />Cancelar</button>
-                            </div>
-                            <div class="col-md-2">
-                            <button id="conf-save" type="submit" ng-click="saveTechSheet()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
+                        <div class="col-md-12 form-row">
+                            <div class="row">
+                                <div class="col-md-4 form-input-item">
+                                    <label class="control-label" for="rawMaterial">Email Secundário de Notificações</label>
+                                    <div class="input-wrap-inner">
+                                    <input type="text" class="form-control" id="rawMaterial" placeholder="email@email.com" ng-model="rawMaterial">
+                                    </div>                  
+                                </div>
+                                
                             </div>
                         </div>
-                    </div>
-                </form>
-                <!-- FICHA TÉCNICA PINTURA-->
-
-                <form class="inner-form-wrap row" id="printers-configurations" role="form">
-                    <div class="col-md-12 form-row">
-                        <div class="row">
-                            <div class="col-md-4 form-input-item">
-                                <label class="control-label" for="articlePrinterIP">Endereço IP Impressora Etiquetas de Produto</label>
-                                <div class="input-wrap-inner">
-                                <input type="text" class="form-control" id="articlePrinterIP" placeholder="0.0.0.0" ng-model="articlePrinterIP">
-                                </div>                  
-                            </div>
-                        </div>                
-                    </div>
-                    <div class="col-md-12 form-row">
-                        <div class="row">
-                            <div class="col-md-4 form-input-item">
-                                <label class="control-label" for="boxPrinterIP">Endereço IP Impressora Etiquetas de Caixa</label>
-                                <div class="input-wrap-inner">
-                                <input type="text" class="form-control" id="boxPrinterIP" placeholder="0.0.0.0" ng-model="boxPrinterIP">
-                                </div>                  
-                            </div>
-                        </div>    
-                    </div>
-                    <div class="col-md-12 button-holder">
-                        <div class="row">
-                            <div class="col-md-2">
-                            <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" />Cancelar</button>
-                            </div>
-                            <div class="col-md-2">
-                            <button id="conf-save" type="submit" ng-click="updatePrinterIPAddress()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
+                        <div class="col-md-12 button-holder">
+                            <div class="row">
+                                <div class="col-md-2">
+                                <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" />Cancelar</button>
+                                </div>
+                                <div class="col-md-2">
+                                <button id="conf-save" type="submit" ng-click="saveTechSheet()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </form>
-            </div>  
-            
-          </div>
-          <div id="conf-boxes-wrap">
+                    </form>
+                    <!-- FICHA TÉCNICA PINTURA-->
+                </div>
+            </div>
+            <div id="printers-configurations" class="configurations-panel">
+                <div class="col-md-12">
+                    <form class="inner-form-wrap row"  role="form">
+                        <div class="col-md-12 form-row">
+                            <div class="row">
+                                <div class="col-md-4 form-input-item">
+                                    <label class="control-label" for="articlePrinterIP">Endereço IP Impressora Etiquetas de Produto</label>
+                                    <div class="input-wrap-inner">
+                                    <input type="text" class="form-control" id="articlePrinterIP" placeholder="0.0.0.0" ng-model="articlePrinterIP">
+                                    </div>                  
+                                </div>
+                            </div>                
+                        </div>
+                        <div class="col-md-12 form-row">
+                            <div class="row">
+                                <div class="col-md-4 form-input-item">
+                                    <label class="control-label" for="boxPrinterIP">Endereço IP Impressora Etiquetas de Caixa</label>
+                                    <div class="input-wrap-inner">
+                                    <input type="text" class="form-control" id="boxPrinterIP" placeholder="0.0.0.0" ng-model="boxPrinterIP">
+                                    </div>                  
+                                </div>
+                            </div>    
+                        </div>
+                        <div class="col-md-12 button-holder">
+                            <div class="row">
+                                <div class="col-md-2">
+                                <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" />Cancelar</button>
+                                </div>
+                                <div class="col-md-2">
+                                <button id="conf-save" type="submit" ng-click="updatePrinterIPAddress()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>  
+            </div>
+            <div id="boxes-configurations" class="configurations-panel">
               <div class="col-md-12">
                   <div class="row">
                       <div class="col-md-5">
@@ -186,8 +191,102 @@
                         </div>
                       </div>
                   </div>
-              </div>
-          </div>
+            </div>
+            <div id="workers-configurations" class="configurations-panel">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div  id="workers-conf-table" class="col-md-12">
+                                    <div class="label-table-wrap">
+                                        <div class="label-table-header row">
+                                            <div class="inner-wrap">
+                                                <div class="col-md-2 label-header-item header-label-boxid">ID</div>
+                                                <div class="col-md-5 label-header-item header-label-boxdim">Nome</div>
+                                                <div class="col-md-5 label-header-item header-label-boxclient">Função</div>
+                                            </div>
+                                        </div>
+                                        <div class="order-labels-content row" dir-paginate="box in boxes | orderBy : 'ID' |filter:searchChar | itemsPerPage:20">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="item-inner-wrap">
+                                                            <div class="col-md-2 table-item item-label-boxid">{{box.ID}}</div>
+                                                            <div class="col-md-5 table-item item-label-boxdim">{{box.MEASURES}}</div>
+                                                            <div class="col-md-5 table-item item-label-boxclient">{{box.CLIENT_NAME}}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                        
+                                <div id="pagination">
+                                    <div class="row">
+                                        <div class="container">
+                                            <div align="center">
+                                                <dir-pagination-controls
+                                                        max-size="10"
+                                                        direction-links="true"
+                                                        boundary-links="true" >
+                                                </dir-pagination-controls>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Adicionar Caixas-->
+                            <div class="form-boxes-wrap col-md-6">
+                                <div class="row">
+                                    <div class="col-md-7 block-heading">
+                                        <h5 class="block-title block-search">
+                                            Pesquisar Funcionários
+                                        </h5>
+                                    </div>
+                                    <div class="col-md-6 form-input-item">
+                                        <div class="input-wrap-inner">
+                                        <input type="text" class="form-control form-search" id="search-boxes" placeholder="Pesquisar Caixas" ng-model="boxDimensions">
+                                        </div>                  
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 block-heading">
+                                        <h4 class="block-title">
+                                            Adicionar novo Funcionário
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 form-input-item">
+                                        <label class="control-label" for="boxId">ID</label>
+                                        <div class="input-wrap-inner">
+                                        <input type="text" class="form-control" id="boxId" placeholder="001" ng-model="boxId">
+                                        </div>                  
+                                    </div>
+                                    <div class="col-md-4 form-input-item">
+                                        <label class="control-label" for="boxDimensions">Nome</label>
+                                        <div class="input-wrap-inner">
+                                        <input type="text" class="form-control" id="boxDimensions" placeholder="00*00*00" ng-model="boxDimensions">
+                                        </div>                  
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-input-item">
+                                        <label class="control-label" for="clientname">Função</label>
+                                        <div class="input-wrap-inner">
+                                        <input type="text" autocomplete="off" class="form-control" id="clientname" placeholder="Nome Cliente" ng-model="clientname" uib-typeahead="client as client.CLIENT_NAME for client in clients | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}">
+                                        </div>                  
+                                    </div>
+                                </div>  
+                                <div class="row">
+                                    <div class="col-md-4">
+                                    <button id="conf-save" type="submit" ng-click="saveBoxMeasure()" class="btn btn-default btn-save btn-margin"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Adicionar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
     </div>
   </div>
   <div id="conf-notification">

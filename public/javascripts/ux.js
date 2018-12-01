@@ -27,11 +27,12 @@
         });
         
         $(document).on('click', '#tech-sheet-tabs .toggle-button', function(){
-            $('.toggle-button').each(function(){
-                $(this).removeClass('active');
-            });
+            $('.toggle-button').removeClass('active');
             $(this).addClass('active');
-            var activeForm = $(this).attr('data-target');
+            var clickTarget = $(this).attr('data-target');
+            $('.configurations-panel').removeClass('active');
+            $(clickTarget).addClass('active');
+            /* var activeForm = $(this).attr('data-target');
             if($(this).hasClass('secondary-conf')){
                 $('#primary-config').hide();
                 $('#conf-boxes-wrap').show();
@@ -42,7 +43,7 @@
                     $(this).removeClass('active');
                 });
                 $(activeForm).addClass('active');
-            }
+            } */
         });
 
         $(document).on('click','.checkbox-all', function(){
