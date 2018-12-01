@@ -303,17 +303,19 @@ app.controller('homeController', function ($scope, $http, $rootScope) {
 
   $rootScope.name= "TouchLabel";
 
-  $scope.numberRecordsLabelTable = 0;
-  $scope.numberRecordsBoxesOrderTable = 0;
+  $scope.numberArticleLabelsToPrint = 0;
+  $scope.numberBoxLabelsToPrint = 0;
+  $scope.numberBoxesToOrder = 0;
 
   var request = $http.get('/countAllOrderBoxes');    
   request.then(function successCallback(response) {
-    $scope.numberRecordsBoxesOrderTable  = response.data[0].RECORDS_IN_BOXES_TO_ORDER_TABLE;
+    $scope.numberBoxesToOrder  = response.data[0].TOTAL_BOXES_TO_ORDER;
   });
 
   var request = $http.get('/countLabelsToPrint');    
   request.then(function successCallback(response) {
-    $scope.numberRecordsLabelTable  = response.data[0].RECORDS_IN_LABELS_TABLE;
+    $scope.numberArticleLabelsToPrint  = response.data[0].ARTICLE_LABELS_NUMBER;
+    $scope.numberBoxLabelsToPrint  = response.data[0].BOX_LABELS_NUMBER;
   });
 
 

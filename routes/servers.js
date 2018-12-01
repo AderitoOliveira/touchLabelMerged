@@ -636,7 +636,7 @@ deleteOrderBoxAfterOrderPlaced = function(req, res) {
 //COUNT ORDER BOXES CLOSED PRODUCTION PRODUCT
 countAllOrderBoxes = function(data, callback) {
     con.connect(function(err) {
-    con.query('select count(*) as RECORDS_IN_BOXES_TO_ORDER_TABLE from order_boxes_closed_production_products', function(err, rows) {
+    con.query('select SUM(TOTAL_BOXES_TO_ORDER) as TOTAL_BOXES_TO_ORDER from order_boxes_closed_production_products', function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -939,7 +939,7 @@ fetchAllLabelsToPrint = function(data, callback) {
 //COUNT LABELS TO PRINT - order_products_labels_to_print
 countLabelsToPrint = function(data, callback) {
     con.connect(function(err) {
-    con.query('select count(*) as RECORDS_IN_LABELS_TABLE from order_products_labels_to_print', function(err, rows) {
+    con.query('select sum(QTY_LABELS_TO_PRINT_ARTICLE) as ARTICLE_LABELS_NUMBER, sum(QTY_LABELS_TO_PRINT_BOX) as BOX_LABELS_NUMBER from order_products_labels_to_print', function(err, rows) {
         if (err) {
             throw err;
         } else
