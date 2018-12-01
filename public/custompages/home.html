@@ -1,8 +1,13 @@
 <div id="home" class="home-page row">
-    <div id="home-chart" class="col-md-6">
+    <div id="home-chart" class="col-md-12">
         <div class="home-block" ng-controller="chartsTest">
             <div class="block-heading">
-                <h2 class="block-heading-title">Estatísticas de Produção</h2>
+                <div class="panel-title">
+                    <h2 class="block-heading-title">Estatísticas de Produção</h2>
+                </div>                
+                <div class="panel-description">
+                    <h5 class="block-heading-subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit</h5>
+                </div>
             </div>
             <div class="row">
                 <div class="col-xs-6 col-md-6 paddingTop30Px"> 
@@ -22,11 +27,15 @@
             </div>
         </div>
     </div>
-    <div id="home-labels" class="col-md-6">
+    <div id="home-labels" class="col-md-12">
         <div class="home-block" id="home-labels-inner" ng-controller="labelsToPrint">
             <div class="block-heading">
-                <h2 class="block-heading-title">Etiquetas a imprimir</h2>
-                <span class="table-number">{{numberRecordsLabelTable}}</span>
+                <div class="panel-title">
+                    <h2 class="block-heading-title">Etiquetas a imprimir</h2>
+                </div>                
+                <div class="panel-description">
+                    <h5 class="block-heading-subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit</h5>
+                </div>
             </div>
             <div class="row">
                 <div id="label-table" class="col-md-12">
@@ -61,8 +70,12 @@
     <div id="home-boxes" class="col-md-12">
         <div class="home-block" id="home-boxes-inner" ng-controller="boxesToOrder">
             <div class="block-heading">
-                <h2 class="block-heading-title">Caixas a encomendar</h2>
-                <span class="table-number">{{numberRecordsBoxesOrderTable}}</span>
+                <div class="panel-title">
+                    <h2 class="block-heading-title">Caixas a encomendar</h2>
+                </div>                
+                <div class="panel-description">
+                    <h5 class="block-heading-subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit</h5>
+                </div>
             </div>
             <div class="row">
                 <div ng-table="boxesToOrderTable" id="boxes-table" class="col-md-12">
@@ -103,8 +116,12 @@
     <div id="home-production" class="col-md-12">
         <div class="home-block" id="home-daily-production-inner" ng-controller="dailyProduction">
             <div class="block-heading">
-                <h2 class="block-heading-title">Produção Actual</h2>
-                <span class="table-number">12</span>
+                <div class="panel-title">
+                    <h2 class="block-heading-title">Produção Atual</h2>
+                </div>                
+                <div class="panel-description">
+                    <h5 class="block-heading-subtitle">Lorem ipsum <strong>dolor</strong> sit amet, consectetur adipiscing elit</h5>
+                </div>
             </div>
             <div class="row">
                 <div ng-table="dailyProductionTable" id="order-table" class="col-md-12">

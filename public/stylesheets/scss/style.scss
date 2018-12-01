@@ -51,6 +51,13 @@ input.form-control, textarea{
     }
 }
 
+.configurations-panel{
+    display:none;
+    &.active{
+        display:block;
+    }
+}
+
 h5.block-title.block-search {
     font-size: 16px;
     font-weight: bold;
@@ -1863,20 +1870,14 @@ div[ng-controller="OverProductionController"] div[ng-table="dailyProductionTable
         }
     }
 }
-.inner-form-wrap{
-    display:none;
-    &.active{
-        display:block;
-    }
-}
 
-#conf-boxes-wrap{
+#conf-boxes-wrap, .configurations-panel{
     display:none;
     h4.block-title {
         margin-top: 12px;
         font-weight: 500;
         line-height: normal;
-        font-size: 24px;
+        font-size: 20px;
         color: #222222;
     }
 }
@@ -1885,6 +1886,15 @@ div[ng-controller="OverProductionController"] div[ng-table="dailyProductionTable
 }
 .btn-margin{
     margin-top:12px;
+}
+
+.panel-title, .panel-description{
+    width:100%;
+    float:left;
+}
+h5.block-heading-subtitle {
+    margin-top: 12px;
+    margin-bottom: 0px;
 }
 
 .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
