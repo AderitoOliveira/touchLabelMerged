@@ -1,4 +1,4 @@
-var app = angular.module('easyLabel',['ui.router', 'ui.bootstrap','angularUtils.directives.dirPagination','angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js']);
+var app = angular.module('easyLabel',['ui.router', 'ui.bootstrap','angularUtils.directives.dirPagination','angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'historicalModule']);
 
 app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
 
