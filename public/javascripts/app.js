@@ -777,10 +777,6 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   request.then(function successCallback(response) {
        $scope.products  = response.data;
 
-       //IF em_pintura
-       //IF em_producao
-
-
        for(i=0; i < $scope.products.length; i++) {
         //IF em_producao
         if($scope.products[i].ORDER_PRODUCT_STATUS == 'em_producao')
@@ -788,16 +784,6 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           var percentage = Math.round( $scope.products[i].TOTAL_PRODUCTS_PRODUCED  / $scope.products[i].TOTAL_QUANTITY_ORDERED * 100);
           $scope.products[i].percent= percentage;
           $scope.products[i].width= percentage;
-          //NEWSTYLES
-          /* if(percentage > 33) {
-            $scope.products[i].progressBarColor = "#e31b1b";
-          }
-          if(percentage >= 34 && percentage <= 66) {
-            $scope.products[i].progressBarColor = "#e3cf1b";
-          }
-          if( percentage > 66) {
-            $scope.products[i].progressBarColor = "#1be36b";
-          } */
   
           $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
           $scope.products[i].ORDER_PRODUCT_STATUS = 'Em Produção';
@@ -834,6 +820,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         if($scope.products[i].ORDER_PRODUCT_STATUS == 'fechado_na_encomenda'){
           $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
           $scope.products[i].ORDER_PRODUCT_STATUS = 'Fechado na Encomenda';
+
+          $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PRODUCED;  
         }
 
       }
