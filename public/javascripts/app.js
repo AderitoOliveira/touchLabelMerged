@@ -306,23 +306,55 @@ app.controller('homeController', function ($scope, $http, $rootScope) {
   $scope.numberArticleLabelsToPrint = 0;
   $scope.numberBoxLabelsToPrint = 0;
   $scope.numberBoxesToOrder = 0;
+  $scope.distinctOrdersWithBoxesToOrder = 0;
 
+  //GET THE TOTAL NUMBER OF BOXES TO ORDER
   var request = $http.get('/countAllOrderBoxes');    
   request.then(function successCallback(response) {
-    $scope.numberBoxesToOrder  = response.data[0].TOTAL_BOXES_TO_ORDER;
+    $scope.numberBoxesToOrder              = response.data[0].TOTAL_BOXES_TO_ORDER;
+    $scope.distinctOrdersWithBoxesToOrder  = response.data[0].NUMBER_DISTINCT_ORDERS;
   });
 
+  //GET THE TOTAL NUMBER OF ARTICLE AND BOX LABELS TO PRINT
   var request = $http.get('/countLabelsToPrint');    
   request.then(function successCallback(response) {
     $scope.numberArticleLabelsToPrint  = response.data[0].ARTICLE_LABELS_NUMBER;
     $scope.numberBoxLabelsToPrint  = response.data[0].BOX_LABELS_NUMBER;
   });
 
+  $scope.productionLast7Days = [];
+  $scope.dataProduction      = [];
+  $scope.productionDays      = [];
+  $scope.dataProduction2      = [];
+  $scope.dataProduction3     = [];
+  $scope.seriesTest = ['Produtos Produzidos', 'Valor em EUR'];
+
+  $scope.options = { legend: { display: true } }; 
+
+  var request = $http.get('/getProductionLast7Days');    
+  request.then(function successCallback(response) {
+      $scope.productionLast7Days = response.data;
+
+      for(i=0; i < $scope.productionLast7Days.length; i++) {
+          //var dateToParse = $scope.productionLast7Days[i].DATE;
+          //$scope.productionDays.push(dateToParse.substring(0, dateToParse.indexOf('T')));
+          $scope.productionDays.push($scope.productionLast7Days[i].INTERNAL_PRODUCT_ID);
+          $scope.dataProduction.push($scope.productionLast7Days[i].TOTAL_WEEK_PRODUCTION);
+          $scope.dataProduction2.push($scope.productionLast7Days[i].TOTAL_WEEK_VALUE_IN_EUR);
+      }
+
+      $scope.dataProduction3.push($scope.dataProduction);
+      $scope.dataProduction3.push($scope.dataProduction2);
+
+      },
+      function errorCallback(data){
+          console.log('Error: ' + data);
+  });
 
   $scope.labels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
   $scope.series = ['Series A', 'Series B',  'Series C',  'Series D'];
   $scope.options = { legend: { display: true, position: 'bottom' } };
-  $scope.colours = ['#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'];
+  $scope.colours = ['#bc0b1a', '#c7b000'];
 
   $scope.data = [
     [65, 59, 80, 81, 56, 55, 40],

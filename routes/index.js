@@ -486,4 +486,10 @@ router.post('/updatePrintersConfiguration', function(req,res){
   updatePrintersConfiguration(req,res);  
 });
 
+//GET PRODUCTS PRODUCED IN THE LAST 7 DAYS
+router.get('/getProductionLast7Days', function(req,res){
+  console.log("GET PRODUCTS PRODUCED IN THE LAST 7 DAYS");
+  getProductionLast7Days(req,res);  
+});
+
 module.exports = router;

@@ -10,12 +10,15 @@
                 </div>
             </div>
             <div class="row">
+                <!--
                 <div class="col-xs-6 col-md-6 paddingTop30Px"> 
                     <canvas id="bar" class="chart chart-bar"chart-data="data" chart-labels="labels" chart-series="series" chart-colors="colours"> 
                     </canvas>   
                 </div>
-                <div class="col-xs-6 col-md-6 paddingTop30Px"> 
-                    <canvas id="bar" class="chart chart-bar"chart-data="data" chart-labels="labels" chart-series="series" > 
+                -->
+                <div class="col-xs-8 col-md-8 paddingTop30Px" style="padding-top: 15px; padding-left: 50px;"> 
+                    <!-- canvas id="bar" class="chart chart-bar"chart-data="data" chart-labels="labels" chart-series="series" --> 
+                    <canvas id="bar" class="chart chart-bar"chart-data="dataProduction3" chart-labels="productionDays" chart-options="options" chart-series="seriesTest" chart-legend="true" chart-colors="colours"> 
                     </canvas>   
                 </div>
             </div>
@@ -28,7 +31,7 @@
                     <h2 class="block-heading-title">Etiquetas a imprimir</h2>
                 </div>                
                 <div class="panel-description">
-                    <h5 class="block-heading-subtitle">{{numberArticleLabelsToPrint}} etiquetas de Produto, {{numberBoxLabelsToPrint}} etiquetas de caixa</h5>
+                    <h5 class="block-heading-subtitle">{{numberArticleLabelsToPrint}} etiqueta(s) de Produto, {{numberBoxLabelsToPrint}} etiqueta(s) de caixa</h5>
                 </div>
             </div>
             <div class="row">
@@ -68,7 +71,7 @@
                     <h2 class="block-heading-title">Caixas a encomendar</h2>
                 </div>                
                 <div class="panel-description">
-                    <h5 class="block-heading-subtitle">{{numberBoxesToOrder}} caixas</h5>
+                    <h5 class="block-heading-subtitle">{{numberBoxesToOrder}} caixas para encomendar em {{distinctOrdersWithBoxesToOrder}} encomendas distintas</h5>
                 </div>
             </div>
             <div class="row">
