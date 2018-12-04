@@ -636,7 +636,7 @@ deleteOrderBoxAfterOrderPlaced = function(req, res) {
 //COUNT ORDER BOXES CLOSED PRODUCTION PRODUCT
 countAllOrderBoxes = function(data, callback) {
     con.connect(function(err) {
-    con.query('select count(*) as RECORDS_IN_BOXES_TO_ORDER_TABLE from order_boxes_closed_production_products', function(err, rows) {
+    con.query('select SUM(TOTAL_BOXES_TO_ORDER) as TOTAL_BOXES_TO_ORDER, count(distinct(ORDER_ID)) as NUMBER_DISTINCT_ORDERS from order_boxes_closed_production_products', function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -667,6 +667,21 @@ fetchAllEmployees = function(data, callback) {
 
     });
 });
+}
+
+//INSERT EMPLOYEE
+insertEmployee = function(req, res) {
+    var postData  = req.body;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    con.query('INSERT INTO employees SET ?', postData, function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
 }
 
 //INSERT DAILY PRODUCTION - order_products_production_registry
@@ -924,7 +939,7 @@ fetchAllLabelsToPrint = function(data, callback) {
 //COUNT LABELS TO PRINT - order_products_labels_to_print
 countLabelsToPrint = function(data, callback) {
     con.connect(function(err) {
-    con.query('select count(*) as RECORDS_IN_LABELS_TABLE from order_products_labels_to_print', function(err, rows) {
+    con.query('select sum(QTY_LABELS_TO_PRINT_ARTICLE) as ARTICLE_LABELS_NUMBER, sum(QTY_LABELS_TO_PRINT_BOX) as BOX_LABELS_NUMBER from order_products_labels_to_print', function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -1081,4 +1096,23 @@ updatePrintersConfiguration = function(req, res) {
     res.end(JSON.stringify(results));
   });
  });
+}
+
+//GET PRODUCTS PRODUCED IN THE LAST 7 DAYS
+getProductionLast7Days = function(data, callback) {
+    con.connect(function(err) {
+    //con.query('select DATE(CREATED_DATE) as DATE, SUM(TOTAL_PRODUCTS_PRODUCED) as TOTAL_DAILY_PRODUCTION from order_products_production_registry where DATE(CREATED_DATE) > (DATE(sysdate()) -7) and DATE(CREATED_DATE) <= DATE(sysdate()) group by DATE(CREATED_DATE)', function(err, rows) {
+    con.query('select INTERNAL_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PRODUCED) as TOTAL_WEEK_PRODUCTION,  SUM(PRODUCED_VALUE_IN_EURO) as TOTAL_WEEK_VALUE_IN_EUR from order_products_production_registry where DATE(CREATED_DATE) > (DATE(sysdate()) -7) and DATE(CREATED_DATE) <= DATE(sysdate()) group by INTERNAL_PRODUCT_ID', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET PRINTERS CONFIGURATION");   
+
+    });
+});
 }
