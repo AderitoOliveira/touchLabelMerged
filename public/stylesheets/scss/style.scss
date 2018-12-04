@@ -1881,6 +1881,12 @@ div[ng-controller="OverProductionController"] div[ng-table="dailyProductionTable
         color: #222222;
     }
 }
+.toggle-panel{
+    display:none;
+    &.active{
+        display:block;
+    }
+}
 .form-boxes-wrap .form-input-item {
     margin-bottom: 24px;
 }

@@ -30,7 +30,7 @@
             $('.toggle-button').removeClass('active');
             $(this).addClass('active');
             var clickTarget = $(this).attr('data-target');
-            $('.configurations-panel').removeClass('active');
+            $('.toggle-panel').removeClass('active');
             $(clickTarget).addClass('active');
             /* var activeForm = $(this).attr('data-target');
             if($(this).hasClass('secondary-conf')){
