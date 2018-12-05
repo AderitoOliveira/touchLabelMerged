@@ -339,6 +339,7 @@ app.controller('homeController', function ($scope, $http, $rootScope) {
           //var dateToParse = $scope.productionLast7Days[i].DATE;
           //$scope.productionDays.push(dateToParse.substring(0, dateToParse.indexOf('T')));
           $scope.productionDays.push($scope.productionLast7Days[i].INTERNAL_PRODUCT_ID);
+          //$scope.productionDays.push($scope.productionLast7Days[i].PRODUCT_NAME);
           $scope.dataProduction.push($scope.productionLast7Days[i].TOTAL_WEEK_PRODUCTION);
           $scope.dataProduction2.push($scope.productionLast7Days[i].TOTAL_WEEK_VALUE_IN_EUR);
       }
@@ -2666,7 +2667,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
 
     //WE NEED TO VALIDATE IF THE BOX_MEASURES COMES FROM THE TYPEAHEAD OR OF IT THE BOX_MEASURES ALREADY 
     //EXISTS IN THE DATABASE
-    if(!$scope.boxMeasures.MEASURES) {
+    if($scope.boxMeasures == null || !$scope.boxMeasures.MEASURES) {
       $scope.boxMeasures = $scope.boxMeasures;
       $scope.boxId       = $scope.boxId;
     } else {

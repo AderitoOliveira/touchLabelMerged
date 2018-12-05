@@ -1103,6 +1103,7 @@ getProductionLast7Days = function(data, callback) {
     con.connect(function(err) {
     //con.query('select DATE(CREATED_DATE) as DATE, SUM(TOTAL_PRODUCTS_PRODUCED) as TOTAL_DAILY_PRODUCTION from order_products_production_registry where DATE(CREATED_DATE) > (DATE(sysdate()) -7) and DATE(CREATED_DATE) <= DATE(sysdate()) group by DATE(CREATED_DATE)', function(err, rows) {
     con.query('select INTERNAL_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PRODUCED) as TOTAL_WEEK_PRODUCTION,  SUM(PRODUCED_VALUE_IN_EURO) as TOTAL_WEEK_VALUE_IN_EUR from order_products_production_registry where DATE(CREATED_DATE) > (DATE(sysdate()) -7) and DATE(CREATED_DATE) <= DATE(sysdate()) group by INTERNAL_PRODUCT_ID', function(err, rows) {
+    //con.query('select PRODUCT_NAME, SUM(TOTAL_PRODUCTS_PRODUCED) as TOTAL_WEEK_PRODUCTION,  SUM(PRODUCED_VALUE_IN_EURO) as TOTAL_WEEK_VALUE_IN_EUR from order_products_production_registry where DATE(CREATED_DATE) > (DATE(sysdate()) -7) and DATE(CREATED_DATE) <= DATE(sysdate()) group by PRODUCT_NAME', function(err, rows) {    
         if (err) {
             throw err;
         } else
