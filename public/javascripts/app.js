@@ -1834,43 +1834,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                   {
                       canvas: [
                           {
-                              type: 'rect',
-                              x: 0,
-                              y: 0,
-                              w: 2.835,
-                              h: 72.584,
-                              r: 0,
-                              color: '#DADAD9',
-                              fillOpacity: 1,
-                          },
-                      ], style : 'firstLine'
-                  },
-                  {
-                      text: [
-                          {text: '\nCLIENTE', style: 'label'},
-                          {text: '\n_CLIENT_NAME_', style: 'client'},
-                          {text: '\n\nDATA DA ENCOMENDA', style: 'label'},
-                          {text: '\n_CURRENT_DATE_', style: 'date'},
-                      ], style : 'orderDetails'
-                  },
-                  {
-                      canvas: [
-                          {
-                              type: 'rect',
-                              x: 0,
-                              y: 0,
-                              w: 2.835,
-                              h: 30,
-                              r: 0,
-                              color: '#dedede',
-                              fillOpacity: 1,
                           },
                       ], style : 'secondLine'
                   },
                   {
                       text: [
-                          {text: '\nREQUISIÇÃO Nº', style: 'label'},
-                          {text: '\n508', style: 'client'}
                       ], style : 'orderNumber'
                   }
                 ]

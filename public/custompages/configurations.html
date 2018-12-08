@@ -112,7 +112,7 @@
                                             <div class="col-md-5 label-header-item header-label-boxclient">Cliente</div>
                                         </div>
                                     </div>
-                                    <div class="order-labels-content row" dir-paginate="box in boxes | orderBy : 'ID' |filter:searchChar | itemsPerPage:20">
+                                    <div class="order-labels-content row" dir-paginate="box in boxes | orderBy : 'ID' |filter:searchChar | itemsPerPage:7" pagination-id="box">
                                             <div class="col-md-12">
                                                 <div class="row">
                                                     <div class="item-inner-wrap">
@@ -129,11 +129,12 @@
                             <div id="pagination">
                                 <div class="row">
                                     <div class="container">
-                                        <div align="center">
+                                        <div>
                                             <dir-pagination-controls
-                                                    max-size="10"
+                                                    max-size="7"
                                                     direction-links="true"
-                                                    boundary-links="true" >
+                                                    boundary-links="true" 
+                                                    pagination-id="box">
                                             </dir-pagination-controls>
                                         </div>
                                     </div>
@@ -206,7 +207,7 @@
                                                 <div class="col-md-5 label-header-item header-label-boxclient">Função</div>
                                             </div>
                                         </div>
-                                        <div class="order-labels-content row" dir-paginate="employee in employees | orderBy : 'ID' |filter:searchChar | itemsPerPage:20">
+                                        <div class="order-labels-content row" dir-paginate="employee in employees | orderBy : 'ID' |filter:searchChar | itemsPerPage:7" pagination-id="employee">
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <div class="item-inner-wrap">
@@ -223,11 +224,12 @@
                                 <div id="pagination">
                                     <div class="row">
                                         <div class="container">
-                                            <div align="center">
+                                            <div>
                                                 <dir-pagination-controls
-                                                        max-size="10"
+                                                        max-size="7"
                                                         direction-links="true"
-                                                        boundary-links="true" >
+                                                        boundary-links="true" 
+                                                        pagination-id="employee">
                                                 </dir-pagination-controls>
                                             </div>
                                         </div>
