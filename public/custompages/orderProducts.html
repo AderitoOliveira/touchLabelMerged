@@ -7,10 +7,16 @@
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="button-wrap col-md-12">
-                                    <button style="width:50%;" class="inset-button button print" ng-click="getTechSheetForPaiting()">
+                                    <button style="width:calc(50% - 1px);float:left;" class="inset-button button print" ng-click="getTechSheetForPaiting()">
                                         <span class="button-inner-wrap">
                                             <img src="assets/icons/btn-print.svg" width="20px" height="20px">
                                             <span class="btn-text">Imprimir Folha de Pintura</span>
+                                        </span>
+                                    </button>
+                                    <button style="width:calc(50% - 1px);margin-left:2px;float:left;background-color:rgba(39, 85, 174,0.8)" class="inset-button button print" ng-click="getTechSheetForPaiting()">
+                                        <span class="button-inner-wrap">
+                                            <img src="assets/icons/btn-print.svg" width="20px" height="20px">
+                                            <span class="btn-text">Imprimir Folha de Produção</span>
                                         </span>
                                     </button>
                                 </div>
