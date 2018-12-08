@@ -518,6 +518,7 @@ body{
         transition: all 0.3s;
     }
     ul#notifications{
+        display: none;
         padding:0px;
         float:right;
         margin:0 auto;
