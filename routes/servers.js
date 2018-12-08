@@ -1068,7 +1068,7 @@ getBoxMeasuresAllFields = function(data, callback) {
 //GET PRINTERS CONFIGURATION
 getPrintersConfiguration = function(data, callback) {
     con.connect(function(err) {
-    con.query('select * from PRINTERS_IP_ADDRESS', function(err, rows) {
+    con.query('select * from printers_ip_address', function(err, rows) {
         if (err) {
             throw err;
         } else
