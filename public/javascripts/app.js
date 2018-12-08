@@ -553,11 +553,11 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
 
   //Send the Final ZPL to the printer
   function sendZplToPrinter (PrinterIPAddress, PrinterPort, Zpl) {
-    alert("Zpl Enviado para a Impressora" + Zpl);
+    //alert("Zpl Enviado para a Impressora" + Zpl);
     console.log("Zpl Enviado para a Impressora" + Zpl);
 
     var url = "http://" + PrinterIPAddress + ":" + PrinterPort;
-    alert(url);
+    //alert(url);
     var method = "POST";
     var async = true;
     var request = new XMLHttpRequest();
@@ -609,11 +609,11 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
   if(BoxBarCodeType == 'GS1-128')
   {
     
-    alert("ZPL: " + ZPLString);
+    //alert("ZPL: " + ZPLString);
     //var cd = eanCheckDigit("0871886150940");
-    alert("Bar Code Number: " + BarCodeNumber);
+    //alert("Bar Code Number: " + BarCodeNumber);
     var checkDigit = eanCheckDigit( '' + BarCodeNumber);
-    alert("CheckDigit: " + checkDigit);
+    //alert("CheckDigit: " + checkDigit);
 
     
     function padDigits(number, digits) {
@@ -627,7 +627,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
     var EanWithCheckDigit = BarCodeNumber + checkDigit;
     var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
 
-    alert("fullEan: " + FullEan);
+    //alert("fullEan: " + FullEan);
 
     function replaceAll(str, map){
       for(key in map){
@@ -655,11 +655,11 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
 
   if(BoxBarCodeType == 'EAN13')
   {
-    alert("ZPL: " + ZPLString);
+    //alert("ZPL: " + ZPLString);
     //var cd = eanCheckDigit("0871886150940");
-    alert("Bar Code Number: " + BarCodeNumber);
+    //alert("Bar Code Number: " + BarCodeNumber);
     var checkDigit = eanCheckDigit( '' + BarCodeNumber);
-    alert("CheckDigit: " + checkDigit);
+    //alert("CheckDigit: " + checkDigit);
 
     
     function padDigits(number, digits) {
@@ -673,7 +673,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
     var EanWithCheckDigit = BarCodeNumber + checkDigit;
     //var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
 
-    alert("fullEan: " + FullEan);
+    //alert("fullEan: " + FullEan);
 
     function replaceAll(str, map){
       for(key in map){
@@ -708,7 +708,7 @@ $scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumbe
 		BarCodeNumber = BarCodeNumber.slice( 1 );
 	}
 
-    alert("ZPL: " + ZPLString);
+    //alert("ZPL: " + ZPLString);
     //var cd = eanCheckDigit("0871886150940");
     //alert("Bar Code Number: " + BarCodeNumber);
     var checkDigit = eanCheckDigit( '' + BarCodeNumber);
@@ -787,7 +787,7 @@ app.controller('labels', function ($scope, $http, $rootScope) {
     //var url = "http://" + "192.168.1.10:9100" + "/pstprnt";
     //var url = "http://" + "192.168.1.10:9100";
     var url = "http://" + PrinterIPAddress + ":" + PrinterPort;
-    alert(url);
+    //alert(url);
     var method = "POST";
     var async = true;
     var request = new XMLHttpRequest();
@@ -1012,7 +1012,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   //CLOSE THE PRODUCT IN PRODUCTION - ORDER THE BOXES
   $scope.closeProductInProduction = function(internalproductid, customerproductid, productName, qtyorder, qtyproduced) {
 
-    alert($stateParams.orderId);
+    //alert($stateParams.orderId);
 
     $scope.productTechSheet = [];
     var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerproductid));    
@@ -4854,11 +4854,11 @@ $scope.printProductBoxLabels = function (customer_product_id, order_id,quantity_
     if(boxBarCodeType == 'GS1-128')
     {
   
-      alert("ZPL: " + ZPLString);
+      //alert("ZPL: " + ZPLString);
       //var cd = eanCheckDigit("0871886150940");
-      alert("Bar Code Number: " + barCodeNumber);
+      //alert("Bar Code Number: " + barCodeNumber);
       var checkDigit = eanCheckDigit( '' + barCodeNumber);
-      alert("CheckDigit: " + checkDigit);
+      //alert("CheckDigit: " + checkDigit);
 
   
       function padDigits(number, digits) {
@@ -4872,7 +4872,7 @@ $scope.printProductBoxLabels = function (customer_product_id, order_id,quantity_
       var EanWithCheckDigit = barCodeNumber + checkDigit;
       var FullEan = "802" + barCodeNumber + checkDigit + "37" + Quantity_full;
 
-      alert("fullEan: " + FullEan);
+      //alert("fullEan: " + FullEan);
 
       function replaceAll(str, map){
         for(key in map){
@@ -4900,11 +4900,11 @@ $scope.printProductBoxLabels = function (customer_product_id, order_id,quantity_
 
     if(boxBarCodeType == 'EAN13')
     {
-      alert("ZPL: " + ZPLString);
+      //alert("ZPL: " + ZPLString);
       //var cd = eanCheckDigit("0871886150940");
-      alert("Bar Code Number: " + barCodeNumber);
+      //alert("Bar Code Number: " + barCodeNumber);
       var checkDigit = eanCheckDigit( '' + barCodeNumber);
-      alert("CheckDigit: " + checkDigit);
+      //alert("CheckDigit: " + checkDigit);
 
   
       function padDigits(number, digits) {
@@ -4918,7 +4918,7 @@ $scope.printProductBoxLabels = function (customer_product_id, order_id,quantity_
       var EanWithCheckDigit = barCodeNumber + checkDigit;
       //var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
 
-      alert("fullEan: " + FullEan);
+      //alert("fullEan: " + FullEan);
 
       function replaceAll(str, map){
         for(key in map){
@@ -5098,7 +5098,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', function($http) {
               if(number_of_products_to_close_order <= products_remaining_from_daily_production) { 
 
                 alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + number_of_products_to_close_order);
-                alert(alertMsg);
+                //alert(alertMsg);
 
                 products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
                 $scope.overProduction = products_remaining_from_daily_production;
@@ -5123,7 +5123,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', function($http) {
                   //DAILY PRODUCTION
                  if(products_remaining_from_daily_production > 0) {
                   alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
-                  alert(alertMsg.toString());
+                  //alert(alertMsg.toString());
 
                   var valueProducedByTheEmployee = products_remaining_from_daily_production * productPriceInEuro;
 
@@ -5227,7 +5227,7 @@ app.factory('productInOtherOpenOrdersForPainting', function($http) {
             if(number_of_products_to_close_order <= products_remaining_from_daily_production) { 
 
               alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + number_of_products_to_close_order);
-              alert(alertMsg);
+              //alert(alertMsg);
 
               products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
               $scope.overProduction = products_remaining_from_daily_production;
@@ -5265,7 +5265,7 @@ app.factory('productInOtherOpenOrdersForPainting', function($http) {
                 //DAILY PRODUCTION
                if(products_remaining_from_daily_production > 0) {
                 alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
-                alert(alertMsg.toString());
+                //alert(alertMsg.toString());
 
                 var valueProducedByTheEmployee = products_remaining_from_daily_production * productPriceInEuro;
                 var palletQuantity = products_remaining_from_daily_production / $scope.qtybypallet;
