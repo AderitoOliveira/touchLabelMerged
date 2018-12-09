@@ -2355,7 +2355,8 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
     var dataObj = {
       ORDER_ID: $scope.orderid,
       CLIENT_NAME: $scope.clientname.CLIENT_NAME,
-      CLIENT_ID: $scope.clientname.CLIENT_ID
+      CLIENT_ID: $scope.clientname.CLIENT_ID,
+      STATUS: 'EM ABERTO'
     };	
     
     var res = $http.post('/insertorder', dataObj).then(function(data, status, headers, config) {
