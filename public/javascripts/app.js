@@ -4259,7 +4259,7 @@ app.controller('editImageClientCtrl', [ '$http', '$state', '$rootScope','$scope'
   
   $scope.uploadPic = function(file) {
   file.upload = Upload.upload({
-    url: 'http://localhost:3700/upload',
+    url: 'http://localhost:8080/upload',
     data: {username: $scope.username, file: file},
   }); 
 
