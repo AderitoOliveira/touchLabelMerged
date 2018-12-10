@@ -19,6 +19,7 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Content-Type");
     res.header("Access-Control-Allow-Headers", "Origin");
     res.header("Access-Control-Allow-Headers", "Accept");
+    res.header('Access-Control-Allow-Credentials', true);
     res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
     next();
 });

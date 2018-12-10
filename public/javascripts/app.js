@@ -4202,7 +4202,7 @@ app.controller('editImageCtrl', [ '$http', '$state', '$scope', 'Upload', '$timeo
     
   $scope.uploadPic = function(file) {
   file.upload = Upload.upload({
-    url: 'http://touchlabel-castanheira-dantas.e4ff.pro-eu-west-1.openshiftapps.com:8080/upload',
+    url: 'http://localhost:8080/upload',
     data: {username: $scope.username, file: file},
   }); 
 
@@ -4260,7 +4260,8 @@ app.controller('editImageClientCtrl', [ '$http', '$state', '$rootScope','$scope'
   $scope.uploadPic = function(file) {
   file.upload = Upload.upload({
     url: 'http://localhost:8080/upload',
-    data: {username: $scope.username, file: file},
+    data: {file: file},
+    headers: {'Content-Type': undefined} 
   }); 
 
   file.upload.then(function (response) {
