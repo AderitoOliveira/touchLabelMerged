@@ -4285,7 +4285,7 @@ app.controller('editImageClientCtrl', [ '$http', '$state', '$rootScope','$scope'
     //var res = $http.post('/updateproduct', dataObj).then(function(data, status, headers, config) {
       var currentPageTemplate = $state.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
-      $state.go("listProducts", null, { reload: true });
+      $state.go("clientstate", null, { reload: true });
     //});    
 
   });
