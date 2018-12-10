@@ -57,8 +57,8 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
         templateUrl : '../custompages/boxesToOrder.html',
         controller : 'boxesToOrder'
     })
-    .state('listLabelsToPrint', {
-      url: '/listLabelsToPrint',
+    .state('list', {
+      url: '/list',
         templateUrl : '../custompages/labelsToPrint.html',
         controller : 'labelsToPrint'
     })
@@ -4202,7 +4202,7 @@ app.controller('editImageCtrl', [ '$http', '$state', '$scope', 'Upload', '$timeo
     
   $scope.uploadPic = function(file) {
   file.upload = Upload.upload({
-    url: 'http://localhost:3700/upload',
+    url: 'http://localhost:8080/upload',
     data: {username: $scope.username, file: file},
   }); 
 
