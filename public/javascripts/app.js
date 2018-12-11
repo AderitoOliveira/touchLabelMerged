@@ -402,6 +402,7 @@ app.controller('InsertClientController', function ($scope, $http, $rootScope, $r
       COIN: $scope.coin,
       PHONE_NUMBER: $scope.phonenumber,
       PERSON_TO_CONTACT: $scope.persontocontact,
+      IMAGE_PATH : '/images',
       IMAGE_NAME : clientImageDefault
     };
 
