@@ -172,6 +172,13 @@ router.post('/updateClient', function(req,res){
   updateClient(req,res);  
 });
 
+//UPDATE CLIENT IMAGE
+router.post('/updateClientImage', function(req,res){
+  console.log("UPDATE CLIENT " + req.body.CLIENT_ID);
+  console.log(req.body);
+  updateClientImage(req,res);  
+});
+
 //Insert Products
 router.post('/insertProduct', function(req,res){
   console.log("INSERT NEW PRODUCT");

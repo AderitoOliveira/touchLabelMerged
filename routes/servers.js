@@ -333,6 +333,20 @@ editClient = function(data, callback) {
  });
 }
 
+ //UPDATE CLIENT IMAGE
+ updateClientImage = function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    con.query('UPDATE clients SET IMAGE_NAME = ? where CLIENT_ID = ?',  [req.body.IMAGE_NAME ,req.body.CLIENT_ID], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
 //INSERT PRODUCT
 insertNewProduct = function(req, res) {
     var postData  = req.body;
