@@ -4218,14 +4218,11 @@ app.controller('editImageCtrl', [ '$http', '$state', '$scope', 'Upload', '$timeo
     file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
 
     var dataObj = {
-      productname: $scope.productName,
-      productid: $scope.customerProductId,
-      imagename: $scope.picFile.name,
-      barcode: $scope.barCode
+      IMAGE_NAME: $scope.picFile.name,
+      CUSTOMER_PRODUCT_ID: $scope.customerProductId
     };	
     
-    //var res = $http.post('/updateproduct', dataObj);
-    var res = $http.post('/updateproduct', dataObj).then(function(data, status, headers, config) {
+    var res = $http.post('/updateProductImage', dataObj).then(function(data, status, headers, config) {
       var currentPageTemplate = $state.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
       $state.go("listProducts", null, { reload: true });

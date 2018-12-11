@@ -395,6 +395,20 @@ insertPrintedLables = function(req, res) {
  });
 }
 
+//UPDATE PRODUCT IMAGE
+updateProductImage = function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    var query =con.query('UPDATE products SET IMAGE_NAME = ? where CUSTOMER_PRODUCT_ID = ?',  [req.body.IMAGE_NAME, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
 
 //UPDATE ORDER PRODUCT
 updateOrderProduct = function(req, res) {

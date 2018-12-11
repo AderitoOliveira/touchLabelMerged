@@ -186,10 +186,16 @@ router.post('/insertProduct', function(req,res){
   insertNewProduct(req,res);  
 });
 
-//Update Products
+//Update Product
 router.post('/updateproduct', function(req,res){
   console.log("STARTING TO UPDATE PRODUCT " + req.body.productid);
   updateProduct(req,res);  
+});
+
+//Update Product Image
+router.post('/updateProductImage', function(req,res){
+  console.log("STARTING TO UPDATE PRODUCT IMAGE" + req.body.productid);
+  updateProductImage(req,res);  
 });
 
 //Insert Order
