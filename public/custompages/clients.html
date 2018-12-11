@@ -38,7 +38,7 @@
             <div class="col-md-3 client-item"  dir-paginate="client in data | orderBy : 'ClientName' | filter:searchChar | itemsPerPage:20">
                 <div class="item-card">
                     <div class="image-wrapper">
-                        <div class="image-inner" style="background-image:url(/images/client-default.png);"></div>
+                        <div class="image-inner" style="background-image:url({{client.IMAGE_PATH}}/{{client.IMAGE_NAME}});"></div>
                     </div>
                     <div class="info-wrapper">
                         <div class="name">

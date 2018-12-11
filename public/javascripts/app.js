@@ -4202,7 +4202,7 @@ app.controller('editImageCtrl', [ '$http', '$state', '$scope', 'Upload', '$timeo
     
   $scope.uploadPic = function(file) {
   file.upload = Upload.upload({
-    url: 'http://localhost:8080/upload',
+    url: '/upload',
     data: {username: $scope.username, file: file},
   }); 
 
@@ -4259,7 +4259,7 @@ app.controller('editImageClientCtrl', [ '$http', '$state', '$rootScope','$scope'
   
   $scope.uploadPic = function(file) {
   file.upload = Upload.upload({
-    url: 'http://localhost:8080/upload',
+    url: '/upload',
     data: {file: file},
     headers: {'Content-Type': undefined} 
   }); 
@@ -4283,11 +4283,11 @@ app.controller('editImageClientCtrl', [ '$http', '$state', '$rootScope','$scope'
     };	
     
     //var res = $http.post('/updateproduct', dataObj);
-    //var res = $http.post('/updateproduct', dataObj).then(function(data, status, headers, config) {
+    var res = $http.post('/updateproduct', dataObj).then(function(data, status, headers, config) {
       var currentPageTemplate = $state.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
       $state.go("clientstate", null, { reload: true });
-    //});    
+    });    
 
   });
   }
