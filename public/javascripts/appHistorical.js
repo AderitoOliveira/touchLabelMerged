@@ -1,19 +1,20 @@
 var historical = angular.module('historicalModule',[]);
 
 //ALL LABELS TO PRINT - Controller
-historical.controller('LabelsBackupController', ['$scope', '$http', '$rootScope', '$state', 'sendZPLCodeToPrinter', function($scope, $http, $rootScope, $state, sendZPLCodeToPrinter) {
+//historical.service('LabelsBackupService', ['$scope', '$http', '$rootScope', '$state', 'sendZPLCodeToPrinter', function($scope, $http, $rootScope, $state, sendZPLCodeToPrinter) {
+historical.service('LabelsBackupService', ['$http', '$state', 'sendZPLCodeToPrinter', function($http, $state, sendZPLCodeToPrinter) {
   
-    $rootScope.class = 'not-home';
-    $rootScope.name= "Lista de todas as etiquetas já impressas e em backup";
-    $scope.labelsToPrint = [];
-    var request = $http.get('/getLabelsToPrint');    
-    request.then(function successCallback(response) {
-        $scope.labelsToPrint  = response.data;
-        return  $scope.labelsToPrint; 
-    },
-    function errorCallback(data){
-        console.log('Error: ' + data);
-    });
+    //$rootScope.class = 'not-home';
+    //$rootScope.name= "Lista de todas as etiquetas já impressas e em backup";
+    //labelsToPrint = [];
+    //var request = $http.get('/getLabelsToPrint');    
+    //request.then(function successCallback(response) {
+    //    labelsToPrint  = response.data;
+    //    return  labelsToPrint; 
+    //},
+    //function errorCallback(data){
+    //    console.log('Error: ' + data);
+    //});
   
     // function to calculate EAN / UPC checkdigit
     function eanCheckDigit(barCode)
@@ -36,20 +37,21 @@ historical.controller('LabelsBackupController', ['$scope', '$http', '$rootScope'
     }
   
   //PRINT LABEL ARTICLE
-    $scope.printLabelArticle = function (customer_product_id, order_id,quantity_article_labels, box_label_already_printed) {
+    //printLabelArticle = function (customer_product_id, order_id,quantity_article_labels, box_label_already_printed) {
+    this.printLabelArticle = function (customer_product_id, order_id,quantity_article_labels, box_label_already_printed) {
   
-      $scope.productLabel = [];
+      var productLabel = [];
       var request = $http.get('/labelToPrintForProduct/'+  encodeURIComponent(customer_product_id));     
       request.then(function successCallback(response) {
-        $scope.productLabel  = response.data;
+        productLabel  = response.data;
   
-        var barCodeNumber =  $scope.productLabel[0].BAR_CODE_NUMBER;
-        var ZPLString     =  $scope.productLabel[0].ZPL_STRING_ARTICLE;
-        var ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL = $scope.productLabel[0].ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL;
-        var ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL = $scope.productLabel[0].ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL;
-        var PrinterIPAddress = $scope.productLabel[0].ARTICLE_PRINTER_IP_ADDRESS;
-        var PrinterPort = $scope.productLabel[0].ARTICLE_PRINTER_PORT;
-        var customerProductId = $scope.productLabel[0].CUSTOMER_PRODUCT_ID;
+        var barCodeNumber =  productLabel[0].BAR_CODE_NUMBER;
+        var ZPLString     =  productLabel[0].ZPL_STRING_ARTICLE;
+        var ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL = productLabel[0].ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL;
+        var ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL = productLabel[0].ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL;
+        var PrinterIPAddress = productLabel[0].ARTICLE_PRINTER_IP_ADDRESS;
+        var PrinterPort = productLabel[0].ARTICLE_PRINTER_PORT;
+        var customerProductId = productLabel[0].CUSTOMER_PRODUCT_ID;
   
   
         //We need to remove the first digit to calculate the checksum for the EAN-13
@@ -118,15 +120,17 @@ historical.controller('LabelsBackupController', ['$scope', '$http', '$rootScope'
           };
   
           //IF THE BOX LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
-          if(box_label_already_printed === 'true') {
-            var res = $http.post('/deleteLabelsToPrint', dataToUpdate).then(function(data, status, headers, config) {
-              $state.reload();
-            });
-          } else {
-            var res = $http.post('/updateLabelAlreadyPrinted', dataToUpdate).then(function(data, status, headers, config) {
-              $state.reload();
-            });
-          }
+          //if(box_label_already_printed === 'true') {
+          //  var res = $http.post('/deleteLabelsToPrint', dataToUpdate).then(function(data, status, headers, config) {
+          //    $state.reload();
+          //  });
+          //} else {
+          //  var res = $http.post('/updateLabelAlreadyPrinted', dataToUpdate).then(function(data, status, headers, config) {
+          //    $state.reload();
+          //  });
+          //}
+
+          return true;
   
     },
     function errorCallback(data){
@@ -135,29 +139,29 @@ historical.controller('LabelsBackupController', ['$scope', '$http', '$rootScope'
   }
   
   //PRINT LABEL BOX
-  $scope.printProductBoxLabels = function (customer_product_id, order_id,quantity_box_labels, article_label_already_printed) {
+  this.printProductBoxLabels = function (customer_product_id, order_id,quantity_box_labels, article_label_already_printed) {
   
-    $scope.productLabel = [];
+    var productLabel = [];
     var request = $http.get('/labelToPrintForProduct/'+  encodeURIComponent(customer_product_id));     
     request.then(function successCallback(response) {
-    $scope.productLabel  = response.data;
+    productLabel  = response.data;
   
-      var barCodeNumber 		  = $scope.productLabel[0].BAR_CODE_NUMBER;
-      var qtyByBox				    = $scope.productLabel[0].Qty_By_Box;
-      var productNameForLabel	= $scope.productLabel[0].PRODUCT_NAME_FOR_LABEL;
-      var boxBarCodeType      = $scope.productLabel[0].BOX_BARCODE_TYPE;
-      var ZPLString     		  = $scope.productLabel[0].ZPL_STRING_BOX;
-      var PrinterIPAddress 		= $scope.productLabel[0].ARTICLE_PRINTER_IP_ADDRESS;
-      var PrinterPort 			  = $scope.productLabel[0].ARTICLE_PRINTER_PORT;
+      var barCodeNumber 		  = productLabel[0].BAR_CODE_NUMBER;
+      var qtyByBox				    = productLabel[0].Qty_By_Box;
+      var productNameForLabel	= productLabel[0].PRODUCT_NAME_FOR_LABEL;
+      var boxBarCodeType      = productLabel[0].BOX_BARCODE_TYPE;
+      var ZPLString     		  = productLabel[0].ZPL_STRING_BOX;
+      var PrinterIPAddress 		= productLabel[0].ARTICLE_PRINTER_IP_ADDRESS;
+      var PrinterPort 			  = productLabel[0].ARTICLE_PRINTER_PORT;
   
       if(boxBarCodeType == 'GS1-128')
       {
     
-        alert("ZPL: " + ZPLString);
+        //alert("ZPL: " + ZPLString);
         //var cd = eanCheckDigit("0871886150940");
-        alert("Bar Code Number: " + barCodeNumber);
+        //alert("Bar Code Number: " + barCodeNumber);
         var checkDigit = eanCheckDigit( '' + barCodeNumber);
-        alert("CheckDigit: " + checkDigit);
+        //alert("CheckDigit: " + checkDigit);
   
     
         function padDigits(number, digits) {
@@ -171,7 +175,7 @@ historical.controller('LabelsBackupController', ['$scope', '$http', '$rootScope'
         var EanWithCheckDigit = barCodeNumber + checkDigit;
         var FullEan = "802" + barCodeNumber + checkDigit + "37" + Quantity_full;
   
-        alert("fullEan: " + FullEan);
+        //alert("fullEan: " + FullEan);
   
         function replaceAll(str, map){
           for(key in map){
@@ -199,11 +203,11 @@ historical.controller('LabelsBackupController', ['$scope', '$http', '$rootScope'
   
       if(boxBarCodeType == 'EAN13')
       {
-        alert("ZPL: " + ZPLString);
+        //alert("ZPL: " + ZPLString);
         //var cd = eanCheckDigit("0871886150940");
-        alert("Bar Code Number: " + barCodeNumber);
+        //alert("Bar Code Number: " + barCodeNumber);
         var checkDigit = eanCheckDigit( '' + barCodeNumber);
-        alert("CheckDigit: " + checkDigit);
+        //alert("CheckDigit: " + checkDigit);
   
     
         function padDigits(number, digits) {
@@ -217,7 +221,7 @@ historical.controller('LabelsBackupController', ['$scope', '$http', '$rootScope'
         var EanWithCheckDigit = barCodeNumber + checkDigit;
         //var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
   
-        alert("fullEan: " + FullEan);
+        //alert("fullEan: " + FullEan);
   
         function replaceAll(str, map){
           for(key in map){
@@ -253,15 +257,16 @@ historical.controller('LabelsBackupController', ['$scope', '$http', '$rootScope'
     };
   
     //IF THE ARTICLE LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
-    if(article_label_already_printed === 'true') {
-      var res = $http.post('/deleteLabelsToPrint', dataToUpdate).then(function(data, status, headers, config) {
-        $state.reload();
-      });
-    } else {
-      var res = $http.post('/updateLabelAlreadyPrinted', dataToUpdate).then(function(data, status, headers, config) {
-        $state.reload();
-      });
-    }
+    //if(article_label_already_printed === 'true') {
+    //var res = $http.post('/deleteLabelsToPrint', dataToUpdate).then(function(data, status, headers, config) {
+    //    $state.reload();
+    //  });
+    //} else {
+    //  var res = $http.post('/updateLabelAlreadyPrinted', dataToUpdate).then(function(data, status, headers, config) {
+    //    $state.reload();
+    //  });
+    //}
+    return true;
   
   }
   }]);

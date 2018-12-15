@@ -1,0 +1,72 @@
+<div class="wrap" ng-controller="LabelsBackupController">
+    <div id="actions">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header-actions">
+                    <div class="row">
+                        <div class="col-md-6">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6 vert-spacer"></div>
+                                <div class="col-md-6">
+                                    <div class="search-wrap">
+                                        <input type="text" name="Pesquisa" ng-model="searchChar" placeholder=" Pesquisar">  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="list-content">
+        <div class="row">
+            <div id="label-table" class="col-md-12">
+                <div class="label-table-wrap">
+                    <div class="label-table-header row">
+                        <div class="inner-wrap">
+                            <div class="col-md-1 label-header-item header-label-nr">Encomenda</div>
+                            <div class="col-md-2 label-header-item  header-label-customer-id">Ref. Cliente</div>
+                            <div class="col-md-2 label-header-item  header-label-own-id">Ref. Interna</div>
+                            <div class="col-md-1 label-header-item  header-label-name">Nome Produto</div>
+                            <div class="col-md-2 label-header-item  header-label-qty"><span class="light">Etiquetas Artigo</span><br>Etiquetas Caixa</div>
+                            <div class="col-md-4"></div>
+                        </div>
+                    </div>
+                    <div class="order-labels-content row">
+                        <div class="col-md-12" dir-paginate="productLabel in labelsToPrint | orderBy : 'TOTAL_BOXES_TO_ORDER' | filter:searchChar | itemsPerPage:7">
+                            <div class="row">
+                                <div class="item-inner-wrap">
+                                    <div class="col-md-1 table-item item-label-nr">{{productLabel.ORDER_ID}}</div>
+                                    <div class="col-md-2 table-item item-label-customer-id">{{productLabel.CUSTOMER_PRODUCT_ID}}</div>
+                                    <div class="col-md-2 table-item item-label-own-id">{{productLabel.INTERNAL_PRODUCT_ID}}</div>
+                                    <div class="col-md-1 table-item item-label-name">{{productLabel.PRODUCT_NAME}}</div>
+                                    <div class="col-md-2 table-item item-label-qty">{{productLabel.QTY_LABELS_TO_PRINT_ARTICLE}} <strong>/ {{productLabel.QTY_LABELS_TO_PRINT_BOX}}</strong></div>
+                                    <div class="col-md-4 table-item item-actions">
+                                        <a class="btn btn-black" ng-show="{{productLabel.ARTICLE_LABEL_ALREADY_PRINTED}} == false" ng-click="printLabelArticle(productLabel.CUSTOMER_PRODUCT_ID, productLabel.ORDER_ID, productLabel.QTY_LABELS_TO_PRINT_ARTICLE, productLabel.BOX_LABEL_ALREADY_PRINTED)" data-toggle="tooltip" title="Imprimir Etiquetas Artigo">
+                                            <img src="assets/icons/vase-btn.svg" width="12px" height="20px" />Imprimir Artigo
+                                        </a>
+                                        <a class="btn btn-black btn-outline" ng-show="{{productLabel.BOX_LABEL_ALREADY_PRINTED}} == false"   ng-click="printProductBoxLabels(productLabel.CUSTOMER_PRODUCT_ID, productLabel.ORDER_ID, productLabel.QTY_LABELS_TO_PRINT_BOX, productLabel.ARTICLE_LABEL_ALREADY_PRINTED)" data-toggle="tooltip" title="Imprimir Etiquetas Caixa">
+                                            <img src="assets/icons/box-btn.svg" width="26px" height="18px" />Imprimir Caixa
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div align="center">
+            <dir-pagination-controls
+                max-size="100"
+                direction-links="true"
+                boundary-links="true" >
+            </dir-pagination-controls>
+        </div>
+    </div>
+</div>

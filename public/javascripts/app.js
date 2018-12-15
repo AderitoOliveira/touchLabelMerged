@@ -128,6 +128,16 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
 	    url: '/overProduction',
       templateUrl : '../custompages/overProductionInStock.html',
       controller : 'OverProductionController'
+    })
+    .state('listLabelsToPrint', {
+	    url: '/listLabelsToPrint',
+      templateUrl : '../custompages/labelsToPrint.html',
+      controller : 'labelsToPrint'
+    })
+    .state('labelsToPrintHistoric', {
+	    url: '/labelstoprinthistoric',
+      templateUrl : '../custompages/labelsToPrintHistoric.html',
+      controller : 'LabelsBackupController'
     });
   
   $urlRouterProvider.otherwise('/');
@@ -5666,3 +5676,30 @@ app.factory('sendZPLCodeToPrinter', function($http) {
     sendZplToPrinter: sendZplToPrinter
   };
 }); //app.factory
+
+app.controller('LabelsBackupController', ['$scope', '$http', '$rootScope', "LabelsBackupService", function ($scope, $http, $rootScope, LabelsBackupService) {
+   
+  $rootScope.class = 'not-home';
+    $rootScope.name= "Lista de todas as etiquetas já impressas e em backup";
+    $scope.labelsToPrint = [];
+    var request = $http.get('/getLabelsToPrint');    
+    request.then(function successCallback(response) {
+        $scope.labelsToPrint  = response.data;
+        return  $scope.labelsToPrint; 
+    },
+    function errorCallback(data){
+        console.log('Error: ' + data);
+    });
+
+    //PRINT LABEL ARTICLE
+    $scope.printLabelArticle = function (customer_product_id, order_id,quantity_article_labels, box_label_already_printed) {
+        var status = LabelsBackupService.printLabelArticle(customer_product_id, order_id,quantity_article_labels, box_label_already_printed);
+    };
+
+    //PRINT LABEL BOX
+    $scope.printProductBoxLabels = function (customer_product_id, order_id,quantity_box_labels, article_label_already_printed) {
+      var status = LabelsBackupService.printProductBoxLabels(customer_product_id, order_id,quantity_box_labels, article_label_already_printed);
+    };
+    
+
+}]);
