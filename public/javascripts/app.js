@@ -1,4 +1,4 @@
-var app = angular.module('easyLabel',['ui.router', 'ui.bootstrap','angularUtils.directives.dirPagination','angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'historicalModule']);
+var app = angular.module('easyLabel',['ui.router', 'ui.bootstrap','angularUtils.directives.dirPagination','angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'ngCookies','historicalModule', 'Authentication']);
 
 app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
 
@@ -138,6 +138,11 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
 	    url: '/labelstoprinthistoric',
       templateUrl : '../custompages/labelsToPrintHistoric.html',
       controller : 'LabelsBackupController'
+    })
+    .state('login', {
+	    url: '/login',
+      templateUrl : '../custompages/login.html',
+      controller : 'LoginController'
     });
   
   $urlRouterProvider.otherwise('/');
@@ -147,8 +152,42 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
 
 });
 
-app.run(['$rootScope', '$location', function($rootScope, $location) {
-  $rootScope.$location = $location;
+//app.run(['$rootScope', '$location', function($rootScope, $location) {
+//  $rootScope.$location = $location;
+//}]);
+app.run(['$rootScope', '$location', '$cookies', '$http', function ($rootScope, $location, $cookies, $http) {
+        // keep user logged in after page refresh
+        $rootScope.globals = $cookies.get('globals') || {};
+        if ($rootScope.globals.currentUser) {
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
+        }
+ 
+        $rootScope.$on('$locationChangeStart', function (event, next, current) {
+            // redirect to login page if not logged in
+            if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
+                $location.path('/login');
+            }
+        });
+}]);
+
+app.controller('LoginController',
+    ['$scope', '$rootScope', '$location', 'AuthenticationService',
+    function ($scope, $rootScope, $location, AuthenticationService) {
+        // reset login status
+        AuthenticationService.ClearCredentials();
+ 
+        $scope.login = function () {
+            $scope.dataLoading = true;
+            AuthenticationService.Login($scope.email, $scope.password, function(response) {
+                if(response.success) {
+                    AuthenticationService.SetCredentials($scope.email, $scope.password);
+                    $location.path('/');
+                } else {
+                    $scope.error = response.message;
+                    $scope.dataLoading = false;
+                }
+            });
+        };
 }]);
 
 //ChARTS TESTS CONTROLER
@@ -5682,7 +5721,7 @@ app.controller('LabelsBackupController', ['$scope', '$http', '$rootScope', "Labe
   $rootScope.class = 'not-home';
     $rootScope.name= "Lista de todas as etiquetas já impressas e em backup";
     $scope.labelsToPrint = [];
-    var request = $http.get('/getLabelsToPrint');    
+    var request = $http.get('/getLabelsToPrintHistoric');    
     request.then(function successCallback(response) {
         $scope.labelsToPrint  = response.data;
         return  $scope.labelsToPrint; 

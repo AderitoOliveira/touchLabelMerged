@@ -440,6 +440,13 @@ router.get('/getLabelsToPrint', function(req,res){
   fetchAllLabelsToPrint(req,res);  
 });
 
+//GET LABELS TO PRINT FROM BACKUP HISTORICAL TABLE - order_products_labels_to_print_bck
+router.get('/getLabelsToPrintHistoric', function(req,res){
+  console.log("GET LABELS TO PRINT - HISTORIC");
+  console.log(req.body);
+  fetchAllLabelsToPrintHistoric(req,res);  
+});
+
 //COUNT LABELS TO PRINT - order_products_labels_to_print
 router.get('/countLabelsToPrint', function(req,res){
   console.log("COUNT LABELS TO PRINT");

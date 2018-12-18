@@ -1,20 +1,20 @@
 var mysql = require('mysql');
 
-//var con = mysql.createConnection({
-//  host: '127.0.0.1',
-//  user: 'easylabel',
-//  password: 'easylabel',
-//  database: 'easylabel',
-//  port: '3306'
-//});
-
 var con = mysql.createConnection({
-    host: '172.30.184.178',
-    user: 'easylabeldb',
-    password: 'easylabeldb',
-    database: 'easylabeldb',
-    port: '3306'	
+  host: '127.0.0.1',
+  user: 'easylabel',
+  password: 'easylabel',
+  database: 'easylabel',
+  port: '3306'
 });
+
+//var con = mysql.createConnection({
+//    host: '172.30.184.178',
+//    user: 'easylabeldb',
+//    password: 'easylabeldb',
+//    database: 'easylabeldb',
+//    port: '3306'	
+//});
 
 
 //GET ALL CLIENTS
@@ -959,6 +959,24 @@ fetchAllLabelsToPrint = function(data, callback) {
         callback.end(JSON.stringify(rows));
         callback = rows;
         console.log("GET ALL LABELS TO PRINT");   
+
+    });
+});
+}
+
+//GET LABELS TO PRINT FROM BACKUP HISTORICAL TABLE - order_products_labels_to_print_bck
+fetchAllLabelsToPrintHistoric = function(data, callback) {
+    con.connect(function(err) {
+    con.query('SELECT * FROM order_products_labels_to_print_bck', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET ALL LABELS TO PRINT - HISTORIC");   
 
     });
 });

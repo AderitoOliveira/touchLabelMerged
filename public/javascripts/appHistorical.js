@@ -256,16 +256,6 @@ historical.service('LabelsBackupService', ['$http', '$state', 'sendZPLCodeToPrin
       CUSTOMER_PRODUCT_ID   : customer_product_id
     };
   
-    //IF THE ARTICLE LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
-    //if(article_label_already_printed === 'true') {
-    //var res = $http.post('/deleteLabelsToPrint', dataToUpdate).then(function(data, status, headers, config) {
-    //    $state.reload();
-    //  });
-    //} else {
-    //  var res = $http.post('/updateLabelAlreadyPrinted', dataToUpdate).then(function(data, status, headers, config) {
-    //    $state.reload();
-    //  });
-    //}
     return true;
   
   }
