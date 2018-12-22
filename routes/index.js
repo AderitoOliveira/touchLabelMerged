@@ -525,11 +525,23 @@ router.get('/getProductionLast7Days', function(req,res){
 
 //GENERATE THE PASSWORD
 router.get('/getEncPass', function(req,res){
+
+  var hash1 = "";
   bcrypt.genSalt(saltRounds, function(err, salt) {
     bcrypt.hash(myPlaintextPassword, salt, function(err, hash) {
       console.log("HASH: " + hash);
+      hash1 = hash;
     });
   });
+
+  const myPlaintextPassword = 's0/\/\P4$$w0rD';
+  const someOtherPlaintextPassword = 'not_bacon';
+
+  bcrypt.compare(myPlaintextPassword, hash1, function(err, res) {
+    console.log("RES: " + res);
+  });
+
+
   //console.log("GET PRODUCTS PRODUCED IN THE LAST 7 DAYS");
   //getProductionLast7Days(req,res);  
 });
