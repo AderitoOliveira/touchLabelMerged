@@ -57,6 +57,11 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
         templateUrl : '../custompages/boxesToOrder.html',
         controller : 'boxesToOrder'
     })
+    .state('listBoxesToOrderHistoric', {
+      url: '/listBoxesToOrderHistoric',
+        templateUrl : '../custompages/boxesToOrderHistoric.html',
+        controller : 'BoxesOrderBackupController'
+    })
     .state('list', {
       url: '/list',
         templateUrl : '../custompages/labelsToPrint.html',
@@ -170,9 +175,7 @@ app.run(['$rootScope', '$location', '$cookies', '$http', function ($rootScope, $
         });
 }]);
 
-app.controller('LoginController',
-    ['$scope', '$rootScope', '$location', 'AuthenticationService',
-    function ($scope, $rootScope, $location, AuthenticationService) {
+app.controller('LoginController', ['$scope', '$rootScope', '$location','$cookies', 'AuthenticationService', function ($scope, $rootScope, $location, $cookies, AuthenticationService) {
         // reset login status
         AuthenticationService.ClearCredentials();
  
@@ -5719,7 +5722,7 @@ app.factory('sendZPLCodeToPrinter', function($http) {
 app.controller('LabelsBackupController', ['$scope', '$http', '$rootScope', "LabelsBackupService", function ($scope, $http, $rootScope, LabelsBackupService) {
    
   $rootScope.class = 'not-home';
-    $rootScope.name= "Lista de todas as etiquetas já impressas e em backup";
+    $rootScope.name= "Histórico - Etiquetas Impressas";
     $scope.labelsToPrint = [];
     var request = $http.get('/getLabelsToPrintHistoric');    
     request.then(function successCallback(response) {
@@ -5741,4 +5744,29 @@ app.controller('LabelsBackupController', ['$scope', '$http', '$rootScope', "Labe
     };
     
 
+}]);
+
+app.controller('BoxesOrderBackupController', ['$scope', '$http', '$rootScope', "BoxesToOrderService", function ($scope, $http, $rootScope, BoxesToOrderService) {
+   
+    $rootScope.class = 'not-home';
+    $rootScope.name= "Histórico - Caixas Encomendadas";
+    $scope.boxesToOrder = [];
+    $scope.sequence_value = 0;
+    var request = $http.get('/getAllOrderBoxesHistoric');    
+    request.then(function successCallback(response) {
+      $scope.boxesToOrder  = response.data;
+      return  $scope.boxesToOrder; 
+    },
+    function errorCallback(data){
+      console.log('Error: ' + data);
+    });
+
+    $scope.changeValue = function (box, ORDER_ID, CUSTOMER_PRODUCT_ID, CLIENT_NAME, PRODUCT_NAME, BOX_MEASURES, BOX_ID, TOTAL_BOXES_TO_ORDER) {
+        var status = BoxesToOrderService.changeValue(box, ORDER_ID, CUSTOMER_PRODUCT_ID, CLIENT_NAME, PRODUCT_NAME, BOX_MEASURES, BOX_ID, TOTAL_BOXES_TO_ORDER);
+    };
+
+    $scope.generateOrder = function() {
+        var status = BoxesToOrderService.generateOrder();
+    };
+    
 }]);

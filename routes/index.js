@@ -294,6 +294,12 @@ router.get('/getAllOrderBoxes', function(req,res){
   fetchAllOrderBoxesToOrder(req,res);  
 });
 
+//GET ORDER BOXES CLOSED PRODUCTION PRODUCT - HISTORIC
+router.get('/getAllOrderBoxesHistoric', function(req,res){
+  console.log("GET BOXES TO ORDER - Historic");
+  fetchAllOrderBoxesToOrderHistoric(req,res);  
+});
+
 //DELETE ROWS FROM ORDER BOXES AFTER THE ORDER IS PLACED
 router.post('/deleteOrderBoxes', function(req,res){
   console.log("DELETE ORDER BOXES AFTER THE ORDER IS PLACED");
