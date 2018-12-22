@@ -1,23 +1,56 @@
-<div class="alert alert-info">
-    Email: test@email.com<br />
-    Password: test
+<div id="login-wrap">
+    <div class="login-inner">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div id="login-group">
+                        <div class="group-wrap">
+                            <div class="login-header">
+                                <div class="header-logo">
+                                    <svg width="223" height="52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M56.366 0H2.645C1.698 0 .869.792.869 1.74V29.1h13.835v10.944L27.25 52h15.098c.946 0 1.935-.685 1.935-1.632V29.101h13.835V1.739C58.117.792 57.313 0 56.366 0z" fill="url(#paint0_linear)"/><path d="M46.668 16.22H12.319v1.908h5.725v19.083h11.45v12.404h11.449V18.128h5.725V16.22z" fill="#fff"/><path d="M79.797 11.8v3.535h-4.992v14.846h-4.472V15.335h-4.94V11.8h14.404zM88.457 15.491c1.439 0 2.722.303 3.848.91a6.388 6.388 0 0 1 2.678 2.574c.659 1.127.988 2.444.988 3.952s-.33 2.826-.988 3.952a6.557 6.557 0 0 1-2.678 2.6c-1.126.59-2.41.884-3.848.884-1.438 0-2.73-.294-3.874-.884a6.73 6.73 0 0 1-2.704-2.6c-.641-1.127-.962-2.444-.962-3.952s.32-2.825.962-3.952a6.554 6.554 0 0 1 2.704-2.574c1.144-.607 2.436-.91 3.874-.91zm0 3.848c-.85 0-1.568.312-2.158.936-.572.607-.858 1.49-.858 2.652 0 1.162.286 2.046.858 2.652.59.607 1.309.91 2.158.91.85 0 1.56-.303 2.132-.91.572-.607.858-1.49.858-2.652 0-1.161-.286-2.045-.858-2.652a2.774 2.774 0 0 0-2.132-.936zM112.707 15.673v14.508h-4.472v-2.626a4.796 4.796 0 0 1-1.872 2.028c-.815.503-1.768.754-2.86.754-1.664 0-2.99-.555-3.978-1.664-.971-1.11-1.456-2.634-1.456-4.576v-8.424h4.42v7.878c0 .988.251 1.76.754 2.314.52.538 1.213.806 2.08.806.901 0 1.612-.286 2.132-.858.52-.572.78-1.386.78-2.444v-7.696h4.472zM122.323 15.491c1.872 0 3.44.52 4.706 1.56 1.265 1.023 2.062 2.436 2.392 4.238h-4.706c-.139-.624-.425-1.11-.858-1.456-.434-.346-.98-.52-1.638-.52-.78 0-1.422.312-1.924.936-.503.607-.754 1.5-.754 2.678 0 1.179.251 2.08.754 2.704.502.607 1.144.91 1.924.91.658 0 1.204-.173 1.638-.52.433-.347.719-.832.858-1.456h4.706c-.33 1.803-1.127 3.224-2.392 4.264-1.266 1.023-2.834 1.534-4.706 1.534-1.422 0-2.687-.294-3.796-.884-1.092-.607-1.95-1.473-2.574-2.6-.624-1.127-.936-2.444-.936-3.952 0-1.525.303-2.843.91-3.952.624-1.127 1.49-1.985 2.6-2.574 1.109-.607 2.374-.91 3.796-.91zM140.946 15.517c1.664 0 2.981.555 3.952 1.664.988 1.11 1.482 2.635 1.482 4.576v8.424h-4.446v-7.904c0-.97-.26-1.725-.78-2.262-.503-.555-1.179-.832-2.028-.832-.902 0-1.621.286-2.158.858-.52.572-.78 1.387-.78 2.444v7.696h-4.446v-19.24h4.446v7.384a4.808 4.808 0 0 1 1.846-2.054c.832-.503 1.802-.754 2.912-.754zM158.963 26.775h5.928v3.406h-10.374V11.8h4.446v14.976zM172.445 15.491c1.109 0 2.063.252 2.86.754a4.532 4.532 0 0 1 1.768 2.054v-2.626h4.42v14.508h-4.42v-2.626a4.533 4.533 0 0 1-1.768 2.054c-.797.503-1.751.754-2.86.754-1.196 0-2.271-.294-3.224-.884-.936-.607-1.681-1.473-2.236-2.6-.537-1.127-.806-2.444-.806-3.952 0-1.525.269-2.843.806-3.952.555-1.127 1.3-1.985 2.236-2.574.953-.607 2.028-.91 3.224-.91zm1.43 3.9c-.953 0-1.725.312-2.314.936-.572.624-.858 1.49-.858 2.6s.286 1.976.858 2.6c.589.624 1.361.936 2.314.936.936 0 1.699-.32 2.288-.962.607-.641.91-1.5.91-2.574 0-1.092-.303-1.95-.91-2.574-.589-.641-1.352-.962-2.288-.962zM193.602 15.491c1.196 0 2.262.303 3.198.91.953.59 1.699 1.448 2.236 2.574.555 1.11.832 2.427.832 3.952 0 1.508-.277 2.826-.832 3.952-.537 1.127-1.283 1.993-2.236 2.6-.936.59-2.002.884-3.198.884-1.109 0-2.063-.251-2.86-.754A4.38 4.38 0 0 1 189 27.555v2.626h-4.446v-19.24H189V18.3a4.38 4.38 0 0 1 1.742-2.054c.797-.503 1.751-.754 2.86-.754zm-1.43 3.9c-.936 0-1.707.32-2.314.962-.589.624-.884 1.482-.884 2.574 0 1.075.295 1.933.884 2.574.607.641 1.378.962 2.314.962.953 0 1.716-.312 2.288-.936.589-.624.884-1.49.884-2.6s-.295-1.976-.884-2.6c-.572-.624-1.335-.936-2.288-.936zM215.955 22.537c0 .364-.043.763-.13 1.196h-10.062c.052 1.092.329 1.88.832 2.366.503.468 1.144.702 1.924.702.659 0 1.205-.164 1.638-.494a2.31 2.31 0 0 0 .858-1.274h4.706a6.248 6.248 0 0 1-1.248 2.756c-.641.797-1.456 1.43-2.444 1.898-.988.45-2.089.676-3.302.676-1.421 0-2.687-.294-3.796-.884-1.092-.607-1.95-1.473-2.574-2.6-.624-1.127-.936-2.444-.936-3.952 0-1.525.303-2.843.91-3.952a6.306 6.306 0 0 1 2.6-2.574c1.109-.607 2.375-.91 3.796-.91 1.439 0 2.704.295 3.796.884a6.136 6.136 0 0 1 2.522 2.496c.607 1.058.91 2.28.91 3.666zm-4.498-.676c.017-.953-.243-1.664-.78-2.132-.52-.485-1.17-.728-1.95-.728-.815 0-1.491.243-2.028.728-.537.486-.841 1.196-.91 2.132h5.668zM222.719 10.941v19.24h-4.446v-19.24h4.446z" fill="#222"/>
+                                        <defs>
+                                            <linearGradient id="paint0_linear" x1="8.171" y1="-6.254" x2="54.826" y2="40.401" gradientUnits="userSpaceOnUse">
+                                                <stop stop-color="#41CBC7"/>
+                                                <stop offset="1" stop-color="#5D426F"/>
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="login-form-group">
+                                <form name="form" ng-submit="login()" role="form">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <i class="fa fa-key"></i>
+                                        <input type="text" name="email" id="email" class="form-control" ng-model="email" required />
+                                        <span ng-show="form.email.$dirty && form.email.$error.required" class="help-block">Email is required</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Password</label>
+                                        <i class="fa fa-lock"></i>
+                                        <input type="password" name="password" id="password" class="form-control" ng-model="password" required />
+                                        <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" ng-disabled="form.$invalid || dataLoading" class="btn btn-danger">Login</button>
+                                        <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                                    </div>
+                                </form>
+                                <div class="temp">
+                                    <div class="alert alert-info">
+                                        Email: test@email.com<br />
+                                        Password: test
+                                    </div>
+                                </div>
+                                <div class="login-messages">
+                                    <div ng-show="error" class="alert alert-danger">{{error}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div ng-show="error" class="alert alert-danger">{{error}}</div>
-<form name="form" ng-submit="login()" role="form">
-    <div class="form-group">
-        <label for="email">Email</label>
-        <i class="fa fa-key"></i>
-        <input type="text" name="email" id="email" class="form-control" ng-model="email" required />
-        <span ng-show="form.email.$dirty && form.email.$error.required" class="help-block">Email is required</span>
-    </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <i class="fa fa-lock"></i>
-        <input type="password" name="password" id="password" class="form-control" ng-model="password" required />
-        <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
-    </div>
-    <div class="form-actions">
-        <button type="submit" ng-disabled="form.$invalid || dataLoading" class="btn btn-danger">Login</button>
-        <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
-    </div>
-</form>
