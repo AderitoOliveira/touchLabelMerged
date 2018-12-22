@@ -53,6 +53,7 @@ body.not_loggedin{
     
     div#main-header {
         filter: blur(6px);
+        z-index:0;
     }
     #login-wrap {
         position: fixed;
@@ -62,6 +63,80 @@ body.not_loggedin{
         height: 100%;
         z-index: 100000000000;
         background-color: rgba(0,19,24,0.6);
+    }
+    .login-inner {
+        flex-direction: column;
+        height: 100%;
+        flex-wrap: wrap;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    div#login-group {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        max-width: 420px;
+        align-items: center;
+        background: #fff;
+        border-radius: 8px;
+        padding: 36px 30px;
+    }
+    .login-header {
+        margin-bottom: 56px;
+    }
+    .group-wrap {
+        display: block;
+        width: 100%;
+        text-align: center;   
+    }
+    .login-form-group {
+        text-align: left;
+    }
+    
+    label.control-label {
+        float: left;
+    }
+    
+    .form-input-item {
+        margin-bottom: 36px;
+        float: left;
+        width: 100%;
+    }
+    input.form-control {
+        margin-top:0px;
+        border-radius: 2px;
+        box-shadow: inset -1px -1px 2px 0 rgba(118,118,118,0.25);
+        background-color: #ffffff;
+        border: solid 1px #c4c4c4;
+        font-size: 16px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        height: 48px;
+    }
+    button.btn-save{
+        height: 48px;
+        width: 100%;
+        text-align: center;
+        border-radius: 2px;
+        background-color: #27ae60;
+        font-size: 16px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        color: #ffffff;
+        border: 0px;
+        width: 100%;
+        img {
+            margin-top: -6px;
+            margin-right: 6px;
+        }
     }
 }
 
