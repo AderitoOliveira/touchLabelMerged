@@ -177,6 +177,7 @@ app.run(['$rootScope', '$location', '$cookies', '$http', function ($rootScope, $
 
 app.controller('LoginController', ['$scope', '$rootScope', '$location','$cookies', 'AuthenticationService', function ($scope, $rootScope, $location, $cookies, AuthenticationService) {
         // reset login status
+        $rootScope.class = not_loggedin;
         AuthenticationService.ClearCredentials();
  
         $scope.login = function () {
