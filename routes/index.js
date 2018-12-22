@@ -6,6 +6,11 @@ var fs = require('fs');
 var nodemailer = require('nodemailer');
 var Printer = require('pdfmake');
 
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const myPlaintextPassword = 's0/\/\P4$$w0rD';
+const someOtherPlaintextPassword = 'not_bacon';
+
 //Get images from the public/images directory
 router.use('/images', express.static(__dirname+'/uploads/'));
 
@@ -516,6 +521,17 @@ router.post('/updatePrintersConfiguration', function(req,res){
 router.get('/getProductionLast7Days', function(req,res){
   console.log("GET PRODUCTS PRODUCED IN THE LAST 7 DAYS");
   getProductionLast7Days(req,res);  
+});
+
+//GENERATE THE PASSWORD
+router.get('/getEncPass', function(req,res){
+  bcrypt.genSalt(saltRounds, function(err, salt) {
+    bcrypt.hash(myPlaintextPassword, salt, function(err, hash) {
+      console.log("HASH: " + hash);
+    });
+  });
+  //console.log("GET PRODUCTS PRODUCED IN THE LAST 7 DAYS");
+  //getProductionLast7Days(req,res);  
 });
 
 module.exports = router;
