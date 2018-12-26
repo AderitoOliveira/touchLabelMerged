@@ -1,5 +1,5 @@
-<div class="wrap">
-  <div id="actions" ng-controller="createTechSheet">
+<div class="wrap" ng-controller="createTechSheet">
+  <div id="actions">
       <div class="row">
           <div class="col-md-12">
               <div class="header-actions">
@@ -16,6 +16,7 @@
                               </div>
                           </div>
                       </div>
+
                       <div class="col-md-6">
                           <div class="row">
                               <div class="col-md-6 vert-spacer"></div>
@@ -54,7 +55,7 @@
       <div class="row">
         <form class="col-md-12" id="printSectionId" role="form">
           <!-- FICHA TÉCNICA PRODUÇÃO-->
-          <div class="inner-form-wrap row active" id="product-edit-sheet">
+          <div class="toggle-panel inner-form-wrap row active" id="product-edit-sheet">
             <div class="col-md-12 form-row">
               <div class="row">
                   <div class="col-md-3 form-input-item">
@@ -70,17 +71,17 @@
                       </div>                  
                   </div>
                   <div class="col-md-3 form-input-item">
-                    <label class="control-label" for="rawMaterial">Dimensões Pré-Secagem</label>
-                    <div class="input-wrap-inner">
-                    <input type="text" class="form-control" id="WetDimensions" placeholder="Dimensões" ng-model="rawMaterial">
-                    </div>                  
-                </div>
-                <div class="col-md-3 form-input-item">
-                    <label class="control-label" for="rawMaterialExtra">Peso</label>
-                    <div class="input-wrap-inner">
-                    <input type="text" class="form-control" id="partWeight" placeholder="Peso" ng-model="rawMaterialExtra">
-                    </div>                  
-                </div>
+                      <label class="control-label" for="dimensionsInWet">Dimensões Pré-Secagem</label>
+                      <div class="input-wrap-inner">
+                      <input type="text" class="form-control" id="dimensionsInWet" placeholder="Dimensões" ng-model="dimensionsInWet">
+                      </div>                  
+                  </div>
+                  <div class="col-md-3 form-input-item">
+                      <label class="control-label" for="productWeight">Peso</label>
+                      <div class="input-wrap-inner">
+                      <input type="text" class="form-control" id="productWeight" placeholder="Peso" ng-model="productWeight">
+                      </div>                  
+                  </div>
               </div>                
             </div>
             <div class="col-md-12 form-row">
@@ -141,29 +142,29 @@
             </div>
             <!-- FICHA TÉCNICA PINTURA-->
           </div>
-          <div class="inner-form-wrap row" id="paint-edit-sheet">
+          <div class="toggle-panel inner-form-wrap row" id="paint-edit-sheet">
             <div class="col-md-12 form-row">
                 <div class="row">
-                    <div class="col-md-3 form-input-item">
+                    <div class="col-md-2 form-input-item">
                         <label class="control-label" for="paintedCold">Pintado a frio</label>
                         <div class="input-wrap-inner">
                           <input type="text" class="form-control" id="paintedCold" placeholder="Pintado a frio" ng-model="paintedCold">
                         </div>                  
                     </div>
-                    <div class="col-md-3 form-input-item">
+                    <div class="col-md-2 form-input-item">
                         <label class="control-label" for="refPaintQty">Quantidade Tinta</label>
                         <div class="input-wrap-inner">
                           <input type="text" class="form-control" id="refPaintQty" placeholder="Quantidade Referência Tinta" ng-model="refPaintQty">
                         </div>                  
                     </div>
-                    <div class="col-md-3 form-input-item">
+                    <div class="col-md-2 form-input-item">
                         <label class="control-label" for="refPaintSmokedQty">Quantidade Fuminho</label>
                         <div class="input-wrap-inner">
-                          <input type="text" class="form-control" id="refPaintSmoked" placeholder="Referência Tinta Fuminho" ng-model="refPaintSmoked">
+                          <input type="text" class="form-control" id="refPaintSmokedQty" placeholder="Referência Tinta Fuminho" ng-model="refPaintSmokedQty">
                         </div>                  
                     </div>
-                    <div class="col-md-3 form-input-item">
-                        <label class="control-label" for="glassed">Quantidade Vidrado</label>
+                    <div class="col-md-2 form-input-item">
+                        <label class="control-label" for="glassed">Vidrado</label>
                         <div class="input-wrap-inner">
                           <input type="text" class="form-control" id="glassed" placeholder="Vidrado" ng-model="glassed">
                         </div>                  
@@ -204,7 +205,7 @@
             </div>
               
           </div>
-          <div class="inner-form-wrap row" id="packaging-edit-sheet">
+          <div class="toggle-panel inner-form-wrap row" id="packaging-edit-sheet">
               <div class="col-md-12 form-row">
                   <div class="row">
                       <div class="col-md-3 form-input-item">
@@ -219,17 +220,17 @@
                             <input type="text" class="form-control" id="labelWaterProof" placeholder="Etiqueta Prova de água" ng-model="labelWaterProof">
                           </div>                  
                       </div>
-                      <div class="col-md-3 form-input-item">
+                      <div class="col-md-2 form-input-item">
                           <label class="control-label" for="felts">Feltros</label>
                           <div class="input-wrap-inner">
-                            <input type="text" class="form-control" id="feltsQty" placeholder="Quantidade Feltros" ng-model="feltsQty">
+                            <input type="text" class="form-control" id="felts" placeholder="Feltros" ng-model="felts">
                           </div>                  
                       </div>
                   </div>
               </div>
               <div class="col-md-12 form-row">
                   <div class="row">
-                      <div class="col-md-3 form-input-item">
+                      <div class="col-md-2 form-input-item">
                           <label class="control-label" for="feltsQty">Quantidade Feltros</label>
                           <div class="input-wrap-inner">
                             <input type="text" class="form-control" id="feltsQty" placeholder="Quantidade Feltros" ng-model="feltsQty">
@@ -241,35 +242,35 @@
                             <input type="text" class="form-control" id="bag" placeholder="Saco" ng-model="bag">
                           </div>                  
                       </div>
-                      <div class="col-md-3 form-input-item">
+                      <div class="col-md-2 form-input-item">
                           <label class="control-label" for="bagSize">Tamanho Saco</label>
                           <div class="input-wrap-inner">
                             <input type="text" class="form-control" id="bagSize" placeholder="Tamanho Saco" ng-model="bagSize">
                           </div>                  
                       </div>
-                      <div class="col-md-3 form-input-item">
-                        <label class="control-label" for="boxMeasures">Medidas de Caixa</label>
-                        <div class="input-wrap-inner">
-                          <input type="text" autocomplete="off" class="form-control" id="boxMeasures" placeholder="Medidas de Caixa" ng-model="boxMeasures" uib-typeahead="box as box.MEASURES for box in boxSize | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}" typeahead-editable="false">
-                        </div>                  
-                        </div>
+                      <div class="col-md-2 form-input-item">
+                          <label class="control-label" for="boxMeasures">Medidas de Caixa</label>
+                          <div class="input-wrap-inner">
+                            <input type="text" autocomplete="off" class="form-control" id="boxMeasures" placeholder="Medidas de Caixa" ng-model="boxMeasures" uib-typeahead="box as box.MEASURES for box in boxSize | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}" typeahead-editable="false">
+                          </div>                  
+                      </div>
                       <div class="col-md-1 form-input-item">
-                        <label class="control-label" for="boxId">ID Caixa</label>
-                        <div class="input-wrap-inner">
-                          <input type="text" class="form-control" id="boxId" placeholder="ID Caixa" ng-model="boxId" uib-typeahead="box as box.ID for box in boxSize | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}" typeahead-editable="false">
-                        </div>                  
-                       </div>
+                          <label class="control-label" for="boxId">ID Caixa</label>
+                          <div class="input-wrap-inner">
+                            <input type="text" class="form-control" id="boxId" placeholder="ID Caixa" ng-model="boxId" uib-typeahead="box as box.ID for box in boxSize | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}" typeahead-editable="false">
+                          </div>                  
+                      </div>
                   </div>
               </div>
               <div class="col-md-12 form-row">
                   <div class="row">
-                      <div class="col-md-3 form-input-item">
+                      <div class="col-md-2 form-input-item">
                           <label class="control-label" for="qtyByBox">Quantidade por caixa</label>
                           <div class="input-wrap-inner">
                             <input type="text" class="form-control" id="qtyByBox" placeholder="Quantidade por caixa" ng-model="qtyByBox">
                           </div>                  
                       </div>
-                      <div class="col-md-3 form-input-item">
+                      <div class="col-md-2 form-input-item">
                           <label class="control-label" for="qtyByPallet">Quantidade por Palete</label>
                           <div class="input-wrap-inner">
                             <input type="text" class="form-control" id="qtyByPallet" placeholder="Quantidade por palete" ng-model="qtyByPallet">
