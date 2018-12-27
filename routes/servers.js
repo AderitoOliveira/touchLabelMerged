@@ -1181,3 +1181,26 @@ getProductionLast7Days = function(data, callback) {
     });
 });
 }
+
+//GET USER INFO
+getUserInfo = function(req, callback) {
+    console.log("req.body.User: " + req.params.User);
+    con.connect(function(err) {
+    con.query('select USERNAME, PASSWORD, ITERATIONS from USER where USERNAME = ?', [req.params.User] ,function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        //callback.end(JSON.stringify(rows));
+        console.log('SERVER.js --> PASSWORD: ' + rows[0].PASSWORD);
+        callback.append("PASS", rows[0].PASSWORD);
+        callback.append("XPTO", JSON.stringify(rows));
+        var XPTO = JSON.stringify(rows);
+        callback = rows;
+        console.log("rows: " + JSON.stringify(rows)); 
+        console.log("GET USER");   
+    });
+});
+}

@@ -179,7 +179,7 @@ app.controller('LoginController', ['$scope', '$rootScope', '$location','$cookies
         // reset login status
         $rootScope.class = "not_loggedin";
         AuthenticationService.ClearCredentials();
- 
+
         $scope.login = function () {
             $scope.dataLoading = true;
             AuthenticationService.Login($scope.email, $scope.password, function(response) {
@@ -1721,12 +1721,48 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   //GET TECHNICAL SHEET INFORMATION FOR THE PRODUCTS IN THE ORDER TO SEND IT FOR PAINTING
   $scope.getTechSheetForPaiting = function () {
     $scope.productTechSheet = [];
+    $scope.productsWhereTechSheetNotExists = [];
+    $scope.customerProductIdOnTechSheetArray = [];
     var arrayProductMissingArguments = [];
     var currentRefPaint = "";
     var request = $http.get('/getTechSheetForPaiting/' + encodeURIComponent(orderId));    
     request.then(function successCallback(response) {
       $scope.productTechSheet  = response.data;
 
+    //IF WE HAVE LESS VALUES IN THE ARRAY COMING FROM THE productTechSheet, THIS MEANS
+    //THAT THERE IS AT LEAST A PRODUCT WITH NO TECHSHEET DEFINED
+     //if($scope.productTechSheet.length < $scope.products.length) { 
+      for(i = 0; i < $scope.productTechSheet.length; i++){
+        $scope.customerProductIdOnTechSheetArray.push($scope.productTechSheet[i].CUSTOMER_PRODUCT_ID);
+      };
+
+      for(j=0; j < $scope.products.length; j++) {
+          if(!$scope.customerProductIdOnTechSheetArray.includes($scope.products[j].CUSTOMER_PRODUCT_ID)) {
+            $scope.productsWhereTechSheetNotExists.push($scope.products[j].CUSTOMER_PRODUCT_ID);
+          }
+      }
+
+      if($scope.productsWhereTechSheetNotExists.length > 0) {
+        var messageToSend = 'O(s) produto(s)  ' + $scope.productsWhereTechSheetNotExists.toString() + ' não têm ficha técnica criada';
+        ModalService.showModal({
+          templateUrl: "../modal/genericModal.html",
+          controller: "GenericController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: messageToSend
+          }
+          }).then(function(modal) {
+              modal.element.modal();
+              modal.close.then(function(result) {
+              if (!result) {
+                $scope.complexResult = "Modal forcibly closed..."
+              } else {
+                $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+              }
+              });
+          });
+      }
+     //}
       var arrayForAll = {};
 
       for(i=0; i < $scope.productTechSheet.length; i++) {
@@ -2532,7 +2568,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
 
     //WE NEED TO VALIDATE IF THE BOX_MEASURES COMES FROM THE TYPEAHEAD OR OF IT THE BOX_MEASURES ALREADY 
     //EXISTS IN THE DATABASE
-    if(!$scope.boxMeasures.MEASURES) {
+    if($scope.boxMeasures == null || !$scope.boxMeasures.MEASURES) {
       $scope.boxMeasures = $scope.boxMeasures;
       $scope.boxId       = $scope.boxId;
     } else {
