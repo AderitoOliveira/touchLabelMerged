@@ -1731,7 +1731,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
     //IF WE HAVE LESS VALUES IN THE ARRAY COMING FROM THE productTechSheet, THIS MEANS
     //THAT THERE IS AT LEAST A PRODUCT WITH NO TECHSHEET DEFINED
-     //if($scope.productTechSheet.length < $scope.products.length) { 
+     if($scope.productTechSheet.length < $scope.products.length) { 
       for(i = 0; i < $scope.productTechSheet.length; i++){
         $scope.customerProductIdOnTechSheetArray.push($scope.productTechSheet[i].CUSTOMER_PRODUCT_ID);
       };
@@ -1762,7 +1762,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               });
           });
       }
-     //}
+     }
       var arrayForAll = {};
 
       for(i=0; i < $scope.productTechSheet.length; i++) {
