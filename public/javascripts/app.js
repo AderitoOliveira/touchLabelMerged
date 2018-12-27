@@ -312,7 +312,7 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
   };
 
   //INSERT EMPLOYEE
-  $scope.saveBoxMeasure = function() {
+  $scope.insertEmployee = function() {
     var dataToInsert = {
       EMPLOYEE_ID       : $scope.employeeId,
       EMPLOYEE_NAME     : $scope.employeeName,
@@ -1078,7 +1078,10 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       if($scope.productTechSheet[0].Box_Id == null || $scope.productTechSheet[0].Box_Measures == null) {
 
         var messageToSend = "";
-        if($scope.productTechSheet[0].Box_Id == null) {
+        if($scope.productTechSheet[0].Qty_By_Box == null) {
+          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por caixa. Edite a ficha técnica do produto e adicione a Quantidade por caixa para poder fechar o produto nesta encomenda."
+        }
+        if($scope.productTechSheet[0].Box_Id == null && messageToSend == "") {
           messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o número da Caixa. Edite a ficha técnica do produto e adicione o número da caixa para poder fechar o produto nesta encomenda."
         }
         if($scope.productTechSheet[0].Box_Measures == null && messageToSend == "") {
@@ -1162,7 +1165,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         }
         if($scope.productTechSheet[0].Bar_Code_Tech_Sheet ==null && messageToSend == "") {
               messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o Código de Barras. Edite a ficha técnica do produto e adicione o Código de Barras para poder fechar o produto nesta encomenda."
-            }
+        }
           
             ModalService.showModal({
             templateUrl: "../modal/genericModal.html",
@@ -2083,8 +2086,10 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     var paintingPDFTemplateToJSON = JSON.parse(paintingPDFTemplateToStringReplaced); 
 
     var filename = 'Encomenda_' + orderId;
-    pdfMake.createPdf(paintingPDFTemplateToJSON).download(filename);
 
+    if($scope.productsWhereTechSheetNotExists.length = 0) {
+      pdfMake.createPdf(paintingPDFTemplateToJSON).download(filename);
+    }
     },
     function errorCallback(data){
       console.log('Error: ' + data);
@@ -4875,10 +4880,10 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
               ]
             },
             layout: 'lightHorizontalLines'
-          },
-          {
-            text: '\n\n ENTREGA, SE POSSÍVEL, NO DECORRER DA PRÒXIMA SEMANA', style: 'bottomMessage',
-          }
+          }//,
+          //{
+          //  text: '\n\n ENTREGA, SE POSSÍVEL, NO DECORRER DA PRÒXIMA SEMANA', style: 'bottomMessage',
+         // }
         ],
     styles: {
       header: {
