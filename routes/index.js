@@ -6,7 +6,7 @@ var fs = require('fs');
 var nodemailer = require('nodemailer');
 var Printer = require('pdfmake');
 
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const myPlaintextPassword = 's0/\/\P4$$w0rD';
 const someOtherPlaintextPassword = 'not_bacon';
@@ -526,7 +526,7 @@ router.get('/getProductionLast7Days', function(req,res){
 //GENERATE THE PASSWORD
 router.get('/getEncPass', function(req,res){
 
-  var hash1 = "";
+  /* var hash1 = "";
   bcrypt.genSalt(saltRounds, function(err, salt) {
     bcrypt.hash(myPlaintextPassword, salt, function(err, hash) {
       console.log("HASH: " + hash);
@@ -539,7 +539,7 @@ router.get('/getEncPass', function(req,res){
 
   bcrypt.compare(myPlaintextPassword, hash1, function(err, res) {
     console.log("RES: " + res);
-  });
+  }); */
 
 
   //console.log("GET PRODUCTS PRODUCED IN THE LAST 7 DAYS");
