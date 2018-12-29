@@ -1,12 +1,14 @@
 var mysql = require('mysql');
 
-//var con = mysql.createConnection({
-//  host: '127.0.0.1',
-//  user: 'easylabel',
-//  password: 'easylabel',
-//  database: 'easylabel',
-//  port: '3306'
-//});
+/*
+var con = mysql.createConnection({
+    host: '127.0.0.1',
+    user: 'easylabel',
+    password: 'easylabel',
+    database: 'easylabeldb',
+    port: '3306'
+});
+*/
 
 var con = mysql.createConnection({
     host: '172.30.184.178',
@@ -535,7 +537,7 @@ updateProductTechSheet = function(req, res) {
 //GET PRODUCT TECHNICAL SHEET 
 getProductTechSheet = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT * FROM products_technical_sheet WHERE CUSTOMER_PRODUCT_ID = ?', [data.params.productid], function(err, rows) {
+    con.query('SELECT ptsheet.*, prod.CLIENT_NAME FROM products_technical_sheet ptsheet, products prod WHERE ptsheet.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID AND ptsheet.CUSTOMER_PRODUCT_ID = ?', [data.params.productid], function(err, rows) {
         if (err) {
             throw err;
         } else

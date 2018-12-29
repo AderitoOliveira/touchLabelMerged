@@ -1078,7 +1078,10 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       if($scope.productTechSheet[0].Box_Id == null || $scope.productTechSheet[0].Box_Measures == null) {
 
         var messageToSend = "";
-        if($scope.productTechSheet[0].Qty_By_Box == null) {
+        if($scope.productTechSheet[0].CLIENT_NAME == null) {
+          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o nome do Cliente. Edite o produto e insira o nome do cliente."
+        }
+        if($scope.productTechSheet[0].Qty_By_Box == null && messageToSend == "") {
           messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por caixa. Edite a ficha técnica do produto e adicione a Quantidade por caixa para poder fechar o produto nesta encomenda."
         }
         if($scope.productTechSheet[0].Box_Id == null && messageToSend == "") {
