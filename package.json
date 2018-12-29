@@ -13,6 +13,7 @@
     "angular-file-upload": "^2.5.0",
     "angular-modal-service": "^0.13.0",
     "angular-ui-router": "^1.0.3",
+    "bcrypt": "^3.0.2",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
