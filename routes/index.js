@@ -6,10 +6,19 @@ var fs = require('fs');
 var nodemailer = require('nodemailer');
 var Printer = require('pdfmake');
 
-//const bcrypt = require('bcrypt');
-const saltRounds = 10;
-const myPlaintextPassword = 's0/\/\P4$$w0rD';
-const someOtherPlaintextPassword = 'not_bacon';
+var crypto = require('crypto');
+var config = {
+  // size of the generated hash
+  hashBytes: 32,
+  // larger salt means hashed passwords are more resistant to rainbow table, but
+  // you get diminishing returns pretty fast
+  saltBytes: 16,
+  // more iterations means an attacker has to take longer to brute force an
+  // individual password, so larger is better. however, larger also means longer
+  // to hash the password. tune so that hashing the password takes about a
+  // second
+  iterations: 872791
+};
 
 //Get images from the public/images directory
 router.use('/images', express.static(__dirname+'/uploads/'));
@@ -523,24 +532,50 @@ router.get('/getProductionLast7Days', function(req,res){
   getProductionLast7Days(req,res);  
 });
 
+
+//GET THE PASSWORD FOR THE USER FROM THE DATABASE
+router.get('/getUserInfo/:User', function(req,res){
+
+  console.log("<---------------------------------------------------------------------------->"); 
+  console.log("REQ.PASSWORD: ");
+  console.log("<---------------------------------------------------------------------------->"); 
+
+  getUserInfo(req,res);
+
+  //console.log("res: " + res.locals);
+
+  //console.log("getUserinfo: " + result.data);
+  const key = crypto.pbkdf2Sync('JohnLitlle', 'TouchLabel-Castanheira&Dantas', 100000, 64, 'sha512');
+  console.log(key.toString('hex'));  // '3745e48...08d59ae'
+
+  /*
+  setTimeout(function() {
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    //console.log("res.locals: " + res.locals);
+    var password = res.get('PASS');
+    console.log('PASSWORD: ' + password);
+    console.log("res.headersSent: " + res.get('XPTO'));
+    var y = JSON.parse(res.get('XPTO'));
+    console.log("res.headersSent: " + y[0].USERNAME);
+
+  }, 3000);
+  */
+
+  //console.log("GET PRODUCTS PRODUCED IN THE LAST 7 DAYS");
+  //getProductionLast7Days(req,res);  
+});
+
 //GENERATE THE PASSWORD
 router.get('/getEncPass', function(req,res){
 
-  /* var hash1 = "";
-  bcrypt.genSalt(saltRounds, function(err, salt) {
-    bcrypt.hash(myPlaintextPassword, salt, function(err, hash) {
-      console.log("HASH: " + hash);
-      hash1 = hash;
-    });
-  });
+  const key = crypto.pbkdf2Sync('JohnLitlle', 'salt', 100000, 64, 'sha512');
+  console.log(key.toString('hex'));  // '3745e48...08d59ae'
 
-  const myPlaintextPassword = 's0/\/\P4$$w0rD';
-  const someOtherPlaintextPassword = 'not_bacon';
+  setTimeout(function() {
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
-  bcrypt.compare(myPlaintextPassword, hash1, function(err, res) {
-    console.log("RES: " + res);
-  }); */
 
+  }, 3000);
 
   //console.log("GET PRODUCTS PRODUCED IN THE LAST 7 DAYS");
   //getProductionLast7Days(req,res);  

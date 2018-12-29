@@ -1,20 +1,20 @@
 var mysql = require('mysql');
 
-var con = mysql.createConnection({
-  host: '127.0.0.1',
-  user: 'easylabel',
-  password: 'easylabel',
-  database: 'easylabel',
-  port: '3306'
-});
-
 //var con = mysql.createConnection({
-//    host: '172.30.184.178',
-//    user: 'easylabeldb',
-//    password: 'easylabeldb',
-//    database: 'easylabeldb',
-//    port: '3306'	
+//  host: '127.0.0.1',
+//  user: 'easylabel',
+//  password: 'easylabel',
+//  database: 'easylabel',
+//  port: '3306'
 //});
+
+var con = mysql.createConnection({
+    host: '172.30.184.178',
+    user: 'easylabeldb',
+    password: 'easylabeldb',
+    database: 'easylabeldb',
+    port: '3306'	
+});
 
 
 //GET ALL CLIENTS
@@ -227,7 +227,7 @@ fetchProductFromAnOrderThatIsntComplete = function(req, res) {
     var orderid = req.params.orderid;
     var productid = req.params.productid;
     con.connect(function(err) {
-    con.query('SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, TOTAL_PRODUCTS_PRODUCED FROM (SELECT s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED, 0) AS TOTAL_PRODUCTS_PRODUCED FROM (SELECT ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s")  AS CREATED_DATE, DATE_FORMAT(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") AS MODIFIED_DATE FROM orders_products WHERE ORDER_PRODUCT_STATUS = \'Em Produção\') AS s1 LEFT OUTER JOIN (SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PRODUCED) AS TOTAL_PRODUCTS_PRODUCED FROM order_products_production_registry GROUP BY ORDER_ID, CUSTOMER_PRODUCT_ID) AS s2 ON s1.ORDER_ID = s2.ORDER_ID AND s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID) as s3 where s3.ORDER_ID = ? and s3.INTERNAL_PRODUCT_ID = ? and s3.TOTAL_PRODUCTS_PRODUCED < s3.TOTAL_QUANTITY_ORDERED', [orderid, productid], function(err, rows) {
+    con.query('SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, TOTAL_PRODUCTS_PRODUCED FROM (SELECT s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED, 0) AS TOTAL_PRODUCTS_PRODUCED FROM (SELECT ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s")  AS CREATED_DATE, DATE_FORMAT(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") AS MODIFIED_DATE FROM orders_products WHERE ORDER_PRODUCT_STATUS = \'em_producao\') AS s1 LEFT OUTER JOIN (SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PRODUCED) AS TOTAL_PRODUCTS_PRODUCED FROM order_products_production_registry GROUP BY ORDER_ID, CUSTOMER_PRODUCT_ID) AS s2 ON s1.ORDER_ID = s2.ORDER_ID AND s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID) as s3 where s3.ORDER_ID = ? and s3.INTERNAL_PRODUCT_ID = ? and s3.TOTAL_PRODUCTS_PRODUCED < s3.TOTAL_QUANTITY_ORDERED', [orderid, productid], function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -252,7 +252,7 @@ fetchAllOrdersForOpenInternalProductId = function(req, callback) {
     console.log("ORDER_ID ON SERVERS.JS: " + orderid);
     console.log("INTERNAL_PRODUCT_ID: " + productid);
     con.connect(function(err) {
-    con.query('SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, TOTAL_QUANTITY_ORDERED, TOTAL_PRODUCTS_PRODUCED FROM (SELECT s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED, 0) AS TOTAL_PRODUCTS_PRODUCED FROM (SELECT ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s")  AS CREATED_DATE, DATE_FORMAT(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") AS MODIFIED_DATE FROM orders_products WHERE ORDER_PRODUCT_STATUS = \'Em Produção\') AS s1 LEFT OUTER JOIN (SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PRODUCED) AS TOTAL_PRODUCTS_PRODUCED FROM order_products_production_registry GROUP BY ORDER_ID, CUSTOMER_PRODUCT_ID) AS s2 ON s1.ORDER_ID = s2.ORDER_ID AND s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID) as s3 where s3.ORDER_ID <> ? and s3.INTERNAL_PRODUCT_ID = ? and s3.TOTAL_PRODUCTS_PRODUCED < s3.TOTAL_QUANTITY_ORDERED', [orderid, productid], function (err, rows) {
+    con.query('SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, TOTAL_QUANTITY_ORDERED, TOTAL_PRODUCTS_PRODUCED FROM (SELECT s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED, 0) AS TOTAL_PRODUCTS_PRODUCED FROM (SELECT ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s")  AS CREATED_DATE, DATE_FORMAT(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") AS MODIFIED_DATE FROM orders_products WHERE ORDER_PRODUCT_STATUS = \'em_producao\') AS s1 LEFT OUTER JOIN (SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PRODUCED) AS TOTAL_PRODUCTS_PRODUCED FROM order_products_production_registry GROUP BY ORDER_ID, CUSTOMER_PRODUCT_ID) AS s2 ON s1.ORDER_ID = s2.ORDER_ID AND s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID) as s3 where s3.ORDER_ID <> ? and s3.INTERNAL_PRODUCT_ID = ? and s3.TOTAL_PRODUCTS_PRODUCED < s3.TOTAL_QUANTITY_ORDERED', [orderid, productid], function (err, rows) {
         if (err) {
             throw err;
         } else
@@ -274,7 +274,7 @@ fetchAllOrdersForPaintingInternalProductId = function(req, callback) {
     console.log("ORDER_ID ON SERVERS.JS: " + orderid);
     console.log("INTERNAL_PRODUCT_ID: " + productid);
     con.connect(function(err) {
-    con.query('SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, TOTAL_QUANTITY_ORDERED, TOTAL_PRODUCTS_PRODUCED FROM (SELECT s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED, 0) AS TOTAL_PRODUCTS_PRODUCED FROM (SELECT ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s")  AS CREATED_DATE, DATE_FORMAT(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") AS MODIFIED_DATE FROM orders_products WHERE ORDER_PRODUCT_STATUS = \'Em Pintura\') AS s1 LEFT OUTER JOIN (SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PAINTED) AS TOTAL_PRODUCTS_PAINTED FROM order_products_painting_registry GROUP BY ORDER_ID, CUSTOMER_PRODUCT_ID) AS s2 ON s1.ORDER_ID = s2.ORDER_ID AND s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID) as s3 where s3.ORDER_ID <> ? and s3.INTERNAL_PRODUCT_ID = ? and s3.TOTAL_PRODUCTS_PRODUCED < s3.TOTAL_QUANTITY_ORDERED', [orderid, productid], function (err, rows) {
+    con.query('SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, TOTAL_QUANTITY_ORDERED, TOTAL_PRODUCTS_PRODUCED FROM (SELECT s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED, 0) AS TOTAL_PRODUCTS_PRODUCED FROM (SELECT ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s")  AS CREATED_DATE, DATE_FORMAT(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") AS MODIFIED_DATE FROM orders_products WHERE ORDER_PRODUCT_STATUS = \'em_pintura\') AS s1 LEFT OUTER JOIN (SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PAINTED) AS TOTAL_PRODUCTS_PAINTED FROM order_products_painting_registry GROUP BY ORDER_ID, CUSTOMER_PRODUCT_ID) AS s2 ON s1.ORDER_ID = s2.ORDER_ID AND s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID) as s3 where s3.ORDER_ID <> ? and s3.INTERNAL_PRODUCT_ID = ? and s3.TOTAL_PRODUCTS_PRODUCED < s3.TOTAL_QUANTITY_ORDERED', [orderid, productid], function (err, rows) {
         if (err) {
             throw err;
         } else
@@ -1178,6 +1178,29 @@ getProductionLast7Days = function(data, callback) {
         callback = rows;
         console.log("GET PRINTERS CONFIGURATION");   
 
+    });
+});
+}
+
+//GET USER INFO
+getUserInfo = function(req, callback) {
+    console.log("req.body.User: " + req.params.User);
+    con.connect(function(err) {
+    con.query('select USERNAME, PASSWORD, ITERATIONS from USER where USERNAME = ?', [req.params.User] ,function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        //callback.end(JSON.stringify(rows));
+        console.log('SERVER.js --> PASSWORD: ' + rows[0].PASSWORD);
+        callback.append("PASS", rows[0].PASSWORD);
+        callback.append("XPTO", JSON.stringify(rows));
+        var XPTO = JSON.stringify(rows);
+        callback = rows;
+        console.log("rows: " + JSON.stringify(rows)); 
+        console.log("GET USER");   
     });
 });
 }

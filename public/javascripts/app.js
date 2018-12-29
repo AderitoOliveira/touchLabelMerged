@@ -179,7 +179,7 @@ app.controller('LoginController', ['$scope', '$rootScope', '$location','$cookies
         // reset login status
         $rootScope.class = "not_loggedin";
         AuthenticationService.ClearCredentials();
- 
+
         $scope.login = function () {
             $scope.dataLoading = true;
             AuthenticationService.Login($scope.email, $scope.password, function(response) {
@@ -312,7 +312,7 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
   };
 
   //INSERT EMPLOYEE
-  $scope.saveBoxMeasure = function() {
+  $scope.insertEmployee = function() {
     var dataToInsert = {
       EMPLOYEE_ID       : $scope.employeeId,
       EMPLOYEE_NAME     : $scope.employeeName,
@@ -1078,7 +1078,10 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       if($scope.productTechSheet[0].Box_Id == null || $scope.productTechSheet[0].Box_Measures == null) {
 
         var messageToSend = "";
-        if($scope.productTechSheet[0].Box_Id == null) {
+        if($scope.productTechSheet[0].Qty_By_Box == null) {
+          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por caixa. Edite a ficha técnica do produto e adicione a Quantidade por caixa para poder fechar o produto nesta encomenda."
+        }
+        if($scope.productTechSheet[0].Box_Id == null && messageToSend == "") {
           messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o número da Caixa. Edite a ficha técnica do produto e adicione o número da caixa para poder fechar o produto nesta encomenda."
         }
         if($scope.productTechSheet[0].Box_Measures == null && messageToSend == "") {
@@ -1162,7 +1165,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         }
         if($scope.productTechSheet[0].Bar_Code_Tech_Sheet ==null && messageToSend == "") {
               messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o Código de Barras. Edite a ficha técnica do produto e adicione o Código de Barras para poder fechar o produto nesta encomenda."
-            }
+        }
           
             ModalService.showModal({
             templateUrl: "../modal/genericModal.html",
@@ -1721,12 +1724,48 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   //GET TECHNICAL SHEET INFORMATION FOR THE PRODUCTS IN THE ORDER TO SEND IT FOR PAINTING
   $scope.getTechSheetForPaiting = function () {
     $scope.productTechSheet = [];
+    $scope.productsWhereTechSheetNotExists = [];
+    $scope.customerProductIdOnTechSheetArray = [];
     var arrayProductMissingArguments = [];
     var currentRefPaint = "";
     var request = $http.get('/getTechSheetForPaiting/' + encodeURIComponent(orderId));    
     request.then(function successCallback(response) {
       $scope.productTechSheet  = response.data;
 
+    //IF WE HAVE LESS VALUES IN THE ARRAY COMING FROM THE productTechSheet, THIS MEANS
+    //THAT THERE IS AT LEAST A PRODUCT WITH NO TECHSHEET DEFINED
+     if($scope.productTechSheet.length < $scope.products.length) { 
+      for(i = 0; i < $scope.productTechSheet.length; i++){
+        $scope.customerProductIdOnTechSheetArray.push($scope.productTechSheet[i].CUSTOMER_PRODUCT_ID);
+      };
+
+      for(j=0; j < $scope.products.length; j++) {
+          if(!$scope.customerProductIdOnTechSheetArray.includes($scope.products[j].CUSTOMER_PRODUCT_ID)) {
+            $scope.productsWhereTechSheetNotExists.push($scope.products[j].CUSTOMER_PRODUCT_ID);
+          }
+      }
+
+      if($scope.productsWhereTechSheetNotExists.length > 0) {
+        var messageToSend = 'O(s) produto(s)  ' + $scope.productsWhereTechSheetNotExists.toString() + ' não têm ficha técnica criada';
+        ModalService.showModal({
+          templateUrl: "../modal/genericModal.html",
+          controller: "GenericController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: messageToSend
+          }
+          }).then(function(modal) {
+              modal.element.modal();
+              modal.close.then(function(result) {
+              if (!result) {
+                $scope.complexResult = "Modal forcibly closed..."
+              } else {
+                $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+              }
+              });
+          });
+      }
+     }
       var arrayForAll = {};
 
       for(i=0; i < $scope.productTechSheet.length; i++) {
@@ -2047,8 +2086,10 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     var paintingPDFTemplateToJSON = JSON.parse(paintingPDFTemplateToStringReplaced); 
 
     var filename = 'Encomenda_' + orderId;
-    pdfMake.createPdf(paintingPDFTemplateToJSON).download(filename);
 
+    if($scope.productsWhereTechSheetNotExists.length = 0) {
+      pdfMake.createPdf(paintingPDFTemplateToJSON).download(filename);
+    }
     },
     function errorCallback(data){
       console.log('Error: ' + data);
@@ -2532,7 +2573,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
 
     //WE NEED TO VALIDATE IF THE BOX_MEASURES COMES FROM THE TYPEAHEAD OR OF IT THE BOX_MEASURES ALREADY 
     //EXISTS IN THE DATABASE
-    if(!$scope.boxMeasures.MEASURES) {
+    if($scope.boxMeasures == null || !$scope.boxMeasures.MEASURES) {
       $scope.boxMeasures = $scope.boxMeasures;
       $scope.boxId       = $scope.boxId;
     } else {
@@ -4839,10 +4880,10 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
               ]
             },
             layout: 'lightHorizontalLines'
-          },
-          {
-            text: '\n\n ENTREGA, SE POSSÍVEL, NO DECORRER DA PRÒXIMA SEMANA', style: 'bottomMessage',
-          }
+          }//,
+          //{
+          //  text: '\n\n ENTREGA, SE POSSÍVEL, NO DECORRER DA PRÒXIMA SEMANA', style: 'bottomMessage',
+         // }
         ],
     styles: {
       header: {

@@ -5,17 +5,34 @@ authentication.factory('AuthenticationService', ['Base64', '$http', '$cookies', 
 
         service.Login = function (email, password, callback) {
 
+            console.log('services - service.Login');
+
             /* Dummy authentication for testing, uses $timeout to simulate api call
              ----------------------------------------------*/
+            
             $timeout(function(){
-                var response = { success: email === 'test@email.com' && password === 'test' };
+                var response = { success: email === 'sergio.moreira@hotmail.com' && password === 'sergio.moreira@123' };
                 if(!response.success) {
                     response.message = 'Email or password is incorrect';
                 }
                 callback(response);
             }, 1000);
+            
 
 
+            /* CORRECT FUNCTION
+            var URI = '/getUserinfo/' + encodeURIComponent(email);
+            var request = $http.get(URI);    
+            request.then(function successCallback(response) {
+                userInfo  = response.data;
+                console.log('userInfo: ' + userInfo);
+                callback(userInfo);
+                //return  $scope.clients; 
+            },
+            function errorCallback(data){
+              console.log('Error: ' + data);
+            }); */
+    
             /* Use this for real authentication
              ----------------------------------------------*/
             //$http.post('/api/authenticate', { email: email, password: password })
