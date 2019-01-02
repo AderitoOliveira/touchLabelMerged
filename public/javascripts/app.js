@@ -183,8 +183,8 @@ app.controller('LoginController', ['$scope', '$rootScope', '$location', '$cookie
   $scope.login = function () {
     $scope.dataLoading = true;
     AuthenticationService.Login($scope.email, $scope.password, function (response) {
-      //if (response.success) {
-      if (response.data.success) {
+      if (response.success) {
+      //if (response.data.success) {
         AuthenticationService.SetCredentials($scope.email, $scope.password);
         $location.path('/');
       } else {
