@@ -1,158 +1,158 @@
-var app = angular.module('easyLabel',['ui.router', 'ui.bootstrap','angularUtils.directives.dirPagination','angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'ngCookies','historicalModule', 'Authentication']);
+var app = angular.module('easyLabel', ['ui.router', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'ngCookies', 'historicalModule', 'Authentication']);
 
-app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
+app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
 
   $stateProvider
     .state('editProduct', {
       url: '/editProduct',
       templateUrl: '../custompages/editProduct.html',
       controller: 'editproducts',
-      params: {productName: null, customerProductId: null, productId: null, clientname:null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox:null, preco1: null, preco2: null}
+      params: { productName: null, customerProductId: null, productId: null, clientname: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, preco1: null, preco2: null }
     })
     .state('home', {
       url: '/',
-          templateUrl : '../custompages/home.html',
-          controller : 'homeController'
-      })
+      templateUrl: '../custompages/home.html',
+      controller: 'homeController'
+    })
     .state('clientstate', {
-		url: '/client',
-        templateUrl : '../custompages/clients.html',
-        controller : 'clients'
+      url: '/client',
+      templateUrl: '../custompages/clients.html',
+      controller: 'clients'
     })
     .state('listProducts', {
-		url: '/listProducts',
-        templateUrl : '../custompages/products.html',
-        controller : 'ProductsController'
+      url: '/listProducts',
+      templateUrl: '../custompages/products.html',
+      controller: 'ProductsController'
     })
     .state('createProduct', {
-	  url: '/createProduct',
-      templateUrl : '../custompages/insertProduct.html',
-      controller : 'CreateProductController',
-      params: {product_id: null, product_name: null, image_name: null, bar_code: null, name_in_the_label: null, num_article_by_box:null}
+      url: '/createProduct',
+      templateUrl: '../custompages/insertProduct.html',
+      controller: 'CreateProductController',
+      params: { product_id: null, product_name: null, image_name: null, bar_code: null, name_in_the_label: null, num_article_by_box: null }
     })
     .state('createClient', {
       url: '/createClient',
-        templateUrl : '../custompages/createClient.html',
-        controller : 'InsertClientController',
-        params: {}
+      templateUrl: '../custompages/createClient.html',
+      controller: 'InsertClientController',
+      params: {}
     })
     .state('editClient', {
       url: '/editClient',
-        templateUrl : '../custompages/editClient.html',
-        controller : 'editclient',
-        params: {clientid: null, clientname:null, imagename: null}
+      templateUrl: '../custompages/editClient.html',
+      controller: 'editclient',
+      params: { clientid: null, clientname: null, imagename: null }
     })
     .state('listPanels', {
       url: '/listPanels',
-        templateUrl : '../custompages/panels.html',
-        controller : 'panels'
+      templateUrl: '../custompages/panels.html',
+      controller: 'panels'
     })
     .state('listCharts', {
       url: '/listCharts',
-        templateUrl : '../custompages/chartsTest.html',
-        controller : 'chartsTest'
+      templateUrl: '../custompages/chartsTest.html',
+      controller: 'chartsTest'
     })
     .state('listBoxesToOrder', {
       url: '/listBoxesToOrder',
-        templateUrl : '../custompages/boxesToOrder.html',
-        controller : 'boxesToOrder'
+      templateUrl: '../custompages/boxesToOrder.html',
+      controller: 'boxesToOrder'
     })
     .state('listBoxesToOrderHistoric', {
       url: '/listBoxesToOrderHistoric',
-        templateUrl : '../custompages/boxesToOrderHistoric.html',
-        controller : 'BoxesOrderBackupController'
+      templateUrl: '../custompages/boxesToOrderHistoric.html',
+      controller: 'BoxesOrderBackupController'
     })
     .state('list', {
       url: '/list',
-        templateUrl : '../custompages/labelsToPrint.html',
-        controller : 'labelsToPrint'
+      templateUrl: '../custompages/labelsToPrint.html',
+      controller: 'labelsToPrint'
     })
     .state('listDailyProduction', {
       url: '/listDailyProduction',
-        templateUrl : '../custompages/dailyProduction.html',
-        controller : 'dailyProduction'
+      templateUrl: '../custompages/dailyProduction.html',
+      controller: 'dailyProduction'
     })
     .state('listDailyPaint', {
       url: '/listDailyPaint',
-        templateUrl : '../custompages/dailyPaint.html',
-        controller : 'dailyPaintingController'
+      templateUrl: '../custompages/dailyPaint.html',
+      controller: 'dailyPaintingController'
     })
     .state('printLabel', {
       url: '/printLabel',
-        templateUrl : '../custompages/productLabel.html',
-        controller : 'productLabels',
-        params: {productId: null, productName: null}
+      templateUrl: '../custompages/productLabel.html',
+      controller: 'productLabels',
+      params: { productId: null, productName: null }
     })
     .state('editImage', {
-        url: '/testImage',
-          templateUrl : '../custompages/imageUpload.html',
-          controller : 'editImageCtrl',
-          params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null}
+      url: '/testImage',
+      templateUrl: '../custompages/imageUpload.html',
+      controller: 'editImageCtrl',
+      params: { productName: null, customerProductId: null, productId: null, imageName: null, barCode: null }
     })
     .state('editImageClient', {
       url: '/testImage',
-        templateUrl : '../custompages/imageUploadClient.html',
-        controller : 'editImageClientCtrl',
-        params: {clientid: null, clientname: null, imagename: null}
+      templateUrl: '../custompages/imageUploadClient.html',
+      controller: 'editImageClientCtrl',
+      params: { clientid: null, clientname: null, imagename: null }
     })
     .state('listOrderProducts', {
       url: '/listOrderProducts',
-        templateUrl : '../custompages/orderProducts.html',
-        controller : 'orderProducts',
-        params: {orderId: null, clientname: null}
+      templateUrl: '../custompages/orderProducts.html',
+      controller: 'orderProducts',
+      params: { orderId: null, clientname: null }
     })
     .state('createTechnicalSheet', {
       url: '/createTechnicalSheet',
-        templateUrl : '../custompages/createTechnicalSheet.html',
-        controller : 'createTechSheet',
-        params: {productName: null, customerProductId: null, internalProductId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null}
+      templateUrl: '../custompages/createTechnicalSheet.html',
+      controller: 'createTechSheet',
+      params: { productName: null, customerProductId: null, internalProductId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null }
     })
     .state('editTechnicalSheet', {
       url: '/editTechnicalSheet',
-        templateUrl : '../custompages/editTechnicalSheet.html',
-        controller : 'editTechSheet',
-        params: {productName: null, customerProductId: null, productId: null, clientName: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null}
+      templateUrl: '../custompages/editTechnicalSheet.html',
+      controller: 'editTechSheet',
+      params: { productName: null, customerProductId: null, productId: null, clientName: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null }
     })
     .state('configuration', {
       url: '/configuration',
-      templateUrl : '../custompages/configurations.html',
-      controller : 'configurations',
-      params: {productName: null, customerProductId: null, productId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null}
+      templateUrl: '../custompages/configurations.html',
+      controller: 'configurations',
+      params: { productName: null, customerProductId: null, productId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null }
     })
     .state('listOrders', {
-	    url: '/listOrders',
-      templateUrl : '../custompages/orders.html',
-      controller : 'ordersController'
+      url: '/listOrders',
+      templateUrl: '../custompages/orders.html',
+      controller: 'ordersController'
     })
     .state('palletesReadyForShipping', {
-	    url: '/palletesReadyForShipping',
-      templateUrl : '../custompages/palletesReadyForShipping.html',
+      url: '/palletesReadyForShipping',
+      templateUrl: '../custompages/palletesReadyForShipping.html',
       controller: 'PalletesController'
     })
     .state('overproductionstate', {
-	    url: '/overProduction',
-      templateUrl : '../custompages/overProductionInStock.html',
-      controller : 'OverProductionController'
+      url: '/overProduction',
+      templateUrl: '../custompages/overProductionInStock.html',
+      controller: 'OverProductionController'
     })
     .state('listLabelsToPrint', {
-	    url: '/listLabelsToPrint',
-      templateUrl : '../custompages/labelsToPrint.html',
-      controller : 'labelsToPrint'
+      url: '/listLabelsToPrint',
+      templateUrl: '../custompages/labelsToPrint.html',
+      controller: 'labelsToPrint'
     })
     .state('labelsToPrintHistoric', {
-	    url: '/labelstoprinthistoric',
-      templateUrl : '../custompages/labelsToPrintHistoric.html',
-      controller : 'LabelsBackupController'
+      url: '/labelstoprinthistoric',
+      templateUrl: '../custompages/labelsToPrintHistoric.html',
+      controller: 'LabelsBackupController'
     })
     .state('login', {
-	    url: '/login',
-      templateUrl : '../custompages/login.html',
-      controller : 'LoginController'
+      url: '/login',
+      templateUrl: '../custompages/login.html',
+      controller: 'LoginController'
     });
-  
+
   $urlRouterProvider.otherwise('/');
-   
-    // remove o # da url
+
+  // remove o # da url
   $locationProvider.html5Mode(true);
 
 });
@@ -161,44 +161,45 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
 //  $rootScope.$location = $location;
 //}]);
 app.run(['$rootScope', '$location', '$cookies', '$http', function ($rootScope, $location, $cookies, $http) {
-        // keep user logged in after page refresh
-        $rootScope.globals = $cookies.get('globals') || {};
-        if ($rootScope.globals.currentUser) {
-            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
-        }
- 
-        $rootScope.$on('$locationChangeStart', function (event, next, current) {
-            // redirect to login page if not logged in
-            if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
-                $location.path('/login');
-            }
-        });
+  // keep user logged in after page refresh
+  $rootScope.globals = $cookies.get('globals') || {};
+  if ($rootScope.globals.currentUser) {
+    $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
+  }
+
+  $rootScope.$on('$locationChangeStart', function (event, next, current) {
+    // redirect to login page if not logged in
+    if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
+      $location.path('/login');
+    }
+  });
 }]);
 
-app.controller('LoginController', ['$scope', '$rootScope', '$location','$cookies', 'AuthenticationService', function ($scope, $rootScope, $location, $cookies, AuthenticationService) {
-        // reset login status
-        $rootScope.class = "not_loggedin";
-        AuthenticationService.ClearCredentials();
+app.controller('LoginController', ['$scope', '$rootScope', '$location', '$cookies', 'AuthenticationService', function ($scope, $rootScope, $location, $cookies, AuthenticationService) {
+  // reset login status
+  $rootScope.class = "not_loggedin";
+  AuthenticationService.ClearCredentials();
 
-        $scope.login = function () {
-            $scope.dataLoading = true;
-            AuthenticationService.Login($scope.email, $scope.password, function(response) {
-                if(response.success) {
-                    AuthenticationService.SetCredentials($scope.email, $scope.password);
-                    $location.path('/');
-                } else {
-                    $scope.error = response.message;
-                    $scope.dataLoading = false;
-                }
-            });
-        };
+  $scope.login = function () {
+    $scope.dataLoading = true;
+    AuthenticationService.Login($scope.email, $scope.password, function (response) {
+      //if (response.success) {
+      if (response.data.success) {
+        AuthenticationService.SetCredentials($scope.email, $scope.password);
+        $location.path('/');
+      } else {
+        $scope.error = response.message;
+        $scope.dataLoading = false;
+      }
+    });
+  };
 }]);
 
 //ChARTS TESTS CONTROLER
 app.controller('chartsTest', function ($scope, $http, $rootScope) {
-   
+
   $scope.labels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-  $scope.series = ['Series A', 'Series B',  'Series C',  'Series D'];
+  $scope.series = ['Series A', 'Series B', 'Series C', 'Series D'];
   $scope.options = { legend: { display: true, position: 'bottom' } };
   $scope.colours = ['#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'];
 
@@ -214,79 +215,79 @@ app.controller('chartsTest', function ($scope, $http, $rootScope) {
 //CONFIGURATIONS  CONTROLER
 app.controller('configurations', function ($scope, $http, $rootScope, ModalService) {
 
-  $rootScope.class = 'not-home'; 
-  $rootScope.name= "Configurar Parâmetros do Sistema";
+  $rootScope.class = 'not-home';
+  $rootScope.name = "Configurar Parâmetros do Sistema";
 
   //GET ALL CLIENT_ID, CLIENT_NAME FOR THE TYPEAHEAD
   $scope.clients = [];
-	var URIClients = '/clientstypeahed';
-	var request = $http.get(URIClients);    
-	request.then(function successCallback(response) {
-    $scope.clients  = response.data;
-    return  $scope.clients; 
-	},
-	function errorCallback(data){
-    console.log('Error: ' + data);
-	});
+  var URIClients = '/clientstypeahed';
+  var request = $http.get(URIClients);
+  request.then(function successCallback(response) {
+    $scope.clients = response.data;
+    return $scope.clients;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
 
   //GET ALL BOXES
   $scope.boxes = [];
-  var request = $http.get('/getBoxMeasuresAllFields');    
+  var request = $http.get('/getBoxMeasuresAllFields');
   request.then(function successCallback(response) {
-    $scope.boxes  = response.data;
+    $scope.boxes = response.data;
   },
-  function errorCallback(data){
-    console.log('Error: ' + data);
-  });
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
 
   //GET ALL EMPLOYEES
   $scope.employees = [];
-  var request = $http.get('/employees');    
+  var request = $http.get('/employees');
   request.then(function successCallback(response) {
-    $scope.employees  = response.data;
+    $scope.employees = response.data;
   },
-  function errorCallback(data){
-    console.log('Error: ' + data);
-  });
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
 
   //GET PRINTERS 
   $scope.printers = [];
-  var request = $http.get('/getPrintersConfiguration');    
+  var request = $http.get('/getPrintersConfiguration');
   request.then(function successCallback(response) {
-    $scope.printers  = response.data;
-    $scope.articlePrinterIP   = response.data[0].ARTICLE_PRINTER_IP_ADDRESS;
-    $scope.boxPrinterIP       = response.data[0].BOX_PRINTER_IP_ADDRESS;
+    $scope.printers = response.data;
+    $scope.articlePrinterIP = response.data[0].ARTICLE_PRINTER_IP_ADDRESS;
+    $scope.boxPrinterIP = response.data[0].BOX_PRINTER_IP_ADDRESS;
     $scope.articlePrinterPort = response.data[0].ARTICLE_PRINTER_PORT;
-    $scope.boxPrinterPort     = response.data[0].BOX_PRINTER_PORT;
+    $scope.boxPrinterPort = response.data[0].BOX_PRINTER_PORT;
   },
-  function errorCallback(data){
-    console.log('Error: ' + data);
-  });
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
 
   //UPDATE PRINTER INFORMATION
   $scope.updatePrinterIPAddress = function () {
 
     var dataObj = {
-      ARTICLE_PRINTER_IP_ADDRESS  : $scope.articlePrinterIP,
-      BOX_PRINTER_IP_ADDRESS      : $scope.boxPrinterIP,
-      ARTICLE_PRINTER_PORT        : $scope.articlePrinterPort,
-      BOX_PRINTER_PORT            : $scope.boxPrinterPort
+      ARTICLE_PRINTER_IP_ADDRESS: $scope.articlePrinterIP,
+      BOX_PRINTER_IP_ADDRESS: $scope.boxPrinterIP,
+      ARTICLE_PRINTER_PORT: $scope.articlePrinterPort,
+      BOX_PRINTER_PORT: $scope.boxPrinterPort
     }
 
     //var res = $http.post('/updateproduct', dataObj);
-    var res = $http.post('/updatePrintersConfiguration', dataObj).then(function(data, status, headers, config) {
-      
+    var res = $http.post('/updatePrintersConfiguration', dataObj).then(function (data, status, headers, config) {
+
     });
 
   }
-  
+
   //INSERT BOX MEASURE
-  $scope.saveBoxMeasure = function() {
+  $scope.saveBoxMeasure = function () {
     var dataToInsert = {
-      ID          : $scope.boxId,
-      MEASURES    : $scope.boxDimensions,
-      CLIENT_NAME : $scope.clientname.CLIENT_NAME,
-      CLIENT_ID   : $scope.clientname.CLIENT_ID
+      ID: $scope.boxId,
+      MEASURES: $scope.boxDimensions,
+      CLIENT_NAME: $scope.clientname.CLIENT_NAME,
+      CLIENT_ID: $scope.clientname.CLIENT_ID
     };
 
     ModalService.showModal({
@@ -298,13 +299,13 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
         operationURL: '/insertBoxMeasure',
         dataObj: dataToInsert
       }
-    }).then(function(modal) {
-        modal.element.modal();
-        modal.close.then(function(result) {
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
         if (!result) {
           $scope.complexResult = "Modal forcibly closed..."
         } else {
-          $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
         }
       });
     });
@@ -312,11 +313,11 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
   };
 
   //INSERT EMPLOYEE
-  $scope.insertEmployee = function() {
+  $scope.insertEmployee = function () {
     var dataToInsert = {
-      EMPLOYEE_ID       : $scope.employeeId,
-      EMPLOYEE_NAME     : $scope.employeeName,
-      EMPLOYEE_FUNCTION : $scope.employeeFunction
+      EMPLOYEE_ID: $scope.employeeId,
+      EMPLOYEE_NAME: $scope.employeeName,
+      EMPLOYEE_FUNCTION: $scope.employeeFunction
     };
 
     ModalService.showModal({
@@ -328,13 +329,13 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
         operationURL: '/insertEmployee',
         dataObj: dataToInsert
       }
-    }).then(function(modal) {
-        modal.element.modal();
-        modal.close.then(function(result) {
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
         if (!result) {
           $scope.complexResult = "Modal forcibly closed..."
         } else {
-          $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
         }
       });
     });
@@ -351,10 +352,10 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
 
 //CONFIGURATIONS  CONTROLER
 app.controller('homeController', function ($scope, $http, $rootScope) {
-   
+
   $rootScope.class = 'home-page';
 
-  $rootScope.name= "TouchLabel";
+  $rootScope.name = "TouchLabel";
 
   $scope.numberArticleLabelsToPrint = 0;
   $scope.numberBoxLabelsToPrint = 0;
@@ -362,51 +363,51 @@ app.controller('homeController', function ($scope, $http, $rootScope) {
   $scope.distinctOrdersWithBoxesToOrder = 0;
 
   //GET THE TOTAL NUMBER OF BOXES TO ORDER
-  var request = $http.get('/countAllOrderBoxes');    
+  var request = $http.get('/countAllOrderBoxes');
   request.then(function successCallback(response) {
-    $scope.numberBoxesToOrder              = response.data[0].TOTAL_BOXES_TO_ORDER;
-    $scope.distinctOrdersWithBoxesToOrder  = response.data[0].NUMBER_DISTINCT_ORDERS;
+    $scope.numberBoxesToOrder = response.data[0].TOTAL_BOXES_TO_ORDER;
+    $scope.distinctOrdersWithBoxesToOrder = response.data[0].NUMBER_DISTINCT_ORDERS;
   });
 
   //GET THE TOTAL NUMBER OF ARTICLE AND BOX LABELS TO PRINT
-  var request = $http.get('/countLabelsToPrint');    
+  var request = $http.get('/countLabelsToPrint');
   request.then(function successCallback(response) {
-    $scope.numberArticleLabelsToPrint  = response.data[0].ARTICLE_LABELS_NUMBER;
-    $scope.numberBoxLabelsToPrint  = response.data[0].BOX_LABELS_NUMBER;
+    $scope.numberArticleLabelsToPrint = response.data[0].ARTICLE_LABELS_NUMBER;
+    $scope.numberBoxLabelsToPrint = response.data[0].BOX_LABELS_NUMBER;
   });
 
   $scope.productionLast7Days = [];
-  $scope.dataProduction      = [];
-  $scope.productionDays      = [];
-  $scope.dataProduction2      = [];
-  $scope.dataProduction3     = [];
+  $scope.dataProduction = [];
+  $scope.productionDays = [];
+  $scope.dataProduction2 = [];
+  $scope.dataProduction3 = [];
   $scope.seriesTest = ['Produtos Produzidos', 'Valor em EUR'];
 
-  $scope.options = { legend: { display: true } }; 
+  $scope.options = { legend: { display: true } };
 
-  var request = $http.get('/getProductionLast7Days');    
+  var request = $http.get('/getProductionLast7Days');
   request.then(function successCallback(response) {
-      $scope.productionLast7Days = response.data;
+    $scope.productionLast7Days = response.data;
 
-      for(i=0; i < $scope.productionLast7Days.length; i++) {
-          //var dateToParse = $scope.productionLast7Days[i].DATE;
-          //$scope.productionDays.push(dateToParse.substring(0, dateToParse.indexOf('T')));
-          $scope.productionDays.push($scope.productionLast7Days[i].INTERNAL_PRODUCT_ID);
-          //$scope.productionDays.push($scope.productionLast7Days[i].PRODUCT_NAME);
-          $scope.dataProduction.push($scope.productionLast7Days[i].TOTAL_WEEK_PRODUCTION);
-          $scope.dataProduction2.push($scope.productionLast7Days[i].TOTAL_WEEK_VALUE_IN_EUR);
-      }
+    for (i = 0; i < $scope.productionLast7Days.length; i++) {
+      //var dateToParse = $scope.productionLast7Days[i].DATE;
+      //$scope.productionDays.push(dateToParse.substring(0, dateToParse.indexOf('T')));
+      $scope.productionDays.push($scope.productionLast7Days[i].INTERNAL_PRODUCT_ID);
+      //$scope.productionDays.push($scope.productionLast7Days[i].PRODUCT_NAME);
+      $scope.dataProduction.push($scope.productionLast7Days[i].TOTAL_WEEK_PRODUCTION);
+      $scope.dataProduction2.push($scope.productionLast7Days[i].TOTAL_WEEK_VALUE_IN_EUR);
+    }
 
-      $scope.dataProduction3.push($scope.dataProduction);
-      $scope.dataProduction3.push($scope.dataProduction2);
+    $scope.dataProduction3.push($scope.dataProduction);
+    $scope.dataProduction3.push($scope.dataProduction2);
 
-      },
-      function errorCallback(data){
-          console.log('Error: ' + data);
-  });
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
 
   $scope.labels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-  $scope.series = ['Series A', 'Series B',  'Series C',  'Series D'];
+  $scope.series = ['Series A', 'Series B', 'Series C', 'Series D'];
   $scope.options = { legend: { display: true, position: 'bottom' } };
   $scope.colours = ['#bc0b1a', '#c7b000'];
 
@@ -416,7 +417,7 @@ app.controller('homeController', function ($scope, $http, $rootScope) {
     [23, 34, 55, 33, 67, 18, 60],
     [23, 32, 34, 45, 84, 34, 70]
   ];
-  
+
 
 });
 
@@ -426,22 +427,22 @@ app.controller('InsertClientController', function ($scope, $http, $rootScope, $r
 
   $scope.data = [];
   $rootScope.class = 'not-home';
-  $rootScope.name="Inserir um novo cliente";
+  $rootScope.name = "Inserir um novo cliente";
 
   var clientImageDefault = 'client-default.png';
   $scope.image = '/images/' + clientImageDefault;
 
-/*   $scope.CLIENT_ID = CLIENT_ID;
-  $scope.CLIENT_NAME = CLIENT_NAME;
-  $scope.FIRST_ADDRESS = FIRST_ADDRESS;
-  $scope.LOCATION = LOCATION;
-  $scope.COUNTRY = COUNTRY;
-  $scope.COUNTRY_CODE = COUNTRY_CODE;
-  $scope.POSTAL_CODE = POSTAL_CODE;
-  $scope.NIF = NIF;
-  $scope.COIN = COIN;
-  $scope.PHONE_NUMBER = PHONE_NUMBER;
-  $scope.PERSON_TO_CONTACT = PERSON_TO_CONTACT; */
+  /*   $scope.CLIENT_ID = CLIENT_ID;
+    $scope.CLIENT_NAME = CLIENT_NAME;
+    $scope.FIRST_ADDRESS = FIRST_ADDRESS;
+    $scope.LOCATION = LOCATION;
+    $scope.COUNTRY = COUNTRY;
+    $scope.COUNTRY_CODE = COUNTRY_CODE;
+    $scope.POSTAL_CODE = POSTAL_CODE;
+    $scope.NIF = NIF;
+    $scope.COIN = COIN;
+    $scope.PHONE_NUMBER = PHONE_NUMBER;
+    $scope.PERSON_TO_CONTACT = PERSON_TO_CONTACT; */
 
   $scope.save = function () {
     var dataObj = {
@@ -455,33 +456,33 @@ app.controller('InsertClientController', function ($scope, $http, $rootScope, $r
       COIN: $scope.coin,
       PHONE_NUMBER: $scope.phonenumber,
       PERSON_TO_CONTACT: $scope.persontocontact,
-      IMAGE_PATH : '/images',
-      IMAGE_NAME : clientImageDefault
+      IMAGE_PATH: '/images',
+      IMAGE_NAME: clientImageDefault
     };
 
-    $( "#create-client-form" ).validate( {
+    $("#create-client-form").validate({
       rules: {
-          clientname: "required",
-          firstaddress: "required",
-          location: "required",
-          postalcode: "required",
-          country: "required"
+        clientname: "required",
+        firstaddress: "required",
+        location: "required",
+        postalcode: "required",
+        country: "required"
       },
       messages: {
-          clientname: "Por favor insira o nome do Cliente",
-          firstaddress: "Por favor insira o endereço do Cliente",
-          location: "Por favor insira a cidade do Cliente",
-          postalcode: "Por favor insira o Código Postal do Cliente",
-          country: "Por favor insira o País do Cliente"
+        clientname: "Por favor insira o nome do Cliente",
+        firstaddress: "Por favor insira o endereço do Cliente",
+        location: "Por favor insira a cidade do Cliente",
+        postalcode: "Por favor insira o Código Postal do Cliente",
+        country: "Por favor insira o País do Cliente"
       }
-    } );    
+    });
 
-    if($("#create-client-form").valid()){
+    if ($("#create-client-form").valid()) {
 
-      var res = $http.post('/insertClient', dataObj).then(function(data, status, headers, config) {
+      var res = $http.post('/insertClient', dataObj).then(function (data, status, headers, config) {
         var currentPageTemplate = $state.current.templateUrl;
         $templateCache.remove(currentPageTemplate);
-        $state.transitionTo("clientstate", {}) ;
+        $state.transitionTo("clientstate", {});
 
       });
 
@@ -489,53 +490,53 @@ app.controller('InsertClientController', function ($scope, $http, $rootScope, $r
   };
 
   $scope.editImage = function () {
-    $state.transitionTo("editImageClient", {'clientid': $scope.clientid, 'clientname': $scope.clientname, 'imagename': clientImageDefault}) ;
+    $state.transitionTo("editImageClient", { 'clientid': $scope.clientid, 'clientname': $scope.clientname, 'imagename': clientImageDefault });
   };
 
-  $scope.goBack = function() {
-    $state.transitionTo("clientstate", {}) ;
+  $scope.goBack = function () {
+    $state.transitionTo("clientstate", {});
   };
-   
+
 });
 
 //EDIT CLIENT CONTROLLER
 app.controller('editclient', function ($scope, $http, $rootScope, $state, $stateParams) {
-  
+
   $rootScope.class = 'not-home';
-  $rootScope.name="Editar o cliente " + $stateParams.clientname;
+  $rootScope.name = "Editar o cliente " + $stateParams.clientname;
   $scope.clientid = $stateParams.clientid;
 
   $scope.image = '/images' + '/' + $stateParams.imagename;
 
   $scope.clientData = [];
-  var request = $http.get('/editClient/' + encodeURIComponent($scope.clientid));    
+  var request = $http.get('/editClient/' + encodeURIComponent($scope.clientid));
   request.then(function successCallback(response) {
-      $scope.clientData  = response.data;
+    $scope.clientData = response.data;
 
-      $scope.clientname = $scope.clientData[0].CLIENT_NAME;
-      $scope.firstaddress = $scope.clientData[0].FIRST_ADDRESS;
-      $scope.location = $scope.clientData[0].LOCATION;
-      $scope.country = $scope.clientData[0].COUNTRY;
-      $scope.countrycode = $scope.clientData[0].COUNTRY_CODE;
-      $scope.postalcode = $scope.clientData[0].POSTAL_CODE;
-      $scope.nif = $scope.clientData[0].NIF;
-      $scope.coin = $scope.clientData[0].COIN;
-      $scope.phonenumber = $scope.clientData[0].PHONE_NUMBER;
-      $scope.persontocontact = $scope.clientData[0].PERSON_TO_CONTACT;
+    $scope.clientname = $scope.clientData[0].CLIENT_NAME;
+    $scope.firstaddress = $scope.clientData[0].FIRST_ADDRESS;
+    $scope.location = $scope.clientData[0].LOCATION;
+    $scope.country = $scope.clientData[0].COUNTRY;
+    $scope.countrycode = $scope.clientData[0].COUNTRY_CODE;
+    $scope.postalcode = $scope.clientData[0].POSTAL_CODE;
+    $scope.nif = $scope.clientData[0].NIF;
+    $scope.coin = $scope.clientData[0].COIN;
+    $scope.phonenumber = $scope.clientData[0].PHONE_NUMBER;
+    $scope.persontocontact = $scope.clientData[0].PERSON_TO_CONTACT;
 
-      },
-      function errorCallback(data){
-          console.log('Error: ' + data);
-  });
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
 
   //$scope.$watch('persontocontact', function(){
   //  console.log($scope.persontocontact);
   //});
 
-  $scope.updateClient = function() {
+  $scope.updateClient = function () {
 
     //var xyz = $scope.persontocontact;
-    
+
     var dataObj = {
       CLIENT_ID: $scope.clientid,
       CLIENT_NAME: $scope.clientname,
@@ -548,28 +549,28 @@ app.controller('editclient', function ($scope, $http, $rootScope, $state, $state
       COIN: $scope.coin,
       PHONE_NUMBER: $scope.phonenumber,
       PERSON_TO_CONTACT: $scope.persontocontact
-    };	
+    };
 
-    $( "#client-edit-form" ).validate( {
+    $("#client-edit-form").validate({
       rules: {
-          clientname: "required",
-          firstaddress: "required",
-          location: "required",
-          postalcode: "required",
-          country: "required"
+        clientname: "required",
+        firstaddress: "required",
+        location: "required",
+        postalcode: "required",
+        country: "required"
       },
       messages: {
-          clientname: "Por favor insira o nome do Cliente",
-          firstaddress: "Por favor insira o endereço do Cliente",
-          location: "Por favor insira a cidade do Cliente",
-          postalcode: "Por favor insira o Código Postal do Cliente",
-          country: "Por favor insira o País do Cliente"
+        clientname: "Por favor insira o nome do Cliente",
+        firstaddress: "Por favor insira o endereço do Cliente",
+        location: "Por favor insira a cidade do Cliente",
+        postalcode: "Por favor insira o Código Postal do Cliente",
+        country: "Por favor insira o País do Cliente"
       }
-    } );    
-    
-    if($("#client-edit-form").valid()){
+    });
+
+    if ($("#client-edit-form").valid()) {
       //var res = $http.post('/updateproduct', dataObj);
-      var res = $http.post('/updateClient', dataObj).then(function(data, status, headers, config) {
+      var res = $http.post('/updateClient', dataObj).then(function (data, status, headers, config) {
         $state.go("clientstate", null, { reload: true });
       });
     };
@@ -578,35 +579,35 @@ app.controller('editclient', function ($scope, $http, $rootScope, $state, $state
   };
 
   $scope.editImage = function () {
-    $state.transitionTo("editImageClient", {'clientid': $scope.clientid, 'clientname': $scope.clientname, 'imagename': $stateParams.imagename}) ;
+    $state.transitionTo("editImageClient", { 'clientid': $scope.clientid, 'clientname': $scope.clientname, 'imagename': $stateParams.imagename });
   };
 
-  $scope.goBack = function() {
-    $state.transitionTo("clientstate", {}) ;
+  $scope.goBack = function () {
+    $state.transitionTo("clientstate", {});
   };
-   
+
 });
 
 
 app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$stateParams', 'sendZPLCodeToPrinter', function ($scope, $http, $rootScope, $state, $stateParams, sendZPLCodeToPrinter) {
-  
+
   $rootScope.class = 'not-home';
-  $rootScope.name="Imprimir etiquetas do Produto " + $stateParams.productName;
+  $rootScope.name = "Imprimir etiquetas do Produto " + $stateParams.productName;
   $scope.data = [];
   var productId = $stateParams.productId;
-  var request = $http.get('/labelToPrintForProduct/'+  encodeURIComponent(productId));    
+  var request = $http.get('/labelToPrintForProduct/' + encodeURIComponent(productId));
   request.then(function successCallback(response) {
-      $scope.data  = response.data;
-      console.log(response.data);
-      //$scope.image = '/images' + '/' + $scope.data.image_name;
-      return  $scope.data; 
+    $scope.data = response.data;
+    console.log(response.data);
+    //$scope.image = '/images' + '/' + $scope.data.image_name;
+    return $scope.data;
   },
-  function errorCallback(data){
+    function errorCallback(data) {
       console.log('Error: ' + data);
-  });
+    });
 
   //Send the Final ZPL to the printer
-  function sendZplToPrinter (PrinterIPAddress, PrinterPort, Zpl) {
+  function sendZplToPrinter(PrinterIPAddress, PrinterPort, Zpl) {
     //alert("Zpl Enviado para a Impressora" + Zpl);
     console.log("Zpl Enviado para a Impressora" + Zpl);
 
@@ -617,195 +618,189 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
     var request = new XMLHttpRequest();
 
     request.onload = function () {
-     var status = request.status; // HTTP response status, e.g., 200 for "200 OK"
-     var data = request.responseText; // Returned data, e.g., an HTML document.
-     output.innerHTML = "Status: " + status + "<br>" + data;
+      var status = request.status; // HTTP response status, e.g., 200 for "200 OK"
+      var data = request.responseText; // Returned data, e.g., an HTML document.
+      output.innerHTML = "Status: " + status + "<br>" + data;
     }
 
     request.open(method, url, async);
-   
+
     // Actually sends the request to the server.
-  
+
     console.log('sending...');
     request.timeout = 100;
     request.send(Zpl);
     //request.done;
-   
+
     console.log('end');
   };
 
-    String.prototype.reverse = function()
-    {
-      splitext = this.split("");
-      revertext = splitext.reverse();
-      reversed = revertext.join("");
-      return reversed;
+  String.prototype.reverse = function () {
+    splitext = this.split("");
+    revertext = splitext.reverse();
+    reversed = revertext.join("");
+    return reversed;
+  }
+
+  // function to calculate EAN / UPC checkdigit
+  function eanCheckDigit(barCode) {
+    var result = 0;
+    var rs = barCode.reverse();
+    for (counter = 0; counter < rs.length; counter++) {
+      result = result + parseInt(rs.charAt(counter)) * Math.pow(3, ((counter + 1) % 2));
     }
- 
-    // function to calculate EAN / UPC checkdigit
-    function eanCheckDigit(barCode)
-    {
-      var result = 0;
-      var rs = barCode.reverse();
-      for (counter = 0; counter < rs.length; counter++)
-      {
-        result = result + parseInt(rs.charAt(counter)) * Math.pow(3, ((counter+1) % 2));
-      }
-      return (10 - (result % 10)) % 10;
-    }
+    return (10 - (result % 10)) % 10;
+  }
 
   //$scope.image = '/images' + '/' + 'vasoAzul200x200.jpg';
   console.log("SCOPEDATA: " + $scope.data);
 
   //PRINT LABEL BOX
   $scope.printLabelBox = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductName, ProductID, ZPLString, BoxBarCodeType, Quantity, NumLabelsToPrint) {
-  
-  if(BoxBarCodeType == 'GS1-128')
-  {
-    
-    //alert("ZPL: " + ZPLString);
-    //var cd = eanCheckDigit("0871886150940");
-    //alert("Bar Code Number: " + BarCodeNumber);
-    var checkDigit = eanCheckDigit( '' + BarCodeNumber);
-    //alert("CheckDigit: " + checkDigit);
 
-    
-    function padDigits(number, digits) {
-      return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
-    }
+    if (BoxBarCodeType == 'GS1-128') {
 
-    var Quantity_full = padDigits(Quantity, 4);
+      //alert("ZPL: " + ZPLString);
+      //var cd = eanCheckDigit("0871886150940");
+      //alert("Bar Code Number: " + BarCodeNumber);
+      var checkDigit = eanCheckDigit('' + BarCodeNumber);
+      //alert("CheckDigit: " + checkDigit);
 
-    //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
-    //GS1-128 BarCode
-    var EanWithCheckDigit = BarCodeNumber + checkDigit;
-    var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
 
-    //alert("fullEan: " + FullEan);
-
-    function replaceAll(str, map){
-      for(key in map){
-          str2 = str.replace(key, map[key]);
-          str=str2;
-          str2=null;
+      function padDigits(number, digits) {
+        return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
       }
-      return str;
+
+      var Quantity_full = padDigits(Quantity, 4);
+
+      //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
+      //GS1-128 BarCode
+      var EanWithCheckDigit = BarCodeNumber + checkDigit;
+      var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
+
+      //alert("fullEan: " + FullEan);
+
+      function replaceAll(str, map) {
+        for (key in map) {
+          str2 = str.replace(key, map[key]);
+          str = str2;
+          str2 = null;
+        }
+        return str;
+      }
+
+      var map = {
+        '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+        '_QUANTIDADE_EXTENDIDA': Quantity_full,
+        '_FULL_EAN': FullEan,
+        '_NUM_ARTIGO': ProductID,
+        '_NOME_ARTIGO': ProductName,
+        '_QUANTIDADE': Quantity,
+        '_PRINT_QUANTITY': NumLabelsToPrint
+      };
+
+      var sendToPrinter = replaceAll(ZPLString, map);
+
+      sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
     }
 
-    var map = {
-      '_EAN_CHECK_DIGIT' : EanWithCheckDigit,
-      '_QUANTIDADE_EXTENDIDA' : Quantity_full,
-      '_FULL_EAN' : FullEan,
-      '_NUM_ARTIGO' : ProductID,
-      '_NOME_ARTIGO' : ProductName,
-      '_QUANTIDADE' : Quantity,
-      '_PRINT_QUANTITY'  : NumLabelsToPrint
-    };
+    if (BoxBarCodeType == 'EAN13') {
+      //alert("ZPL: " + ZPLString);
+      //var cd = eanCheckDigit("0871886150940");
+      //alert("Bar Code Number: " + BarCodeNumber);
+      var checkDigit = eanCheckDigit('' + BarCodeNumber);
+      //alert("CheckDigit: " + checkDigit);
 
-    var sendToPrinter = replaceAll(ZPLString, map);
 
-    sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
+      function padDigits(number, digits) {
+        return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+      }
+
+      var Quantity_full = padDigits(Quantity, 4);
+
+      //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
+      //GS1-128 BarCode
+      var EanWithCheckDigit = BarCodeNumber + checkDigit;
+      //var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
+
+      //alert("fullEan: " + FullEan);
+
+      function replaceAll(str, map) {
+        for (key in map) {
+          str2 = str.replace(key, map[key]);
+          str = str2;
+          str2 = null;
+        }
+        return str;
+      }
+
+      var map = {
+        '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+        '_QUANTIDADE_EXTENDIDA': Quantity_full,
+        '_FULL_EAN': FullEan,
+        '_NUM_ARTIGO': ProductID,
+        '_NOME_ARTIGO': ProductName,
+        '_QUANTIDADE': Quantity,
+        '_PRINT_QUANTITY': NumLabelsToPrint
+      };
+
+      var sendToPrinter = replaceAll(ZPLString, map);
+
+      sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
+    }
+
   }
 
-  if(BoxBarCodeType == 'EAN13')
-  {
-    //alert("ZPL: " + ZPLString);
-    //var cd = eanCheckDigit("0871886150940");
-    //alert("Bar Code Number: " + BarCodeNumber);
-    var checkDigit = eanCheckDigit( '' + BarCodeNumber);
-    //alert("CheckDigit: " + checkDigit);
+  //PRINT LABEL ARTICLE
+  $scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductName, ProductID, ZPLString, ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, BoxBarCodeType, Quantity) {
 
-    
-    function padDigits(number, digits) {
-      return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+    if (BarCodeNumber.charAt(0) === '0') {
+      BarCodeNumber = BarCodeNumber.slice(1);
     }
-
-    var Quantity_full = padDigits(Quantity, 4);
-
-    //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
-    //GS1-128 BarCode
-    var EanWithCheckDigit = BarCodeNumber + checkDigit;
-    //var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
-
-    //alert("fullEan: " + FullEan);
-
-    function replaceAll(str, map){
-      for(key in map){
-          str2 = str.replace(key, map[key]);
-          str=str2;
-          str2=null;
-      }
-      return str;
-    }
-
-    var map = {
-      '_EAN_CHECK_DIGIT' : EanWithCheckDigit,
-      '_QUANTIDADE_EXTENDIDA' : Quantity_full,
-      '_FULL_EAN' : FullEan,
-      '_NUM_ARTIGO' : ProductID,
-      '_NOME_ARTIGO' : ProductName,
-      '_QUANTIDADE' : Quantity,
-      '_PRINT_QUANTITY'  : NumLabelsToPrint
-    };
-
-    var sendToPrinter = replaceAll(ZPLString, map);
-
-    sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
-  }
-
-}
-
-//PRINT LABEL ARTICLE
-$scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductName, ProductID, ZPLString, ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, BoxBarCodeType, Quantity) {
-
-	if( BarCodeNumber.charAt( 0 ) === '0' ) {
-		BarCodeNumber = BarCodeNumber.slice( 1 );
-	}
 
     //alert("ZPL: " + ZPLString);
     //var cd = eanCheckDigit("0871886150940");
     //alert("Bar Code Number: " + BarCodeNumber);
-    var checkDigit = eanCheckDigit( '' + BarCodeNumber);
+    var checkDigit = eanCheckDigit('' + BarCodeNumber);
     //alert("CheckDigit: " + checkDigit);
-    
+
     //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
     //GS1-128 BarCode
     var EanWithCheckDigit = BarCodeNumber + checkDigit;
     var quantityToReplace = 0;
     var labelsWith2Columns = false;
 
-    function replaceAll(str, map){
-      for(key in map){
-          str2 = str.replace(key, map[key]);
-          str=str2;
-          str2=null;
+    function replaceAll(str, map) {
+      for (key in map) {
+        str2 = str.replace(key, map[key]);
+        str = str2;
+        str2 = null;
       }
       return str;
     }
 
     var map = {
-      '_EAN_CHECK_DIGIT' : EanWithCheckDigit,
-      '_NUM_ARTIGO' : ProductID,
-      '_PRINT_QUANTITY' : quantityToReplace
+      '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+      '_NUM_ARTIGO': ProductID,
+      '_PRINT_QUANTITY': quantityToReplace
     };
 
-    if(labelsWith2Columns == false)
-    {
+    if (labelsWith2Columns == false) {
       quantityToReplace = Quantity;
       var sendToPrinter = replaceAll(ZPLString, map);
     } else {
-      if(Quantity == 1) {
+      if (Quantity == 1) {
         //ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL  --> Only 1 label is written and the other is blank
         //ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL --> Both Labels are written
         quantityToReplace = 1;
         var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
         return;
       }
-      if(Quantity % 2 == 0) {
+      if (Quantity % 2 == 0) {
         quantityToReplace = Quantity / 2;
         var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
       }
-      if(Quantity % 2 != 0) {
+      if (Quantity % 2 != 0) {
         quantityToReplace = Quantity / 2;
         var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
 
@@ -815,29 +810,29 @@ $scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumbe
 
     }
     sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
-}
+  }
 
 
 }]);
 
 app.controller('labels', function ($scope, $http, $rootScope) {
-   
-  $rootScope.class = 'not-home';
-  $rootScope.name= "Listar Encomendas para o Cliente";
-  //var image = '/images' + '/' + 'edelmanLogo.jpg';
-   $scope.data = [];
-     var request = $http.get('/listlabels');    
-   request.then(function successCallback(response) {
-       $scope.data  = response.data;
-       $scope.data.push({imagePath: '/images', imageName: 'edelmanLogo.jpg'});
-       return  $scope.data; 
-   },
-   function errorCallback(data){
-       console.log('Error: ' + data);
-   });
 
-   $scope.printLabel = function (PrinterIPAddress, PrinterPort, ZPLString) {
-     console.log(ZPLString);
+  $rootScope.class = 'not-home';
+  $rootScope.name = "Listar Encomendas para o Cliente";
+  //var image = '/images' + '/' + 'edelmanLogo.jpg';
+  $scope.data = [];
+  var request = $http.get('/listlabels');
+  request.then(function successCallback(response) {
+    $scope.data = response.data;
+    $scope.data.push({ imagePath: '/images', imageName: 'edelmanLogo.jpg' });
+    return $scope.data;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
+
+  $scope.printLabel = function (PrinterIPAddress, PrinterPort, ZPLString) {
+    console.log(ZPLString);
     //var url = "http://" + "192.168.1.10:9100" + "/pstprnt";
     //var url = "http://" + "192.168.1.10:9100";
     var url = "http://" + PrinterIPAddress + ":" + PrinterPort;
@@ -856,124 +851,122 @@ app.controller('labels', function ($scope, $http, $rootScope) {
     //request.setRequestHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     //request.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     //request.setRequestHeader("Content-Length", ZPLString.length);
-  
+
 
     // Actually sends the request to the server.
-    
+
     console.log('sending...');
     //request.timeout = 100;
     request.send(ZPLString);
     request.abort();
     //request.done;
-    
+
     console.log('end');
-  
-   }
+
+  }
 
 });
 
 //Controller for All the Orders
 app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams', '$state', 'ModalService', 'productInOtherOpenOrdersOrOverProduction', 'productInOtherOpenOrdersForPainting', function ($scope, $http, $rootScope, $stateParams, $state, ModalService, productInOtherOpenOrdersOrOverProduction) {
-   
+
   $rootScope.class = 'not-home';
-  $rootScope.name= "Lista de Produtos da Encomenda " + $stateParams.orderId;
+  $rootScope.name = "Lista de Produtos da Encomenda " + $stateParams.orderId;
   $scope.products = [];
   var orderId = $stateParams.orderId;
   $scope.orderid = $stateParams.orderId;
   $scope.clientname = $stateParams.clientname;
 
-  $scope.$watch('productname', function(){
+  $scope.$watch('productname', function () {
     $scope.productid = $scope.productname;
     console.log($scope.productname);
   });
 
-  $scope.$watch('productid', function(){
+  $scope.$watch('productid', function () {
     $scope.productname = $scope.productid;
     console.log($scope.productid);
   });
 
   $scope.dataProducts = [];
 
-  var request = $http.get('/productForModal');    
+  var request = $http.get('/productForModal');
   request.then(function successCallback(response) {
-  $scope.dataProducts  = response.data;
-  return  $scope.dataProducts; 
+    $scope.dataProducts = response.data;
+    return $scope.dataProducts;
   },
-  function errorCallback(data){
-  console.log('Error: ' + data);
-  });
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
 
-  var request = $http.get('/orderproducts/' + orderId);    
+  var request = $http.get('/orderproducts/' + orderId);
   request.then(function successCallback(response) {
-       $scope.products  = response.data;
+    $scope.products = response.data;
 
-       for(i=0; i < $scope.products.length; i++) {
-        //IF em_producao
-        if($scope.products[i].ORDER_PRODUCT_STATUS == 'em_producao')
-        {
-          var percentage = Math.round( $scope.products[i].TOTAL_PRODUCTS_PRODUCED  / $scope.products[i].TOTAL_QUANTITY_ORDERED * 100);
-          $scope.products[i].percent= percentage;
-          $scope.products[i].width= percentage;
-  
-          $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
-          $scope.products[i].ORDER_PRODUCT_STATUS = 'Em Produção';
-          $scope.products[i].INSERT_PRODUCTION = true;  
+    for (i = 0; i < $scope.products.length; i++) {
+      //IF em_producao
+      if ($scope.products[i].ORDER_PRODUCT_STATUS == 'em_producao') {
+        var percentage = Math.round($scope.products[i].TOTAL_PRODUCTS_PRODUCED / $scope.products[i].TOTAL_QUANTITY_ORDERED * 100);
+        $scope.products[i].percent = percentage;
+        $scope.products[i].width = percentage;
 
-          $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PRODUCED;            
-        }
-        
-        //IF em_pintura
-        if($scope.products[i].ORDER_PRODUCT_STATUS == 'em_pintura')
-        {
-          var percentage = Math.round( $scope.products[i].TOTAL_PRODUCTS_PAINTED  / $scope.products[i].TOTAL_QUANTITY_ORDERED * 100);
-          $scope.products[i].percent= percentage;
-          $scope.products[i].width= percentage;
-          //NEWSTYLES
-          if(percentage > 33) {
-            $scope.products[i].progressBarColor = "#e31b1b";
-          }
-          if(percentage >= 34 && percentage <= 66) {
-            $scope.products[i].progressBarColor = "#e3cf1b";
-          }
-          if( percentage > 66) {
-            $scope.products[i].progressBarColor = "#1be36b";
-          }
-          
-          $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
-          $scope.products[i].ORDER_PRODUCT_STATUS = 'Em Pintura';
-          $scope.products[i].INSERT_PAINTING = true;    
+        $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
+        $scope.products[i].ORDER_PRODUCT_STATUS = 'Em Produção';
+        $scope.products[i].INSERT_PRODUCTION = true;
 
-          $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PAINTED;
-        }
-
-        //IF fechado_na_encomenda
-        if($scope.products[i].ORDER_PRODUCT_STATUS == 'fechado_na_encomenda'){
-          $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
-          $scope.products[i].ORDER_PRODUCT_STATUS = 'Fechado na Encomenda';
-
-          $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PRODUCED;  
-        }
-
+        $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PRODUCED;
       }
-       return  $scope.products; 
-   },
-   function errorCallback(data){
-       console.log('Error: ' + data);
-   });
+
+      //IF em_pintura
+      if ($scope.products[i].ORDER_PRODUCT_STATUS == 'em_pintura') {
+        var percentage = Math.round($scope.products[i].TOTAL_PRODUCTS_PAINTED / $scope.products[i].TOTAL_QUANTITY_ORDERED * 100);
+        $scope.products[i].percent = percentage;
+        $scope.products[i].width = percentage;
+        //NEWSTYLES
+        if (percentage > 33) {
+          $scope.products[i].progressBarColor = "#e31b1b";
+        }
+        if (percentage >= 34 && percentage <= 66) {
+          $scope.products[i].progressBarColor = "#e3cf1b";
+        }
+        if (percentage > 66) {
+          $scope.products[i].progressBarColor = "#1be36b";
+        }
+
+        $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
+        $scope.products[i].ORDER_PRODUCT_STATUS = 'Em Pintura';
+        $scope.products[i].INSERT_PAINTING = true;
+
+        $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PAINTED;
+      }
+
+      //IF fechado_na_encomenda
+      if ($scope.products[i].ORDER_PRODUCT_STATUS == 'fechado_na_encomenda') {
+        $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
+        $scope.products[i].ORDER_PRODUCT_STATUS = 'Fechado na Encomenda';
+
+        $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PRODUCED;
+      }
+
+    }
+    return $scope.products;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
 
   //GET THE EMPLOYEES INFORMATION
   $scope.dataEmployees = [];
-  var request = $http.get('/employees');    
+  var request = $http.get('/employees');
   request.then(function successCallback(response) {
-   $scope.dataEmployees  = response.data;
-   return  $scope.dataEmployees; 
+    $scope.dataEmployees = response.data;
+    return $scope.dataEmployees;
   },
-  function errorCallback(data){
-   console.log('Error: ' + data);
-  });
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
 
   //EDIT PRODUCT IN AN ORDER
-  $scope.showEditProductModal = function(productId, productName, qtyencomenda) {
+  $scope.showEditProductModal = function (productId, productName, qtyencomenda) {
     ModalService.showModal({
       templateUrl: "../modal/editOrderProductModal.html",
       controller: "ProductUpdateModalController",
@@ -984,16 +977,16 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         productname: productName,
         qtyencomenda: qtyencomenda
       }
-    }).then(function(modal) {
-    modal.element.modal();
-    modal.close.then(function(result) {
-      if (!result) {
-        $scope.complexResult = "Modal forcibly closed..."
-      } else {
-        $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
-      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
     });
-   });
   };
 
   //CREATE PRODDUCT IN THE ORDER
@@ -1002,22 +995,22 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
     var dataObj = {
       ORDER_ID: $scope.orderid,
-      INTERNAL_PRODUCT_ID : $scope.productid.INTERNAL_PRODUCT_ID,
+      INTERNAL_PRODUCT_ID: $scope.productid.INTERNAL_PRODUCT_ID,
       CUSTOMER_PRODUCT_ID: $scope.productid.CUSTOMER_PRODUCT_ID,
       PRODUCT_NAME: $scope.productid.PRODUCT_NAME,
       TOTAL_QUANTITY_ORDERED: $scope.qtyencomenda,
       QUANTITY_PRODUCED: $scope.qtyproduzida,
       ORDER_PRODUCT_STATUS: $scope.orderproductstatus
-    };	
-    
-    var res = $http.post('/insertorderproduct', dataObj).then(function(data, status, headers, config) {
+    };
+
+    var res = $http.post('/insertorderproduct', dataObj).then(function (data, status, headers, config) {
       $state.reload();
     });
 
   };
 
   //INSERT PRODUCT IN AN ORDER
-  $scope.insertOrderProductModal = function() {
+  $scope.insertOrderProductModal = function () {
     ModalService.showModal({
       templateUrl: "../modal/insertOrderProductModal.html",
       controller: "ProductCreateModalController",
@@ -1026,21 +1019,21 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         title: "Adicionar Produto",
         orderid: $stateParams.orderId
       }
-    }).then(function(modal) {
-    modal.element.modal();
-    modal.close.then(function(result) {
-      if (!result) {
-        $scope.complexResult = "Modal forcibly closed..."
-      } else {
-        $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
-      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
     });
-   });
   };
 
   //DELETE PRODUCT IN AN ORDER
-  $scope.deleteProductInOrder = function(productid, productname) {
-    
+  $scope.deleteProductInOrder = function (productid, productname) {
+
     ModalService.showModal({
       templateUrl: "../modal/yesno.html",
       controller: "ProductDeleteModalController",
@@ -1051,179 +1044,179 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         productid: productid,
         productname: productname
       }
-    }).then(function(modal) {
-    modal.element.modal();
-    modal.close.then(function(result) {
-      if (!result) {
-        $scope.complexResult = "Modal forcibly closed..."
-      } else {
-        $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
-      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
     });
-   });
   };
 
   //CLOSE THE PRODUCT IN PRODUCTION - ORDER THE BOXES
-  $scope.closeProductInProduction = function(internalproductid, customerproductid, productName, qtyorder, qtyproduced) {
+  $scope.closeProductInProduction = function (internalproductid, customerproductid, productName, qtyorder, qtyproduced) {
 
     //alert($stateParams.orderId);
 
     $scope.productTechSheet = [];
-    var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerproductid));    
+    var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerproductid));
     request.then(function successCallback(response) {
-       $scope.productTechSheet  = response.data;
+      $scope.productTechSheet = response.data;
 
       //IF THE BOX_ID OR BOX_MEASURES ARE NOT DEFINED IN THE PRODUCT TECHNICAL SHEET OF THE PRODUCT
       //THE PRODUCT CANNOT BE CLOSED IN THIS ORDER
-      if($scope.productTechSheet[0].Box_Id == null || $scope.productTechSheet[0].Box_Measures == null) {
+      if ($scope.productTechSheet[0].Box_Id == null || $scope.productTechSheet[0].Box_Measures == null) {
 
         var messageToSend = "";
-        if($scope.productTechSheet[0].CLIENT_NAME == null) {
+        if ($scope.productTechSheet[0].CLIENT_NAME == null) {
           messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o nome do Cliente. Edite o produto e insira o nome do cliente."
         }
-        if($scope.productTechSheet[0].Qty_By_Box == null && messageToSend == "") {
+        if ($scope.productTechSheet[0].Qty_By_Box == null && messageToSend == "") {
           messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por caixa. Edite a ficha técnica do produto e adicione a Quantidade por caixa para poder fechar o produto nesta encomenda."
         }
-        if($scope.productTechSheet[0].Box_Id == null && messageToSend == "") {
+        if ($scope.productTechSheet[0].Box_Id == null && messageToSend == "") {
           messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o número da Caixa. Edite a ficha técnica do produto e adicione o número da caixa para poder fechar o produto nesta encomenda."
         }
-        if($scope.productTechSheet[0].Box_Measures == null && messageToSend == "") {
+        if ($scope.productTechSheet[0].Box_Measures == null && messageToSend == "") {
           messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido as MEDIDAS da Caixa. Edite a ficha técnica do produto e adicione o número da caixa para poder fechar o produto nesta encomenda."
         }
-      
+
         ModalService.showModal({
-        templateUrl: "../modal/genericModal.html",
-        controller: "GenericController",
-        preClose: (modal) => { modal.element.modal('hide'); },
-        inputs: {
-          message: messageToSend
-        }
-        }).then(function(modal) {
-            modal.element.modal();
-            modal.close.then(function(result) {
-            if (!result) {
-              $scope.complexResult = "Modal forcibly closed..."
-            } else {
-              $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
-            }
-            });
-        });
-      } else {
-          //SHOW THE MODAL TO CLOSE THE PRODUCT IN PRODUCTION
-          ModalService.showModal({
-            templateUrl: "../modal/closeProductInProduction.html",
-            controller: "closeProductInOrderToProduction",
-            preClose: (modal) => { modal.element.modal('hide'); },
-            inputs: {
-              title: "Apagar Produto",
-              orderid: $stateParams.orderId,
-              internalproductid: internalproductid,
-              customerproductid: customerproductid,
-              productname: productName,
-              quantityordered: qtyorder,
-              totalproductsproduced: qtyproduced,
-              clientname: $scope.clientname,
-              boxmeasures: $scope.productTechSheet[0].Box_Measures,
-              boxid: $scope.productTechSheet[0].Box_Id,
-              qtybybox: $scope.productTechSheet[0].Qty_By_Box
-            }
-          }).then(function(modal) {
+          templateUrl: "../modal/genericModal.html",
+          controller: "GenericController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: messageToSend
+          }
+        }).then(function (modal) {
           modal.element.modal();
-          modal.close.then(function(result) {
+          modal.close.then(function (result) {
             if (!result) {
               $scope.complexResult = "Modal forcibly closed..."
             } else {
-              $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
             }
           });
-         });
+        });
+      } else {
+        //SHOW THE MODAL TO CLOSE THE PRODUCT IN PRODUCTION
+        ModalService.showModal({
+          templateUrl: "../modal/closeProductInProduction.html",
+          controller: "closeProductInOrderToProduction",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            title: "Apagar Produto",
+            orderid: $stateParams.orderId,
+            internalproductid: internalproductid,
+            customerproductid: customerproductid,
+            productname: productName,
+            quantityordered: qtyorder,
+            totalproductsproduced: qtyproduced,
+            clientname: $scope.clientname,
+            boxmeasures: $scope.productTechSheet[0].Box_Measures,
+            boxid: $scope.productTechSheet[0].Box_Id,
+            qtybybox: $scope.productTechSheet[0].Qty_By_Box
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
+        });
       }
-      return  $scope.productTechSheet; 
+      return $scope.productTechSheet;
     },
-        function errorCallback(data){
+      function errorCallback(data) {
         console.log('Error: ' + data);
-    });
+      });
 
   };
 
   //CLOSE THE PRODUCT FOR PAITING - CREATE THE LABELS RECORD TO PRINT
-  $scope.closeProductPainting = function(internalproductid, customerproductid, productName, qtyproduced) {
+  $scope.closeProductPainting = function (internalproductid, customerproductid, productName, qtyproduced) {
 
     $scope.productTechSheet = [];
-    var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerproductid));    
+    var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerproductid));
     request.then(function successCallback(response) {
-        $scope.productTechSheet  = response.data;
+      $scope.productTechSheet = response.data;
 
-        //IF the Qty_By_Box value is not defined in the TechSheet we cannot close the Product in Painting
-        //IF THE Qty_By_Box OR Qty_By_Pallet OR Bar_Code_Tech_Sheet ARE NOT DEFINED IN THE PRODUCT TECHNICAL SHEET OF THE PRODUCT
+      //IF the Qty_By_Box value is not defined in the TechSheet we cannot close the Product in Painting
+      //IF THE Qty_By_Box OR Qty_By_Pallet OR Bar_Code_Tech_Sheet ARE NOT DEFINED IN THE PRODUCT TECHNICAL SHEET OF THE PRODUCT
       //THE PRODUCT CANNOT BE CLOSED FOR PAINTING IN THIS ORDER
-      if($scope.productTechSheet[0].Qty_By_Box == null || $scope.productTechSheet[0].Qty_By_Pallet == null || $scope.productTechSheet[0].Bar_Code_Tech_Sheet ==null) {
+      if ($scope.productTechSheet[0].Qty_By_Box == null || $scope.productTechSheet[0].Qty_By_Pallet == null || $scope.productTechSheet[0].Bar_Code_Tech_Sheet == null) {
 
         var messageToSend = "";
-        if($scope.productTechSheet[0].Qty_By_Box == null) {
+        if ($scope.productTechSheet[0].Qty_By_Box == null) {
           messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por caixa. Edite a ficha técnica do produto e adicione a Quantidade por caixa para poder fechar o produto nesta encomenda."
         }
-        if($scope.productTechSheet[0].Qty_By_Pallet == null && messageToSend == "") {
+        if ($scope.productTechSheet[0].Qty_By_Pallet == null && messageToSend == "") {
           messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por Palete. Edite a ficha técnica do produto e adicione a Quantidade por Palete para poder fechar o produto nesta encomenda."
         }
-        if($scope.productTechSheet[0].Bar_Code_Tech_Sheet ==null && messageToSend == "") {
-              messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o Código de Barras. Edite a ficha técnica do produto e adicione o Código de Barras para poder fechar o produto nesta encomenda."
+        if ($scope.productTechSheet[0].Bar_Code_Tech_Sheet == null && messageToSend == "") {
+          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o Código de Barras. Edite a ficha técnica do produto e adicione o Código de Barras para poder fechar o produto nesta encomenda."
         }
-          
-            ModalService.showModal({
-            templateUrl: "../modal/genericModal.html",
-            controller: "GenericController",
-            preClose: (modal) => { modal.element.modal('hide'); },
-            inputs: {
-              message: messageToSend
-            }
-            }).then(function(modal) {
-                modal.element.modal();
-                modal.close.then(function(result) {
-                if (!result) {
-                  $scope.complexResult = "Modal forcibly closed..."
-                } else {
-                  $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
-                }
-                });
-            });
-          } 
-          else {
-              var qtyBoxLabelsToPrint = qtyproduced / $scope.productTechSheet[0].Qty_By_Box;
 
-              ModalService.showModal({
-                templateUrl: "../modal/closeProductForPainting.html",
-                controller: "closeProductInOrderForPainting",
-                preClose: (modal) => { modal.element.modal('hide'); },
-                inputs: {
-                  title: "Fechar Producto em Pintura",
-                  orderid: $stateParams.orderId,
-                  internalproductid: internalproductid,
-                  customerproductid: customerproductid,
-                  productname: productName,
-                  totalproductsproduced: qtyproduced,
-                  qtyBoxLabelsToPrint : qtyBoxLabelsToPrint
-                }
-              }).then(function(modal) {
-              modal.element.modal();
-              modal.close.then(function(result) {
-              if (!result) {
-                $scope.complexResult = "Modal forcibly closed..."
-              } else {
-                $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
-              }
-              });
-              });
+        ModalService.showModal({
+          templateUrl: "../modal/genericModal.html",
+          controller: "GenericController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: messageToSend
           }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
+        });
+      }
+      else {
+        var qtyBoxLabelsToPrint = qtyproduced / $scope.productTechSheet[0].Qty_By_Box;
+
+        ModalService.showModal({
+          templateUrl: "../modal/closeProductForPainting.html",
+          controller: "closeProductInOrderForPainting",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            title: "Fechar Producto em Pintura",
+            orderid: $stateParams.orderId,
+            internalproductid: internalproductid,
+            customerproductid: customerproductid,
+            productname: productName,
+            totalproductsproduced: qtyproduced,
+            qtyBoxLabelsToPrint: qtyBoxLabelsToPrint
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
+        });
+      }
     },
-    function errorCallback(data){
+      function errorCallback(data) {
         console.log('Error: ' + data);
-    });
+      });
 
   };
 
-   //INSERT DAILY PRODUCTION
-   $scope.insertDailyProduction = function(internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced,totalquantityproduced, employyee_name, priceEuro) {
+  //INSERT DAILY PRODUCTION
+  $scope.insertDailyProduction = function (internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro) {
 
     //$scope.title = title;
     $scope.orderid = $scope.orderid;
@@ -1233,195 +1226,203 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     $scope.totalquantityordered = totalquantityordered;
     $scope.totalquantityproduced = totalquantityproduced;
     $scope.priceEuro = priceEuro;
-    
+
 
     //PRODUCTS STILL TO PRODUCE
-  var products_still_to_produce = totalquantityordered - totalproductsproduced;
+    var products_still_to_produce = totalquantityordered - totalproductsproduced;
 
-  if(products_still_to_produce == 0 || products_still_to_produce < 0){
+    if (products_still_to_produce == 0 || products_still_to_produce < 0) {
 
-     var valueProducedByTheEmployee = $scope.totalquantityproduced * $scope.priceEuro;
-     ModalService.showModal({
-      templateUrl: "../modal/registerExtraProductionForClosedProductInOrder.html",
-      controller: "registerExtraProductionForClosedProductInOrderController",
-      preClose: (modal) => { modal.element.modal('hide'); },
-      inputs: {
-        message: 'A quantidade de artigos a produzir para o produto ' + productName + ' na encomenda ' +  $scope.orderid + ' já foi atingida! \n Pretende adicionar a quantidade produzida nesta encomenda?',
+      var valueProducedByTheEmployee = $scope.totalquantityproduced * $scope.priceEuro;
+      ModalService.showModal({
+        templateUrl: "../modal/registerExtraProductionForClosedProductInOrder.html",
+        controller: "registerExtraProductionForClosedProductInOrderController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: 'A quantidade de artigos a produzir para o produto ' + productName + ' na encomenda ' + $scope.orderid + ' já foi atingida! \n Pretende adicionar a quantidade produzida nesta encomenda?',
+          ORDER_ID: $scope.orderid,
+          INTERNAL_PRODUCT_ID: $scope.internalproductid,
+          CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+          PRODUCT_NAME: $scope.productnameinternal,
+          EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+          EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+          TOTAL_PRODUCTS_PRODUCED: $scope.totalquantityproduced,
+          PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+
+      $state.reload();
+
+      return true;
+    };
+
+    //THE NUMBER OF PRODUCTS TO REGISTER ARE STILL INFERIOR TO THE NUMBER OF PRODUCTS TO PRODUCE
+    if ($scope.totalquantityproduced <= products_still_to_produce) {
+
+      $scope.orderproductstatus = 'em_producao';
+      var valueProducedByTheEmployee = $scope.totalquantityproduced * $scope.priceEuro;
+
+      var dataObj = {
         ORDER_ID: $scope.orderid,
-        INTERNAL_PRODUCT_ID : $scope.internalproductid,
+        INTERNAL_PRODUCT_ID: $scope.internalproductid,
         CUSTOMER_PRODUCT_ID: $scope.customerproductid,
         PRODUCT_NAME: $scope.productnameinternal,
         EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
         EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
         TOTAL_PRODUCTS_PRODUCED: $scope.totalquantityproduced,
         PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
-      }
-      }).then(function(modal) {
-            modal.element.modal();
-            modal.close.then(function(result) {
-            if (!result) {
-              $scope.complexResult = "Modal forcibly closed..."
-            } else {
-              $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
-            }
-            });
+      };
+
+      var res = $http.post('/insertDailyProduction', dataObj).then(function (data, status, headers, config) {
+        $state.reload();
+      });
+    } else {
+
+      var valueProducedByTheEmployee = products_still_to_produce * $scope.priceEuro;
+
+      //THE NUMBER OF PRODUCTS products_still_to_produce ARE THE NUMBER OF PRODUCTS STILL TO REGISTER IN THIS ORDER.
+      var dataObj = {
+        ORDER_ID: $scope.orderid,
+        INTERNAL_PRODUCT_ID: $scope.internalproductid,
+        CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+        PRODUCT_NAME: $scope.productnameinternal,
+        EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+        EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+        TOTAL_PRODUCTS_PRODUCED: products_still_to_produce,
+        PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+      };
+
+
+      var res = $http.post('/insertDailyProduction', dataObj).then(function (data, status, headers, config) {
+        //$state.reload;
       });
 
-      $state.reload();
 
-      return true;
-  };
+      //THE NUMBER OF PRODUCTS FROM THE DAILY PRODUCTION THAT WE STILL NEED TO REGISTE IN ANOTHER ORDER
+      var products_remaining_from_daily_production = $scope.totalquantityproduced - products_still_to_produce;
 
-  //THE NUMBER OF PRODUCTS TO REGISTER ARE STILL INFERIOR TO THE NUMBER OF PRODUCTS TO PRODUCE
-  if($scope.totalquantityproduced <= products_still_to_produce) 
-  {
-   
-    $scope.orderproductstatus = 'em_producao';
-    var valueProducedByTheEmployee = $scope.totalquantityproduced * $scope.priceEuro;
-    
-    var dataObj = {
-      ORDER_ID: $scope.orderid,
-      INTERNAL_PRODUCT_ID : $scope.internalproductid,
-      CUSTOMER_PRODUCT_ID: $scope.customerproductid,
-      PRODUCT_NAME: $scope.productnameinternal,
-      EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-      EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-      TOTAL_PRODUCTS_PRODUCED: $scope.totalquantityproduced,
-      PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
-    };	
-    
-    var res = $http.post('/insertDailyProduction', dataObj).then(function(data, status, headers, config) {
-      $state.reload();
-    });
-  } else {
+      //var xyz = productInTheSameOrder.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production);
 
-    var valueProducedByTheEmployee = products_still_to_produce * $scope.priceEuro;
+      //WE NEED TO CHECK IF IN THE SAME ORDER TERE ARE PRODUCTS STILL TO ADD FOR THE SAME INTERNAL PRODUCT ID
+      $scope.productsToClose = [];
+      var xpto = new Array();
 
-    //THE NUMBER OF PRODUCTS products_still_to_produce ARE THE NUMBER OF PRODUCTS STILL TO REGISTER IN THIS ORDER.
-    var dataObj = {
-      ORDER_ID: $scope.orderid,
-      INTERNAL_PRODUCT_ID : $scope.internalproductid,
-      CUSTOMER_PRODUCT_ID: $scope.customerproductid,
-      PRODUCT_NAME: $scope.productnameinternal,
-      EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-      EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-      TOTAL_PRODUCTS_PRODUCED: products_still_to_produce,
-      PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
-    };	
+      var request = $http.get('/productstilltocloseinthisorder/' + encodeURIComponent($scope.orderid) + '/' + encodeURIComponent($scope.internalproductid));
+      request.then(function successCallback(response) {
+        $scope.productsToClose = response.data;
 
-    
-    var res = $http.post('/insertDailyProduction', dataObj).then(function(data, status, headers, config) {
-      //$state.reload;
-    });
+        console.log("productsToClose.length: " + $scope.productsToClose.length);
 
+        if ($scope.productsToClose.length > 0) {
+          ///################################################################################////
+          for (i = 0; i < $scope.productsToClose.length; i++) {
+            var orderproduct = $scope.productsToClose[i];
 
-    //THE NUMBER OF PRODUCTS FROM THE DAILY PRODUCTION THAT WE STILL NEED TO REGISTE IN ANOTHER ORDER
-    var products_remaining_from_daily_production = $scope.totalquantityproduced - products_still_to_produce;
+            var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PRODUCED;
 
-    //var xyz = productInTheSameOrder.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production);
+            var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
+            var order_id = orderproduct.ORDER_ID;
 
-    //WE NEED TO CHECK IF IN THE SAME ORDER TERE ARE PRODUCTS STILL TO ADD FOR THE SAME INTERNAL PRODUCT ID
-    $scope.productsToClose = [];
-    var xpto = new Array();
-    
-    var request = $http.get('/productstilltocloseinthisorder/' +  encodeURIComponent($scope.orderid) + '/'+ encodeURIComponent($scope.internalproductid));    
-    request.then(function successCallback(response) {
-    $scope.productsToClose  = response.data;
+            console.log("orderproduct: " + orderproduct);
+            console.log("customer_product_id: " + customer_product_id);
+            console.log("order_id: " + order_id);
+            console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
 
-      console.log("productsToClose.length: " + $scope.productsToClose.length);
+            //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
+            //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
+            if (number_of_products_to_close_order <= products_remaining_from_daily_production) {
 
-    if($scope.productsToClose.length > 0) { 
-      ///################################################################################////
-      for(i=0; i < $scope.productsToClose.length; i++) {
-        var orderproduct = $scope.productsToClose[i];
- 
-        var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PRODUCED;
- 
-        var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
-        var order_id = orderproduct.ORDER_ID;
- 
-        console.log("orderproduct: " + orderproduct);
-        console.log("customer_product_id: " + customer_product_id);
-        console.log("order_id: " + order_id);
-        console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
+              var valueProducedByTheEmployee = number_of_products_to_close_order * $scope.priceEuro;
 
-        //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
-        //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
-        if(number_of_products_to_close_order <= products_remaining_from_daily_production) { 
+              products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
+              var insertProductsInTheSameOrder = {
+                ORDER_ID: order_id,
+                INTERNAL_PRODUCT_ID: $scope.internalproductid,
+                CUSTOMER_PRODUCT_ID: customer_product_id,
+                PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+                EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+                TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
+                PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+              };
 
-          var valueProducedByTheEmployee = number_of_products_to_close_order * $scope.priceEuro;
+              var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
+              });
+            } else {
 
-          products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
-           var insertProductsInTheSameOrder = {
-               ORDER_ID: order_id,
-               INTERNAL_PRODUCT_ID : $scope.internalproductid,
-               CUSTOMER_PRODUCT_ID: customer_product_id,
-               PRODUCT_NAME: orderproduct.PRODUCT_NAME,
-               EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-               EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-               TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
-               PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
-             };	
- 
-             var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
-            });
-        } else {
+              var valueProducedByTheEmployee = products_remaining_from_daily_production * $scope.priceEuro;
+              //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
+              //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
+              //DAILY PRODUCTION
+              var insertProductsInTheSameOrder = {
+                ORDER_ID: order_id,
+                INTERNAL_PRODUCT_ID: $scope.internalproductid,
+                CUSTOMER_PRODUCT_ID: customer_product_id,
+                PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+                EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+                TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
+                PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+              };
 
-            var valueProducedByTheEmployee = products_remaining_from_daily_production * $scope.priceEuro;
-            //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
-            //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
-            //DAILY PRODUCTION
-            var insertProductsInTheSameOrder = {
-              ORDER_ID: order_id,
-              INTERNAL_PRODUCT_ID : $scope.internalproductid,
-              CUSTOMER_PRODUCT_ID: customer_product_id,
-              PRODUCT_NAME: orderproduct.PRODUCT_NAME,
-              EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-              EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-              TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
-              PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
-            };	
+              var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
+              });
 
-            var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
-           });
+              products_remaining_from_daily_production = 0;
 
-           products_remaining_from_daily_production = 0;
+            }
 
-       }
- 
-       }//FOR
-       //IF WE STILL HAVE PRODUCTS TO REGISTER IN THE DAILY PRODUCTION AND THEY CAN'T BE ADDED INTO THIS ORDER, WE NEED TO ITERATE OVER 
-       //ALL THE ORDERS TO CHECK IF THE SAME INTERNAL PRODUCT ID IS OPENED TO BE REGISTERED
-        if(products_remaining_from_daily_production > 0) {
+          }//FOR
+          //IF WE STILL HAVE PRODUCTS TO REGISTER IN THE DAILY PRODUCTION AND THEY CAN'T BE ADDED INTO THIS ORDER, WE NEED TO ITERATE OVER 
+          //ALL THE ORDERS TO CHECK IF THE SAME INTERNAL PRODUCT ID IS OPENED TO BE REGISTERED
+          if (products_remaining_from_daily_production > 0) {
+            var x = [];
+            productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro);
+            console.log("MENSAGEM!!!!!!!");
+          } //if
 
+        } //IF 
+        else {
+          //IN THIS ORDER THERE IS NOT A PRODUCT FOR THE SAME INTERNAL PRODUCT ID
+          //WE NEED TO CHECK IF THERE'S ANTOHER ORDER WITH THE SAME INTERNAL PRODUCT ID
+          var alertMsg = [];
           productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro);
-        
-        } //if
 
-      } //IF 
-      else {
-        //IN THIS ORDER THERE IS NOT A PRODUCT FOR THE SAME INTERNAL PRODUCT ID
-        //WE NEED TO CHECK IF THERE'S ANTOHER ORDER WITH THE SAME INTERNAL PRODUCT ID
-        productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro);        
-    }
+          /*
+          setTimeout(function () {
+            var msg = MsgSharingService.getsavedData();
+            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+          }, 1000);
+          */
+          console.log("MENSAGEM!!!!!!!");
+        }
 
+        $state.reload();
+
+      },
+        function errorCallback(data) {
+          console.log('Error: ' + data);
+        });
+
+      console.log("ANTES DO ÚLTIMO STATE RELOAD!!!!");
       $state.reload();
 
-    },
-    function errorCallback(data){
-      console.log('Error: ' + data);
-    });
-
-    console.log("ANTES DO ÚLTIMO STATE RELOAD!!!!");
-    $state.reload();
-
-   }//ELSE
+    }//ELSE
 
   };
 
 
   //INSERT DAILY PAINTING REGISTRY
-  $scope.insertDailyPainting = function(internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced,totalquantityproduced, employyee_name, priceEuro, qtyByPallet) {
+  $scope.insertDailyPainting = function (internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, qtyByPallet) {
 
     //$scope.title = title;
     $scope.orderid = $scope.orderid;
@@ -1432,232 +1433,231 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     $scope.totalquantityproduced = totalquantityproduced;
     $scope.priceEuro = priceEuro;
     $scope.qtybypallet = qtyByPallet;
-    
+
 
     //PRODUCTS STILL TO PRODUCE
-  var products_still_to_produce = totalquantityordered - totalproductsproduced;
+    var products_still_to_produce = totalquantityordered - totalproductsproduced;
 
-  if(products_still_to_produce == 0){
+    if (products_still_to_produce == 0) {
 
-     ModalService.showModal({
-      templateUrl: "../modal/genericModal.html",
-      controller: "GenericController",
-      preClose: (modal) => { modal.element.modal('hide'); },
-      inputs: {
-        message: 'A quantidade de artigos a pintar para o produto ' + productName + ' na encomenda ' +  $scope.orderid + ' já foi atingida!'
-      }
-      }).then(function(modal) {
-            modal.element.modal();
-            modal.close.then(function(result) {
-            if (!result) {
-              $scope.complexResult = "Modal forcibly closed..."
-            } else {
-              $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
-            }
-            });
+      ModalService.showModal({
+        templateUrl: "../modal/genericModal.html",
+        controller: "GenericController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: 'A quantidade de artigos a pintar para o produto ' + productName + ' na encomenda ' + $scope.orderid + ' já foi atingida!'
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
       });
 
       $state.reload();
 
       return true;
-  };
-
-  //THE NUMBER OF PRODUCTS TO REGISTER ARE STILL INFERIOR TO THE NUMBER OF PRODUCTS TO COMPLETE THE ORDER
-  if($scope.totalquantityproduced <= products_still_to_produce) 
-  {
-   
-    $scope.orderproductstatus = 'em_producao';
-    var valueProducedByTheEmployee = $scope.totalquantityproduced * $scope.priceEuro;
-    var palletQuantity = $scope.totalquantityproduced / $scope.qtybypallet;
-    
-    var dataObj = {
-      ORDER_ID: $scope.orderid,
-      INTERNAL_PRODUCT_ID : $scope.internalproductid,
-      CUSTOMER_PRODUCT_ID: $scope.customerproductid,
-      PRODUCT_NAME: $scope.productnameinternal,
-      EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-      EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-      TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
-      PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
-    };	
-    
-    var res = $http.post('/insertDailyPainting', dataObj).then(function(data, status, headers, config) {
-    });
-
-    var dataObjPallet = {
-      ORDER_ID: $scope.orderid,
-      CUSTOMER_PRODUCT_ID: $scope.customerproductid,
-      INTERNAL_PRODUCT_ID : $scope.internalproductid,
-      PRODUCT_NAME: $scope.productnameinternal,
-      TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
-      QUANTITY_IN_PALLETES: palletQuantity,
     };
 
-    var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function(data, status, headers, config) {
-      $state.reload();
-    });
+    //THE NUMBER OF PRODUCTS TO REGISTER ARE STILL INFERIOR TO THE NUMBER OF PRODUCTS TO COMPLETE THE ORDER
+    if ($scope.totalquantityproduced <= products_still_to_produce) {
 
-  } else {
+      $scope.orderproductstatus = 'em_producao';
+      var valueProducedByTheEmployee = $scope.totalquantityproduced * $scope.priceEuro;
+      var palletQuantity = $scope.totalquantityproduced / $scope.qtybypallet;
 
-    var valueProducedByTheEmployee = products_still_to_produce * $scope.priceEuro;
-    var palletQuantity = products_still_to_produce / $scope.qtybypallet;
+      var dataObj = {
+        ORDER_ID: $scope.orderid,
+        INTERNAL_PRODUCT_ID: $scope.internalproductid,
+        CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+        PRODUCT_NAME: $scope.productnameinternal,
+        EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+        EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+        TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
+        PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+      };
 
-    //THE NUMBER OF PRODUCTS products_still_to_produce ARE THE NUMBER OF PRODUCTS STILL TO REGISTER IN THIS ORDER.
-    var dataObj = {
-      ORDER_ID: $scope.orderid,
-      INTERNAL_PRODUCT_ID : $scope.internalproductid,
-      CUSTOMER_PRODUCT_ID: $scope.customerproductid,
-      PRODUCT_NAME: $scope.productnameinternal,
-      EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-      EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-      TOTAL_PRODUCTS_PAINTED: products_still_to_produce,
-      PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
-    };	
+      var res = $http.post('/insertDailyPainting', dataObj).then(function (data, status, headers, config) {
+      });
 
-    
-    var res = $http.post('/insertDailyPainting', dataObj).then(function(data, status, headers, config) {
-    });
+      var dataObjPallet = {
+        ORDER_ID: $scope.orderid,
+        CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+        INTERNAL_PRODUCT_ID: $scope.internalproductid,
+        PRODUCT_NAME: $scope.productnameinternal,
+        TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
+        QUANTITY_IN_PALLETES: palletQuantity,
+      };
 
-    var dataObjPallet = {
-      ORDER_ID: $scope.orderid,
-      CUSTOMER_PRODUCT_ID: $scope.customerproductid,
-      INTERNAL_PRODUCT_ID : $scope.internalproductid,
-      PRODUCT_NAME: $scope.productnameinternal,
-      TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
-      QUANTITY_IN_PALLETES: palletQuantity,
-    };
+      var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
+        $state.reload();
+      });
 
-    var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function(data, status, headers, config) {
-    });
+    } else {
 
-    //THE NUMBER OF PRODUCTS FROM THE DAILY PRODUCTION THAT WE STILL NEED TO REGISTE IN ANOTHER ORDER
-    var products_remaining_from_daily_production = $scope.totalquantityproduced - products_still_to_produce;
+      var valueProducedByTheEmployee = products_still_to_produce * $scope.priceEuro;
+      var palletQuantity = products_still_to_produce / $scope.qtybypallet;
 
-    //var xyz = productInTheSameOrder.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production);
+      //THE NUMBER OF PRODUCTS products_still_to_produce ARE THE NUMBER OF PRODUCTS STILL TO REGISTER IN THIS ORDER.
+      var dataObj = {
+        ORDER_ID: $scope.orderid,
+        INTERNAL_PRODUCT_ID: $scope.internalproductid,
+        CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+        PRODUCT_NAME: $scope.productnameinternal,
+        EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+        EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+        TOTAL_PRODUCTS_PAINTED: products_still_to_produce,
+        PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+      };
 
-    //WE NEED TO CHECK IF IN THE SAME ORDER TERE ARE PRODUCTS STILL TO ADD FOR THE SAME INTERNAL PRODUCT ID
-    $scope.productsToClose = [];
-    var xpto = new Array();
-    
-    var request = $http.get('/productstilltocloseinthisorder/' +  encodeURIComponent($scope.orderid) + '/'+ encodeURIComponent($scope.internalproductid));    
-    request.then(function successCallback(response) {
-    $scope.productsToClose  = response.data;
 
-      console.log("productsToClose.length: " + $scope.productsToClose.length);
+      var res = $http.post('/insertDailyPainting', dataObj).then(function (data, status, headers, config) {
+      });
 
-    if($scope.productsToClose.length > 0) { 
-      ///################################################################################////
-      for(i=0; i < $scope.productsToClose.length; i++) {
-        var orderproduct = $scope.productsToClose[i];
- 
-        var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PAINTED;
- 
-        var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
-        var order_id = orderproduct.ORDER_ID;
- 
-        console.log("orderproduct: " + orderproduct);
-        console.log("customer_product_id: " + customer_product_id);
-        console.log("order_id: " + order_id);
-        console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
+      var dataObjPallet = {
+        ORDER_ID: $scope.orderid,
+        CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+        INTERNAL_PRODUCT_ID: $scope.internalproductid,
+        PRODUCT_NAME: $scope.productnameinternal,
+        TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
+        QUANTITY_IN_PALLETES: palletQuantity,
+      };
 
-        //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
-        //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
-        if(number_of_products_to_close_order <= products_remaining_from_daily_production) { 
+      var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
+      });
 
-          var valueProducedByTheEmployee = number_of_products_to_close_order * $scope.priceEuro;
-          var palletQuantity = number_of_products_to_close_order / $scope.qtybypallet;
+      //THE NUMBER OF PRODUCTS FROM THE DAILY PRODUCTION THAT WE STILL NEED TO REGISTE IN ANOTHER ORDER
+      var products_remaining_from_daily_production = $scope.totalquantityproduced - products_still_to_produce;
 
-          products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
-           var insertProductsInTheSameOrder = {
-               ORDER_ID: order_id,
-               INTERNAL_PRODUCT_ID : $scope.internalproductid,
-               CUSTOMER_PRODUCT_ID: customer_product_id,
-               PRODUCT_NAME: orderproduct.PRODUCT_NAME,
-               EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-               EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-               TOTAL_PRODUCTS_PAINTED: number_of_products_to_close_order,
-               PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
-             };	
- 
-             var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
-            });
+      //var xyz = productInTheSameOrder.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production);
 
-            var dataObjPallet = {
-              ORDER_ID: order_id,
-              CUSTOMER_PRODUCT_ID: customer_product_id,
-              INTERNAL_PRODUCT_ID : $scope.internalproductid,
-              PRODUCT_NAME: orderproduct.PRODUCT_NAME,
-              TOTAL_PRODUCTS_PAINTED: number_of_products_to_close_order,
-              QUANTITY_IN_PALLETES: palletQuantity,
-            };
-        
-            var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function(data, status, headers, config) {
-            });
+      //WE NEED TO CHECK IF IN THE SAME ORDER TERE ARE PRODUCTS STILL TO ADD FOR THE SAME INTERNAL PRODUCT ID
+      $scope.productsToClose = [];
+      var xpto = new Array();
 
-        } else {
+      var request = $http.get('/productstilltocloseinthisorder/' + encodeURIComponent($scope.orderid) + '/' + encodeURIComponent($scope.internalproductid));
+      request.then(function successCallback(response) {
+        $scope.productsToClose = response.data;
 
-            var valueProducedByTheEmployee = products_remaining_from_daily_production * $scope.priceEuro;
-            var palletQuantity = products_remaining_from_daily_production / $scope.qtybypallet;
-            //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
-            //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
-            //DAILY PRODUCTION
-            var insertProductsInTheSameOrder = {
-              ORDER_ID: order_id,
-              INTERNAL_PRODUCT_ID : $scope.internalproductid,
-              CUSTOMER_PRODUCT_ID: customer_product_id,
-              PRODUCT_NAME: orderproduct.PRODUCT_NAME,
-              EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-              EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-              TOTAL_PRODUCTS_PAINTED: products_remaining_from_daily_production,
-              PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
-            };	
+        console.log("productsToClose.length: " + $scope.productsToClose.length);
 
-            var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
-           });
+        if ($scope.productsToClose.length > 0) {
+          ///################################################################################////
+          for (i = 0; i < $scope.productsToClose.length; i++) {
+            var orderproduct = $scope.productsToClose[i];
 
-           var dataObjPallet = {
-            ORDER_ID: order_id,
-            CUSTOMER_PRODUCT_ID: customer_product_id,
-            INTERNAL_PRODUCT_ID : $scope.internalproductid,
-            PRODUCT_NAME: orderproduct.PRODUCT_NAM,
-            TOTAL_PRODUCTS_PAINTED: products_remaining_from_daily_production,
-            QUANTITY_IN_PALLETES: palletQuantity,
-          };
-      
-          var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function(data, status, headers, config) {
-          });
+            var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PAINTED;
 
-           products_remaining_from_daily_production = 0;
+            var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
+            var order_id = orderproduct.ORDER_ID;
 
-       }
- 
-       }//FOR
-       //IF WE STILL HAVE PRODUCTS TO REGISTER IN THE DAILY PRODUCTION AND THEY CAN'T BE ADDED INTO THIS ORDER, WE NEED TO ITERATE OVER 
-       //ALL THE ORDERS TO CHECK IF THE SAME INTERNAL PRODUCT ID IS OPENED TO BE REGISTERED
-        if(products_remaining_from_daily_production > 0) {
+            console.log("orderproduct: " + orderproduct);
+            console.log("customer_product_id: " + customer_product_id);
+            console.log("order_id: " + order_id);
+            console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
 
+            //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
+            //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
+            if (number_of_products_to_close_order <= products_remaining_from_daily_production) {
+
+              var valueProducedByTheEmployee = number_of_products_to_close_order * $scope.priceEuro;
+              var palletQuantity = number_of_products_to_close_order / $scope.qtybypallet;
+
+              products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
+              var insertProductsInTheSameOrder = {
+                ORDER_ID: order_id,
+                INTERNAL_PRODUCT_ID: $scope.internalproductid,
+                CUSTOMER_PRODUCT_ID: customer_product_id,
+                PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+                EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+                TOTAL_PRODUCTS_PAINTED: number_of_products_to_close_order,
+                PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+              };
+
+              var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
+              });
+
+              var dataObjPallet = {
+                ORDER_ID: order_id,
+                CUSTOMER_PRODUCT_ID: customer_product_id,
+                INTERNAL_PRODUCT_ID: $scope.internalproductid,
+                PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                TOTAL_PRODUCTS_PAINTED: number_of_products_to_close_order,
+                QUANTITY_IN_PALLETES: palletQuantity,
+              };
+
+              var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
+              });
+
+            } else {
+
+              var valueProducedByTheEmployee = products_remaining_from_daily_production * $scope.priceEuro;
+              var palletQuantity = products_remaining_from_daily_production / $scope.qtybypallet;
+              //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
+              //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
+              //DAILY PRODUCTION
+              var insertProductsInTheSameOrder = {
+                ORDER_ID: order_id,
+                INTERNAL_PRODUCT_ID: $scope.internalproductid,
+                CUSTOMER_PRODUCT_ID: customer_product_id,
+                PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+                EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+                TOTAL_PRODUCTS_PAINTED: products_remaining_from_daily_production,
+                PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+              };
+
+              var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
+              });
+
+              var dataObjPallet = {
+                ORDER_ID: order_id,
+                CUSTOMER_PRODUCT_ID: customer_product_id,
+                INTERNAL_PRODUCT_ID: $scope.internalproductid,
+                PRODUCT_NAME: orderproduct.PRODUCT_NAM,
+                TOTAL_PRODUCTS_PAINTED: products_remaining_from_daily_production,
+                QUANTITY_IN_PALLETES: palletQuantity,
+              };
+
+              var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
+              });
+
+              products_remaining_from_daily_production = 0;
+
+            }
+
+          }//FOR
+          //IF WE STILL HAVE PRODUCTS TO REGISTER IN THE DAILY PRODUCTION AND THEY CAN'T BE ADDED INTO THIS ORDER, WE NEED TO ITERATE OVER 
+          //ALL THE ORDERS TO CHECK IF THE SAME INTERNAL PRODUCT ID IS OPENED TO BE REGISTERED
+          if (products_remaining_from_daily_production > 0) {
+
+            productInOtherOpenOrdersForPainting.insertPaiting($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro, $scope.qtybypallet);
+
+          } //if
+
+        } //IF 
+        else {
+          //IN THIS ORDER THERE IS NOT A PRODUCT FOR THE SAME INTERNAL PRODUCT ID
+          //WE NEED TO CHECK IF THERE'S ANTOHER ORDER WITH THE SAME INTERNAL PRODUCT ID
           productInOtherOpenOrdersForPainting.insertPaiting($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro, $scope.qtybypallet);
-        
-        } //if
+        }
 
-      } //IF 
-      else {
-        //IN THIS ORDER THERE IS NOT A PRODUCT FOR THE SAME INTERNAL PRODUCT ID
-        //WE NEED TO CHECK IF THERE'S ANTOHER ORDER WITH THE SAME INTERNAL PRODUCT ID
-        productInOtherOpenOrdersForPainting.insertPaiting($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro, $scope.qtybypallet);        
-    }
+        $state.reload();
 
+      },
+        function errorCallback(data) {
+          console.log('Error: ' + data);
+        });
+
+      console.log("ANTES DO ÚLTIMO STATE RELOAD!!!!");
       $state.reload();
 
-    },
-    function errorCallback(data){
-      console.log('Error: ' + data);
-    });
-
-    console.log("ANTES DO ÚLTIMO STATE RELOAD!!!!");
-    $state.reload();
-
-   }//ELSE
+    }//ELSE
 
   };
 
@@ -1666,59 +1666,61 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     var formattedArr = [];
     var allKeys = Object.keys(arrayForAllKeys);
 
-    for(i=0; i < allKeys.length ; i++) 
-    {
+    for (i = 0; i < allKeys.length; i++) {
       console.log("i: " + i + "  " + formattedArr.length);
       var key = allKeys[i];
       var allValuesForKey = arrayForAllKeys[key];
 
-      formattedArr.push({table: {headerRows: 1,widths: ['*'],body: [[ {text: key, style: "tblHeader"}]]},layout: 'lightHorizontalLines'});
-      formattedArr.push({table: { headerRows: 1, widths: [ '*', '*', '*', '*', '*', '*', '*'],
-                       body: [
-                              [ 
-                                {text: 'Ref Produto', style: "tblSmallHeader"},
-                                {text: 'Nome Produto', style: "tblSmallHeader"},
-                                {text: 'Quantidade', style: "tblSmallHeader"},
-                                {text: 'Ref Tinta Fuminho', style: "tblSmallHeader"},
-                                {text: 'Observações', style: "tblSmallHeader"},
-                                {text: 'Nome Pintor', style: "tblSmallHeader"},
-                                {text: 'Data Pintura', style: "tblSmallHeader"}
-                             ]
-                            ]
-                        },
-                        layout: 'lightHorizontalLines'
+      formattedArr.push({ table: { headerRows: 1, widths: ['*'], body: [[{ text: key, style: "tblHeader" }]] }, layout: 'lightHorizontalLines' });
+      formattedArr.push({
+        table: {
+          headerRows: 1, widths: ['*', '*', '*', '*', '*', '*', '*'],
+          body: [
+            [
+              { text: 'Ref Produto', style: "tblSmallHeader" },
+              { text: 'Nome Produto', style: "tblSmallHeader" },
+              { text: 'Quantidade', style: "tblSmallHeader" },
+              { text: 'Ref Tinta Fuminho', style: "tblSmallHeader" },
+              { text: 'Observações', style: "tblSmallHeader" },
+              { text: 'Nome Pintor', style: "tblSmallHeader" },
+              { text: 'Data Pintura', style: "tblSmallHeader" }
+            ]
+          ]
+        },
+        layout: 'lightHorizontalLines'
+      });
+
+      for (j = 0; j < allValuesForKey.length; j++) {
+        console.log("j: " + j + "  " + formattedArr.length);
+        var CUSTOMER_PRODUCT_ID = allValuesForKey[j].CUSTOMER_PRODUCT_ID;
+        var PRODUCT_NAME = allValuesForKey[j].PRODUCT_NAME;
+        var TOTAL_QUANTITY_ORDERED = allValuesForKey[j].TOTAL_QUANTITY_ORDERED;
+        var Ref_Paint_Smoked = allValuesForKey[j].Ref_Paint_Smoked;
+        var Finish_Type_Obs = allValuesForKey[j].Finish_Type_Obs;
+
+        formattedArr.push({
+          table: {
+            headerRows: 1, widths: ['*', '*', '*', '*', '*', '*', '*'],
+            body: [
+              [
+                { text: CUSTOMER_PRODUCT_ID, style: "tblRows" },
+                { text: PRODUCT_NAME, style: "tblRows" },
+                { text: TOTAL_QUANTITY_ORDERED, style: "tblRows" },
+                { text: Ref_Paint_Smoked, style: "tblRows" },
+                { text: Finish_Type_Obs, style: "tblRows" },
+                { text: "", style: "tblRows" },
+                { text: "", style: "tblRows" }
+              ]
+            ]
+          },
+          layout: 'lightHorizontalLines'
         });
 
-      for(j=0; j < allValuesForKey.length ; j++) 
-      {
-        console.log("j: " + j + "  " + formattedArr.length);
-        var CUSTOMER_PRODUCT_ID     = allValuesForKey[j].CUSTOMER_PRODUCT_ID;
-        var PRODUCT_NAME 		        = allValuesForKey[j].PRODUCT_NAME;
-        var TOTAL_QUANTITY_ORDERED 	= allValuesForKey[j].TOTAL_QUANTITY_ORDERED;
-        var Ref_Paint_Smoked 	      = allValuesForKey[j].Ref_Paint_Smoked;
-        var Finish_Type_Obs 	      = allValuesForKey[j].Finish_Type_Obs;
-      
-        formattedArr.push({table: { headerRows: 1, widths: [ '*', '*', '*', '*', '*', '*', '*'],
-                       body: [
-                              [ 
-                                {text: CUSTOMER_PRODUCT_ID, style: "tblRows"},
-                                {text: PRODUCT_NAME, style: "tblRows"},
-                                {text: TOTAL_QUANTITY_ORDERED, style: "tblRows"},
-                                {text: Ref_Paint_Smoked, style: "tblRows"},
-                                {text: Finish_Type_Obs, style: "tblRows"},
-                                {text: "", style: "tblRows"},
-                                {text: "", style: "tblRows"}
-                             ]
-                            ]
-                        },
-                        layout: 'lightHorizontalLines'
-        });
-        
-      
+
       }
 
     }
-  
+
     return {
       formattedArr
     }
@@ -1731,127 +1733,127 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     $scope.customerProductIdOnTechSheetArray = [];
     var arrayProductMissingArguments = [];
     var currentRefPaint = "";
-    var request = $http.get('/getTechSheetForPaiting/' + encodeURIComponent(orderId));    
+    var request = $http.get('/getTechSheetForPaiting/' + encodeURIComponent(orderId));
     request.then(function successCallback(response) {
-      $scope.productTechSheet  = response.data;
+      $scope.productTechSheet = response.data;
 
-    //IF WE HAVE LESS VALUES IN THE ARRAY COMING FROM THE productTechSheet, THIS MEANS
-    //THAT THERE IS AT LEAST A PRODUCT WITH NO TECHSHEET DEFINED
-     if($scope.productTechSheet.length < $scope.products.length) { 
-      for(i = 0; i < $scope.productTechSheet.length; i++){
-        $scope.customerProductIdOnTechSheetArray.push($scope.productTechSheet[i].CUSTOMER_PRODUCT_ID);
-      };
+      //IF WE HAVE LESS VALUES IN THE ARRAY COMING FROM THE productTechSheet, THIS MEANS
+      //THAT THERE IS AT LEAST A PRODUCT WITH NO TECHSHEET DEFINED
+      if ($scope.productTechSheet.length < $scope.products.length) {
+        for (i = 0; i < $scope.productTechSheet.length; i++) {
+          $scope.customerProductIdOnTechSheetArray.push($scope.productTechSheet[i].CUSTOMER_PRODUCT_ID);
+        };
 
-      for(j=0; j < $scope.products.length; j++) {
-          if(!$scope.customerProductIdOnTechSheetArray.includes($scope.products[j].CUSTOMER_PRODUCT_ID)) {
+        for (j = 0; j < $scope.products.length; j++) {
+          if (!$scope.customerProductIdOnTechSheetArray.includes($scope.products[j].CUSTOMER_PRODUCT_ID)) {
             $scope.productsWhereTechSheetNotExists.push($scope.products[j].CUSTOMER_PRODUCT_ID);
           }
-      }
+        }
 
-      if($scope.productsWhereTechSheetNotExists.length > 0) {
-        var messageToSend = 'O(s) produto(s)  ' + $scope.productsWhereTechSheetNotExists.toString() + ' não têm ficha técnica criada';
-        ModalService.showModal({
-          templateUrl: "../modal/genericModal.html",
-          controller: "GenericController",
-          preClose: (modal) => { modal.element.modal('hide'); },
-          inputs: {
-            message: messageToSend
-          }
-          }).then(function(modal) {
-              modal.element.modal();
-              modal.close.then(function(result) {
+        if ($scope.productsWhereTechSheetNotExists.length > 0) {
+          var messageToSend = 'O(s) produto(s)  ' + $scope.productsWhereTechSheetNotExists.toString() + ' não têm ficha técnica criada';
+          ModalService.showModal({
+            templateUrl: "../modal/genericModal.html",
+            controller: "GenericController",
+            preClose: (modal) => { modal.element.modal('hide'); },
+            inputs: {
+              message: messageToSend
+            }
+          }).then(function (modal) {
+            modal.element.modal();
+            modal.close.then(function (result) {
               if (!result) {
                 $scope.complexResult = "Modal forcibly closed..."
               } else {
-                $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+                $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
               }
-              });
+            });
           });
+        }
       }
-     }
       var arrayForAll = {};
 
-      for(i=0; i < $scope.productTechSheet.length; i++) {
+      for (i = 0; i < $scope.productTechSheet.length; i++) {
 
         //PAINTED COLD - IT MUST CONTAIN Ref_Paint
-        if($scope.productTechSheet[i].Ref_Paint != null) {          
+        if ($scope.productTechSheet[i].Ref_Paint != null) {
 
-            currentRefPaint = $scope.productTechSheet[i].Ref_Paint + ' ( FRIO)';
+          currentRefPaint = $scope.productTechSheet[i].Ref_Paint + ' ( FRIO)';
 
-            if(arrayForAll[currentRefPaint] != null){
+          if (arrayForAll[currentRefPaint] != null) {
 
-              var dataTechSheet = {
-                Finish_Type_Obs : $scope.productTechSheet[i].Finish_Type_Obs,
-                CUSTOMER_PRODUCT_ID : $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
-                PRODUCT_NAME : $scope.productTechSheet[i].PRODUCT_NAME,
-                TOTAL_QUANTITY_ORDERED :  $scope.productTechSheet[i].TOTAL_QUANTITY_ORDERED,
-                Ref_Paint_Smoked : $scope.productTechSheet[i].Ref_Paint_Smoked
-              };
-
-              var internalArray = arrayForAll[currentRefPaint];
-              internalArray.push(dataTechSheet);
-              arrayForAll[currentRefPaint] = internalArray;
-            } else {
-              var internalArray = [];
-              var dataTechSheet = {
-                Finish_Type_Obs : $scope.productTechSheet[i].Finish_Type_Obs,
-                CUSTOMER_PRODUCT_ID : $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
-                PRODUCT_NAME : $scope.productTechSheet[i].PRODUCT_NAME,
-                TOTAL_QUANTITY_ORDERED :  $scope.productTechSheet[i].TOTAL_QUANTITY_ORDERED,
-                Ref_Paint_Smoked : $scope.productTechSheet[i].Ref_Paint_Smoked
-              };
-              internalArray.push(dataTechSheet);
-              arrayForAll[currentRefPaint] = internalArray;
+            var dataTechSheet = {
+              Finish_Type_Obs: $scope.productTechSheet[i].Finish_Type_Obs,
+              CUSTOMER_PRODUCT_ID: $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
+              PRODUCT_NAME: $scope.productTechSheet[i].PRODUCT_NAME,
+              TOTAL_QUANTITY_ORDERED: $scope.productTechSheet[i].TOTAL_QUANTITY_ORDERED,
+              Ref_Paint_Smoked: $scope.productTechSheet[i].Ref_Paint_Smoked
             };
+
+            var internalArray = arrayForAll[currentRefPaint];
+            internalArray.push(dataTechSheet);
+            arrayForAll[currentRefPaint] = internalArray;
+          } else {
+            var internalArray = [];
+            var dataTechSheet = {
+              Finish_Type_Obs: $scope.productTechSheet[i].Finish_Type_Obs,
+              CUSTOMER_PRODUCT_ID: $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
+              PRODUCT_NAME: $scope.productTechSheet[i].PRODUCT_NAME,
+              TOTAL_QUANTITY_ORDERED: $scope.productTechSheet[i].TOTAL_QUANTITY_ORDERED,
+              Ref_Paint_Smoked: $scope.productTechSheet[i].Ref_Paint_Smoked
+            };
+            internalArray.push(dataTechSheet);
+            arrayForAll[currentRefPaint] = internalArray;
+          };
         }
 
         //GLASSED (HOT) - IT MUST CONTAIN Ref_Glassed
-        if($scope.productTechSheet[i].Ref_Glassed != null) {
+        if ($scope.productTechSheet[i].Ref_Glassed != null) {
           currentRefPaint = $scope.productTechSheet[i].Ref_Glassed + ' (VIDRADO)';
 
-            if(arrayForAll[currentRefPaint] != null){
+          if (arrayForAll[currentRefPaint] != null) {
 
-              var dataTechSheet = {
-                Finish_Type_Obs : $scope.productTechSheet[i].Finish_Type_Obs,
-                //Glassed : $scope.productTechSheet[i].Glassed,
-                CUSTOMER_PRODUCT_ID : $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
-                PRODUCT_NAME : $scope.productTechSheet[i].PRODUCT_NAME,
-                //Painted_Cold : $scope.productTechSheet[i].Painted_Cold,
-                //Ref_Glassed : $scope.productTechSheet[i].Ref_Glassed,
-                Ref_Paint_Smoked : $scope.productTechSheet[i].Ref_Paint_Smoked
-              };
-
-              var internalArray = arrayForAll[currentRefPaint];
-              internalArray.push(dataTechSheet);
-              arrayForAll[currentRefPaint] = internalArray;
-            } else {
-              var internalArray = [];
-              var dataTechSheet = {
-                Finish_Type_Obs : $scope.productTechSheet[i].Finish_Type_Obs,
-                //Glassed : $scope.productTechSheet[i].Glassed,
-                CUSTOMER_PRODUCT_ID : $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
-                PRODUCT_NAME : $scope.productTechSheet[i].PRODUCT_NAME,
-                //Painted_Cold : $scope.productTechSheet[i].Painted_Cold,
-                //Ref_Glassed : $scope.productTechSheet[i].Ref_Glassed,
-                Ref_Paint_Smoked : $scope.productTechSheet[i].Ref_Paint_Smoked
-              };
-              internalArray.push(dataTechSheet);
-              arrayForAll[currentRefPaint] = internalArray;
+            var dataTechSheet = {
+              Finish_Type_Obs: $scope.productTechSheet[i].Finish_Type_Obs,
+              //Glassed : $scope.productTechSheet[i].Glassed,
+              CUSTOMER_PRODUCT_ID: $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
+              PRODUCT_NAME: $scope.productTechSheet[i].PRODUCT_NAME,
+              //Painted_Cold : $scope.productTechSheet[i].Painted_Cold,
+              //Ref_Glassed : $scope.productTechSheet[i].Ref_Glassed,
+              Ref_Paint_Smoked: $scope.productTechSheet[i].Ref_Paint_Smoked
             };
 
+            var internalArray = arrayForAll[currentRefPaint];
+            internalArray.push(dataTechSheet);
+            arrayForAll[currentRefPaint] = internalArray;
+          } else {
+            var internalArray = [];
+            var dataTechSheet = {
+              Finish_Type_Obs: $scope.productTechSheet[i].Finish_Type_Obs,
+              //Glassed : $scope.productTechSheet[i].Glassed,
+              CUSTOMER_PRODUCT_ID: $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
+              PRODUCT_NAME: $scope.productTechSheet[i].PRODUCT_NAME,
+              //Painted_Cold : $scope.productTechSheet[i].Painted_Cold,
+              //Ref_Glassed : $scope.productTechSheet[i].Ref_Glassed,
+              Ref_Paint_Smoked: $scope.productTechSheet[i].Ref_Paint_Smoked
+            };
+            internalArray.push(dataTechSheet);
+            arrayForAll[currentRefPaint] = internalArray;
+          };
+
         }
-        
+
         //The product doesn't contain the Ref_Glassed or Ref_Paint the productTechSheet shouldn't be printed
-        if($scope.productTechSheet[i].Ref_Glassed == null && $scope.productTechSheet[i].Ref_Paint == null) {
-              arrayProductMissingArguments.push($scope.productTechSheet[i].CUSTOMER_PRODUCT_ID);
+        if ($scope.productTechSheet[i].Ref_Glassed == null && $scope.productTechSheet[i].Ref_Paint == null) {
+          arrayProductMissingArguments.push($scope.productTechSheet[i].CUSTOMER_PRODUCT_ID);
         }
 
       }
 
       //If at least 1 product is missing the Ref_Glassed or Ref_Paint then we should send a message and stop the printing at this point
-      if(arrayProductMissingArguments.length > 0) {
+      if (arrayProductMissingArguments.length > 0) {
 
-        if(arrayProductMissingArguments.length == 1){
+        if (arrayProductMissingArguments.length == 1) {
           var messageToSend = "O produto " + arrayProductMissingArguments.toString() + " não tem preenchido os atributos Referência Tinta e Referência Vidrado";
         } else {
           var messageToSend = "Os produtos " + arrayProductMissingArguments.toString() + " não têm preenchidos os atributos Referência Tinta e Referência Vidrado";
@@ -1864,18 +1866,18 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           inputs: {
             message: messageToSend
           }
-          }).then(function(modal) {
-              modal.element.modal();
-              modal.close.then(function(result) {
-              if (!result) {
-                $scope.complexResult = "Modal forcibly closed..."
-              } else {
-                $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
-              }
-              });
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
           });
+        });
 
-          return;
+        return;
       }
 
       /* var requestPDFTemplate = $http.get('/getPDFTemplate/' +  encodeURIComponent('paiting_products_in_order'));    
@@ -1907,391 +1909,56 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       var paintingPDFTemplate = {
         content: [
           {
-              alignment: 'left',
-              columns: [
+            alignment: 'left',
+            columns: [
+              {
+                image: 'data:image/jpeg;base64,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',
+              },
+              {
+                text: [
+                  { text: 'CASTANHEIRA & DANTAS, LDA', style: 'name' },
+                  { text: '\nFÁBRICA DE LOUÇAS DE CERÂMICA DECORATIVA - EXPORTAÇÂO', style: 'subname', bold: true },
+                  { text: '\nR.Cruz de Lombão,59 - Cervães - Vila Verde\n4730-106 CERVÃES (PORTUGAL)', style: 'subheader' },
+                  '\nEmail: ',
+                  { text: 'castanheira.dantas@hotmail.com', style: 'boldlabel' },
+                  '\nTel / Fax: ',
+                  { text: '253 841 463', style: 'boldlabel' },
+                  ' / ',
+                  { text: '253 844 164', style: 'boldlabel' }
+                ],
+                style: 'headerText'
+
+              },
+              {
+                canvas: [
                   {
-                  image: 'data:image/jpeg;base64,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',                      
                   },
-                  {
-                      text: [
-                          {text: 'CASTANHEIRA & DANTAS, LDA', style: 'name'},
-                          {text: '\nFÁBRICA DE LOUÇAS DE CERÂMICA DECORATIVA - EXPORTAÇÂO', style: 'subname', bold:true},
-                          {text: '\nR.Cruz de Lombão,59 - Cervães - Vila Verde\n4730-106 CERVÃES (PORTUGAL)', style: 'subheader'},
-                          '\nEmail: ',
-                          {text: 'castanheira.dantas@hotmail.com', style: 'boldlabel'},
-                          '\nTel / Fax: ',
-                          {text: '253 841 463', style: 'boldlabel'},
-                          ' / ',
-                          {text: '253 844 164', style: 'boldlabel'}
-                      ],
-                      style: 'headerText'
-                      
-                  },
-                  {
-                      canvas: [
-                          {
-                          },
-                      ], style : 'secondLine'
-                  },
-                  {
-                      text: [
-                      ], style : 'orderNumber'
-                  }
-                ]
+                ], style: 'secondLine'
+              },
+              {
+                text: [
+                ], style: 'orderNumber'
+              }
+            ]
           },
-            //{table: {headerRows: 1,widths: ['*'],body: [[ {text: 'REFERENCE PAINT', style: "tblHeader"}]]},layout:'lightHorizontalLines'}
-            {}
-         ],
-      styles: {
-        header: {
-          fontSize:12,
-          color: 'black',
-          bold: false,
-          lineHeight: 1.25,
-          margin: [-170,0,0,0],
-          alignment: 'center'
-        },
-        'headerText': {
-          fontSize:12,
-          color: 'black',
-          bold: false,
-          lineHeight: 1.25,
-          margin: [15, -4, -300, 21.33]  
-        },
-        subheader: {
-          fontSize: 12,
-          color: 'black',
-        },
-        superMargin: {
-          margin: [20, 0, 5, 0],
-          fontSize: 15
-        },
-        'name': {
-          fontSize: 20,
-          color: 'black',
-          bold: true,
-        },
-        table: {
-          margin: [0, 20, 0, 20]  
-        },
-        'contacts': {
-            fontSize:12,
-            color: 'black',
-            bold: false
-        },
-        'boldlabel': {
-            fontSize:12,
-            color: 'black',
-            bold: true
-        },
-       'subname': {
-          margin: [20, 0, 5, 0],
-        },
-        'orderDetails': {
-          margin: [-273, 110, 200, 20],
-          align: 'left',
-          color: 'black',
-        },
-        'orderNumber': {
-          margin: [-64, 110, 5, 0],
-          align: 'left',
-        },
-        'label': {
-          fontSize:10,
-        },
-        'client': {
-            fontSize:16,
-            bold:true
-        },
-        'date': {
-            fontSize:14,
-            bold:true
-        },
-        'firstLine': {
-            margin: [-190, 127.48, 0, 20],
-        },
-        'secondLine': {
-            margin: [20, 126.15, -120, 20],
-        },
-        'tblHeader':{
-            margin: [0, 0, 5, 3],
-            color: '#e50404',
-            borderWeight: 3,
-            alignment: 'center',
-            bold: 'true',
-            fontSize: 18,
-        },
-        'tblSmallHeader':{
-          //margin: [0, 0, 5, 3],
-          color: '#3f1da5',
-          borderWeight: 3,
-          //alignment: 'center',
-          bold: 'true',
-          fontSize: 10,
-        },
-        'tblRows':{
-          color: '#111111',
-          borderWeight: 3,
-          bold: 'true',
-          fontSize: 10,
-          border: [false, false, false, true],
-        },
-        'tableCell': {
-            border: [false, false, false, true],
-            margin: [0, 12, 5, 3],
-            bold:true,
-            fontSize: 14,
-        },
-        'tableCellQt': {
-            border: [false, false, false, true],
-            margin: [0, 9, 1, 3],
-            bold:true,
-            fontSize: 18,
-            lineHeight: 0.1,
-        },
-        'tableCellDescription': {
-            border: [false, false, false, true],
-            margin: [0, 12, 6, 3],
-            bold:false,
-            fontSize: 12,
-            lineHeight: 1.2,
-        }
-      },
-      pageMargins: [ 56.6, 42.5, 15, 15 ],
-      pageSize: 'A4',
-    };
-    
-    function replaceAll(str, map){
-      for(key in map){
-          str2 = str.replace(key, map[key]);
-          str=str2;
-          str2=null;
-      }
-      return str;
-    }
-
-    var currentDate = new Date();
-    var day = currentDate.getDate();
-    var month = currentDate.getMonth() + 1;
-    var year = currentDate.getFullYear();
-    var dateToPrint = day + "/" + month + "/" + year;
-
-    var map = {
-      '_CLIENT_NAME_'    : $scope.clientname,
-      '_CURRENT_DATE_'     : dateToPrint
-    };
-
-    paintingPDFTemplate.content[1] = Object.values(buildTables(arrayForAll));
-
-    var paintingPDFTemplateToString = JSON.stringify(paintingPDFTemplate);
-    var paintingPDFTemplateToStringReplaced = replaceAll(paintingPDFTemplateToString, map);
-
-    var paintingPDFTemplateToJSON = JSON.parse(paintingPDFTemplateToStringReplaced); 
-
-    var filename = 'Encomenda_' + orderId;
-
-    if($scope.productsWhereTechSheetNotExists.length = 0) {
-      pdfMake.createPdf(paintingPDFTemplateToJSON).download(filename);
-    }
-    },
-    function errorCallback(data){
-      console.log('Error: ' + data);
-    });
-  };
-
-  //GET DETAILS FOR THE DAILY PRODUCTION FOR A PRODUCT IN AN ORDER
-  var customer_product_id = 0;
-  $scope.dailyProductionDetails = function (customerproductid, orderproductstatusraw) {
-
-    customer_product_id = customerproductid;
-    
-    if(orderproductstatusraw == 'em_producao')
-    {
-      $scope.dailyProduction = [];
-      var request = $http.get('/getDailyProductionOrderProduct/' +  encodeURIComponent(orderId) + '/'+ encodeURIComponent(customerproductid));    
-      request.then(function successCallback(response) {
-        $scope.dailyProduction  = response.data;
-        
-        for(i=0; i < $scope.dailyProduction.length; i++) {
-          $scope.dailyProduction[i].TOTAL_PRODUCTS_DAILY_REGISTERED = $scope.dailyProduction[i].TOTAL_PRODUCTS_PRODUCED;
-        }
-        
-        return  $scope.dailyProduction; 
-      },
-      function errorCallback(data){
-        console.log('Error: ' + data);
-      });
-    }
-    if(orderproductstatusraw == 'em_pintura')
-    {
-      $scope.dailyProduction = [];
-      var request = $http.get('/getDailyPaintingOrderProduct/' +  encodeURIComponent(orderId) + '/'+ encodeURIComponent(customerproductid));    
-      request.then(function successCallback(response) {
-        $scope.dailyProduction  = response.data;
-
-        for(i=0; i < $scope.dailyProduction.length; i++) {
-          $scope.dailyProduction[i].TOTAL_PRODUCTS_DAILY_REGISTERED = $scope.dailyProduction[i].TOTAL_PRODUCTS_PAINTED;
-        }
-
-        return  $scope.dailyProduction; 
-      },
-      function errorCallback(data){
-        console.log('Error: ' + data);
-      });
-    }
-
-  };
-  //FUNCTION TO CHECK IS THE DETAILS OF THE DAILY PRODUCTION SHOULD BE SHOWN
-  $scope.isSelectedOrder = function (customerproductid) {
-
-    return customer_product_id===customerproductid;
-  };
-
-  //FUNCTION TO SEE THE DETAILS ABOUT THE PRODUCT IN THE ORDER
-  $scope.seeProductDetailInOrder = function (customerproductid) {
-
-    return customer_product_id===customerproductid;
-  };
-
-  //GET TECHNICAL SHEET INFORMATION FOR THE PRODUCTS IN THE ORDER TO SEND IT FOR PAINTING
-  $scope.getOrderProductsInfoForProduction = function () {
-
-    var formattedArrForProduction = [];
-    var totalProductsOrdered      = 0;
-
-    for(i=0; i < $scope.products.length; i++) {
-
-      var INTERNAL_PRODUCT_ID     = $scope.products[i].INTERNAL_PRODUCT_ID;
-      var TOTAL_QUANTITY_ORDERED 	= $scope.products[i].TOTAL_QUANTITY_ORDERED;
-      totalProductsOrdered = totalProductsOrdered + TOTAL_QUANTITY_ORDERED;
-
-      formattedArrForProduction.push({table: { headerRows: 1, widths: [ 100, 100, '*'],
-                       body: [
-                              [ 
-                                {text: INTERNAL_PRODUCT_ID, style: "tblRows"},
-                                {text: TOTAL_QUANTITY_ORDERED, style: "tblRows"},
-                                {text: "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _", style: "tblRows"}
-                             ]
-                            ]
-                        },
-                        layout: 'lightHorizontalLines'
-        });
-
-    }
-    
-    formattedArrForProduction.push({table: { headerRows: 1, widths: [100,100],
-                       body: [
-                              [ 
-                                {text: "TOTAL: ", style: "tblSingleRowLeft"},
-                                {text: totalProductsOrdered, style: "tblSingleRowLeft"}
-                             ]
-                            ]
-                        },
-                        layout: 'lightHorizontalLines'
-        });
-
-        var pdfDocumentProduction = {
-          content: [
-            {
-                alignment: 'left',
-                columns: [
-                    {
-                        //margin: [0, 0, 0, 0],
-                    image: 'data:image/jpeg;base64,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',
-                          fit: [94.875 , 104.813]
-                        
-                    },
-                    {
-                        text: [
-                            {text: 'CASTANHEIRA & DANTAS, LDA', style: 'name'},
-                            {text: '\nFÁBRICA DE LOUÇAS DE CERÂMICA DECORATIVA - EXPORTAÇÂO', style: 'subname', bold:true},
-                            {text: '\nR.Cruz de Lombão,59 - Cervães - Vila Verde\n4730-106 CERVÃES (PORTUGAL)', style: 'subheader'},
-                            '\nEmail: ',
-                            {text: 'castanheira.dantas@hotmail.com', style: 'boldlabel'},
-                            '\nTel / Fax: ',
-                            {text: '253 841 463', style: 'boldlabel'},
-                            ' / ',
-                            {text: '253 844 164', style: 'boldlabel'}
-                        ],
-                        style: 'headerText'
-                        
-                    },
-                    {
-                        canvas: [
-                            {
-                                type: 'rect',
-                                x: 0,
-                                y: 0,
-                                w: 2.835,
-                                h: 72.584,
-                                r: 0,
-                                color: '#DADAD9',
-                                fillOpacity: 1,
-                            },
-                        ], style : 'firstLine'
-                    },
-                    {
-                        text: [
-                            {text: '\nCLIENTE', style: 'label'},
-                            {text: '\n_CLIENT_NAME_', style: 'client'},
-                            {text: '\n\nNUM. ENCOMENDA', style: 'label'},
-                            {text: '\n_ORDER_ID_', style: 'date'},
-                        ], style : 'orderDetails'
-                    },
-                    {
-                      canvas: [
-                          {
-                              type: 'rect',
-                              x: 0,
-                              y: 0,
-                              w: 2.835,
-                              h: 30,
-                              r: 0,
-                              color: '#dedede',
-                              fillOpacity: 1,
-                          },
-                      ], style : 'secondLine'
-                  },
-                  {
-                      text: [
-                          {text: '\nDATA', style: 'label'},
-                          {text: '\n_CURRENT_DATE_', style: 'client'}
-                      ], style : 'orderNumber'
-                  }
-                  ]
-            },
-            {
-              table: {
-                      headerRows: 1,
-                      widths: [100,100,100],
-                      body: [
-                              [ 
-                                  {text: 'Ref Producto', style: "tblHeader"},
-                                  {text: 'Quantidade', style: "tblHeader"},
-                                  {text: 'Observações', style: "tblHeader"}
-                              ]
-                            ]
-                  
-                      },layout:'lightHorizontalLines'         
-            },
-              //{table: {headerRows: 1,widths: ['*'],body: [[ {text: 'REFERENCE PAINT', style: "tblHeader"}]]},layout:'lightHorizontalLines'}
-              {}
-           ],
+          //{table: {headerRows: 1,widths: ['*'],body: [[ {text: 'REFERENCE PAINT', style: "tblHeader"}]]},layout:'lightHorizontalLines'}
+          {}
+        ],
         styles: {
           header: {
-            fontSize:12,
+            fontSize: 12,
             color: 'black',
             bold: false,
             lineHeight: 1.25,
-            margin: [-170,0,0,0],
+            margin: [-170, 0, 0, 0],
             alignment: 'center'
           },
           'headerText': {
-            fontSize:12,
+            fontSize: 12,
             color: 'black',
             bold: false,
             lineHeight: 1.25,
-            margin: [15, -4, -300, 21.33]  
+            margin: [15, -4, -300, 21.33]
           },
           subheader: {
             fontSize: 12,
@@ -2307,23 +1974,23 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             bold: true,
           },
           table: {
-            margin: [0, 20, 0, 20]  
+            margin: [0, 20, 0, 20]
           },
           'contacts': {
-              fontSize:12,
-              color: 'black',
-              bold: false
+            fontSize: 12,
+            color: 'black',
+            bold: false
           },
           'boldlabel': {
-              fontSize:12,
-              color: 'black',
-              bold: true
+            fontSize: 12,
+            color: 'black',
+            bold: true
           },
-         'subname': {
+          'subname': {
             margin: [20, 0, 5, 0],
           },
           'orderDetails': {
-            margin: [-275, 110, 200, 20],
+            margin: [-273, 110, 200, 20],
             align: 'left',
             color: 'black',
           },
@@ -2332,31 +1999,31 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             align: 'left',
           },
           'label': {
-            fontSize:10,
+            fontSize: 10,
           },
           'client': {
-              fontSize:16,
-              bold:true
+            fontSize: 16,
+            bold: true
           },
           'date': {
-              fontSize:14,
-              bold:true
+            fontSize: 14,
+            bold: true
           },
           'firstLine': {
-              margin: [-190, 127.48, 0, 20],
+            margin: [-190, 127.48, 0, 20],
           },
           'secondLine': {
-              margin: [20, 126.15, -120, 20],
+            margin: [20, 126.15, -120, 20],
           },
-          'tblHeader':{
-              margin: [0, 0, 5, 3],
-              color: '#8b8686',
-              borderWeight: 3,
-              alignment: 'center',
-              bold: 'true',
-              fontSize: 14,
+          'tblHeader': {
+            margin: [0, 0, 5, 3],
+            color: '#e50404',
+            borderWeight: 3,
+            alignment: 'center',
+            bold: 'true',
+            fontSize: 18,
           },
-          'tblSmallHeader':{
+          'tblSmallHeader': {
             //margin: [0, 0, 5, 3],
             color: '#3f1da5',
             borderWeight: 3,
@@ -2364,45 +2031,382 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             bold: 'true',
             fontSize: 10,
           },
-          'tblRows':{
+          'tblRows': {
             color: '#111111',
             borderWeight: 3,
-            alignment: 'center',
             bold: 'true',
-            fontSize: 18,
-            border: [false, false, false, true],
-          },
-          'tblSingleRowLeft':{
-            color: '#111111',
-            borderWeight: 3,
-            alignment: 'center',
-            bold: 'true',
-            fontSize: 18,
+            fontSize: 10,
             border: [false, false, false, true],
           },
           'tableCell': {
-              border: [false, false, false, true],
-              margin: [0, 12, 5, 3],
-              bold:true,
-              fontSize: 14,
+            border: [false, false, false, true],
+            margin: [0, 12, 5, 3],
+            bold: true,
+            fontSize: 14,
           },
           'tableCellQt': {
-              border: [false, false, false, true],
-              margin: [0, 9, 1, 3],
-              bold:true,
-              fontSize: 16,
-              lineHeight: 0.1,
+            border: [false, false, false, true],
+            margin: [0, 9, 1, 3],
+            bold: true,
+            fontSize: 18,
+            lineHeight: 0.1,
           },
           'tableCellDescription': {
-              border: [false, false, false, true],
-              margin: [0, 12, 6, 3],
-              bold:false,
-              fontSize: 12,
-              lineHeight: 1.2,
+            border: [false, false, false, true],
+            margin: [0, 12, 6, 3],
+            bold: false,
+            fontSize: 12,
+            lineHeight: 1.2,
           }
         },
-        pageMargins: [ 56.6, 42.5, 15, 15 ],
+        pageMargins: [56.6, 42.5, 15, 15],
         pageSize: 'A4',
+      };
+
+      function replaceAll(str, map) {
+        for (key in map) {
+          str2 = str.replace(key, map[key]);
+          str = str2;
+          str2 = null;
+        }
+        return str;
+      }
+
+      var currentDate = new Date();
+      var day = currentDate.getDate();
+      var month = currentDate.getMonth() + 1;
+      var year = currentDate.getFullYear();
+      var dateToPrint = day + "/" + month + "/" + year;
+
+      var map = {
+        '_CLIENT_NAME_': $scope.clientname,
+        '_CURRENT_DATE_': dateToPrint
+      };
+
+      paintingPDFTemplate.content[1] = Object.values(buildTables(arrayForAll));
+
+      var paintingPDFTemplateToString = JSON.stringify(paintingPDFTemplate);
+      var paintingPDFTemplateToStringReplaced = replaceAll(paintingPDFTemplateToString, map);
+
+      var paintingPDFTemplateToJSON = JSON.parse(paintingPDFTemplateToStringReplaced);
+
+      var filename = 'Encomenda_' + orderId;
+
+      if ($scope.productsWhereTechSheetNotExists.length == 0) {
+        pdfMake.createPdf(paintingPDFTemplateToJSON).download(filename);
+      }
+    },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      });
+  };
+
+  //GET DETAILS FOR THE DAILY PRODUCTION FOR A PRODUCT IN AN ORDER
+  var customer_product_id = 0;
+  $scope.dailyProductionDetails = function (customerproductid, orderproductstatusraw) {
+
+    customer_product_id = customerproductid;
+
+    if (orderproductstatusraw == 'em_producao') {
+      $scope.dailyProduction = [];
+      var request = $http.get('/getDailyProductionOrderProduct/' + encodeURIComponent(orderId) + '/' + encodeURIComponent(customerproductid));
+      request.then(function successCallback(response) {
+        $scope.dailyProduction = response.data;
+
+        for (i = 0; i < $scope.dailyProduction.length; i++) {
+          $scope.dailyProduction[i].TOTAL_PRODUCTS_DAILY_REGISTERED = $scope.dailyProduction[i].TOTAL_PRODUCTS_PRODUCED;
+        }
+
+        return $scope.dailyProduction;
+      },
+        function errorCallback(data) {
+          console.log('Error: ' + data);
+        });
+    }
+    if (orderproductstatusraw == 'em_pintura') {
+      $scope.dailyProduction = [];
+      var request = $http.get('/getDailyPaintingOrderProduct/' + encodeURIComponent(orderId) + '/' + encodeURIComponent(customerproductid));
+      request.then(function successCallback(response) {
+        $scope.dailyProduction = response.data;
+
+        for (i = 0; i < $scope.dailyProduction.length; i++) {
+          $scope.dailyProduction[i].TOTAL_PRODUCTS_DAILY_REGISTERED = $scope.dailyProduction[i].TOTAL_PRODUCTS_PAINTED;
+        }
+
+        return $scope.dailyProduction;
+      },
+        function errorCallback(data) {
+          console.log('Error: ' + data);
+        });
+    }
+
+  };
+  //FUNCTION TO CHECK IS THE DETAILS OF THE DAILY PRODUCTION SHOULD BE SHOWN
+  $scope.isSelectedOrder = function (customerproductid) {
+
+    return customer_product_id === customerproductid;
+  };
+
+  //FUNCTION TO SEE THE DETAILS ABOUT THE PRODUCT IN THE ORDER
+  $scope.seeProductDetailInOrder = function (customerproductid) {
+
+    return customer_product_id === customerproductid;
+  };
+
+  //GET TECHNICAL SHEET INFORMATION FOR THE PRODUCTS IN THE ORDER TO SEND IT FOR PAINTING
+  $scope.getOrderProductsInfoForProduction = function () {
+
+    var formattedArrForProduction = [];
+    var totalProductsOrdered = 0;
+
+    for (i = 0; i < $scope.products.length; i++) {
+
+      var INTERNAL_PRODUCT_ID = $scope.products[i].INTERNAL_PRODUCT_ID;
+      var TOTAL_QUANTITY_ORDERED = $scope.products[i].TOTAL_QUANTITY_ORDERED;
+      totalProductsOrdered = totalProductsOrdered + TOTAL_QUANTITY_ORDERED;
+
+      formattedArrForProduction.push({
+        table: {
+          headerRows: 1, widths: [100, 100, '*'],
+          body: [
+            [
+              { text: INTERNAL_PRODUCT_ID, style: "tblRows" },
+              { text: TOTAL_QUANTITY_ORDERED, style: "tblRows" },
+              { text: "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _", style: "tblRows" }
+            ]
+          ]
+        },
+        layout: 'lightHorizontalLines'
+      });
+
+    }
+
+    formattedArrForProduction.push({
+      table: {
+        headerRows: 1, widths: [100, 100],
+        body: [
+          [
+            { text: "TOTAL: ", style: "tblSingleRowLeft" },
+            { text: totalProductsOrdered, style: "tblSingleRowLeft" }
+          ]
+        ]
+      },
+      layout: 'lightHorizontalLines'
+    });
+
+    var pdfDocumentProduction = {
+      content: [
+        {
+          alignment: 'left',
+          columns: [
+            {
+              //margin: [0, 0, 0, 0],
+              image: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAB0AGkDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9Z7TxbP5cCTTIJWUlP3Q+fngVWvPF+pR26y/atqqRlAi7iO/b0BrFit8w5VWX5TvIGG6k5U+h6VDduwZZCzltwVx6qw/HivyrG5njXXqR9rLd/aff1P1mcIKT0Oifx7eRWckon+Ucq2VIJI47VBP4p1OcqrXFxudgwMfChcisS3jF2zOA8LJjYGHRTx0P40rakYLhbcfO0DDzH64XgAgdu3FcP1/Ey+KcvvZHJBbJF7+2dQmuZVfUboNCzI4U5Jz0P+fSqNjqd4bP/kJXspZ/mzPypyABj6VYNxH9vlMT+WQPN3Bd3T09a+YPF3ia7+I/xo8aeE9R+Llx4EuLHZbeH9I06WG2F0skO5bmSZgXaQszAxBlI2gd81dBVard5vTV790ZVayppafkfT11q2pS3kcfmXGwtt3AtuyBxkelSXepXUrLCs96rlS+7zGxHn+nFfGFz+zp8Vfh94AtbKPwbY/EPW4CsUmtv441EPqI5O8wl0C+m3fxgda5y30n4m6RbXEl5+z/AK499CRLFPpnxCvYQAMDABmfLA9h6dK7vqfNe1W/zX6yOX681vB/j/kfedxrl5ZaSJGnuHldTmVZj8h47Z9K+ef207v4l6n4z8OaX4P8VXVnp+padqAfS0mlt5dUvY4w8aLcRnenylmGOMpzwa8q1zxf8YLLT9NtvBHhH4ueE/Fd44dYvEesRa1ozxJgSmVpSWjxuGMYJ98V6NqnxVn8X2+j/wDCTta6L43+HPiKwbXoLa4zEILrMHmRFusMscuMHoVYZyKmNCpQnGaaku2/lr5X6ilXjVg4NNfh5/l0PkLVLD9qH4UWMf8Awlmu/FxTfh4tOSy14MxkjyzeYi+YdoAX+7355rtv+CfX7RHxq8e/tDaRoOteMNW1TQTHctq0N7L9pE7pCzKqsQGjYHacbj098V+hOoWt+LPUYbBw86WkvlFtyKX2nbjbk98jAznpXxl+wN4L02L46m40rSPE0C6bpeoXV5revPJ9o165kuEgeRQTtWMMswCjLA53NnivRWZRxGFqyqU0nbovU4vqbo4imozb17+h9tprcywKHZ3bzCcBjhQeOK+tq+PtPtPtWovne3kPgqWzg9c/SvsGu/g+9qt/7v6nJxTtS/7e/wDbT5Ms78mzSIDGG4BOcjPpRcxCGVriX5yq7h0Ugeg/HFQwqLJYsZ2Ft7Y7DOfWi9ufLiLo/lRhmkd3ICInUnJ9h+hr4/Fa1qnfmf5n1dX42Pu7ppHccCRVVmVRyqkZGOfWkmCWtkZXYRshXMrkAEdwM/5FfNfjD9oHxf8AtL+LL3wz8DpLGLT9NnVNT8c3kIksozkhoLRDxM4I+YjjHTrmuA+LXhf4FQXl5pnxQ+J/iz4j+KNNIW5tYdQnlWN2wdiW1qPLjIywxnOCM10Usvle1R69kry+a6fNnnVMare597dl/wAH7j6J13W9Y+JevXui+GJv7L0TTmNvf+IY4fOmSbgG3s1+60oycy8rGeMFhW7onwU8NaP4Ik8Nw6BbzadIzTTR30SXcl45OWlmZwS8jMMlj3r5M+GKfB26sk074efGHxr8M9Whm8/T7DUdQlit1lLHcPss42PG7YBOcnmvTvDf7VPjH4J/E+x8OfGCx04aTqKJFp/jXTYni06+nYZCzKSRFknHGMcE8HNb1cJU+Cjf0atL18/k9PxMoYmD96p997r/AIBa8c/speJdH1G5h+Gcl54Wjtxvspk8WXC280jj5i9q8UqIAx7HnHGM15LpXhT9qaxuxNN8RYb/AErTmuBf3raYlsv7nIPlB4GebJDcCPBAyCcivt59SS3SLB6YGSPverfQVF5sslwknzfZ9+EYvxyPp+lZU8zlFWlFS9Vf8WaTwUW7qTXo7H5w/tD/ABl/aG8EeEILG417x3da7q8/2S2lsrO2tbcKJiIZAiReavmKDgM4bAYlQAa8h8F32p3PgfX7vXY/FuoeK9RTL3FtczXV9dPHKCI5IiBEbbIPzZZhtbbgiv1z8aeEB4k8D3umfaZLWW6jlgFzDHHI9sHBBKBwVyVZlyQeDXzZ4u8EW3wo8Ha94e0nSjFaRWs2n29ja+b52pW+0NJO8yf6VOwbJKReXCm7G4nNexgsypyjyxppO+ttP69DzcTg5qXM5tq3XU9v8TeMZtW+BOpeIrHTH1E3OkLewafKswM4dUbZtjHm8BjwvJ6ZGSa8F/4JveJrr40+KPHvjXUNQu1+xyr4cs9NmtYU+xRJ+8xHsH7lASV8sEjgElm5rufiJ4sHg7/gn495fx73fwbbQtuE/wC+ZrdB5Z8rEoJzgkEYAySADXAf8EW/Dj6B+zrr011ZyW0114glfYYWiynkxFVGRnaA3HUYI5rz6UYrB1rL7VjtnJvE015XPrfRVMMbAL5snO7aegyBu9+Oa+tq+TdKY28okXGWk4I6sO/6V9ZV73B/w1V/h/U8nij/AJdf9vfofI8MCTWxO9l+6Uy34c/j0r5y/bA8T6p8XPFXhb4L+Epjaaj4vD3HiS7ibEmlaMrhZGVeBmQllB9AeDmvobT7wRxOs8amG3Bkk7koBnJyPTP5V8l/Dfx1daF8Evip8eAGuvEfjzWX0jwnHPE2YLcTfZLKEKOitJ85PA4Ga+dw8G8ROquj0/xNu33av5H0OYz1dN9b39Fv/kdPZ+H1+Kl7F8GvAEU2gfCXwRGth4g1rTp1imvJ0GW0+Flx8zcedKORyowa7XxZP8I/2Gfg2mtXOnaN4V0mwYRWwt7fzL67kxu2DP7yV2JJJY9+SK7v4H/Ca1+Dvws0nw1aPLcjTIts9xMwMt5cOd0srkcMzOzc/h2r4Q1i9n/4KPf8FKZNBvi0fgD4eiYi2ifY0yQvsdmPrLKADjlUA6YzW1CHt5y5n+6jdvu/P1f4HDVl7KMbL35aLy8vRGJ8Yv8Agoz4F+O3iWz0zxz8FbdvC0r/ALnUbmZo9Ujj+ZftUboo3AKxOFYjPevVrjwpD8B9bg+FHj9dQ8X/AAF8eQwwaBq2o5lm0OZyGhtnl/h5yyuenykcAivXP2uv2Of+Grdb8A28VxpekeG/Cd6ft9n5P766tsIBbwlR8qYUggEDkHqK6/8Aap8A+HviV8AfEHhfxHdWOkWWo2/kWVzc3Swi1uI13QYZjjgoO+cA+tbSxuHcacaaaTvdXbtro12fXQxWGqqU5Td2tnZK+mqfkebfsp6/4k+G3xY8WfCLxhqN9q934eCar4Y1S9wZNV0tvl65+bY2AfTkdgK+k1hK7525j8rCJt6e5r4h+MOqeJfhZ8BfgR8YNWMT+JvAsiaV4ju7e6ScS6ZI/lsG2sVkDYQnDdWyO+PtjTNTi1vR7e4tJvPsr63WWOSMfJIjqHQ47ZU8H6V5mYUrSVZdbp225lo/v3+Z3YOd17N9NVfs9vu2LUt59jgiV/K3Y7nIJJ6V8b/tifFWL/hMvGPhvw0dQ1fxC621reQ6a9xDBYpceXDtu51GXYGUFIlZY043BmYivrTxXrem+GNGmu9RvLWzgskaTzp2KxQNgBAzYPJbaMAZPbPSvBfAfw6vfFXivwn/AGv4dj01NT1pte8piyLGYI2kdvI+988kkYDzs0hOOEAAGuAkotzmtPz6/wBWJxackoROs/bI0HS9Q+BEHhe71HUPD+g6jClpf6pZyi2hsLaIKGWUj5m3DEaxLzIxAzjNVP2FtH/4Qn4eeI9JtbLXbLTtN1vOnW2r3i3N7DBLbwOplZT/ABEk7TkrnacYwN/9qv8AZyT9p74WSeFH1CPTZ/OimtbySEyi0lRshtgYZbbuwT90nOM15J+wB458ReEtfuNA8badaaRfXrtpTWsNk9mkM1lGXgYluGM8Dscg5/cDPLVVL95gpWlqndr7tf6/XVS9zExutGtH+h9URTXDSMxlEWQNobCjj7xz6Yr64r5G3RTSxH/XS7dpUnqvBHt3r65r6Dg7/l8/8P8A7cePxPtS/wC3v0Pz4/bP+KF38H/2U/GPiOzaMarZ6a0NgTnBmlxGnT0LZ/CuJX4Qm68DfBDwNZiW88O6NNFf6mAwcO9pbCaDzHAOM3LBuSM7Mc10P7fOhTeLf2MvHlnBvFxBpwvEJOGLRyq2B6/KCMda/KfVLD4lfDqN73+z/HGiwWnly/afIuokifICFmwAMZGD2z1riwOCWIjPllytSl89LJ/K7+89LNcV7HEO8bpr9dfvP251O8dnJ2bWQ4VOU3nnjPbOP1r8sv8AgnR+074Q/ZH+MHxLn+IMF9Zavq15JaxzWls8/kKksjSIe4BYj8s8V5PYft//ABo0PULU23jrxPceU6AR3NwZw53cDaynO7JHqc4zX6GWXwZ8Ha/8B9C8c/tA+HfB9t4nNsJdTv3tjYrAHO9InEZGZBkDoctmh4T+z4Sp4l80all7vxaanJ9Y+tzU6Gjhd67anVfsl/t4eH/2vPFfiWw8P6Nq9na+Gkidr272qtz5hIGFHKtgE4PbNfL/APwWmk+I3iLXtB0m08Na/ceCdMtxfve20DSwaldyBhtbYDgonyqD/fJrqV/4KlfB34K2UWi/Dvw1cWdtMXhN7Fpi21rbg/8ALdkz5kxTO4KR83TIzXmuh/si/tBfE7w9d+LfDXxKsfE2marCbyCS08Q3Cvd8kmMI6ARsCeY2K7eAelPB4aOHr/WZr2cdoqfp+DFia7rUvYp8768p8h3Hg7xlZ+G33aJ4hi0iPCMLiGdIYnC72GGAXPqMcc1+u3/BMr4iXHjn9hvwVfai119otIJ7F3mGWdYpnjjwedwCgKD32mvNv+Cenhnx3YeBfi94Z+JF3q73+npHbPbX96Lz7PFJaPllbJ6rz6dDXcf8ErnQ/sReEDDuEcFzfQs5OelzIQeOowR2qs7xntqLhZe7JarXeLJyvDeyqKV37yej8mj3DxzqGrHTLZNN0yx1G6u3TbLdti3tCvKzsuMvsIB2jnOORjNeffs7+DZNY+JXivxle6zqGsz3aQ6Va6hcOGjljgJE0kEK/JArz5AC9fKBJOa7H43+J7nwX8MtX1WxIk1FIRDYRj7z3MzCOBQDwcu4/L3q/wDDnwXb+CPC2l6PZKFt9It1tdnXcQMsSe/z7m/GvnVUapPz0+7V/oe5yp1F5f1/maxtJmuYwJixz5gC/KVx3/PFebfE34Z6lP4L8Y6vYXCT6lb6jH4g0fyrYCdbm3jQeUxzh1kVCg4BAcj0r0t5zExkL7WZCoLkcZ7+3FVfEHhp9c8EvBa391pd8v7y1uYGw9vMMFGYdHQ8BlPDKSPesaEuSScTSouZWZF4Z1aLX9E07VtPntprPU4Y7uNgeAroGwD7E9favsqvz5/Zwtbrwlomq+CLrKXvh3UN6BGBj+zXJ+0RJGTztUtIqggHCV+g1fbcJxUZ14x29234ny/EbbhSb31/Q+LPiz4UHjj4Z65pk6B4tR0ye38tSRu3RMOOfvZxjHtzXyp41/bX8TeFv+Ccvg3xx4etIdV1fdb6DrSXduZVt5Y90LBo8gEsyBTk4y4619h6tfFtLiYKxTIRmBxswPz64r5ui8C6Zr3xW+K3wR8SRLa6L41iHirw3JH8pDSbftHldvMiuVEox/eJr52g6bqyVRXSfN8tn+d/kfQ45TTvB2vdfPdf15nnH7Bfx88ZftSfFm4ttV8GeCdM8P6Bbia5lh8NiFnnLBY4UckgNzvJwcBPcUf8FINL1L4yftjfCXwBeT6pD4S1DF1drFbloSfMcSvI3QMIoyoz0znivoz9mHx/qPjDwu+i65bW2l+MvC839ma9axAMZZUVfLuV7sky4cMe+4Z4rwH/AIKR/wDBQrw78PfCviT4e+H7ia98aXcLadd3MEW6HS0kz5o8zu+3KkL90tz0rrozqVMb+5p2t87X+1f53POqRhHC/vZ7/j5Hhv7I3wC8IftR/ta+P9WitDcfDXw00osbGOEwQXCMDFAhOd6/IGfcOcqCetem/wDBF7XLiSX4k6Zb3VzNpWmXNrLbxtkiBn81HOM5yVUAkdcCvO/gt+0V4J/Y4/YIu9N0PXbHWPix44LTldOiaY2BI8qJJXOB+7Tdjrl2OM173+yh8Or39iv9jnT7JLR5PiZ8RpXjsoSAs5u5VJiDtz8lvHmRyeByPSu3MZTdOpTltJxjG/8Ad1cv+CcmDjFThOO6u5W89l/wDc+LXxiHhb9m34+ePbW1lhBu7jR7W6gK5ufKjitBMrAkECRnwc5IX2r0j9ibwjc+BP2S/Ami3vkPcQaRHO/k/L5gdfNGQeS2HGfpXhH7XfhKLX9P+G37Mvhtm+2ax5era3e7mCW9rBmSWWQKRuEsgdmBI7e1fVdpoHifT7KK1tx4VEMFosUIW3njCqAAoB3HAAGAPpzXj4iyw6in8Tv8krL79T06F3Wcn0Vvm9X+hieN4P8AhIvjF4M0hHjntLIXGvTBjyTbhY4s+v7yYNj/AKZ13FvKFuThjLIWLc9xnkj/AOvXlXgJL+X9qHx/JdMl3FYaLpdnbGMbUgZ3uJ3UDccnb5eTgZ49K9UuoRNfh4yBsjwQeOvzHIrzq11ywXZfjqd1PW8v600ERYtTV43EjOBjeF5x6j1AIqK4tp0kRI2RTIMs4644/Wp5FlN2HIVnTMR2DbtYYIz6981m+OfF+neAdB/tfU7v7Mu/yiFj3ySyMfkjjjALO5OMBRk/rWEYuTska8ySuwXw5BpniOfV7aBYtQ1JIYZrg8+aYdwiz9NzfnX2hX50/syfGLUvj7rfiPxZNoy6PoMq29rpsZuDNc3AUSAyyL9xG5wVXODwSSCB+i1fd8K05U51oS3XL+p8nxFNThSlHb3v0PkZ49tv5UiFl3Kw4ByMdCPxryz9sP4Sax8SfAVnrfhIfZ/HngqT+1NAl88oJ2UYktnwMlJUBBHc4r07S7wX1nHtJlSVh5bZ4GPai4jeW6PzKgjBG3vzxnNfGe0lTrc8ejf/AA3pY+trwU7xZ8zeHvFY/ax0e3+Ifwv1v+x/ih4VQWd7a3I2wTuvBsb9OQYSd+yTkpzjnNcZ8UPDfwS17Ubu0+KPwu8SfDnxNrMhupr/AE+Ca5i1CQkl5be5gLBgzBsK6g45Ir1/48/sYad448TReKfBmrX3w5+INmhePVtLAWK74OVuYOFmyCw3HkZzzXGeJv2lPjR+zt4O8rxr8OI/HNxp5VbfWfDsyiG4RyoAkiwXWQjdnauPoK9OhWTS9g/lzcsl5JvSS/HyPIq07fxl87XT87bpnJfs7fCn4NfDPxPPqHwx8EePvHviD7G4sZdYtJE0yymKB1QzTqkcTdAWwxGCBzxXpnxI+Ilr+ypod38QvitqEN/441K02aVo1jOzW0BwubKwRsEliFMkzck+gwKn0L9o34w/HPwddr4T+Fh8I6gYHVb3xNqKx21o5+68cYUvLgc9FGeOam+C/wCxdLYfEaLxx8TPECfEPxpZxLFZajcxFbfTVHO2CD7iE+uN2QTnmtatRczliJfK/NJ+V9kvx9SKcNFGivnayXy3bOB/Y7+Ix8KXfiPxr8Vree21rxxcos+vywiTStPQjYmliQD90Iwdr7gE3EjcSDXpWtfArw98NtfTxFaXmt3Og3IiE9udfuWi0+NmxHcW7CT7ikgNHkgjBUDaQe0k8JroniKW40dtPj0zUJGm1jSLqEy297vwHkQDPlycZIAKvuJYZ5rP134a6P4F8G3egeE9MTSrbxLqUUDxQJiGz8wgyyqjcKojRvlXHLZGK4ZYyNSfPDS/Tpbb5W6bnVHDuEeWWtuv9dyDwhH/AGT+0R4ut3XYuo6Rpl5H5jqDcGPz4n2HqSrBM9fvjnmvSpZY5bGJ0IVnkXbjjntk9q8q+MPirTPBPxY8Ha7PmC2sbeeLVLgDCDTrh0i3v6rFc/ZmY9QGJ6A165BP5AE+wBXGG2jIAx1/rXFWUvdn3X5af16nVSau49n+YkzCK2OOvm4O8Z2Hvn26182ftn66PhzY3V7c+MjoDagirdane2vnJpGmHfG9vpqDh72VserFc5KjFfR/Iml3BQrc7S3DHnFfKf7VGsXHxW8YeFJfDPgxPE954Xu5JrOHW4Ut0l+by5p4onUyAxhSFlmCwBgGxIQorqy6/tuaW3y/XQxxf8Oy3+f6HpX7Es+l3nwkNzp2k3mhW97LEG0++j2ahEhX91LP8xYl1wy/KqqoIUYGT+j9fEvwL8Ix+FPAFsw07TbDWtV23eqSWdw1359wRyxncb5QBgAt24AA4r7ar6/hiSlUryj15f1PnM/TjTop+f6HyPblAdyNtbYMBRn5cYA+vevPPGHwh/tXUtR1yz8ReL9A1eQIty+l3e5ZkQH5BDIHjDcdUUE5616B5CNY74cl7ZVwBkd//r0kAS2wzOFP3iSxwM5HPfPJr4V1JQqNr+tT7KrBSbTPIdAGr6rJpdtJ45+IOnXV8jBbTV9DtvOlPzdZBCUAGOOfSnaRo3h6y8T21/q/xJu9dudMl328F3rdrbQxNjHMcGxHwcn584z0r1l5BcwNbZkkgnBDOCflBHpnvmuNT9m7wJZ6la3EHgvwqsyjPOmw5XJycHaTngVt7eDTvp6Jf8BnH7GSatr6tnlvjj4ra7rXjJrGyl1C+sL69/0WTT/GC2glhAK4iW2gZiT83DOT8vrW38JPi3e2/jzw7oUnh/xLFf3Il+02EmttfT6PBMX8u7vEdF+RvJ+Q7iy+Z05Ne1C2g0T7PBa2q2VvCrMlvAiogO45+UYHJyT9a57W/hD4a8Q6nZajc6PbNqVpG1rHdLujuIIW3N5YkQhtvOcZxk1p9ZpfA47f13+8j2E78yZrz6RLZ6kqYGY04J5Kqcfr1rgPi14hePxLpmirotxcmHydXtbs6lHYi4mRmAgiLj95JgEFSQCrjn06vSfgzpngiDVX0eS90a41URwPeR3Lz3J2jAYedvXcOeSD79KoJ8P9RWwu7U+Kb3VJ1cyRNqtlbSxqMfd2oiDnHJzkVzRjThK/3dPy/wAzaTnKNv6/E474v6/p3jXwhpkl9o+vaHqlisjQWuoaXLdRXUMqtHcWlx9nDqYZU4JB+U7HHK4o+E3xOi+F3hDSNB8TXT2ul3FuG8O6xfXBEN1b7QVtJ5XC7ZogSoLgeaihh824VNofgbxV8O9RtodH06yignUwzS6XqUkEGnoSGBW0uA6OR82drA/nWvFdePPEeuvo/ibwRol54Rnk2Nqf2+J5CNmcyWbBgdzbl+VjgEe9djcXT5Y6r1Wnpf8Az1OdJqfM9/RnD/Fj4yNpvirVND1D4weFPDMkcQntotF0v7dqkMRwdzsxkQBlb/nmOqkGvPv2f/CXhX4j6noth5/xGm024vLgm41wXSXfi2aMsSbzO0CABsqgBUiNNxGQte03H7JPhT4Z6vqOs+G9T1rwBHKxn1EaNdiK2kGz5mKMj7RhRwuB8vSsb4Xfsw+EfHtxceKU+Ivjjx1BqIRFuZdc/dP5Mh2ofKVCACOVyAxA3A4Fbxq0o02oNr5Lf7vzl/mZulUc05JP59P68j3K0mgiBW38sWkWECxkbFI4wMcDHHH4V9bV8gaVptjo9jDaW0Fva2qjd5dvGqovzc8DuTyT9a+v6+g4Q/5e/wDbv/tx4/E2ipfP9D43vfFVxZ38cSpARMVBJXkADsc1StvEs639wmyEhoucqecZHr7UUV8hNJz17n18t2Yd78QLrSQvk29mPMiLNlG5J5/vVAfijfWdqpWCyOIjJ8yv1BAH8XvRRUUorsD3INW+MepPNb5ttPwQoI2OO/8Av1k+IP2gNX0dZFis9JK8soaJyFOTyPnoorpUY870/qxn0RT1b9p3XYw0f2LR2RFBw0UvJI7/ALz3rk779rrxG0yw/YNECyMMkRzA/wDo32ooq5wi3qjeikW1/bC8ST2se7TtB3SNln8mbJ/8i+1VX/bS8U3F55ZsNBCbcgCKcYyf+utFFdHs4cmy2Goq5auv2y/EhlV/7M8PbpAAT5M3Ygf89fes63/bI8Q6dfXCW2j+GLaOWYSukVrKgd3OGY4l5JwMnrRRSVOFnoXyxutC5H+2X4kBYrpnh1MqE+WCYcZ/661+o9FFfWcORjF1OVfy/qfIcWJJUrf3v/bT/9k=',
+              fit: [94.875, 104.813]
+
+            },
+            {
+              text: [
+                { text: 'CASTANHEIRA & DANTAS, LDA', style: 'name' },
+                { text: '\nFÁBRICA DE LOUÇAS DE CERÂMICA DECORATIVA - EXPORTAÇÂO', style: 'subname', bold: true },
+                { text: '\nR.Cruz de Lombão,59 - Cervães - Vila Verde\n4730-106 CERVÃES (PORTUGAL)', style: 'subheader' },
+                '\nEmail: ',
+                { text: 'castanheira.dantas@hotmail.com', style: 'boldlabel' },
+                '\nTel / Fax: ',
+                { text: '253 841 463', style: 'boldlabel' },
+                ' / ',
+                { text: '253 844 164', style: 'boldlabel' }
+              ],
+              style: 'headerText'
+
+            },
+            {
+              canvas: [
+                {
+                  type: 'rect',
+                  x: 0,
+                  y: 0,
+                  w: 2.835,
+                  h: 72.584,
+                  r: 0,
+                  color: '#DADAD9',
+                  fillOpacity: 1,
+                },
+              ], style: 'firstLine'
+            },
+            {
+              text: [
+                { text: '\nCLIENTE', style: 'label' },
+                { text: '\n_CLIENT_NAME_', style: 'client' },
+                { text: '\n\nNUM. ENCOMENDA', style: 'label' },
+                { text: '\n_ORDER_ID_', style: 'date' },
+              ], style: 'orderDetails'
+            },
+            {
+              canvas: [
+                {
+                  type: 'rect',
+                  x: 0,
+                  y: 0,
+                  w: 2.835,
+                  h: 30,
+                  r: 0,
+                  color: '#dedede',
+                  fillOpacity: 1,
+                },
+              ], style: 'secondLine'
+            },
+            {
+              text: [
+                { text: '\nDATA', style: 'label' },
+                { text: '\n_CURRENT_DATE_', style: 'client' }
+              ], style: 'orderNumber'
+            }
+          ]
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: [100, 100, 100],
+            body: [
+              [
+                { text: 'Ref Producto', style: "tblHeader" },
+                { text: 'Quantidade', style: "tblHeader" },
+                { text: 'Observações', style: "tblHeader" }
+              ]
+            ]
+
+          }, layout: 'lightHorizontalLines'
+        },
+        //{table: {headerRows: 1,widths: ['*'],body: [[ {text: 'REFERENCE PAINT', style: "tblHeader"}]]},layout:'lightHorizontalLines'}
+        {}
+      ],
+      styles: {
+        header: {
+          fontSize: 12,
+          color: 'black',
+          bold: false,
+          lineHeight: 1.25,
+          margin: [-170, 0, 0, 0],
+          alignment: 'center'
+        },
+        'headerText': {
+          fontSize: 12,
+          color: 'black',
+          bold: false,
+          lineHeight: 1.25,
+          margin: [15, -4, -300, 21.33]
+        },
+        subheader: {
+          fontSize: 12,
+          color: 'black',
+        },
+        superMargin: {
+          margin: [20, 0, 5, 0],
+          fontSize: 15
+        },
+        'name': {
+          fontSize: 20,
+          color: 'black',
+          bold: true,
+        },
+        table: {
+          margin: [0, 20, 0, 20]
+        },
+        'contacts': {
+          fontSize: 12,
+          color: 'black',
+          bold: false
+        },
+        'boldlabel': {
+          fontSize: 12,
+          color: 'black',
+          bold: true
+        },
+        'subname': {
+          margin: [20, 0, 5, 0],
+        },
+        'orderDetails': {
+          margin: [-275, 110, 200, 20],
+          align: 'left',
+          color: 'black',
+        },
+        'orderNumber': {
+          margin: [-64, 110, 5, 0],
+          align: 'left',
+        },
+        'label': {
+          fontSize: 10,
+        },
+        'client': {
+          fontSize: 16,
+          bold: true
+        },
+        'date': {
+          fontSize: 14,
+          bold: true
+        },
+        'firstLine': {
+          margin: [-190, 127.48, 0, 20],
+        },
+        'secondLine': {
+          margin: [20, 126.15, -120, 20],
+        },
+        'tblHeader': {
+          margin: [0, 0, 5, 3],
+          color: '#8b8686',
+          borderWeight: 3,
+          alignment: 'center',
+          bold: 'true',
+          fontSize: 14,
+        },
+        'tblSmallHeader': {
+          //margin: [0, 0, 5, 3],
+          color: '#3f1da5',
+          borderWeight: 3,
+          //alignment: 'center',
+          bold: 'true',
+          fontSize: 10,
+        },
+        'tblRows': {
+          color: '#111111',
+          borderWeight: 3,
+          alignment: 'center',
+          bold: 'true',
+          fontSize: 18,
+          border: [false, false, false, true],
+        },
+        'tblSingleRowLeft': {
+          color: '#111111',
+          borderWeight: 3,
+          alignment: 'center',
+          bold: 'true',
+          fontSize: 18,
+          border: [false, false, false, true],
+        },
+        'tableCell': {
+          border: [false, false, false, true],
+          margin: [0, 12, 5, 3],
+          bold: true,
+          fontSize: 14,
+        },
+        'tableCellQt': {
+          border: [false, false, false, true],
+          margin: [0, 9, 1, 3],
+          bold: true,
+          fontSize: 16,
+          lineHeight: 0.1,
+        },
+        'tableCellDescription': {
+          border: [false, false, false, true],
+          margin: [0, 12, 6, 3],
+          bold: false,
+          fontSize: 12,
+          lineHeight: 1.2,
+        }
+      },
+      pageMargins: [56.6, 42.5, 15, 15],
+      pageSize: 'A4',
     };
 
     var currentDate = new Date();
@@ -2410,22 +2414,22 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     var month = currentDate.getMonth() + 1;
     var year = currentDate.getFullYear();
     var dateToPrint = day + "/" + month + "/" + year;
-  
+
     var map = {
-      '_CLIENT_NAME_'    : $scope.clientname,
-      '_ORDER_ID_'       : $scope.orderid,
-      '_CURRENT_DATE_'   : dateToPrint
+      '_CLIENT_NAME_': $scope.clientname,
+      '_ORDER_ID_': $scope.orderid,
+      '_CURRENT_DATE_': dateToPrint
     };
 
-    function replaceAll(str, map){
-      for(key in map){
-          var value = map[key];
-          if(value == null) {
-            value = '';
-          }
-          str2 = str.replace(key, value);
-          str=str2;
-          str2=null;
+    function replaceAll(str, map) {
+      for (key in map) {
+        var value = map[key];
+        if (value == null) {
+          value = '';
+        }
+        str2 = str.replace(key, value);
+        str = str2;
+        str2 = null;
       }
       return str;
     }
@@ -2435,7 +2439,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     var pdfDocumentProductionString = JSON.stringify(pdfDocumentProduction);
     var pdfDocumentProductionToJSON = replaceAll(pdfDocumentProductionString, map);
 
-    var documentToPrint = JSON.parse(pdfDocumentProductionToJSON); 
+    var documentToPrint = JSON.parse(pdfDocumentProductionToJSON);
 
     console.log(pdfDocumentProduction);
     var filename = 'Encomenda_' + orderId;
@@ -2446,56 +2450,56 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
 //CONTROLLER FOR ALL THE ORDERS
 app.controller('ordersController', ['$scope', '$http', '$rootScope', '$stateParams', '$state', 'ModalService', function ($scope, $http, $rootScope, $stateParams, $state, ModalService) {
-   
-  $rootScope.class = 'not-home';
-  $rootScope.name= "Lista de todas as Encomendas";
-   $scope.orders = [];
-     var request = $http.get('/orders');    
-   request.then(function successCallback(response) {
-       $scope.orders  = response.data;
-       for(i=0; i < $scope.orders.length; i++) {
-            if($scope.orders[i].QTY_PRODUCED > 0) {
-              var percentage = Math.round( $scope.orders[i].QTY_PRODUCED  / $scope.orders[i].QTY_ORDERED * 100);
-            } else {
-              var percentage = 0;
-            }
-            $scope.orders[i].percent= percentage;
-            $scope.orders[i].width= percentage;
-            //NEWSTYLES
-           /*  if(percentage > 33) {
-              $scope.orders[i].progressBarColor = "#e31b1b";
-            }
-            if(percentage >= 34 && percentage <= 66) {
-              $scope.orders[i].progressBarColor = "#e3cf1b";
-            }
-            if( percentage > 66) {
-              $scope.orders[i].progressBarColor = "#1be36b";
-            }
-            console.log("SCOPE CLIENT NAME: " + $scope.orders[i].CLIENT_NAME)
-            console.log("Percentagem Total: " + percentage); */
 
+  $rootScope.class = 'not-home';
+  $rootScope.name = "Lista de todas as Encomendas";
+  $scope.orders = [];
+  var request = $http.get('/orders');
+  request.then(function successCallback(response) {
+    $scope.orders = response.data;
+    for (i = 0; i < $scope.orders.length; i++) {
+      if ($scope.orders[i].QTY_PRODUCED > 0) {
+        var percentage = Math.round($scope.orders[i].QTY_PRODUCED / $scope.orders[i].QTY_ORDERED * 100);
+      } else {
+        var percentage = 0;
+      }
+      $scope.orders[i].percent = percentage;
+      $scope.orders[i].width = percentage;
+      //NEWSTYLES
+      /*  if(percentage > 33) {
+         $scope.orders[i].progressBarColor = "#e31b1b";
        }
-       return  $scope.orders; 
-   },
-   function errorCallback(data){
-       console.log('Error: ' + data);
-   });
-  
-  
+       if(percentage >= 34 && percentage <= 66) {
+         $scope.orders[i].progressBarColor = "#e3cf1b";
+       }
+       if( percentage > 66) {
+         $scope.orders[i].progressBarColor = "#1be36b";
+       }
+       console.log("SCOPE CLIENT NAME: " + $scope.orders[i].CLIENT_NAME)
+       console.log("Percentagem Total: " + percentage); */
+
+    }
+    return $scope.orders;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
+
+
   $scope.dataProducts = [];
   $scope.SimpleSelectedData = 143432;
-  
+
   $scope.clients = [];
-  
-  var request = $http.get('clientstypeahed');    
+
+  var request = $http.get('clientstypeahed');
   request.then(function successCallback(response) {
-   $scope.clients  = response.data;
-   return  $scope.clients; 
+    $scope.clients = response.data;
+    return $scope.clients;
   },
-  function errorCallback(data){
-   console.log('Error: ' + data);
-  });
-  
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
+
   //Save Content Modal  
   $scope.save = function () {
     var dataObj = {
@@ -2503,599 +2507,607 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
       CLIENT_NAME: $scope.clientname.CLIENT_NAME,
       CLIENT_ID: $scope.clientname.CLIENT_ID,
       STATUS: 'EM ABERTO'
-    };	
-    
-    var res = $http.post('/insertorder', dataObj).then(function(data, status, headers, config) {
+    };
+
+    var res = $http.post('/insertorder', dataObj).then(function (data, status, headers, config) {
       $state.reload();
     });
-  
+
   };
 
-  $scope.showProductsForOrder= function(orderId, clientname){
-    $state.transitionTo("listOrderProducts", {'orderId': orderId, 'clientname' : clientname}) ;
+  $scope.showProductsForOrder = function (orderId, clientname) {
+    $state.transitionTo("listOrderProducts", { 'orderId': orderId, 'clientname': clientname });
   }
 
 }]);
 
 app.controller('panels', function ($scope, $http, $rootScope) {
-   
+
   $rootScope.class = 'not-home';
-   $rootScope.name= "Listar Encomendas para o Cliente";
-   $scope.image = '/images' + '/' + 'edelmanLogo.jpg';
-    $scope.data = [];
-      var request = $http.get('/clients');    
-    request.then(function successCallback(response) {
-        $scope.data  = response.data;
-        return  $scope.data; 
-    },
-    function errorCallback(data){
-        console.log('Error: ' + data);
+  $rootScope.name = "Listar Encomendas para o Cliente";
+  $scope.image = '/images' + '/' + 'edelmanLogo.jpg';
+  $scope.data = [];
+  var request = $http.get('/clients');
+  request.then(function successCallback(response) {
+    $scope.data = response.data;
+    return $scope.data;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
     });
 
 });
 
 //CREATE Technical Sheet
 app.controller('createTechSheet', function ($scope, $http, $rootScope, $stateParams, $state, $templateCache) {
-   
+
   $rootScope.class = 'not-home';
-  $rootScope.name= "Criar Ficha Técnica";
+  $rootScope.name = "Criar Ficha Técnica";
   $scope.data = [];
 
-  $scope.productName     = 	$stateParams.productName;
-  $scope.productId       = 	$stateParams.internalProductId;
-  $scope.clientname      =  $stateParams.clientname;
-  $scope.imageName       = 	$stateParams.imageName;
-  $scope.barCode         = 	$stateParams.barCode;
-  $scope.nameInTheLabel  =	$stateParams.nameInTheLabel;
-  $scope.numArticleByBox =  $stateParams.numArticleByBox;
-  $scope.preco1          =  $stateParams.preco1;
-  $scope.preco2          =  $stateParams.preco2;
+  $scope.productName = $stateParams.productName;
+  $scope.productId = $stateParams.internalProductId;
+  $scope.clientname = $stateParams.clientname;
+  $scope.imageName = $stateParams.imageName;
+  $scope.barCode = $stateParams.barCode;
+  $scope.nameInTheLabel = $stateParams.nameInTheLabel;
+  $scope.numArticleByBox = $stateParams.numArticleByBox;
+  $scope.preco1 = $stateParams.preco1;
+  $scope.preco2 = $stateParams.preco2;
 
   $scope.data = [];
   var productId = $stateParams.productId;
   var customerProductId = $stateParams.customerProductId;
-  
+
   $scope.boxSize = [];
-  var request = $http.get('/getBoxMeasures');    
+  var request = $http.get('/getBoxMeasures');
   request.then(function successCallback(response) {
-    $scope.boxSize  = response.data;
+    $scope.boxSize = response.data;
   },
-  function errorCallback(data){
-    console.log('Error: ' + data);
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
+
+  $scope.$watch('boxMeasures', function () {
+    $scope.boxId = $scope.boxMeasures;
   });
 
-  $scope.$watch('boxMeasures', function(){
-    $scope.boxId = $scope.boxMeasures;
-  });  
-
-   $scope.$watch('rawMaterial', function(){
+  $scope.$watch('rawMaterial', function () {
     console.log($scope.rawMaterial);
   });
-  
-  $scope.saveTechSheet = function() {
+
+  $scope.saveTechSheet = function () {
 
     //WE NEED TO VALIDATE IF THE BOX_MEASURES COMES FROM THE TYPEAHEAD OR OF IT THE BOX_MEASURES ALREADY 
     //EXISTS IN THE DATABASE
-    if($scope.boxMeasures == null || !$scope.boxMeasures.MEASURES) {
+    if ($scope.boxMeasures == null || !$scope.boxMeasures.MEASURES) {
       $scope.boxMeasures = $scope.boxMeasures;
-      $scope.boxId       = $scope.boxId;
+      $scope.boxId = $scope.boxId;
     } else {
       $scope.boxMeasures = $scope.boxMeasures.MEASURES;
-      $scope.boxId       = $scope.boxId.ID;
+      $scope.boxId = $scope.boxId.ID;
     }
 
     var dataObj = {
-      CUSTOMER_PRODUCT_ID:  customerProductId,
-      INTERNAL_PRODUCT_ID:  $scope.productId,
-      Raw_Material:			    $scope.rawMaterial,
-      Raw_Material_Extra:		$scope.rawMaterialExtra,
-      Dimensions_In_Wet:    $scope.dimensionsInWet,
-      Product_Weight:       $scope.productWeight,
-      Product_Height:			  $scope.productHeight,
-      Product_Width:			  $scope.productWidth,
-      Top_Width:				    $scope.topWidth,
-      Bottom_Width:			    $scope.bottomWidth,
-      Relief:					      $scope.relief,
-      Sponge:					      $scope.sponge,
-      Cooking:			        $scope.cooking,
-      Cooking_Temperature:	$scope.cookingTemperature,
-      Painted_Cold:			    $scope.paintedCold,
-      Ref_Paint:				    $scope.refPaint,
-      Ref_Paint_Qty:			  $scope.refPaintQty,
-      Glassed:				      $scope.glassed,
-      Ref_Glassed:			    $scope.refGlassed,
-      Ref_Paint_Smoked:		  $scope.refPaintSmoked,
-      Ref_Paint_Smoked_Qty:	$scope.refPaintSmokedQty,
-      Finish_Type_Obs:		  $scope.finishTypeObs,
-      Bar_Code_Tech_Sheet:	$scope.barCodeTechSheet,
-      Label_Water_Proof:		$scope.labelWaterProof,
-      Felts:					      $scope.felts,
-      Felts_Qty:				    $scope.feltsQty,
-      Bag:					        $scope.bag,
-      Bag_Size:				      $scope.bagSize,
-      Qty_By_Box:				    $scope.qtyByBox,
-      Box_Measures:			    $scope.boxMeasures,
-      Box_Id:     			    $scope.boxId,
-      Disposition_By_Row:		$scope.dispositionByRow,
-      Qty_By_Pallet:			  $scope.qtyByPallet,
-      Final_Observations:		$scope.finalObservations
+      CUSTOMER_PRODUCT_ID: customerProductId,
+      INTERNAL_PRODUCT_ID: $scope.productId,
+      Raw_Material: $scope.rawMaterial,
+      Raw_Material_Extra: $scope.rawMaterialExtra,
+      Dimensions_In_Wet: $scope.dimensionsInWet,
+      Product_Weight: $scope.productWeight,
+      Product_Height: $scope.productHeight,
+      Product_Width: $scope.productWidth,
+      Top_Width: $scope.topWidth,
+      Bottom_Width: $scope.bottomWidth,
+      Relief: $scope.relief,
+      Sponge: $scope.sponge,
+      Cooking: $scope.cooking,
+      Cooking_Temperature: $scope.cookingTemperature,
+      Painted_Cold: $scope.paintedCold,
+      Ref_Paint: $scope.refPaint,
+      Ref_Paint_Qty: $scope.refPaintQty,
+      Glassed: $scope.glassed,
+      Ref_Glassed: $scope.refGlassed,
+      Ref_Paint_Smoked: $scope.refPaintSmoked,
+      Ref_Paint_Smoked_Qty: $scope.refPaintSmokedQty,
+      Finish_Type_Obs: $scope.finishTypeObs,
+      Bar_Code_Tech_Sheet: $scope.barCodeTechSheet,
+      Label_Water_Proof: $scope.labelWaterProof,
+      Felts: $scope.felts,
+      Felts_Qty: $scope.feltsQty,
+      Bag: $scope.bag,
+      Bag_Size: $scope.bagSize,
+      Qty_By_Box: $scope.qtyByBox,
+      Box_Measures: $scope.boxMeasures,
+      Box_Id: $scope.boxId,
+      Disposition_By_Row: $scope.dispositionByRow,
+      Qty_By_Pallet: $scope.qtyByPallet,
+      Final_Observations: $scope.finalObservations
     };
 
-    var res = $http.post('/insertProductTechSheet', dataObj).then(function(data, status, headers, config) {
+    var res = $http.post('/insertProductTechSheet', dataObj).then(function (data, status, headers, config) {
       var currentPageTemplate = $state.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
-      $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname':$scope.clientname , 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
+      $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2 });
 
     });
 
-   };
-  
+  };
 
-   $scope.printTechnicalSheet = function() {
+
+  $scope.printTechnicalSheet = function () {
 
     var documentDefinition = {
       content: [
-              {table: { headerRows: 1, widths: [ '*'],
-                     body: [
-                            [ 
-                              {text: 'Ficha Técnica do Producto', style: "tblBanner"}
-                           ]
-                          ]
-                      },
-                      layout: 'lightHorizontalLines',
-          
-              },
-              {
-                  text:'Pot Vera Concrete Grey (C405/35)',style: "productName"
-              },
-              {
-                  text:'', margin:[20,10],
-              },
-              {table: { headerRows: 1, widths: [ '*'],
-                     body: [
-                            [ 
-                              {text: 'Produção', style: "tblHeader"}
-                           ]
-                          ]
-                      },
-                      layout: 'lightHorizontalLines'
-              },
-              {
-                  text:'', margin:[20,10],
-              },
-              {
-            table: {
-          headerRows: 1,
-          widths: [ '*','*'],
-          body: [
-                [{text: 'Matéria Prima', style: 'tblBigHeader'}, {text: 'Matéria Prima Adicional', style: 'tblBigHeader'}],
-                [
-              '$scope.rawMaterial',
-              '$scope.rawMaterialExtra'
-                ]
-                ]
-            },
-            layout: 'noBorders',
-            style: 'tableRowsText',
-              },
-              {
-            table: {
-          headerRows: 1,
-          widths: [ '*','*','*','*'],
-          body: [
-                [{text: 'Altura Peça', style: 'tblBigHeader'}, {text: 'Largura Peça', style: 'tblBigHeader'}, {text: 'Topo Peça', style: 'tblBigHeader'}, {text: 'Fundo Peça', style: 'tblBigHeader'}],
-                [
-              '$scope.productHeight',
-              '$scope.productWidth',
-              '$scope.topWidth',
-              '$scope.bottomWidth'
-                ]
-                ]
-            },
-            layout: 'noBorders',
-            style: 'tableRowsText',
-              },
-               {
-            table: {
-          headerRows: 1,
-          widths: ['*','*','*','*'],
-          body: [
-                [{text: 'Relevo', style: 'tblBigHeader'}, {text: 'Esponja', style: 'tblBigHeader'}, {text: 'Cozedura', style: 'tblBigHeader'}, {text: 'Temp. Cozedura', style: 'tblBigHeader'}],
-                [
-              '$scope.relief',
-              '$scope.sponge',
-              '$scope.cooking',
-              '$scope.cookingTemperature'
-                ]
-                ]
-            },
-            layout: 'noBorders',
-            style: 'tableRowsText',
-              },
-              {
-                  text:'', margin:[20,10],
-              },
-              {table: { headerRows: 1, widths: [ '*'],
-                     body: [
-                            [ 
-                              {text: 'Pintura', style: "tblHeader"}
-                           ]
-                          ]
-                      },
-                      layout: 'lightHorizontalLines'
-              },
-              {
-                  text:'', margin:[20,10],
-              },
-              {
-            table: {
-          headerRows: 1,
-          widths: [ '*','*','*','*'],
-          body: [
-                [{text: 'Pintado a frio', style: 'tblBigHeader'}, {text: 'Quantidade Tinta', style: 'tblBigHeader'}, {text: 'Quanti. Fuminho', style: 'tblBigHeader'}, {text: 'Quanti. Vidrado', style: 'tblBigHeader'}],
-                [
-              '$scope.paintedCold',
-              '$scope.refPaintQty',
-              '$scope.refPaintSmokedQty',
-              '30 cl'
-                ]
-                ]
-            },
-            layout: 'noBorders',
-            style: 'tableRowsText',
-              },
-              {
-            table: {
-          headerRows: 1,
-          widths: [ '*','*','*'],
-          body: [
-                [{text: 'Referência Tinta', style: 'tblBigHeader'}, {text: 'Referência Fuminho', style: 'tblBigHeader'}, {text: 'Referência Vidrado', style: 'tblBigHeader'}],
-                [
-              '$scope.refPaint',
-              '$scope.refPaintSmoked',
-              '$scope.refGlassed'
-                ]
-                ]
-            },
-            layout: 'noBorders',
-            style: 'tableRowsText',
-              },
-              {
-            table: {
-          headerRows: 1,
-          widths: [ '*'],
-          body: [
-                [{text: 'Observações - Tipo de Acabamento', style: 'tblBigHeader'}],
-                [
-					'$scope.finishTypeObs'
-                ]
-                ]
-            },
-            layout: 'noBorders',
-            style: 'tableRowsText',
-              },
-              {
-                  text:'', margin:[20,10],
-              },
-              {table: { headerRows: 1, widths: [ '*'],
-                     body: [
-                            [ 
-                              {text: 'Embalagem', style: "tblHeader"}
-                           ]
-                          ]
-                      },
-                      layout: 'lightHorizontalLines'
-              },
-              {
-                  text:'', margin:[20,10],
-              },
-              {
-            table: {
-          headerRows: 1,
-          widths: [ '*','*','*'],
-          body: [
-                [{text: 'Código de Barras', style: 'tblBigHeader'}, {text: 'Etiqueta Prova de Água', style: 'tblBigHeader'}, {text: 'Feltros', style: 'tblBigHeader'}],
-                [
-              '$scope.barCodeTechSheet',
-              '$scope.labelWaterProof',
-              '$scope.felts'
-                ]
-                ]
-            },
-            layout: 'noBorders',
-            style: 'tableRowsText',
-              },
-              {
-            table: {
-          headerRows: 1,
-          widths: [ '*','*','*','*'],
-          body: [
-                [{text: 'Quantidade Feltros', style: 'tblBigHeader'}, {text: 'Saco', style: 'tblBigHeader'}, {text: 'Tamanho Saco', style: 'tblBigHeader'}, {text: 'Medidas de Caixa', style: 'tblBigHeader'}],
-                [
-              '$scope.feltsQty',
-              '$scope.bag',
-              '$scope.bagSize',
-              '$scope.boxMeasures'
-                ]
-                ]
-            },
-            layout: 'noBorders',
-            style: 'tableRowsText',
-              },
-              {
-            table: {
-          headerRows: 1,
-          widths: [ '*','*','*'],
-          body: [
-                [{text: 'Quantidade por caixa', style: 'tblBigHeader'}, {text: 'Quantidade por Palete', style: 'tblBigHeader'}, {text: 'Disposição por Fiada', style: 'tblBigHeader'}],
-                [
-              '$scope.qtyByBox',
-              '$scope.qtyByPallet',
-              '$scope.dispositionByRow'
-                ]
-                ]
-            },
-            layout: 'noBorders',
-            style: 'tableRowsText',
-              },
-              {
-            table: {
-          headerRows: 1,
-          widths: [ '*'],
-          body: [
-                [{text: 'Observações Finais', style: 'tblBigHeader'}],
-                [
-					'$scope.finalObservations'
-                ]
-                ]
-            },
-            layout: 'noBorders',
-            style: 'tableRowsText',
-              },
-       ],
-    styles: {
-      'headerText': {
-        fontSize:12,
-        color: 'black',
-        bold: false,
-        lineHeight: 1.25,
-        margin: [15, -4, -300, 21.33]  
-      },
-      'name': {
-        fontSize: 20,
-        color: 'black',
-        bold: true,
-      },
-      'table': {
-        margin: [0, 20, 0, 20]  
-      },
-      'contacts': {
-          fontSize:12,
+        {
+          table: {
+            headerRows: 1, widths: ['*'],
+            body: [
+              [
+                { text: 'Ficha Técnica do Producto', style: "tblBanner" }
+              ]
+            ]
+          },
+          layout: 'lightHorizontalLines',
+
+        },
+        {
+          text: 'Pot Vera Concrete Grey (C405/35)', style: "productName"
+        },
+        {
+          text: '', margin: [20, 10],
+        },
+        {
+          table: {
+            headerRows: 1, widths: ['*'],
+            body: [
+              [
+                { text: 'Produção', style: "tblHeader" }
+              ]
+            ]
+          },
+          layout: 'lightHorizontalLines'
+        },
+        {
+          text: '', margin: [20, 10],
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['*', '*'],
+            body: [
+              [{ text: 'Matéria Prima', style: 'tblBigHeader' }, { text: 'Matéria Prima Adicional', style: 'tblBigHeader' }],
+              [
+                '$scope.rawMaterial',
+                '$scope.rawMaterialExtra'
+              ]
+            ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [{ text: 'Altura Peça', style: 'tblBigHeader' }, { text: 'Largura Peça', style: 'tblBigHeader' }, { text: 'Topo Peça', style: 'tblBigHeader' }, { text: 'Fundo Peça', style: 'tblBigHeader' }],
+              [
+                '$scope.productHeight',
+                '$scope.productWidth',
+                '$scope.topWidth',
+                '$scope.bottomWidth'
+              ]
+            ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [{ text: 'Relevo', style: 'tblBigHeader' }, { text: 'Esponja', style: 'tblBigHeader' }, { text: 'Cozedura', style: 'tblBigHeader' }, { text: 'Temp. Cozedura', style: 'tblBigHeader' }],
+              [
+                '$scope.relief',
+                '$scope.sponge',
+                '$scope.cooking',
+                '$scope.cookingTemperature'
+              ]
+            ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+        },
+        {
+          text: '', margin: [20, 10],
+        },
+        {
+          table: {
+            headerRows: 1, widths: ['*'],
+            body: [
+              [
+                { text: 'Pintura', style: "tblHeader" }
+              ]
+            ]
+          },
+          layout: 'lightHorizontalLines'
+        },
+        {
+          text: '', margin: [20, 10],
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [{ text: 'Pintado a frio', style: 'tblBigHeader' }, { text: 'Quantidade Tinta', style: 'tblBigHeader' }, { text: 'Quanti. Fuminho', style: 'tblBigHeader' }, { text: 'Quanti. Vidrado', style: 'tblBigHeader' }],
+              [
+                '$scope.paintedCold',
+                '$scope.refPaintQty',
+                '$scope.refPaintSmokedQty',
+                '30 cl'
+              ]
+            ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['*', '*', '*'],
+            body: [
+              [{ text: 'Referência Tinta', style: 'tblBigHeader' }, { text: 'Referência Fuminho', style: 'tblBigHeader' }, { text: 'Referência Vidrado', style: 'tblBigHeader' }],
+              [
+                '$scope.refPaint',
+                '$scope.refPaintSmoked',
+                '$scope.refGlassed'
+              ]
+            ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['*'],
+            body: [
+              [{ text: 'Observações - Tipo de Acabamento', style: 'tblBigHeader' }],
+              [
+                '$scope.finishTypeObs'
+              ]
+            ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+        },
+        {
+          text: '', margin: [20, 10],
+        },
+        {
+          table: {
+            headerRows: 1, widths: ['*'],
+            body: [
+              [
+                { text: 'Embalagem', style: "tblHeader" }
+              ]
+            ]
+          },
+          layout: 'lightHorizontalLines'
+        },
+        {
+          text: '', margin: [20, 10],
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['*', '*', '*'],
+            body: [
+              [{ text: 'Código de Barras', style: 'tblBigHeader' }, { text: 'Etiqueta Prova de Água', style: 'tblBigHeader' }, { text: 'Feltros', style: 'tblBigHeader' }],
+              [
+                '$scope.barCodeTechSheet',
+                '$scope.labelWaterProof',
+                '$scope.felts'
+              ]
+            ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [{ text: 'Quantidade Feltros', style: 'tblBigHeader' }, { text: 'Saco', style: 'tblBigHeader' }, { text: 'Tamanho Saco', style: 'tblBigHeader' }, { text: 'Medidas de Caixa', style: 'tblBigHeader' }],
+              [
+                '$scope.feltsQty',
+                '$scope.bag',
+                '$scope.bagSize',
+                '$scope.boxMeasures'
+              ]
+            ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['*', '*', '*'],
+            body: [
+              [{ text: 'Quantidade por caixa', style: 'tblBigHeader' }, { text: 'Quantidade por Palete', style: 'tblBigHeader' }, { text: 'Disposição por Fiada', style: 'tblBigHeader' }],
+              [
+                '$scope.qtyByBox',
+                '$scope.qtyByPallet',
+                '$scope.dispositionByRow'
+              ]
+            ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['*'],
+            body: [
+              [{ text: 'Observações Finais', style: 'tblBigHeader' }],
+              [
+                '$scope.finalObservations'
+              ]
+            ]
+          },
+          layout: 'noBorders',
+          style: 'tableRowsText',
+        },
+      ],
+      styles: {
+        'headerText': {
+          fontSize: 12,
+          color: 'black',
+          bold: false,
+          lineHeight: 1.25,
+          margin: [15, -4, -300, 21.33]
+        },
+        'name': {
+          fontSize: 20,
+          color: 'black',
+          bold: true,
+        },
+        'table': {
+          margin: [0, 20, 0, 20]
+        },
+        'contacts': {
+          fontSize: 12,
           color: 'black',
           bold: false
-      },
-      'tblBanner':{
+        },
+        'tblBanner': {
           margin: [0, 0, 5, 3],
           color: '#9b9898',
           borderWeight: 3,
           alignment: 'center',
           bold: 'true',
           fontSize: 25,
-      },
-      'productName':{
+        },
+        'productName': {
           margin: [0, 0, 5, 3],
           color: '#191717',
           borderWeight: 3,
           alignment: 'center',
           bold: 'true',
           fontSize: 18,
-      },
-      'tableRowsText':{
+        },
+        'tableRowsText': {
           margin: [0, 0, 5, 3],
           color: '#9b9898',
           borderWeight: 3,
           alignment: 'left',
           bold: 'true',
           fontSize: 14,
-      },
-      'tblHeader':{
+        },
+        'tblHeader': {
           margin: [0, 0, 5, 3],
           color: '#e50404',
           borderWeight: 3,
           alignment: 'center',
           bold: 'true',
           fontSize: 18,
-      },
-      'tblBigHeader':{
+        },
+        'tblBigHeader': {
           margin: [0, 0, 0, 0],
           color: '#3f4247',
           borderWeight: 3,
           alignment: 'left',
           bold: 'true',
           fontSize: 14,
+        },
+        'tblSmallHeader': {
+          //margin: [0, 0, 5, 3],
+          color: '#3f1da5',
+          borderWeight: 3,
+          //alignment: 'center',
+          bold: 'true',
+          fontSize: 16,
+        },
       },
-      'tblSmallHeader':{
-        //margin: [0, 0, 5, 3],
-        color: '#3f1da5',
-        borderWeight: 3,
-        //alignment: 'center',
-        bold: 'true',
-        fontSize: 16,
-      },	
-    },
-    pageMargins: [ 56.6, 42.5, 15, 15 ],
-    pageSize: 'A4',
+      pageMargins: [56.6, 42.5, 15, 15],
+      pageSize: 'A4',
     };
 
     pdfMake.createPdf(documentDefinition).download();
 
   };
-   
-  
+
+
   $scope.back = function () {
     var currentPageTemplate = $state.current.templateUrl;
     $templateCache.remove(currentPageTemplate);
-    $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId,'productId': $scope.productId, 'clientname':$scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
-   };
+    $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2 });
+  };
 
 });
 
 
 //EDIT Technical Sheet Controller
 app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParams, $state, $templateCache) {
-   
+
   $rootScope.class = 'not-home';
-  $rootScope.name= "Editar Ficha Técnica";
+  $rootScope.name = "Editar Ficha Técnica";
   $scope.data = [];
 
-  $scope.productName      = 	$stateParams.productName;
-  $scope.productId        = 	$stateParams.productId;
-  $scope.clientname       = 	$stateParams.clientName;
-  $scope.imageName        = 	$stateParams.imageName;
-  $scope.barCode          = 	$stateParams.barCode;
-  $scope.nameInTheLabel   =	  $stateParams.nameInTheLabel;
-  $scope.numArticleByBox  =   $stateParams.numArticleByBox;
-  $scope.preco1           =   $stateParams.preco1;
-  $scope.preco2           =   $stateParams.preco2;
+  $scope.productName = $stateParams.productName;
+  $scope.productId = $stateParams.productId;
+  $scope.clientname = $stateParams.clientName;
+  $scope.imageName = $stateParams.imageName;
+  $scope.barCode = $stateParams.barCode;
+  $scope.nameInTheLabel = $stateParams.nameInTheLabel;
+  $scope.numArticleByBox = $stateParams.numArticleByBox;
+  $scope.preco1 = $stateParams.preco1;
+  $scope.preco2 = $stateParams.preco2;
 
 
   $scope.data = [];
   var productId = $stateParams.productId;
   var customerProductId = $stateParams.customerProductId;
-  var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerProductId));    
+  var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerProductId));
   request.then(function successCallback(response) {
-      $scope.data  = response.data;
-      $scope.rawMaterial 			  = $scope.data[0].Raw_Material;
-      $scope.rawMaterialExtra	  = $scope.data[0].Raw_Material_Extra;
-      $scope.dimensionsInWet	  = $scope.data[0].Dimensions_In_Wet;
-      $scope.productWeight	    = $scope.data[0].Product_Weight;
-      $scope.productHeight		  =	$scope.data[0].Product_Height;
-      $scope.productWidth			  =	$scope.data[0].Product_Width;
-      $scope.topWidth				    =	$scope.data[0].Top_Width;
-      $scope.bottomWidth			  =	$scope.data[0].Bottom_Width;
-      $scope.relief				      =	$scope.data[0].Relief;
-      $scope.sponge				      =	$scope.data[0].Sponge;
-      $scope.cooking				    =	$scope.data[0].Cooking;
-      $scope.cookingTemperature	=	$scope.data[0].Cooking_Temperature;
-      $scope.paintedCold			  =	$scope.data[0].Painted_Cold;
-      $scope.refPaint				    =	$scope.data[0].Ref_Paint;
-      $scope.refPaintQty			  =	$scope.data[0].Ref_Paint_Qty;
-      $scope.glassed				    =	$scope.data[0].Glassed;
-      $scope.refGlassed			    =	$scope.data[0].Ref_Glassed;
-      $scope.refPaintSmoked		  =	$scope.data[0].Ref_Paint_Smoked;
-      $scope.refPaintSmokedQty	=	$scope.data[0].Ref_Paint_Smoked_Qty;
-      $scope.finishTypeObs		  =	$scope.data[0].Finish_Type_Obs;
-      $scope.barCodeTechSheet		=	$scope.data[0].Bar_Code_Tech_Sheet;
-      $scope.labelWaterProof		=	$scope.data[0].Label_Water_Proof;
-      $scope.felts				      =	$scope.data[0].Felts;
-      $scope.feltsQty				    =	$scope.data[0].Felts_Qty;
-      $scope.bag					      =	$scope.data[0].Bag;
-      $scope.bagSize				    =	$scope.data[0].Bag_Size;
-      $scope.qtyByBox				    =	$scope.data[0].Qty_By_Box;
-      $scope.boxMeasures			  =	$scope.data[0].Box_Measures;
-      $scope.boxId       			  =	$scope.data[0].Box_Id;
-      $scope.dispositionByRow		=	$scope.data[0].Disposition_By_Row;
-      $scope.qtyByPallet			  =	$scope.data[0].Qty_By_Pallet;
-      $scope.finalObservations	=	$scope.data[0].Final_Observations;
-      console.log(response.data);
-      //$scope.image = '/images' + '/' + $scope.data.image_name;
-      return  $scope.data; 
+    $scope.data = response.data;
+    $scope.rawMaterial = $scope.data[0].Raw_Material;
+    $scope.rawMaterialExtra = $scope.data[0].Raw_Material_Extra;
+    $scope.dimensionsInWet = $scope.data[0].Dimensions_In_Wet;
+    $scope.productWeight = $scope.data[0].Product_Weight;
+    $scope.productHeight = $scope.data[0].Product_Height;
+    $scope.productWidth = $scope.data[0].Product_Width;
+    $scope.topWidth = $scope.data[0].Top_Width;
+    $scope.bottomWidth = $scope.data[0].Bottom_Width;
+    $scope.relief = $scope.data[0].Relief;
+    $scope.sponge = $scope.data[0].Sponge;
+    $scope.cooking = $scope.data[0].Cooking;
+    $scope.cookingTemperature = $scope.data[0].Cooking_Temperature;
+    $scope.paintedCold = $scope.data[0].Painted_Cold;
+    $scope.refPaint = $scope.data[0].Ref_Paint;
+    $scope.refPaintQty = $scope.data[0].Ref_Paint_Qty;
+    $scope.glassed = $scope.data[0].Glassed;
+    $scope.refGlassed = $scope.data[0].Ref_Glassed;
+    $scope.refPaintSmoked = $scope.data[0].Ref_Paint_Smoked;
+    $scope.refPaintSmokedQty = $scope.data[0].Ref_Paint_Smoked_Qty;
+    $scope.finishTypeObs = $scope.data[0].Finish_Type_Obs;
+    $scope.barCodeTechSheet = $scope.data[0].Bar_Code_Tech_Sheet;
+    $scope.labelWaterProof = $scope.data[0].Label_Water_Proof;
+    $scope.felts = $scope.data[0].Felts;
+    $scope.feltsQty = $scope.data[0].Felts_Qty;
+    $scope.bag = $scope.data[0].Bag;
+    $scope.bagSize = $scope.data[0].Bag_Size;
+    $scope.qtyByBox = $scope.data[0].Qty_By_Box;
+    $scope.boxMeasures = $scope.data[0].Box_Measures;
+    $scope.boxId = $scope.data[0].Box_Id;
+    $scope.dispositionByRow = $scope.data[0].Disposition_By_Row;
+    $scope.qtyByPallet = $scope.data[0].Qty_By_Pallet;
+    $scope.finalObservations = $scope.data[0].Final_Observations;
+    console.log(response.data);
+    //$scope.image = '/images' + '/' + $scope.data.image_name;
+    return $scope.data;
   },
-  function errorCallback(data){
+    function errorCallback(data) {
       console.log('Error: ' + data);
-  });
+    });
 
   $scope.boxSize = [];
-  var request = $http.get('/getBoxMeasures');    
+  var request = $http.get('/getBoxMeasures');
   request.then(function successCallback(response) {
-    $scope.boxSize  = response.data;
+    $scope.boxSize = response.data;
   },
-  function errorCallback(data){
-    console.log('Error: ' + data);
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
+
+  $scope.$watch('boxMeasures', function () {
+    $scope.boxId = $scope.boxMeasures;
   });
 
-  $scope.$watch('boxMeasures', function(){
-    $scope.boxId = $scope.boxMeasures;
-  });  
-
-   $scope.saveTechSheet = function() {
+  $scope.saveTechSheet = function () {
 
     //WE NEED TO VALIDATE IF THE BOX_MEASURES COMES FROM THE TYPEAHEAD OR OF IT THE BOX_MEASURES ALREADY 
     //EXISTS IN THE DATABASE
-    if($scope.boxMeasures == null || !$scope.boxMeasures.MEASURES) {
+    if ($scope.boxMeasures == null || !$scope.boxMeasures.MEASURES) {
       $scope.boxMeasures = $scope.boxMeasures;
-      $scope.boxId       = $scope.boxId;
+      $scope.boxId = $scope.boxId;
     } else {
       $scope.boxMeasures = $scope.boxMeasures.MEASURES;
-      $scope.boxId       = $scope.boxId.ID;
+      $scope.boxId = $scope.boxId.ID;
     }
 
     var dataObj = {
       CUSTOMER_PRODUCT_ID: customerProductId,
-      INTERNAL_PRODUCT_ID:  $scope.productId,
-      Raw_Material:			    $scope.rawMaterial,
-      Raw_Material_Extra:		$scope.rawMaterialExtra,
-      Dimensions_In_Wet:    $scope.dimensionsInWet,
-      Product_Weight:       $scope.productWeight,
-      Product_Height:			  $scope.productHeight,
-      Product_Width:			  $scope.productWidth,
-      Top_Width:				    $scope.topWidth,
-      Bottom_Width:			    $scope.bottomWidth,
-      Relief:					      $scope.relief,
-      Sponge:					      $scope.sponge,
-      Cooking:			        $scope.cooking,
-      Cooking_Temperature:	$scope.cookingTemperature,
-      Painted_Cold:			    $scope.paintedCold,
-      Ref_Paint:				    $scope.refPaint,
-      Ref_Paint_Qty:			  $scope.refPaintQty,
-      Glassed:				      $scope.glassed,
-      Ref_Glassed:			    $scope.refGlassed,
-      Ref_Paint_Smoked:		  $scope.refPaintSmoked,
-      Ref_Paint_Smoked_Qty:	$scope.refPaintSmokedQty,
-      Finish_Type_Obs:		  $scope.finishTypeObs,
-      Bar_Code_Tech_Sheet:	$scope.barCodeTechSheet,
-      Label_Water_Proof:		$scope.labelWaterProof,
-      Felts:					      $scope.felts,
-      Felts_Qty:				    $scope.feltsQty,
-      Bag:					        $scope.bag,
-      Bag_Size:				      $scope.bagSize,
-      Qty_By_Box:				    $scope.qtyByBox,
-      Box_Measures:			    $scope.boxMeasures,
-      Box_Id:     			    $scope.boxId,
-      Disposition_By_Row:		$scope.dispositionByRow,
-      Qty_By_Pallet:			  $scope.qtyByPallet,
-      Final_Observations:		$scope.finalObservations
+      INTERNAL_PRODUCT_ID: $scope.productId,
+      Raw_Material: $scope.rawMaterial,
+      Raw_Material_Extra: $scope.rawMaterialExtra,
+      Dimensions_In_Wet: $scope.dimensionsInWet,
+      Product_Weight: $scope.productWeight,
+      Product_Height: $scope.productHeight,
+      Product_Width: $scope.productWidth,
+      Top_Width: $scope.topWidth,
+      Bottom_Width: $scope.bottomWidth,
+      Relief: $scope.relief,
+      Sponge: $scope.sponge,
+      Cooking: $scope.cooking,
+      Cooking_Temperature: $scope.cookingTemperature,
+      Painted_Cold: $scope.paintedCold,
+      Ref_Paint: $scope.refPaint,
+      Ref_Paint_Qty: $scope.refPaintQty,
+      Glassed: $scope.glassed,
+      Ref_Glassed: $scope.refGlassed,
+      Ref_Paint_Smoked: $scope.refPaintSmoked,
+      Ref_Paint_Smoked_Qty: $scope.refPaintSmokedQty,
+      Finish_Type_Obs: $scope.finishTypeObs,
+      Bar_Code_Tech_Sheet: $scope.barCodeTechSheet,
+      Label_Water_Proof: $scope.labelWaterProof,
+      Felts: $scope.felts,
+      Felts_Qty: $scope.feltsQty,
+      Bag: $scope.bag,
+      Bag_Size: $scope.bagSize,
+      Qty_By_Box: $scope.qtyByBox,
+      Box_Measures: $scope.boxMeasures,
+      Box_Id: $scope.boxId,
+      Disposition_By_Row: $scope.dispositionByRow,
+      Qty_By_Pallet: $scope.qtyByPallet,
+      Final_Observations: $scope.finalObservations
     };
 
-    var res = $http.post('/updateProductTechSheet', dataObj).then(function(data, status, headers, config) {
+    var res = $http.post('/updateProductTechSheet', dataObj).then(function (data, status, headers, config) {
       var currentPageTemplate = $state.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
-      $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname':$scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
+      $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2 });
 
     });
 
-   };
+  };
 
-   $scope.back = function () {
+  $scope.back = function () {
     var currentPageTemplate = $state.current.templateUrl;
     $templateCache.remove(currentPageTemplate);
-    $state.transitionTo("editProduct", {'productName': $scope.productName, 'customerProductId': customerProductId,'productId': $scope.productId, 'clientname':$scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox, 'preco1':  $scope.preco1, 'preco2':  $scope.preco2}) ;
-   };
+    $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2 });
+  };
 
 
- $scope.printTechnicalSheet = function() {
+  $scope.printTechnicalSheet = function () {
 
-  function _arrayBufferToBase64(buffer) {
-    var binary = '';
-    var bytes = new Uint8Array(buffer);
-    var len = bytes.byteLength;
-    for (var i = 0; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
+    function _arrayBufferToBase64(buffer) {
+      var binary = '';
+      var bytes = new Uint8Array(buffer);
+      var len = bytes.byteLength;
+      for (var i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return window.btoa(binary);
     }
-    return window.btoa(binary);
-  }
 
-    var request = $http({ method: 'GET', url: 'images/' + $scope.imageName, responseType: 'arraybuffer'});
+    var request = $http({ method: 'GET', url: 'images/' + $scope.imageName, responseType: 'arraybuffer' });
 
     request.then(function successCallback(data) {
 
@@ -3103,614 +3115,614 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
 
       var dd = {
         "content": [{
-            "columns": [{
-                "width": 150,
-                image: 'data:image/jpeg;base64,' + $scope.mainImageUrl,
-                "height": 150
-            }, {
-                "width": "auto",
-                "text": [
-                    {text: 'Ficha Técnica do Produto\n\n', fontSize: 18, bold: false},
-                    {text: '_PRODUCT_NAME_', fontSize: 24, bold: true, color: "#222222"}
-                ],
-                "style": "tblBanner"
-            }]
+          "columns": [{
+            "width": 150,
+            image: 'data:image/jpeg;base64,' + $scope.mainImageUrl,
+            "height": 150
+          }, {
+            "width": "auto",
+            "text": [
+              { text: 'Ficha Técnica do Produto\n\n', fontSize: 18, bold: false },
+              { text: '_PRODUCT_NAME_', fontSize: 24, bold: true, color: "#222222" }
+            ],
+            "style": "tblBanner"
+          }]
         }, {
-            "text": "",
-            "margin": [20, 10]
+          "text": "",
+          "margin": [20, 10]
         },
-            {
-              table: {
-                
-                headerRows: 1,
-                widths: [ '*' ],
-                body: [
-                  [ 
-                  {text: 'Produção', style: "tblHeaderSingle"},
-                  ],
-                  [ 
-                      {},
-                  ]
-                ]
-              },
-              layout: 'lightHorizontalLines'
-            }, {
-            "text": "",
-            "margin": [20, 10]
+        {
+          table: {
+
+            headerRows: 1,
+            widths: ['*'],
+            body: [
+              [
+                { text: 'Produção', style: "tblHeaderSingle" },
+              ],
+              [
+                {},
+              ]
+            ]
+          },
+          layout: 'lightHorizontalLines'
         }, {
-            "table": {
-                "headerRows": 1,
-                "widths": ["*", "*"],
-                "body": [
-                    [{
-                        "text": "Matéria Prima",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Matéria Prima Adicional",
-                        "style": "tblBigHeader"
-                    }],
-                    [
-                        '_RAW_MATERIAL_',
-                        '_RAW_MATERIAL_EXTRA_'
-                    ]
-                ], "style": "littleMargin",
-            },
-            "layout": "noBorders",
-            "style": "tableRowsTextFirst"
+          "text": "",
+          "margin": [20, 10]
         }, {
           "table": {
-              "headerRows": 1,
-              "widths": ["*", "*"],
-              "body": [
-                  [{
-                      "text": "Dimensões Pré Secagem",
-                      "style": "tblBigHeader"
-                  }, {
-                      "text": "Peso da peça",
-                      "style": "tblBigHeader"
-                  }],
-                  [
-                      '_DIMENSIONS_IN_WET_',
-                      '_PRODUCT_WEIGHT_'
-                  ]
-              ], "style": "littleMargin",
+            "headerRows": 1,
+            "widths": ["*", "*"],
+            "body": [
+              [{
+                "text": "Matéria Prima",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Matéria Prima Adicional",
+                "style": "tblBigHeader"
+              }],
+              [
+                '_RAW_MATERIAL_',
+                '_RAW_MATERIAL_EXTRA_'
+              ]
+            ], "style": "littleMargin",
+          },
+          "layout": "noBorders",
+          "style": "tableRowsTextFirst"
+        }, {
+          "table": {
+            "headerRows": 1,
+            "widths": ["*", "*"],
+            "body": [
+              [{
+                "text": "Dimensões Pré Secagem",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Peso da peça",
+                "style": "tblBigHeader"
+              }],
+              [
+                '_DIMENSIONS_IN_WET_',
+                '_PRODUCT_WEIGHT_'
+              ]
+            ], "style": "littleMargin",
           },
           "layout": "noBorders",
           "style": "tableRowsText"
-      }, {
-            "table": {
-                "headerRows": 1,
-                "widths": ["*", "*", "*", "*"],
-                "body": [
-                    [{
-                        "text": "Altura Peça",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Largura Peça",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Topo Peça",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Fundo Peça",
-                        "style": "tblBigHeader"
-                    }],
-                    [
-                        '_PRODUCT_HEIGHT_',
-                        '_PRODUCT_WIDHT_',
-                        '_TOP_WIDTH_',
-                        '_BOTTOM_WIDTH_'
-                    ]
-                ]
-            },
-            "layout": "noBorders",
-            "style": "tableRowsText"
         }, {
-            "table": {
-                "headerRows": 1,
-                "widths": ["*", "*", "*", "*"],
-                "body": [
-                    [{
-                        "text": "Relevo",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Esponja",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Cozedura",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Temp. Cozedura",
-                        "style": "tblBigHeader"
-                    }],
-                    [
-                        '_RELIEF_',
-                        '_SPONGE_',
-                        '_COOKING_',
-                        '_COOKING_TEMPERATURE_'
-                    ]
-                ]
-            },
-            "layout": "noBorders",
-            "style": "tableRowsText"
+          "table": {
+            "headerRows": 1,
+            "widths": ["*", "*", "*", "*"],
+            "body": [
+              [{
+                "text": "Altura Peça",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Largura Peça",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Topo Peça",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Fundo Peça",
+                "style": "tblBigHeader"
+              }],
+              [
+                '_PRODUCT_HEIGHT_',
+                '_PRODUCT_WIDHT_',
+                '_TOP_WIDTH_',
+                '_BOTTOM_WIDTH_'
+              ]
+            ]
+          },
+          "layout": "noBorders",
+          "style": "tableRowsText"
         }, {
-            "text": "",
-            "margin": [20, 10]
+          "table": {
+            "headerRows": 1,
+            "widths": ["*", "*", "*", "*"],
+            "body": [
+              [{
+                "text": "Relevo",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Esponja",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Cozedura",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Temp. Cozedura",
+                "style": "tblBigHeader"
+              }],
+              [
+                '_RELIEF_',
+                '_SPONGE_',
+                '_COOKING_',
+                '_COOKING_TEMPERATURE_'
+              ]
+            ]
+          },
+          "layout": "noBorders",
+          "style": "tableRowsText"
+        }, {
+          "text": "",
+          "margin": [20, 10]
         },
-            {
-              table: {
-                
-                headerRows: 1,
-                widths: [ '*' ],
-                body: [
-                  [ 
-                  {text: 'Pintura', style: "tblHeaderSingle"},
-                  ],
-                  [ 
-                      {},
-                  ]
-                ]
-              },
-              layout: 'lightHorizontalLines'
-            }, {
-            "text": "",
-            "margin": [20, 10]
+        {
+          table: {
+
+            headerRows: 1,
+            widths: ['*'],
+            body: [
+              [
+                { text: 'Pintura', style: "tblHeaderSingle" },
+              ],
+              [
+                {},
+              ]
+            ]
+          },
+          layout: 'lightHorizontalLines'
         }, {
-            "table": {
-                "headerRows": 1,
-                "widths": ["*", "*", "*", "*"],
-                "body": [
-                    [{
-                        "text": "Pintado a frio",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Quantidade Tinta",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Quanti. Fuminho",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Quanti. Vidrado",
-                        "style": "tblBigHeader"
-                    }],
-                    [
-                        '_PAINTED_COLD_',
-                        '_REF_PAINT_QTY_',
-                        '_REF_PAINT_SMOKED_QTY_',
-                        '_GLASSED_'
-                    ]
-                ]
-            },
-            "layout": "noBorders",
-            "style": "tableRowsTextFirst"
+          "text": "",
+          "margin": [20, 10]
         }, {
-            "table": {
-                "headerRows": 1,
-                "widths": ["*", "*", "*"],
-                "body": [
-                    [{
-                        "text": "Referência Tinta",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Referência Fuminho",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Referência Vidrado",
-                        "style": "tblBigHeader"
-                    }],
-                    [
-                        '_REF_PAINT_',
-                        '_REF_PAINT_SMOKED_',
-                        '_REF_GLASSED_',
-                    ]
-                ]
-            },
-            "layout": "noBorders",
-            "style": "tableRowsTextLast"
+          "table": {
+            "headerRows": 1,
+            "widths": ["*", "*", "*", "*"],
+            "body": [
+              [{
+                "text": "Pintado a frio",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Quantidade Tinta",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Quanti. Fuminho",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Quanti. Vidrado",
+                "style": "tblBigHeader"
+              }],
+              [
+                '_PAINTED_COLD_',
+                '_REF_PAINT_QTY_',
+                '_REF_PAINT_SMOKED_QTY_',
+                '_GLASSED_'
+              ]
+            ]
+          },
+          "layout": "noBorders",
+          "style": "tableRowsTextFirst"
         }, {
-            "table": {
-                "headerRows": 1,
-                "widths": ["*"],
-                "body": [
-                    [{
-                        "text": "Observações - Tipo de Acabamento",
-                        "style": "tblBigHeader"
-                    }],
-                    [
-                        '_FINISH_TYPE_OBS_'
-                    ]
-                ]
-            },
-            "layout": "noBorders",
-            "style": "tableRowsTextLast"
+          "table": {
+            "headerRows": 1,
+            "widths": ["*", "*", "*"],
+            "body": [
+              [{
+                "text": "Referência Tinta",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Referência Fuminho",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Referência Vidrado",
+                "style": "tblBigHeader"
+              }],
+              [
+                '_REF_PAINT_',
+                '_REF_PAINT_SMOKED_',
+                '_REF_GLASSED_',
+              ]
+            ]
+          },
+          "layout": "noBorders",
+          "style": "tableRowsTextLast"
         }, {
-            "text": "",
-            "margin": [20, 10]
+          "table": {
+            "headerRows": 1,
+            "widths": ["*"],
+            "body": [
+              [{
+                "text": "Observações - Tipo de Acabamento",
+                "style": "tblBigHeader"
+              }],
+              [
+                '_FINISH_TYPE_OBS_'
+              ]
+            ]
+          },
+          "layout": "noBorders",
+          "style": "tableRowsTextLast"
+        }, {
+          "text": "",
+          "margin": [20, 10]
         },
-            {
-              table: {
-                
-                headerRows: 1,
-                widths: [ '*' ],
-                body: [
-                  [ 
-                  {text: 'Embalagem', style: "tblHeaderSingle"},
-                  ],
-                  [ 
-                      {},
-                  ]
-                ]
-              },
-              layout: 'lightHorizontalLines'
-            }, {
-            "text": "",
-            "margin": [10, 10]
+        {
+          table: {
+
+            headerRows: 1,
+            widths: ['*'],
+            body: [
+              [
+                { text: 'Embalagem', style: "tblHeaderSingle" },
+              ],
+              [
+                {},
+              ]
+            ]
+          },
+          layout: 'lightHorizontalLines'
         }, {
-            "table": {
-                "headerRows": 1,
-                "widths": ["*", "*", "*"],
-                "body": [
-                    [{
-                        "text": "Código de Barras",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Etiqueta Prova de Água",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Feltros",
-                        "style": "tblBigHeader"
-                    }],
-                    [
-                        '_BAR_CODE_TECH_SHEET_',
-                        '_LABEL_WATER_PROOF_',
-                        '_FELTS_'
-                    ]
-                ]
-            },
-            "layout": "noBorders",
-            "style": "tableRowsTextFirst"
+          "text": "",
+          "margin": [10, 10]
         }, {
-            "table": {
-                "headerRows": 1,
-                "widths": ["*", "*", "*", "*"],
-                "body": [
-                    [{
-                        "text": "Quantidade Feltros",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Saco",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Tamanho Saco",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Medidas de Caixa",
-                        "style": "tblBigHeader"
-                    }],
-                    [
-                        '_FELTS_QTY_',
-                        '_BAG_',
-                        '_BAG_SIZE_',
-                        '_BOX_MEASURES_',
-                    ]
-                ]
-            },
-            "layout": "noBorders",
-            "style": "tableRowsText"
+          "table": {
+            "headerRows": 1,
+            "widths": ["*", "*", "*"],
+            "body": [
+              [{
+                "text": "Código de Barras",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Etiqueta Prova de Água",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Feltros",
+                "style": "tblBigHeader"
+              }],
+              [
+                '_BAR_CODE_TECH_SHEET_',
+                '_LABEL_WATER_PROOF_',
+                '_FELTS_'
+              ]
+            ]
+          },
+          "layout": "noBorders",
+          "style": "tableRowsTextFirst"
         }, {
-            "table": {
-                "headerRows": 1,
-                "widths": ["*", "*", "*"],
-                "body": [
-                    [{
-                        "text": "Quantidade por caixa",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Quantidade por Palete",
-                        "style": "tblBigHeader"
-                    }, {
-                        "text": "Disposição por Fiada",
-                        "style": "tblBigHeader"
-                    }],
-                    [
-                        '_QTY_BY_BOX_',
-                        '_QTY_BY_PALLET_',
-                        '_DISPOSITION_BY_ROW_',
-                    ]
-                ]
-            },
-            "layout": "noBorders",
-            "style": "tableRowsText"
+          "table": {
+            "headerRows": 1,
+            "widths": ["*", "*", "*", "*"],
+            "body": [
+              [{
+                "text": "Quantidade Feltros",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Saco",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Tamanho Saco",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Medidas de Caixa",
+                "style": "tblBigHeader"
+              }],
+              [
+                '_FELTS_QTY_',
+                '_BAG_',
+                '_BAG_SIZE_',
+                '_BOX_MEASURES_',
+              ]
+            ]
+          },
+          "layout": "noBorders",
+          "style": "tableRowsText"
         }, {
-            "table": {
-                "headerRows": 1,
-                "widths": ["*"],
-                "body": [
-                    [{
-                        "text": "Observações Finais",
-                        "style": "tblBigHeader"
-                    }],
-                    [
-                        '_FINAL_OBSERVATIONS_'
-                    ]
-                ]
-            },
-            "layout": "noBorders",
-            "style": "tableRowsTextLast"
+          "table": {
+            "headerRows": 1,
+            "widths": ["*", "*", "*"],
+            "body": [
+              [{
+                "text": "Quantidade por caixa",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Quantidade por Palete",
+                "style": "tblBigHeader"
+              }, {
+                "text": "Disposição por Fiada",
+                "style": "tblBigHeader"
+              }],
+              [
+                '_QTY_BY_BOX_',
+                '_QTY_BY_PALLET_',
+                '_DISPOSITION_BY_ROW_',
+              ]
+            ]
+          },
+          "layout": "noBorders",
+          "style": "tableRowsText"
+        }, {
+          "table": {
+            "headerRows": 1,
+            "widths": ["*"],
+            "body": [
+              [{
+                "text": "Observações Finais",
+                "style": "tblBigHeader"
+              }],
+              [
+                '_FINAL_OBSERVATIONS_'
+              ]
+            ]
+          },
+          "layout": "noBorders",
+          "style": "tableRowsTextLast"
         }],
         "styles": {
-            "headerText": {
-                "fontSize": 12,
-                "color": "black",
-                "bold": false,
-                "lineHeight": 1.25,
-                "margin": [15, -4, -300, 21.33]
-            },
-            "name": {
-                "fontSize": 20,
-                "color": "black",
-                "bold": true
-            },
-            "table": {
-                "margin": [0, 20, 0, 20]
-            },
-            "contacts": {
-                "fontSize": 12,
-                "color": "black",
-                "bold": false
-            },
-            "tblBanner": {
-                "margin": [30, 0, 5, 3],
-                "color": "#9b9898",
-                "borderWeight": 3,
-                "alignment": "left",
-                "bold": "true",
-                "fontSize": 25
-            },
-            "productName": {
-                "margin": [0, 0, 5, 3],
-                "color": "#191717",
-                "borderWeight": 3,
-                "alignment": "center",
-                "bold": "true",
-                "fontSize": 18
-            },
-            "tableRowsText": {
-                "margin": [0, 0, 0, 2],
-                "color": "#9b9898",
-                "borderWeight": 3,
-                "alignment": "left",
-                "bold": "true",
-                "fontSize": 14
-            },
-            "tblHeader": {
-                "margin": [0, 20, 5, -15],
-                "color": "#222222",
-                "borderWeight": 3,
-                "borderColor": 'black',
-                "alignment": "left",
-                "bold": "true",
-                "fontSize": 16
-            },
-            "tblHeaderSingle": {
-                "margin": [0, -10, 0, 0],
-                "color": "#222222",
-                "borderWeight": 3,
-                "borderColor": 'black',
-                "alignment": "left",
-                "bold": "true",
-                "fontSize": 16
-            },
-            "tblBigHeader": {
-                "margin": [0, 0, 0, 0],
-                "color": "#3f4247",
-                "borderWeight": 3,
-                "alignment": "left",
-                "bold": "true",
-                "fontSize": 14
-            },
-            "tblSmallHeader": {
-                "color": "#3f1da5",
-                "borderWeight": 3,
-                "bold": "true",
-                "fontSize": 16
-            },
-            "tableRowsTextFirst": {
-                "margin": [0, -15, 0, 0],
-                "color": "#9b9898",
-                "borderWeight": 3,
-                "alignment": "left",
-                "bold": "true",
-                "fontSize": 14
-            },
-            "tableRowsTextLast": {
-                "margin": [0, 0, 0, 10],
-                "color": "#9b9898",
-                "borderWeight": 3,
-                "alignment": "left",
-                "bold": "true",
-                "fontSize": 14
-            },
+          "headerText": {
+            "fontSize": 12,
+            "color": "black",
+            "bold": false,
+            "lineHeight": 1.25,
+            "margin": [15, -4, -300, 21.33]
+          },
+          "name": {
+            "fontSize": 20,
+            "color": "black",
+            "bold": true
+          },
+          "table": {
+            "margin": [0, 20, 0, 20]
+          },
+          "contacts": {
+            "fontSize": 12,
+            "color": "black",
+            "bold": false
+          },
+          "tblBanner": {
+            "margin": [30, 0, 5, 3],
+            "color": "#9b9898",
+            "borderWeight": 3,
+            "alignment": "left",
+            "bold": "true",
+            "fontSize": 25
+          },
+          "productName": {
+            "margin": [0, 0, 5, 3],
+            "color": "#191717",
+            "borderWeight": 3,
+            "alignment": "center",
+            "bold": "true",
+            "fontSize": 18
+          },
+          "tableRowsText": {
+            "margin": [0, 0, 0, 2],
+            "color": "#9b9898",
+            "borderWeight": 3,
+            "alignment": "left",
+            "bold": "true",
+            "fontSize": 14
+          },
+          "tblHeader": {
+            "margin": [0, 20, 5, -15],
+            "color": "#222222",
+            "borderWeight": 3,
+            "borderColor": 'black',
+            "alignment": "left",
+            "bold": "true",
+            "fontSize": 16
+          },
+          "tblHeaderSingle": {
+            "margin": [0, -10, 0, 0],
+            "color": "#222222",
+            "borderWeight": 3,
+            "borderColor": 'black',
+            "alignment": "left",
+            "bold": "true",
+            "fontSize": 16
+          },
+          "tblBigHeader": {
+            "margin": [0, 0, 0, 0],
+            "color": "#3f4247",
+            "borderWeight": 3,
+            "alignment": "left",
+            "bold": "true",
+            "fontSize": 14
+          },
+          "tblSmallHeader": {
+            "color": "#3f1da5",
+            "borderWeight": 3,
+            "bold": "true",
+            "fontSize": 16
+          },
+          "tableRowsTextFirst": {
+            "margin": [0, -15, 0, 0],
+            "color": "#9b9898",
+            "borderWeight": 3,
+            "alignment": "left",
+            "bold": "true",
+            "fontSize": 14
+          },
+          "tableRowsTextLast": {
+            "margin": [0, 0, 0, 10],
+            "color": "#9b9898",
+            "borderWeight": 3,
+            "alignment": "left",
+            "bold": "true",
+            "fontSize": 14
+          },
         },
         "pageMargins": [40, 30, 15, 20],
         "pageSize": "A4"
-    };
-    
-    
-        function replaceAll(str, map){
-          for(key in map){
-              var value = map[key];
-              if(value == null) {
-                value = '';
-              }
-              str2 = str.replace(key, value);
-              str=str2;
-              str2=null;
+      };
+
+
+      function replaceAll(str, map) {
+        for (key in map) {
+          var value = map[key];
+          if (value == null) {
+            value = '';
           }
-          return str;
+          str2 = str.replace(key, value);
+          str = str2;
+          str2 = null;
         }
-    
+        return str;
+      }
 
-        if($scope.finishTypeObs != null) {
-           $scope.finishTypeObs = $scope.finishTypeObs.replace(/(?:\r\n|\r|\n)/g, ' # ');
-        } else {
-          $scope.finishTypeObs = '';
-        }
 
-        if($scope.finalObservations != null) {
-          $scope.finalObservations = $scope.finalObservations.replace(/(?:\r\n|\r|\n)/g, ' # ')
-        } else {
-         $scope.finalObservations = '';
-        }
+      if ($scope.finishTypeObs != null) {
+        $scope.finishTypeObs = $scope.finishTypeObs.replace(/(?:\r\n|\r|\n)/g, ' # ');
+      } else {
+        $scope.finishTypeObs = '';
+      }
 
-        var map = {
-          '_PRODUCT_NAME_' : $scope.productName,
-          '_RAW_MATERIAL_' : $scope.rawMaterial,
-          '_RAW_MATERIAL_EXTRA_' : $scope.rawMaterialExtra,
-          '_DIMENSIONS_IN_WET_' : $scope.dimensionsInWet,
-          '_PRODUCT_WEIGHT_' : $scope.productWeight,
-          '_PRODUCT_HEIGHT_' : $scope.productHeight,
-          '_PRODUCT_WIDHT_' : $scope.productWidth,
-          '_TOP_WIDTH_' : $scope.topWidth,
-          '_BOTTOM_WIDTH_' : $scope.bottomWidth,
-          '_RELIEF_' : $scope.relief,
-          '_SPONGE_' : $scope.sponge,
-          '_COOKING_' : $scope.cooking,
-          '_COOKING_TEMPERATURE_' : $scope.cookingTemperature,
-          '_PAINTED_COLD_' : $scope.paintedCold,
-          '_REF_PAINT_QTY_' : $scope.refPaintQty,
-          '_REF_PAINT_SMOKED_QTY_' : $scope.refPaintSmokedQty,
-          '_REF_PAINT_' : $scope.refPaint,
-          '_REF_PAINT_SMOKED_' : $scope.refPaintSmoked,
-          '_GLASSED_' : $scope.glassed,
-          '_REF_GLASSED_' : $scope.refGlassed,
-          '_FINISH_TYPE_OBS_' : $scope.finishTypeObs,
-          '_BAR_CODE_TECH_SHEET_' : $scope.barCodeTechSheet,
-          '_LABEL_WATER_PROOF_' : $scope.labelWaterProof,
-          '_FELTS_' : $scope.felts,
-          '_FELTS_QTY_' : $scope.feltsQty,
-          '_BAG_' : $scope.bag,
-          '_BAG_SIZE_' : $scope.bagSize,
-          '_BOX_MEASURES_' : $scope.boxMeasures,
-          '_QTY_BY_BOX_' : $scope.qtyByBox,
-          '_QTY_BY_PALLET_' : $scope.qtyByPallet,
-          '_DISPOSITION_BY_ROW_' : $scope.dispositionByRow,
-          '_FINAL_OBSERVATIONS_' : $scope.finalObservations
-        };
-    
-    
-        var documentDefintionString = JSON.stringify(dd);
-        var documentDefinitionToJSON = replaceAll(documentDefintionString, map);
-    
-        var documentToPrint = JSON.parse(documentDefinitionToJSON); 
-        //var doc2 = documentDefinition.replace(refPaint, '$scope.refPaint');
-    
-        var fileName = 'Ficha_Técnica_' + $scope.productName.replace(/\s/g,'_').replace('/','_');
+      if ($scope.finalObservations != null) {
+        $scope.finalObservations = $scope.finalObservations.replace(/(?:\r\n|\r|\n)/g, ' # ')
+      } else {
+        $scope.finalObservations = '';
+      }
 
-        pdfMake.createPdf(documentToPrint).download(fileName);
-    
+      var map = {
+        '_PRODUCT_NAME_': $scope.productName,
+        '_RAW_MATERIAL_': $scope.rawMaterial,
+        '_RAW_MATERIAL_EXTRA_': $scope.rawMaterialExtra,
+        '_DIMENSIONS_IN_WET_': $scope.dimensionsInWet,
+        '_PRODUCT_WEIGHT_': $scope.productWeight,
+        '_PRODUCT_HEIGHT_': $scope.productHeight,
+        '_PRODUCT_WIDHT_': $scope.productWidth,
+        '_TOP_WIDTH_': $scope.topWidth,
+        '_BOTTOM_WIDTH_': $scope.bottomWidth,
+        '_RELIEF_': $scope.relief,
+        '_SPONGE_': $scope.sponge,
+        '_COOKING_': $scope.cooking,
+        '_COOKING_TEMPERATURE_': $scope.cookingTemperature,
+        '_PAINTED_COLD_': $scope.paintedCold,
+        '_REF_PAINT_QTY_': $scope.refPaintQty,
+        '_REF_PAINT_SMOKED_QTY_': $scope.refPaintSmokedQty,
+        '_REF_PAINT_': $scope.refPaint,
+        '_REF_PAINT_SMOKED_': $scope.refPaintSmoked,
+        '_GLASSED_': $scope.glassed,
+        '_REF_GLASSED_': $scope.refGlassed,
+        '_FINISH_TYPE_OBS_': $scope.finishTypeObs,
+        '_BAR_CODE_TECH_SHEET_': $scope.barCodeTechSheet,
+        '_LABEL_WATER_PROOF_': $scope.labelWaterProof,
+        '_FELTS_': $scope.felts,
+        '_FELTS_QTY_': $scope.feltsQty,
+        '_BAG_': $scope.bag,
+        '_BAG_SIZE_': $scope.bagSize,
+        '_BOX_MEASURES_': $scope.boxMeasures,
+        '_QTY_BY_BOX_': $scope.qtyByBox,
+        '_QTY_BY_PALLET_': $scope.qtyByPallet,
+        '_DISPOSITION_BY_ROW_': $scope.dispositionByRow,
+        '_FINAL_OBSERVATIONS_': $scope.finalObservations
+      };
+
+
+      var documentDefintionString = JSON.stringify(dd);
+      var documentDefinitionToJSON = replaceAll(documentDefintionString, map);
+
+      var documentToPrint = JSON.parse(documentDefinitionToJSON);
+      //var doc2 = documentDefinition.replace(refPaint, '$scope.refPaint');
+
+      var fileName = 'Ficha_Técnica_' + $scope.productName.replace(/\s/g, '_').replace('/', '_');
+
+      pdfMake.createPdf(documentToPrint).download(fileName);
+
 
     },
-    function errorCallback(data){
-      console.log('Error: ' + data);
-  });
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      });
 
   };
- 
+
 
 });
 
 
 //GET ALL CLIENTES - Controller
-app.controller('clients', function($scope, $http, $rootScope, $state) {
+app.controller('clients', function ($scope, $http, $rootScope, $state) {
 
-    $rootScope.class = 'not-home';
-    $rootScope.name= "Lista de todos os Clientes";
-    $scope.data = [];
-      var request = $http.get('/clients');    
-    request.then(function successCallback(response) {
-        $scope.data  = response.data;
-        return  $scope.data; 
-    },
-    function errorCallback(data){
-        console.log('Error: ' + data);
+  $rootScope.class = 'not-home';
+  $rootScope.name = "Lista de todos os Clientes";
+  $scope.data = [];
+  var request = $http.get('/clients');
+  request.then(function successCallback(response) {
+    $scope.data = response.data;
+    return $scope.data;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
     });
 
-    $scope.createClient = function() {
-      $state.transitionTo("createClient", {}) ;
-    };
+  $scope.createClient = function () {
+    $state.transitionTo("createClient", {});
+  };
 
-    $scope.editClient = function(clientId, clientname, imagename) {
-      $state.transitionTo("editClient", {'clientid': clientId, 'clientname': clientname ,'imagename': imagename}) ;
-    };
+  $scope.editClient = function (clientId, clientname, imagename) {
+    $state.transitionTo("editClient", { 'clientid': clientId, 'clientname': clientname, 'imagename': imagename });
+  };
 });
 
 //GET ALL PRODUCTS - CONTROLLER
-app.controller('ProductsController', function($scope, $http,  $location, $rootScope,  $state, $stateParams, productsAPI, ModalService) {
-    
-    $rootScope.class = 'not-home';
-    $rootScope.name="Lista de todos os Produtos";
-    $scope.products = [];
-    
-    productsAPI.async().then(function(response) { //2. so you can use .then()
-        $scope.products = response.data;
-    });
+app.controller('ProductsController', function ($scope, $http, $location, $rootScope, $state, $stateParams, productsAPI, ModalService) {
 
-    $scope.removeRow = function (product, product2) {
-        console.log('value2 i:' + product);
-        console.log('value2 i:' + product2);
-    };
+  $rootScope.class = 'not-home';
+  $rootScope.name = "Lista de todos os Produtos";
+  $scope.products = [];
 
-    $scope.changePath = function() {
-      $location.path('/');
-    };
+  productsAPI.async().then(function (response) { //2. so you can use .then()
+    $scope.products = response.data;
+  });
+
+  $scope.removeRow = function (product, product2) {
+    console.log('value2 i:' + product);
+    console.log('value2 i:' + product2);
+  };
+
+  $scope.changePath = function () {
+    $location.path('/');
+  };
 
 
-    //EDITAR Produto
-    $scope.editProductPath= function(productName, customerProductId, productId, clientname, imageName, barCode, nameInTheLabel, numArticleByBox, preco1, preco2){
-      $state.transitionTo("editProduct", {'productName': productName, 'customerProductId': customerProductId, 'productId': productId, 'clientname':clientname, 'imageName': imageName, 'barCode': barCode, 'nameInTheLabel':nameInTheLabel , 'numArticleByBox': numArticleByBox, 'preco1':  preco1, 'preco2':  preco2}) ;
-    }
+  //EDITAR Produto
+  $scope.editProductPath = function (productName, customerProductId, productId, clientname, imageName, barCode, nameInTheLabel, numArticleByBox, preco1, preco2) {
+    $state.transitionTo("editProduct", { 'productName': productName, 'customerProductId': customerProductId, 'productId': productId, 'clientname': clientname, 'imageName': imageName, 'barCode': barCode, 'nameInTheLabel': nameInTheLabel, 'numArticleByBox': numArticleByBox, 'preco1': preco1, 'preco2': preco2 });
+  }
 
-    //IMPRIMIR ETIQUETAS do Produto
-    $scope.printLabelProduct= function(productId, productName){
-      $state.transitionTo("printLabel", {'productId': productId, 'productName': productName}) ;
-    }
+  //IMPRIMIR ETIQUETAS do Produto
+  $scope.printLabelProduct = function (productId, productName) {
+    $state.transitionTo("printLabel", { 'productId': productId, 'productName': productName });
+  }
 
-    //Criar Produto
-    $scope.insertProductPath= function(productName, productId, imageName, barCode){
-      $state.transitionTo("createProduct", {'image_name': '/images/vaso_600x600.jpg'}) ;
-      //$state.transitionTo("createProduct", {'product_id': ' ', 'product_name': ' ', 'imageName': ' ', 'barCode': "", 'nameInTheLabel':"" , 'numArticleByBox': ""}) 
-      //$state.transitionTo("createProduct", {'product_name': "878787878787", 'product_id': "9899999999", 'image_name': null, 'bar_code': null, 'name_in_the_label': null, 'num_article_by_box': null}) ;
-    }
-    
-    //Function to Open the UPDATE the Modal
-    $scope.showAModal = function(productid, productname,imagename,barcode, imagepath) {
-      ModalService.showModal({
-        templateUrl: "../modal/updateProductModal.html",
-        controller: "ProductUpdateModalController",
-        preClose: (modal) => { modal.element.modal('hide'); },
-        inputs: {
-          title: "Editar Produto",
-          productid: productid,
-          productname: productname,
-          imagename: imagename,
-          barcode: barcode,
-          imagepath: imagepath
-        }
-      }).then(function(modal) {
+  //Criar Produto
+  $scope.insertProductPath = function (productName, productId, imageName, barCode) {
+    $state.transitionTo("createProduct", { 'image_name': '/images/vaso_600x600.jpg' });
+    //$state.transitionTo("createProduct", {'product_id': ' ', 'product_name': ' ', 'imageName': ' ', 'barCode': "", 'nameInTheLabel':"" , 'numArticleByBox': ""}) 
+    //$state.transitionTo("createProduct", {'product_name': "878787878787", 'product_id': "9899999999", 'image_name': null, 'bar_code': null, 'name_in_the_label': null, 'num_article_by_box': null}) ;
+  }
+
+  //Function to Open the UPDATE the Modal
+  $scope.showAModal = function (productid, productname, imagename, barcode, imagepath) {
+    ModalService.showModal({
+      templateUrl: "../modal/updateProductModal.html",
+      controller: "ProductUpdateModalController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        title: "Editar Produto",
+        productid: productid,
+        productname: productname,
+        imagename: imagename,
+        barcode: barcode,
+        imagepath: imagepath
+      }
+    }).then(function (modal) {
       modal.element.modal();
-      modal.close.then(function(result) {
+      modal.close.then(function (result) {
         if (!result) {
           $scope.complexResult = "Modal forcibly closed..."
         } else {
-          $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
         }
       });
     });
   };
 
   //Function to Open the CREATE the Modal
-  $scope.showCreateModal = function() {
+  $scope.showCreateModal = function () {
     ModalService.showModal({
       templateUrl: "../modal/createOrderProductModal.html",
       controller: "ProductCreateModalController",
@@ -3718,28 +3730,28 @@ app.controller('ProductsController', function($scope, $http,  $location, $rootSc
       inputs: {
         title: "Editar Produto"
       }
-    }).then(function(modal) {
-    modal.element.modal();
-    modal.close.then(function(result) {
-      if (!result) {
-        $scope.complexResult = "Modal forcibly closed..."
-      } else {
-        $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
-      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
     });
-  });
-};
+  };
 
 });
 
 
 //EDITAR Produtos - Controller
-app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', function($http, $scope, $rootScope, $state ,$stateParams, $templateCache) {
-  
+app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', function ($http, $scope, $rootScope, $state, $stateParams, $templateCache) {
+
   $rootScope.class = 'not-home';
-  $rootScope.name="Editar Produto " + $stateParams.productName;
+  $rootScope.name = "Editar Produto " + $stateParams.productName;
   $scope.productName = $stateParams.productName;
-  $scope.customerProductId = $stateParams.customerProductId; 
+  $scope.customerProductId = $stateParams.customerProductId;
   $scope.productId = $stateParams.productId;
   $scope.clientname = $stateParams.clientname;
   $scope.imageName = $stateParams.imageName;
@@ -3752,37 +3764,36 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
 
   $scope.image = '/images' + '/' + $stateParams.imageName;
 
-  var productId =  $scope.productId;
+  var productId = $scope.productId;
 
   var URI = '/checkIfProductTechSheetExists/' + encodeURIComponent($scope.customerProductId);
-  var request = $http.get(URI);    
+  var request = $http.get(URI);
   //var request = $http.get('/checkIfProductTechSheetExists/' + encodeURI(productId)); 
   request.then(function successCallback(response) {
-    $scope.existsTechSheet  = response.data;
+    $scope.existsTechSheet = response.data;
 
-    if($scope.existsTechSheet[0].EXISTS ==   1)
-    {
+    if ($scope.existsTechSheet[0].EXISTS == 1) {
       $scope.techSheetExist = true;
     } else {
       $scope.techSheetExist = false;
     }
     //return  $scope.dataProducts; 
   },
-  function errorCallback(data){
-    console.log('Error: ' + data);
-  });
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
 
   //GET ALL CLIENT_ID, CLIENT_NAME FOR THE TYPEAHEAD
   $scope.clients = [];
-	var URIClients = '/clientstypeahed';
-	var request = $http.get(URIClients);    
-	request.then(function successCallback(response) {
-    $scope.clients  = response.data;
-    return  $scope.clients; 
-	},
-	function errorCallback(data){
-    console.log('Error: ' + data);
-	});
+  var URIClients = '/clientstypeahed';
+  var request = $http.get(URIClients);
+  request.then(function successCallback(response) {
+    $scope.clients = response.data;
+    return $scope.clients;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
 
   $scope.submit = function () {
     //var currentPageTemplate = $state.current.templateUrl;
@@ -3790,46 +3801,46 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
     //$state.go("listProducts", null, { reload: true });
     //WE NEED TO VALIDATE IF THE CLIENT_NAME COMES FROM THE TYPEAHEAD OR OF IT THE CLIENT_NAME ALREADY 
     //EXISTS IN THE DATABASE
-    if(!$scope.clientname.CLIENT_NAME) {
+    if (!$scope.clientname.CLIENT_NAME) {
       $scope.clientname = $scope.clientname;
     } else {
       $scope.clientname = $scope.clientname.CLIENT_NAME;
     }
 
     var dataObj = {
-      productname       : $scope.productName,
-      internalproductid : $scope.productId,
-      productid         : $scope.customerProductId,
-      clientname        : $scope.clientname,
-      imagename         : $scope.imageName,
-      barcode           : $scope.barCode,
-      numArticleByBox   : $scope.numArticleByBox,
-      nameInTheLabel    : $scope.nameInTheLabel,
-      preco1            : $scope.preco1,
-      preco2            : $scope.preco2
-    };	
+      productname: $scope.productName,
+      internalproductid: $scope.productId,
+      productid: $scope.customerProductId,
+      clientname: $scope.clientname,
+      imagename: $scope.imageName,
+      barcode: $scope.barCode,
+      numArticleByBox: $scope.numArticleByBox,
+      nameInTheLabel: $scope.nameInTheLabel,
+      preco1: $scope.preco1,
+      preco2: $scope.preco2
+    };
 
-    $( "#product-edit-form" ).validate( {
+    $("#product-edit-form").validate({
       rules: {
-          productId: "required",
-          customerproductId: "required",
-          productName: "required",
-          clientname:{
-              required: true
-          }
+        productId: "required",
+        customerproductId: "required",
+        productName: "required",
+        clientname: {
+          required: true
+        }
       },
       messages: {
-          productId: "Por favor insira a referência interna",
-          customerproductId: "Por favor insira a referência do cliente",
-          productName: "Por favor insira o nome do produto",
-          nameInTheLabel: "Máximo de 24 Caracteres",
-          clientname: "Por favor insira o nome do cliente",
+        productId: "Por favor insira a referência interna",
+        customerproductId: "Por favor insira a referência do cliente",
+        productName: "Por favor insira o nome do produto",
+        nameInTheLabel: "Máximo de 24 Caracteres",
+        clientname: "Por favor insira o nome do cliente",
       }
-    } );
-    
-    if($("#product-edit-form").valid()){
-    //var res = $http.post('/updateproduct', dataObj);
-      var res = $http.post('/updateproduct', dataObj).then(function(data, status, headers, config) {
+    });
+
+    if ($("#product-edit-form").valid()) {
+      //var res = $http.post('/updateproduct', dataObj);
+      var res = $http.post('/updateproduct', dataObj).then(function (data, status, headers, config) {
         var currentPageTemplate = $state.current.templateUrl;
         $templateCache.remove(currentPageTemplate);
         $state.go("listProducts", null, { reload: true });
@@ -3837,23 +3848,23 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
     };
 
   };
-  
+
   $scope.editImage = function () {
     //$state.go("editImage", null, { reload: true });
-    $state.transitionTo("editImage", {'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode}) ;
+    $state.transitionTo("editImage", { 'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'productId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode });
   };
 
   $scope.createTechnicalSheet = function () {
     //$state.go("editImage", null, { reload: true });
-    $state.transitionTo("createTechnicalSheet", {'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'internalProductId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel':$scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
-  };
-  
-  $scope.editTechnicalSheet = function () {
-    //$state.go("editImage", null, { reload: true });
-    $state.transitionTo("editTechnicalSheet", {'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'productId': $scope.productId, 'clientName': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel':$scope.nameInTheLabel , 'numArticleByBox': $scope.numArticleByBox}) ;
+    $state.transitionTo("createTechnicalSheet", { 'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'internalProductId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox });
   };
 
-  
+  $scope.editTechnicalSheet = function () {
+    //$state.go("editImage", null, { reload: true });
+    $state.transitionTo("editTechnicalSheet", { 'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'productId': $scope.productId, 'clientName': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox });
+  };
+
+
 
   $scope.back = function () {
     $state.go("listProducts", null, { reload: true });
@@ -3863,47 +3874,47 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
 
 
 //GET OVERPRODUCTION CONTROLER
-app.controller('OverProductionController', function($http, $scope, $rootScope) {
-  
+app.controller('OverProductionController', function ($http, $scope, $rootScope) {
+
   $rootScope.class = 'not-home';
   $rootScope.name = "Excesso de Produção em Stock";
 
   //GET THE PRODUCTS IN OVER PRODUTCION IN STCOK
   $scope.productInStock = [];
-	var URIClients = '/getOverProductionInStock';
-	var request = $http.get(URIClients);    
-	request.then(function successCallback(response) {
-    $scope.productInStock  = response.data;
-    return  $scope.clients; 
-	},
-	function errorCallback(data){
-    console.log('Error: ' + data);
-	});
+  var URIClients = '/getOverProductionInStock';
+  var request = $http.get(URIClients);
+  request.then(function successCallback(response) {
+    $scope.productInStock = response.data;
+    return $scope.clients;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
 
 
 });
 
 //CREATE PRODUCT - Controller
-app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', function($http, $scope, $rootScope, $state ,$stateParams, $templateCache) {
+app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', function ($http, $scope, $rootScope, $state, $stateParams, $templateCache) {
 
   var productImageDefault = 'products_default.png';
   $scope.image = '/images' + '/' + productImageDefault;
 
   //GET ALL CLIENT_ID, CLIENT_NAME FOR THE TYPEAHEAD
   $scope.clients = [];
-	var URIClients = '/clientstypeahed';
-	var request = $http.get(URIClients);    
-	request.then(function successCallback(response) {
-    $scope.clients  = response.data;
-    return  $scope.clients; 
-	},
-	function errorCallback(data){
-    console.log('Error: ' + data);
-	});
+  var URIClients = '/clientstypeahed';
+  var request = $http.get(URIClients);
+  request.then(function successCallback(response) {
+    $scope.clients = response.data;
+    return $scope.clients;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
 
   $scope.submit = function () {
 
-    if(!$scope.clientname.CLIENT_NAME) {
+    if (!$scope.clientname.CLIENT_NAME) {
       $scope.clientname = $scope.clientname;
     } else {
       $scope.clientname = $scope.clientname.CLIENT_NAME;
@@ -3912,34 +3923,34 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
     var dataObj = {
       PRODUCT_NAME: $scope.productName,
       INTERNAL_PRODUCT_ID: $scope.productId,
-      CUSTOMER_PRODUCT_ID : $scope.customerproductId,
-      CLIENT_NAME : $scope.clientname,
+      CUSTOMER_PRODUCT_ID: $scope.customerproductId,
+      CLIENT_NAME: $scope.clientname,
       IMAGE_NAME: productImageDefault,
       BAR_CODE_NUMBER: $scope.barCode,
       PRODUCT_NAME_FOR_LABEL: $scope.nameInTheLabel,
       PRICE_EURO_1: $scope.preco1,
       PRICE_EURO_2: $scope.preco2
-    };	
+    };
 
-    $( "#product-create-form" ).validate( {
+    $("#product-create-form").validate({
       rules: {
-          productId: "required",
-          customerproductId: "required",
-          productName: "required",
-          clientname:{
-              required: true
-          }
+        productId: "required",
+        customerproductId: "required",
+        productName: "required",
+        clientname: {
+          required: true
+        }
       },
       messages: {
-          productId: "Por favor insira a referência interna",
-          customerproductId: "Por favor insira a referência do cliente",
-          productName: "Por favor insira o nome do produto",
-          clientname: "Por favor insira o nome do cliente",
+        productId: "Por favor insira a referência interna",
+        customerproductId: "Por favor insira a referência do cliente",
+        productName: "Por favor insira o nome do produto",
+        clientname: "Por favor insira o nome do cliente",
       }
-    } );
+    });
 
-    if($("#product-create-form").valid()){
-      var res = $http.post('/insertProduct', dataObj).then(function(data, status, headers, config) {
+    if ($("#product-create-form").valid()) {
+      var res = $http.post('/insertProduct', dataObj).then(function (data, status, headers, config) {
         var currentPageTemplate = $state.current.templateUrl;
         $templateCache.remove(currentPageTemplate);
         $state.go("listProducts", null, { reload: true });
@@ -3950,36 +3961,36 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
 
   $scope.editarImagem = function () {
     //$state.go("editImage", null, { reload: true });
-    $state.transitionTo("editImage", {'productName': $scope.productName, 'productId': $scope.productId, 'imageName':  $scope.productImageDefault, 'barCode': $scope.barCode}) ;
+    $state.transitionTo("editImage", { 'productName': $scope.productName, 'productId': $scope.productId, 'imageName': $scope.productImageDefault, 'barCode': $scope.barCode });
   };
 
   $scope.back = function () {
     $state.go("listProducts", null, { reload: true });
   };
-  
+
 }]);
 
 //LIST ALL THE PALLETES READY TO BE SHIPPED - PalletesController
-app.controller('PalletesController', function($scope, $http, $rootScope, ModalService) {
+app.controller('PalletesController', function ($scope, $http, $rootScope, ModalService) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Lista Paletes prontas para enviar"
 
   $scope.palletes = [];
-  var request = $http.get('/getPalletesReadyForShipping');    
+  var request = $http.get('/getPalletesReadyForShipping');
   request.then(function successCallback(response) {
-      $scope.palletes  = response.data;
-      return  $scope.data; 
+    $scope.palletes = response.data;
+    return $scope.data;
   },
-  function errorCallback(data){
+    function errorCallback(data) {
       console.log('Error: ' + data);
-  });
+    });
 
-  $scope.delete = function(order_id, customer_product_id) {
-    
+  $scope.delete = function (order_id, customer_product_id) {
+
     var dataToDelete = {
-      ORDER_ID            : order_id,
-      CUSTOMER_PRODUCT_ID : customer_product_id
+      ORDER_ID: order_id,
+      CUSTOMER_PRODUCT_ID: customer_product_id
     };
 
     ModalService.showModal({
@@ -3991,17 +4002,17 @@ app.controller('PalletesController', function($scope, $http, $rootScope, ModalSe
         operationURL: '/deletePalletesReadyForShipping',
         dataObj: dataToDelete
       }
-    }).then(function(modal) {
-        modal.element.modal();
-        modal.close.then(function(result) {
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
         if (!result) {
           $scope.complexResult = "Modal forcibly closed..."
         } else {
-          $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
         }
       });
     });
-    
+
   };
 
 });
@@ -4009,128 +4020,128 @@ app.controller('PalletesController', function($scope, $http, $rootScope, ModalSe
 //////////////////////////////////////////////
 
 
-app.service('productsAPI', function($http){
-    return {
-        async: function() {
-          return $http.get('/products');  //1. this returns promise
-        }
+app.service('productsAPI', function ($http) {
+  return {
+    async: function () {
+      return $http.get('/products');  //1. this returns promise
+    }
+  };
+});
+
+
+/*------------------ Controller for the CREATE for the MODAL of the PRODUCT-----------------------*/
+
+app.controller('ProductCreateModalController', [
+  '$scope', '$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid',
+  function ($scope, $http, $element, $urlRouter, $templateCache, $state, title, close, orderid) {
+
+    $scope.title = title;
+    $scope.orderid = orderid;
+
+    $scope.productInternalReference = null;
+    //  This close function doesn't need to use jQuery or bootstrap, because
+    //  the button has the 'data-dismiss' attribute.
+
+    $scope.$watch('productname', function () {
+      $scope.productid = $scope.productname;
+      console.log($scope.productname);
+    });
+
+    $scope.$watch('productid', function () {
+      $scope.productname = $scope.productid;
+      console.log($scope.productid);
+    });
+
+    $scope.dataProducts = [];
+    $scope.SimpleSelectedData = 143432;
+
+    var request = $http.get('/productForModal');
+    request.then(function successCallback(response) {
+      $scope.dataProducts = response.data;
+      return $scope.dataProducts;
+    },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      });
+
+    //Save Content Modal  
+    $scope.save = function () {
+
+      $scope.orderproductstatus = 'Em Produção';
+
+      var dataObj = {
+        ORDER_ID: $scope.orderid,
+        INTERNAL_PRODUCT_ID: $scope.productid.INTERNAL_PRODUCT_ID,
+        CUSTOMER_PRODUCT_ID: $scope.productid.CUSTOMER_PRODUCT_ID,
+        PRODUCT_NAME: $scope.productid.ProductName,
+        TOTAL_QUANTITY_ORDERED: $scope.qtyencomenda,
+        QUANTITY_PRODUCED: $scope.qtyproduzida,
+        ORDER_PRODUCT_STATUS: $scope.orderproductstatus
       };
-});
 
+      var res = $http.post('/insertorderproduct', dataObj).then(function (data, status, headers, config) {
+        $state.reload();
+      });
 
-  /*------------------ Controller for the CREATE for the MODAL of the PRODUCT-----------------------*/
+    };
 
-  app.controller('ProductCreateModalController',  [
-    '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid',
-    function($scope,$http, $element, $urlRouter, $templateCache, $state, title, close , orderid){
+    //  This cancel function must use the bootstrap, 'modal' function because
+    //  the doesn't have the 'data-dismiss' attribute.
+    $scope.cancel = function () {
+      //  Manually hide the modal.
+      $element.modal('hide');
+      //  Now call close, returning control to the caller.
+      close({
+      }, 500); // close, but give 500ms for bootstrap to animate
+    };
 
-  $scope.title = title;
-  $scope.orderid = orderid;
-
-  $scope.productInternalReference = null;
-  //  This close function doesn't need to use jQuery or bootstrap, because
-  //  the button has the 'data-dismiss' attribute.
-
-  $scope.$watch('productname', function(){
-    $scope.productid = $scope.productname;
-    console.log($scope.productname);
-  });
-
-  $scope.$watch('productid', function(){
-    $scope.productname = $scope.productid;
-    console.log($scope.productid);
-  });
-
-$scope.dataProducts = [];
-$scope.SimpleSelectedData = 143432;
-
-var request = $http.get('/productForModal');    
-request.then(function successCallback(response) {
- $scope.dataProducts  = response.data;
- return  $scope.dataProducts; 
-},
-function errorCallback(data){
- console.log('Error: ' + data);
-});
-  
-  //Save Content Modal  
-  $scope.save = function () {
-
-    $scope.orderproductstatus = 'Em Produção';
-
-    var dataObj = {
-      ORDER_ID: $scope.orderid,
-      INTERNAL_PRODUCT_ID : $scope.productid.INTERNAL_PRODUCT_ID,
-      CUSTOMER_PRODUCT_ID: $scope.productid.CUSTOMER_PRODUCT_ID,
-      PRODUCT_NAME: $scope.productid.ProductName,
-      TOTAL_QUANTITY_ORDERED: $scope.qtyencomenda,
-      QUANTITY_PRODUCED: $scope.qtyproduzida,
-      ORDER_PRODUCT_STATUS: $scope.orderproductstatus
-    };	
-    
-    var res = $http.post('/insertorderproduct', dataObj).then(function(data, status, headers, config) {
-      $state.reload();
-    });
-
-  };
-
-  //  This cancel function must use the bootstrap, 'modal' function because
-  //  the doesn't have the 'data-dismiss' attribute.
-  $scope.cancel = function() {
-    //  Manually hide the modal.
-    $element.modal('hide');
-    //  Now call close, returning control to the caller.
-    close({
-    }, 500); // close, but give 500ms for bootstrap to animate
-  };
-
-}]);
+  }]);
 
 
 
-  /*------------------ Controller for the UPDATE MODAL of the PRODUCT-----------------------*/
+/*------------------ Controller for the UPDATE MODAL of the PRODUCT-----------------------*/
 
-app.controller('ProductUpdateModalController',  [
-    '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'productid', 'productname', 'qtyencomenda', 'qtyproduzida',
-    function($scope,$http, $element, $urlRouter, $templateCache, $state, title, close , productid, productname, qtyencomenda){
+app.controller('ProductUpdateModalController', [
+  '$scope', '$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'productid', 'productname', 'qtyencomenda', 'qtyproduzida',
+  function ($scope, $http, $element, $urlRouter, $templateCache, $state, title, close, productid, productname, qtyencomenda) {
 
-  $scope.title = title;
-  $scope.productid = productid;
-  $scope.productname = productname;
-  $scope.qtyencomenda = qtyencomenda;
-  //  This close function doesn't need to use jQuery or bootstrap, because
-  //  the button has the 'data-dismiss' attribute.
+    $scope.title = title;
+    $scope.productid = productid;
+    $scope.productname = productname;
+    $scope.qtyencomenda = qtyencomenda;
+    //  This close function doesn't need to use jQuery or bootstrap, because
+    //  the button has the 'data-dismiss' attribute.
 
-  //Save Content Modal  
-  $scope.save = function () {
-    var dataObj = {
-      productid: $scope.productid,
-      productname: $scope.productname,
-      qtyencomenda: $scope.qtyencomenda
-    };	
-    
-    var res = $http.post('/updateorderproduct', dataObj).then(function(data, status, headers, config) {
-      $state.reload();
-    });
+    //Save Content Modal  
+    $scope.save = function () {
+      var dataObj = {
+        productid: $scope.productid,
+        productname: $scope.productname,
+        qtyencomenda: $scope.qtyencomenda
+      };
 
-  };
+      var res = $http.post('/updateorderproduct', dataObj).then(function (data, status, headers, config) {
+        $state.reload();
+      });
 
-  //  This cancel function must use the bootstrap, 'modal' function because
-  //  the doesn't have the 'data-dismiss' attribute.
-  $scope.cancel = function() {
-    //  Manually hide the modal.
-    $element.modal('hide');
-    //  Now call close, returning control to the caller.
-    close({
-    }, 500); // close, but give 500ms for bootstrap to animate
-  };
+    };
 
-}]);
+    //  This cancel function must use the bootstrap, 'modal' function because
+    //  the doesn't have the 'data-dismiss' attribute.
+    $scope.cancel = function () {
+      //  Manually hide the modal.
+      $element.modal('hide');
+      //  Now call close, returning control to the caller.
+      close({
+      }, 500); // close, but give 500ms for bootstrap to animate
+    };
+
+  }]);
 
 
 
 /*------------------------    Controller for the GENERIC MODAL   -----------------------------*/
-app.controller('GenericController', function($scope, message) {
+app.controller('GenericController', function ($scope, message) {
 
   $scope.message = message;
 
@@ -4138,203 +4149,203 @@ app.controller('GenericController', function($scope, message) {
     return true;
   };
 
-}); 
+});
 
 
 /*------------------------    Controller for the GENERIC MODAL   -----------------------------*/
-app.controller('registerExtraProductionForClosedProductInOrderController', function($scope, $http, $state, message, ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_NAME, EMPLOYEE_ID, TOTAL_PRODUCTS_PRODUCED, PRODUCED_VALUE_IN_EURO) {
+app.controller('registerExtraProductionForClosedProductInOrderController', function ($scope, $http, $state, message, ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_NAME, EMPLOYEE_ID, TOTAL_PRODUCTS_PRODUCED, PRODUCED_VALUE_IN_EURO) {
 
   $scope.message = message;
 
   $scope.yes = function () {
     var dataObj = {
       ORDER_ID: ORDER_ID,
-      INTERNAL_PRODUCT_ID : INTERNAL_PRODUCT_ID,
+      INTERNAL_PRODUCT_ID: INTERNAL_PRODUCT_ID,
       CUSTOMER_PRODUCT_ID: CUSTOMER_PRODUCT_ID,
       PRODUCT_NAME: PRODUCT_NAME,
       EMPLOYEE_NAME: EMPLOYEE_NAME,
       EMPLOYEE_ID: EMPLOYEE_ID,
       TOTAL_PRODUCTS_PRODUCED: TOTAL_PRODUCTS_PRODUCED,
       PRODUCED_VALUE_IN_EURO: PRODUCED_VALUE_IN_EURO,
-    };	
-    
-    var res = $http.post('/insertDailyProduction', dataObj).then(function(data, status, headers, config) {
+    };
+
+    var res = $http.post('/insertDailyProduction', dataObj).then(function (data, status, headers, config) {
       $state.reload();
     });
   };
 
-}); 
+});
 
 /*------------------ Controller for the MODAL to DELETE the PRODUCT in the ORDER-----------------------*/
 
-app.controller('ProductDeleteModalController',  [
-  '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid', 'productid', 'productname', 
-  function($scope,$http, $element, $urlRouter, $templateCache, $state, title, close , orderid, productid, productname){
+app.controller('ProductDeleteModalController', [
+  '$scope', '$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid', 'productid', 'productname',
+  function ($scope, $http, $element, $urlRouter, $templateCache, $state, title, close, orderid, productid, productname) {
 
-$scope.title = title;
-$scope.orderid = orderid;
-$scope.productid = productid;
-$scope.productname = productname;
-//  This close function doesn't need to use jQuery or bootstrap, because
-//  the button has the 'data-dismiss' attribute.
+    $scope.title = title;
+    $scope.orderid = orderid;
+    $scope.productid = productid;
+    $scope.productname = productname;
+    //  This close function doesn't need to use jQuery or bootstrap, because
+    //  the button has the 'data-dismiss' attribute.
 
-//Save Content Modal  
-$scope.yes = function () {
-  var dataObj = {
-    ORDER_ID: $scope.orderid,
-    PRODUCT_ID: $scope.productid,
-  };	
-  
-  var res = $http.post('/deleteorderproduct', dataObj).then(function(data, status, headers, config) {
-    $state.reload();
-  });
+    //Save Content Modal  
+    $scope.yes = function () {
+      var dataObj = {
+        ORDER_ID: $scope.orderid,
+        PRODUCT_ID: $scope.productid,
+      };
 
-};
-//  This cancel function must use the bootstrap, 'modal' function because
-//  the doesn't have the 'data-dismiss' attribute.
-$scope.no = function() {
-  //  Manually hide the modal.
-  $element.modal('hide');
-  //  Now call close, returning control to the caller.
-  close({
-  }, 500); // close, but give 500ms for bootstrap to animate
-};
+      var res = $http.post('/deleteorderproduct', dataObj).then(function (data, status, headers, config) {
+        $state.reload();
+      });
 
-}]);
+    };
+    //  This cancel function must use the bootstrap, 'modal' function because
+    //  the doesn't have the 'data-dismiss' attribute.
+    $scope.no = function () {
+      //  Manually hide the modal.
+      $element.modal('hide');
+      //  Now call close, returning control to the caller.
+      close({
+      }, 500); // close, but give 500ms for bootstrap to animate
+    };
+
+  }]);
 
 
 
 //Generic Modal for deleting/confirming operation where we receive the dataObj array and the operation to execute
-app.controller('genericModalController',  ['$scope','$http', '$state', 'operationURL', 'dataObj', 'message', 
-                                          function($scope,$http, $state, operationURL, dataObj, message){
+app.controller('genericModalController', ['$scope', '$http', '$state', 'operationURL', 'dataObj', 'message',
+  function ($scope, $http, $state, operationURL, dataObj, message) {
 
-$scope.message = message;
-$scope.operationURL = operationURL;
-$scope.data = dataObj;
-//  This close function doesn't need to use jQuery or bootstrap, because
-//  the button has the 'data-dismiss' attribute.
+    $scope.message = message;
+    $scope.operationURL = operationURL;
+    $scope.data = dataObj;
+    //  This close function doesn't need to use jQuery or bootstrap, because
+    //  the button has the 'data-dismiss' attribute.
 
-//Save Content Modal  
-$scope.yes = function () {
+    //Save Content Modal  
+    $scope.yes = function () {
 
-  var res = $http.post($scope.operationURL, $scope.data).then(function(data, status, headers, config) {
-    $state.reload();
-  });
+      var res = $http.post($scope.operationURL, $scope.data).then(function (data, status, headers, config) {
+        $state.reload();
+      });
 
-};
-}]);
+    };
+  }]);
 
 
 
 /*------------------ Controller for the CREATE MODAL of the ORDER-----------------------*/
 
-app.controller('orderCreateModalController',  [
-  '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid',
-  function($scope,$http, $element, $urlRouter, $templateCache, $state, title, close , orderid){
+app.controller('orderCreateModalController', [
+  '$scope', '$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid',
+  function ($scope, $http, $element, $urlRouter, $templateCache, $state, title, close, orderid) {
 
-$scope.title = title;
-$scope.orderid = orderid;
-//  This close function doesn't need to use jQuery or bootstrap, because
-//  the button has the 'data-dismiss' attribute.
+    $scope.title = title;
+    $scope.orderid = orderid;
+    //  This close function doesn't need to use jQuery or bootstrap, because
+    //  the button has the 'data-dismiss' attribute.
 
-$scope.$watch('clientname', function(){
-  $scope.clientid = $scope.clientname;
-  console.log($scope.selected);
-});
+    $scope.$watch('clientname', function () {
+      $scope.clientid = $scope.clientname;
+      console.log($scope.selected);
+    });
 
 
-$scope.dataProducts = [];
-$scope.SimpleSelectedData = 143432;
+    $scope.dataProducts = [];
+    $scope.SimpleSelectedData = 143432;
 
-$scope.clients = [];
+    $scope.clients = [];
 
-var request = $http.get('/clients');    
-request.then(function successCallback(response) {
- $scope.clients  = response.data;
- return  $scope.clients; 
-},
-function errorCallback(data){
- console.log('Error: ' + data);
-});
+    var request = $http.get('/clients');
+    request.then(function successCallback(response) {
+      $scope.clients = response.data;
+      return $scope.clients;
+    },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      });
 
-//Save Content Modal  
-$scope.save = function () {
-  var dataObj = {
-    ORDER_ID: $scope.orderid,
-    CLIENT_NAME: $scope.clientname.ClientName,
-    CLIENT_ID: $scope.clientid.ClientID
-  };	
-  
-  var res = $http.post('/insertorder', dataObj).then(function(data, status, headers, config) {
-    $state.reload();
-  });
+    //Save Content Modal  
+    $scope.save = function () {
+      var dataObj = {
+        ORDER_ID: $scope.orderid,
+        CLIENT_NAME: $scope.clientname.ClientName,
+        CLIENT_ID: $scope.clientid.ClientID
+      };
 
-};
+      var res = $http.post('/insertorder', dataObj).then(function (data, status, headers, config) {
+        $state.reload();
+      });
 
-//  This cancel function must use the bootstrap, 'modal' function because
-//  the doesn't have the 'data-dismiss' attribute.
-$scope.cancel = function() {
-  //  Manually hide the modal.
-  $element.modal('hide');
-  //  Now call close, returning control to the caller.
-  close({
-  }, 500); // close, but give 500ms for bootstrap to animate
-};
+    };
 
-}]);
+    //  This cancel function must use the bootstrap, 'modal' function because
+    //  the doesn't have the 'data-dismiss' attribute.
+    $scope.cancel = function () {
+      //  Manually hide the modal.
+      $element.modal('hide');
+      //  Now call close, returning control to the caller.
+      close({
+      }, 500); // close, but give 500ms for bootstrap to animate
+    };
+
+  }]);
 
 //EDIT PRODUCT IMAGE CONTROLLER
-app.controller('editImageCtrl', [ '$http', '$state', '$scope', 'Upload', '$timeout', '$stateParams', '$templateCache', function ($http, $state, $scope, Upload, $timeout, $stateParams, $templateCache) {
-  
+app.controller('editImageCtrl', ['$http', '$state', '$scope', 'Upload', '$timeout', '$stateParams', '$templateCache', function ($http, $state, $scope, Upload, $timeout, $stateParams, $templateCache) {
+
   $scope.productName = $stateParams.productName;
   $scope.productId = $stateParams.productId;
   $scope.customerProductId = $stateParams.customerProductId;
   $scope.imageName = $stateParams.imageName;
   $scope.barCode = $stateParams.barCode;
 
-  if($stateParams.imageName == null) {
+  if ($stateParams.imageName == null) {
     $scope.image = '/images' + '/' + 'products_default.png';
-  }else {
+  } else {
     $scope.image = '/images' + '/' + $stateParams.imageName;
   }
-    
-  $scope.uploadPic = function(file) {
-  file.upload = Upload.upload({
-    url: '/upload',
-    data: {username: $scope.username, file: file},
-  }); 
 
-  file.upload.then(function (response) {
-    $timeout(function () {
-      file.result = response.data;
+  $scope.uploadPic = function (file) {
+    file.upload = Upload.upload({
+      url: '/upload',
+      data: { username: $scope.username, file: file },
     });
-  }, function (response) {
-    if (response.status > 0)
-      $scope.errorMsg = response.status + ': ' + response.data;
-  }, function (evt) {
-    // Math.min is to fix IE which reports 200% sometimes
-    file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
 
-    var dataObj = {
-      IMAGE_NAME: $scope.picFile.name,
-      CUSTOMER_PRODUCT_ID: $scope.customerProductId
-    };	
-    
-    var res = $http.post('/updateProductImage', dataObj).then(function(data, status, headers, config) {
-      var currentPageTemplate = $state.current.templateUrl;
-      $templateCache.remove(currentPageTemplate);
-      $state.go("listProducts", null, { reload: true });
-    });    
+    file.upload.then(function (response) {
+      $timeout(function () {
+        file.result = response.data;
+      });
+    }, function (response) {
+      if (response.status > 0)
+        $scope.errorMsg = response.status + ': ' + response.data;
+    }, function (evt) {
+      // Math.min is to fix IE which reports 200% sometimes
+      file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
 
-  });
+      var dataObj = {
+        IMAGE_NAME: $scope.picFile.name,
+        CUSTOMER_PRODUCT_ID: $scope.customerProductId
+      };
+
+      var res = $http.post('/updateProductImage', dataObj).then(function (data, status, headers, config) {
+        var currentPageTemplate = $state.current.templateUrl;
+        $templateCache.remove(currentPageTemplate);
+        $state.go("listProducts", null, { reload: true });
+      });
+
+    });
   }
 }]);
 
 
 //EDIT CLIENT IMAGE CONTROLLER
-app.controller('editImageClientCtrl', [ '$http', '$state', '$rootScope','$scope', 'Upload', '$timeout', '$stateParams', '$templateCache', function ($http, $state, $rootScope, $scope, Upload, $timeout, $stateParams, $templateCache) {
-  
-  if($stateParams.clientname == null) {
+app.controller('editImageClientCtrl', ['$http', '$state', '$rootScope', '$scope', 'Upload', '$timeout', '$stateParams', '$templateCache', function ($http, $state, $rootScope, $scope, Upload, $timeout, $stateParams, $templateCache) {
+
+  if ($stateParams.clientname == null) {
 
     $rootScope.class = 'not-home';
     $rootScope.name = 'Inserir Imagem do Novo Cliente';
@@ -4344,380 +4355,379 @@ app.controller('editImageClientCtrl', [ '$http', '$state', '$rootScope','$scope'
     $rootScope.name = 'Editar Imagem do Cliente ' + $stateParams.clientname;
   }
 
-  if($stateParams.imagename == null) {
+  if ($stateParams.imagename == null) {
     $scope.image = '/images' + '/' + 'client-default.png';
   } else {
     $scope.image = '/images' + '/' + $stateParams.imagename;
   }
 
   $scope.clientid = $stateParams.clientid;
-  
-  $scope.uploadPic = function(file) {
-  file.upload = Upload.upload({
-    url: '/upload',
-    data: {file: file},
-    headers: {'Content-Type': undefined} 
-  }); 
 
-  file.upload.then(function (response) {
-    $timeout(function () {
-      file.result = response.data;
+  $scope.uploadPic = function (file) {
+    file.upload = Upload.upload({
+      url: '/upload',
+      data: { file: file },
+      headers: { 'Content-Type': undefined }
     });
-  }, function (response) {
-    if (response.status > 0)
-      $scope.errorMsg = response.status + ': ' + response.data;
-  }, function (evt) {
-    // Math.min is to fix IE which reports 200% sometimes
-    file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
 
-    var dataObj = {
-      IMAGE_NAME: $scope.picFile.name,
-      CLIENT_ID: $scope.clientid
-    };	
-    
-    //var res = $http.post('/updateproduct', dataObj);
-    var res = $http.post('/updateClientImage', dataObj).then(function(data, status, headers, config) {
-      var currentPageTemplate = $state.current.templateUrl;
-      $templateCache.remove(currentPageTemplate);
-      $state.go("clientstate", null, { reload: true });
-    });    
+    file.upload.then(function (response) {
+      $timeout(function () {
+        file.result = response.data;
+      });
+    }, function (response) {
+      if (response.status > 0)
+        $scope.errorMsg = response.status + ': ' + response.data;
+    }, function (evt) {
+      // Math.min is to fix IE which reports 200% sometimes
+      file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
 
-  });
+      var dataObj = {
+        IMAGE_NAME: $scope.picFile.name,
+        CLIENT_ID: $scope.clientid
+      };
+
+      //var res = $http.post('/updateproduct', dataObj);
+      var res = $http.post('/updateClientImage', dataObj).then(function (data, status, headers, config) {
+        var currentPageTemplate = $state.current.templateUrl;
+        $templateCache.remove(currentPageTemplate);
+        $state.go("clientstate", null, { reload: true });
+      });
+
+    });
   }
 }]);
 
 
 /*------------------ Controller for the MODAL to CLOSE the PRODUCT for PRODUCTION in the ORDER-----------------------*/
 
-app.controller('closeProductInOrderToProduction',  [
-  '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'ModalService','title', 'close', 'orderid', 'internalproductid', 'customerproductid' ,'productname', 'quantityordered', 'totalproductsproduced', 'clientname', 'boxmeasures', 'boxid', 'qtybybox',
-  function($scope,$http, $element, $urlRouter, $templateCache, $state, ModalService,title, close , orderid, internalproductid, customerproductid, productname, quantityordered, totalproductsproduced, clientname, boxmeasures, boxid, qtybybox){
+app.controller('closeProductInOrderToProduction', [
+  '$scope', '$http', '$element', '$urlRouter', '$templateCache', '$state', 'ModalService', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid', 'productname', 'quantityordered', 'totalproductsproduced', 'clientname', 'boxmeasures', 'boxid', 'qtybybox',
+  function ($scope, $http, $element, $urlRouter, $templateCache, $state, ModalService, title, close, orderid, internalproductid, customerproductid, productname, quantityordered, totalproductsproduced, clientname, boxmeasures, boxid, qtybybox) {
 
-$scope.title = title;
-$scope.orderid = orderid;
-$scope.internalproductid = internalproductid;
-$scope.customerproductid = customerproductid;
-$scope.productname = productname;
-$scope.quantityordered = quantityordered;
-$scope.totalproductsproduced = totalproductsproduced;
-$scope.clientname = clientname;
-$scope.boxmeasures = boxmeasures;
-$scope.boxid = boxid;
-$scope.qtybybox = qtybybox;
-//  This close function doesn't need to use jQuery or bootstrap, because
-//  the button has the 'data-dismiss' attribute.
+    $scope.title = title;
+    $scope.orderid = orderid;
+    $scope.internalproductid = internalproductid;
+    $scope.customerproductid = customerproductid;
+    $scope.productname = productname;
+    $scope.quantityordered = quantityordered;
+    $scope.totalproductsproduced = totalproductsproduced;
+    $scope.clientname = clientname;
+    $scope.boxmeasures = boxmeasures;
+    $scope.boxid = boxid;
+    $scope.qtybybox = qtybybox;
+    //  This close function doesn't need to use jQuery or bootstrap, because
+    //  the button has the 'data-dismiss' attribute.
 
-//Save Content Modal  
-$scope.yes = function () {
+    //Save Content Modal  
+    $scope.yes = function () {
 
-  var numBoxesToOrder = $scope.totalproductsproduced/$scope.qtybybox;
+      var numBoxesToOrder = $scope.totalproductsproduced / $scope.qtybybox;
 
-  var dataObj = {
-    ORDER_ID: $scope.orderid,
-    CUSTOMER_PRODUCT_ID: $scope.customerproductid,
-    INTERNAL_PRODUCT_ID: $scope.internalproductid,
-    PRODUCT_NAME: $scope.productname,
-    TOTAL_PRODUCTS_PRODUCED: $scope.totalproductsproduced,
-    QTY_BY_BOX: $scope.qtybybox,
-    TOTAL_BOXES_TO_ORDER: numBoxesToOrder,
-    CLIENT_NAME: $scope.clientname,
-    BOX_MEASURES: $scope.boxmeasures,
-    BOX_ID: $scope.boxid
-  };	
+      var dataObj = {
+        ORDER_ID: $scope.orderid,
+        CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+        INTERNAL_PRODUCT_ID: $scope.internalproductid,
+        PRODUCT_NAME: $scope.productname,
+        TOTAL_PRODUCTS_PRODUCED: $scope.totalproductsproduced,
+        QTY_BY_BOX: $scope.qtybybox,
+        TOTAL_BOXES_TO_ORDER: numBoxesToOrder,
+        CLIENT_NAME: $scope.clientname,
+        BOX_MEASURES: $scope.boxmeasures,
+        BOX_ID: $scope.boxid
+      };
 
-  var dataUpdateOrderProductStatus = {
-    ORDER_PRODUCT_STATUS: 'em_pintura',
-    ORDER_ID: $scope.orderid,
-    CUSTOMER_PRODUCT_ID: $scope.customerproductid,
-  };
-  
-  var res = $http.post('/insertOrderBoxes', dataObj).then(function(data, status, headers, config) {
-    //$state.reload();
-  });
+      var dataUpdateOrderProductStatus = {
+        ORDER_PRODUCT_STATUS: 'em_pintura',
+        ORDER_ID: $scope.orderid,
+        CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+      };
 
-  var res = $http.post('/updateorderproductstatus', dataUpdateOrderProductStatus).then(function(data, status, headers, config) {
-    $state.reload();
-  });
+      var res = $http.post('/insertOrderBoxes', dataObj).then(function (data, status, headers, config) {
+        //$state.reload();
+      });
+
+      var res = $http.post('/updateorderproductstatus', dataUpdateOrderProductStatus).then(function (data, status, headers, config) {
+        $state.reload();
+      });
 
 
-};
+    };
 
-//  This cancel function must use the bootstrap, 'modal' function because
-//  the doesn't have the 'data-dismiss' attribute.
-$scope.no = function() {
-  //  Manually hide the modal.
-  $element.modal('hide');
-  //  Now call close, returning control to the caller.
-  close({
-  }, 500); // close, but give 500ms for bootstrap to animate
-};
+    //  This cancel function must use the bootstrap, 'modal' function because
+    //  the doesn't have the 'data-dismiss' attribute.
+    $scope.no = function () {
+      //  Manually hide the modal.
+      $element.modal('hide');
+      //  Now call close, returning control to the caller.
+      close({
+      }, 500); // close, but give 500ms for bootstrap to animate
+    };
 
-}]);
+  }]);
 
 
 /*------------------ Controller to INSERT the Daily Production for the Products in the Order-----------------------*/
 
-app.controller('DailyProductionModalController',  [
-  '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'productInOtherOpenOrdersOrOverProduction', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid', 'productname', 'totalquantityordered', 'totalquantityproduced',
-  function($scope,$http, $element, $urlRouter, $templateCache, $state, productInOtherOpenOrdersOrOverProduction, title, close , orderid, internalproductid, customerproductid, productname, totalquantityordered, totalquantityproduced){
+app.controller('DailyProductionModalController', [
+  '$scope', '$http', '$element', '$urlRouter', '$templateCache', '$state', 'productInOtherOpenOrdersOrOverProduction', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid', 'productname', 'totalquantityordered', 'totalquantityproduced',
+  function ($scope, $http, $element, $urlRouter, $templateCache, $state, productInOtherOpenOrdersOrOverProduction, title, close, orderid, internalproductid, customerproductid, productname, totalquantityordered, totalquantityproduced) {
 
-$scope.title = title;
-$scope.orderid = orderid;
-$scope.internalproductid = internalproductid;
-$scope.customerproductid = customerproductid;
-$scope.productnameinternal = productname;
-$scope.totalquantityordered = totalquantityordered;
-$scope.totalquantityproduced = totalquantityproduced;
+    $scope.title = title;
+    $scope.orderid = orderid;
+    $scope.internalproductid = internalproductid;
+    $scope.customerproductid = customerproductid;
+    $scope.productnameinternal = productname;
+    $scope.totalquantityordered = totalquantityordered;
+    $scope.totalquantityproduced = totalquantityproduced;
 
-console.log( "ESTE é o nome do PRODUTO: " + $scope.productnameinternal);
+    console.log("ESTE é o nome do PRODUTO: " + $scope.productnameinternal);
 
-$scope.productInternalReference = null;
+    $scope.productInternalReference = null;
 
-$scope.dataEmployees = [];
+    $scope.dataEmployees = [];
 
-var request = $http.get('/employees');    
-request.then(function successCallback(response) {
-$scope.dataEmployees  = response.data;
-return  $scope.dataEmployees; 
-},
-function errorCallback(data){
-console.log('Error: ' + data);
-});
-
-//getDailyProductionOrderProduct/:orderid/:productid
-
-//Save Content Modal  
-$scope.save = function () {
-
-  //PRODUCTS STILL TO PRODUCE
-  var products_still_to_produce = totalquantityordered - totalquantityproduced;
-  //THE NUMBER OF PRODUCTS TO REGISTER ARE STILL INFERIOR TO THE NUMBER OF PRODUCTS TO PRODUCE
-  if($scope.qtyproduzida <= products_still_to_produce) 
-  {
-    $scope.orderproductstatus = 'EM ABERTO';
-
-    var dataObj = {
-      ORDER_ID: $scope.orderid,
-      INTERNAL_PRODUCT_ID : $scope.internalproductid,
-      CUSTOMER_PRODUCT_ID: $scope.customerproductid,
-      PRODUCT_NAME: $scope.productnameinternal,
-      EMPLOYEE_NAME: $scope.nameemployee.EMPLOYEE_NAME,
-      EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
-      TOTAL_PRODUCTS_PRODUCED: $scope.qtyproduzida,
-    };	
-    
-    var res = $http.post('/insertDailyProduction', dataObj).then(function(data, status, headers, config) {
-      $state.reload();
-    });
-  } else {
-
-    //THE NUMBER OF PRODUCTS products_still_to_produce ARE THE NUMBER OF PRODUCTS STILL TO REGISTER IN THIS ORDER.
-    var dataObj = {
-      ORDER_ID: $scope.orderid,
-      INTERNAL_PRODUCT_ID : $scope.internalproductid,
-      CUSTOMER_PRODUCT_ID: $scope.customerproductid,
-      PRODUCT_NAME: $scope.productnameinternal,
-      EMPLOYEE_NAME: $scope.nameemployee.EMPLOYEE_NAME,
-      EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
-      TOTAL_PRODUCTS_PRODUCED: products_still_to_produce,
-    };	
-
-    
-    var res = $http.post('/insertDailyProduction', dataObj).then(function(data, status, headers, config) {
-      //$state.reload;
-    });
-
-
-    //THE NUMBER OF PRODUCTS FROM THE DAILY PRODUCTION THAT WE STILL NEED TO REGISTE IN ANOTHER ORDER
-    var products_remaining_from_daily_production = $scope.qtyproduzida - products_still_to_produce;
-
-    //var xyz = productInTheSameOrder.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production);
-
-    //WE NEED TO CHECK IF IN THE SAME ORDER TERE ARE PRODUCTS STILL TO ADD FOR THE SAME INTERNAL PRODUCT ID
-    $scope.productsToClose = [];
-    var xpto = new Array();
-    
-    var request = $http.get('/productstilltocloseinthisorder/' +  encodeURIComponent($scope.orderid) + '/'+ encodeURIComponent($scope.internalproductid));    
+    var request = $http.get('/employees');
     request.then(function successCallback(response) {
-    $scope.productsToClose  = response.data;
-
-      console.log("productsToClose.length: " + $scope.productsToClose.length);
-
-    if($scope.productsToClose.length > 0) { 
-      ///################################################################################////
-      for(i=0; i < $scope.productsToClose.length; i++) {
-        var orderproduct = $scope.productsToClose[i];
- 
-        var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PRODUCED;
- 
-        var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
-        var order_id = orderproduct.ORDER_ID;
- 
-        console.log("orderproduct: " + orderproduct);
-        console.log("customer_product_id: " + customer_product_id);
-        console.log("order_id: " + order_id);
-        console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
-
-        //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
-        //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
-        if(number_of_products_to_close_order <= products_remaining_from_daily_production) { 
-
-          products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
-           var insertProductsInTheSameOrder = {
-               ORDER_ID: order_id,
-               INTERNAL_PRODUCT_ID : $scope.internalproductid,
-               CUSTOMER_PRODUCT_ID: customer_product_id,
-               PRODUCT_NAME: orderproduct.PRODUCT_NAME,
-               EMPLOYEE_NAME: $scope.nameemployee.EMPLOYEE_NAME,
-               EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
-               TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
-             };	
- 
-             var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
-            });
-        } else {
-            //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
-            //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
-            //DAILY PRODUCTION
-            var insertProductsInTheSameOrder = {
-              ORDER_ID: order_id,
-              INTERNAL_PRODUCT_ID : $scope.internalproductid,
-              CUSTOMER_PRODUCT_ID: customer_product_id,
-              PRODUCT_NAME: orderproduct.PRODUCT_NAME,
-              EMPLOYEE_NAME: $scope.nameemployee.EMPLOYEE_NAME,
-              EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
-              TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
-            };	
-
-            var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
-           });
-
-           products_remaining_from_daily_production = 0;
-
-       }
- 
-       }//FOR
-       //IF WE STILL HAVE PRODUCTS TO REGISTER IN THE DAILY PRODUCTION AND THEY CAN'T BE ADDED INTO THIS ORDER, WE NEED TO ITERATE OVER 
-       //ALL THE ORDERS TO CHECK IF THE SAME INTERNAL PRODUCT ID IS OPENED TO BE REGISTERED
-        if(products_remaining_from_daily_production > 0) {
-
-          productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production);
-        
-        } //if
-
-      } //IF 
-      else {
-        //IN THIS ORDER THERE IS NOT A PRODUCT FOR THE SAME INTERNAL PRODUCT ID
-        //WE NEED TO CHECK IF THERE'S ANTOHER ORDER WITH THE SAME INTERNAL PRODUCT ID
-        productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production);        
-    }
-
-      $state.reload();
-
+      $scope.dataEmployees = response.data;
+      return $scope.dataEmployees;
     },
-    function errorCallback(data){
-      console.log('Error: ' + data);
-    });
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      });
 
-    console.log("ANTES DO ÚLTIMO STATE RELOAD!!!!");
-    $state.reload();
+    //getDailyProductionOrderProduct/:orderid/:productid
 
-  }
-};
+    //Save Content Modal  
+    $scope.save = function () {
 
-//  This cancel function must use the bootstrap, 'modal' function because
-//  the doesn't have the 'data-dismiss' attribute.
-$scope.cancel = function() {
-  var products_still_to_produce = totalquantityordered - totalquantityproduced;
-  //  Manually hide the modal.
-  $element.modal('hide');
-  //  Now call close, returning control to the caller.
-  close({
-  }, 500); // close, but give 500ms for bootstrap to animate
-};
+      //PRODUCTS STILL TO PRODUCE
+      var products_still_to_produce = totalquantityordered - totalquantityproduced;
+      //THE NUMBER OF PRODUCTS TO REGISTER ARE STILL INFERIOR TO THE NUMBER OF PRODUCTS TO PRODUCE
+      if ($scope.qtyproduzida <= products_still_to_produce) {
+        $scope.orderproductstatus = 'EM ABERTO';
 
-}]);
+        var dataObj = {
+          ORDER_ID: $scope.orderid,
+          INTERNAL_PRODUCT_ID: $scope.internalproductid,
+          CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+          PRODUCT_NAME: $scope.productnameinternal,
+          EMPLOYEE_NAME: $scope.nameemployee.EMPLOYEE_NAME,
+          EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
+          TOTAL_PRODUCTS_PRODUCED: $scope.qtyproduzida,
+        };
+
+        var res = $http.post('/insertDailyProduction', dataObj).then(function (data, status, headers, config) {
+          $state.reload();
+        });
+      } else {
+
+        //THE NUMBER OF PRODUCTS products_still_to_produce ARE THE NUMBER OF PRODUCTS STILL TO REGISTER IN THIS ORDER.
+        var dataObj = {
+          ORDER_ID: $scope.orderid,
+          INTERNAL_PRODUCT_ID: $scope.internalproductid,
+          CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+          PRODUCT_NAME: $scope.productnameinternal,
+          EMPLOYEE_NAME: $scope.nameemployee.EMPLOYEE_NAME,
+          EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
+          TOTAL_PRODUCTS_PRODUCED: products_still_to_produce,
+        };
+
+
+        var res = $http.post('/insertDailyProduction', dataObj).then(function (data, status, headers, config) {
+          //$state.reload;
+        });
+
+
+        //THE NUMBER OF PRODUCTS FROM THE DAILY PRODUCTION THAT WE STILL NEED TO REGISTE IN ANOTHER ORDER
+        var products_remaining_from_daily_production = $scope.qtyproduzida - products_still_to_produce;
+
+        //var xyz = productInTheSameOrder.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production);
+
+        //WE NEED TO CHECK IF IN THE SAME ORDER TERE ARE PRODUCTS STILL TO ADD FOR THE SAME INTERNAL PRODUCT ID
+        $scope.productsToClose = [];
+        var xpto = new Array();
+
+        var request = $http.get('/productstilltocloseinthisorder/' + encodeURIComponent($scope.orderid) + '/' + encodeURIComponent($scope.internalproductid));
+        request.then(function successCallback(response) {
+          $scope.productsToClose = response.data;
+
+          console.log("productsToClose.length: " + $scope.productsToClose.length);
+
+          if ($scope.productsToClose.length > 0) {
+            ///################################################################################////
+            for (i = 0; i < $scope.productsToClose.length; i++) {
+              var orderproduct = $scope.productsToClose[i];
+
+              var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PRODUCED;
+
+              var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
+              var order_id = orderproduct.ORDER_ID;
+
+              console.log("orderproduct: " + orderproduct);
+              console.log("customer_product_id: " + customer_product_id);
+              console.log("order_id: " + order_id);
+              console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
+
+              //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
+              //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
+              if (number_of_products_to_close_order <= products_remaining_from_daily_production) {
+
+                products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
+                var insertProductsInTheSameOrder = {
+                  ORDER_ID: order_id,
+                  INTERNAL_PRODUCT_ID: $scope.internalproductid,
+                  CUSTOMER_PRODUCT_ID: customer_product_id,
+                  PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                  EMPLOYEE_NAME: $scope.nameemployee.EMPLOYEE_NAME,
+                  EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
+                  TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
+                };
+
+                var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
+                });
+              } else {
+                //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
+                //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
+                //DAILY PRODUCTION
+                var insertProductsInTheSameOrder = {
+                  ORDER_ID: order_id,
+                  INTERNAL_PRODUCT_ID: $scope.internalproductid,
+                  CUSTOMER_PRODUCT_ID: customer_product_id,
+                  PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                  EMPLOYEE_NAME: $scope.nameemployee.EMPLOYEE_NAME,
+                  EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
+                  TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
+                };
+
+                var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
+                });
+
+                products_remaining_from_daily_production = 0;
+
+              }
+
+            }//FOR
+            //IF WE STILL HAVE PRODUCTS TO REGISTER IN THE DAILY PRODUCTION AND THEY CAN'T BE ADDED INTO THIS ORDER, WE NEED TO ITERATE OVER 
+            //ALL THE ORDERS TO CHECK IF THE SAME INTERNAL PRODUCT ID IS OPENED TO BE REGISTERED
+            if (products_remaining_from_daily_production > 0) {
+
+              productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production);
+
+            } //if
+
+          } //IF 
+          else {
+            //IN THIS ORDER THERE IS NOT A PRODUCT FOR THE SAME INTERNAL PRODUCT ID
+            //WE NEED TO CHECK IF THERE'S ANTOHER ORDER WITH THE SAME INTERNAL PRODUCT ID
+            productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production);
+          }
+
+          $state.reload();
+
+        },
+          function errorCallback(data) {
+            console.log('Error: ' + data);
+          });
+
+        console.log("ANTES DO ÚLTIMO STATE RELOAD!!!!");
+        $state.reload();
+
+      }
+    };
+
+    //  This cancel function must use the bootstrap, 'modal' function because
+    //  the doesn't have the 'data-dismiss' attribute.
+    $scope.cancel = function () {
+      var products_still_to_produce = totalquantityordered - totalquantityproduced;
+      //  Manually hide the modal.
+      $element.modal('hide');
+      //  Now call close, returning control to the caller.
+      close({
+      }, 500); // close, but give 500ms for bootstrap to animate
+    };
+
+  }]);
 
 /*------------------ Controller for the MODAL to CLOSE the PRODUCT for PAITING in the ORDER-----------------------*/
 
-app.controller('closeProductInOrderForPainting',  [
-  '$scope','$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid' ,'productname', 'totalproductsproduced', 'qtyBoxLabelsToPrint', 
-  function($scope,$http, $element, $urlRouter, $templateCache, $state, title, close , orderid, internalproductid, customerproductid, productname, totalproductsproduced, qtyBoxLabelsToPrint){
+app.controller('closeProductInOrderForPainting', [
+  '$scope', '$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid', 'productname', 'totalproductsproduced', 'qtyBoxLabelsToPrint',
+  function ($scope, $http, $element, $urlRouter, $templateCache, $state, title, close, orderid, internalproductid, customerproductid, productname, totalproductsproduced, qtyBoxLabelsToPrint) {
 
-$scope.title = title;
-$scope.orderid = orderid;
-$scope.internalproductid = internalproductid;
-$scope.customerproductid = customerproductid;
-$scope.productname = productname;
-$scope.totalproductsproduced = totalproductsproduced;
-//  This close function doesn't need to use jQuery or bootstrap, because
-//  the button has the 'data-dismiss' attribute.
+    $scope.title = title;
+    $scope.orderid = orderid;
+    $scope.internalproductid = internalproductid;
+    $scope.customerproductid = customerproductid;
+    $scope.productname = productname;
+    $scope.totalproductsproduced = totalproductsproduced;
+    //  This close function doesn't need to use jQuery or bootstrap, because
+    //  the button has the 'data-dismiss' attribute.
 
-/* $scope.productTechSheet = [];
-var request = $http.get('/getProductTechSheet/' + $scope.customerproductid);    
-request.then(function successCallback(response) {
-    $scope.productTechSheet  = response.data;
-    return  $scope.productTechSheet; 
-    },
-    function errorCallback(data){
-        console.log('Error: ' + data);
-}); */
+    /* $scope.productTechSheet = [];
+    var request = $http.get('/getProductTechSheet/' + $scope.customerproductid);    
+    request.then(function successCallback(response) {
+        $scope.productTechSheet  = response.data;
+        return  $scope.productTechSheet; 
+        },
+        function errorCallback(data){
+            console.log('Error: ' + data);
+    }); */
 
 
-//Save Content Modal  
-$scope.yes = function () {
+    //Save Content Modal  
+    $scope.yes = function () {
 
-  var dataObj = {
-    ORDER_ID: $scope.orderid,
-    CUSTOMER_PRODUCT_ID: $scope.customerproductid,
-    INTERNAL_PRODUCT_ID: $scope.internalproductid,
-    PRODUCT_NAME: $scope.productname,
-    QTY_LABELS_TO_PRINT_ARTICLE: $scope.totalproductsproduced,
-    QTY_LABELS_TO_PRINT_BOX: qtyBoxLabelsToPrint,
-  };	
+      var dataObj = {
+        ORDER_ID: $scope.orderid,
+        CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+        INTERNAL_PRODUCT_ID: $scope.internalproductid,
+        PRODUCT_NAME: $scope.productname,
+        QTY_LABELS_TO_PRINT_ARTICLE: $scope.totalproductsproduced,
+        QTY_LABELS_TO_PRINT_BOX: qtyBoxLabelsToPrint,
+      };
 
-  var dataUpdateOrderProductStatus = {
-    ORDER_PRODUCT_STATUS: 'fechado_na_encomenda',
-    ORDER_ID: $scope.orderid,
-    CUSTOMER_PRODUCT_ID: $scope.customerproductid,
-  };
-  
-  var res = $http.post('/insertLabelsToPrint', dataObj).then(function(data, status, headers, config) {
-    //$state.reload();
-  });
+      var dataUpdateOrderProductStatus = {
+        ORDER_PRODUCT_STATUS: 'fechado_na_encomenda',
+        ORDER_ID: $scope.orderid,
+        CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+      };
 
-  var res = $http.post('/updateorderproductstatus', dataUpdateOrderProductStatus).then(function(data, status, headers, config) {
-    $state.reload();
-  });
+      var res = $http.post('/insertLabelsToPrint', dataObj).then(function (data, status, headers, config) {
+        //$state.reload();
+      });
 
-};
+      var res = $http.post('/updateorderproductstatus', dataUpdateOrderProductStatus).then(function (data, status, headers, config) {
+        $state.reload();
+      });
 
-}]);
+    };
+
+  }]);
 
 
 //ALL BOXES TO ORDER - Controller
-app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$state', function($scope, $http, $rootScope, $timeout, $state) {
-  
+app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$state', function ($scope, $http, $rootScope, $timeout, $state) {
+
   $rootScope.class = 'not-home';
-  $rootScope.name= "Lista de todas as caixas a encomendar";
+  $rootScope.name = "Lista de todas as caixas a encomendar";
   $scope.boxesToOrder = [];
   $scope.sequence_value = 0;
-  var request = $http.get('/getAllOrderBoxes');    
+  var request = $http.get('/getAllOrderBoxes');
   request.then(function successCallback(response) {
-      $scope.boxesToOrder  = response.data;
-      return  $scope.boxesToOrder; 
+    $scope.boxesToOrder = response.data;
+    return $scope.boxesToOrder;
   },
-  function errorCallback(data){
+    function errorCallback(data) {
       console.log('Error: ' + data);
-  });
+    });
 
-  var request = $http.get('/getPDFRequistionIdSequence');    
+  var request = $http.get('/getPDFRequistionIdSequence');
   request.then(function successCallback(response) {
-      $scope.sequence_value  = response.data[0].NEXT_VALUE;
+    $scope.sequence_value = response.data[0].NEXT_VALUE;
   },
-  function errorCallback(data){
+    function errorCallback(data) {
       console.log('Error: ' + data);
-  });
+    });
 
   var rowValues = [];
   var boxesToSendInOrder = [];
@@ -4725,37 +4735,37 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
   var arrayOrderProductToDelete = [];
   var _clientname = "";
   $scope.changeValue = function (box, ORDER_ID, CUSTOMER_PRODUCT_ID, CLIENT_NAME, PRODUCT_NAME, BOX_MEASURES, BOX_ID, TOTAL_BOXES_TO_ORDER) {
-      console.log(box);
-      if(box == true) {
-        //PUSH TO rowValues the RECORDS TO SEND IN THE PDF
-        rowValues.push(BOX_ID);
-        rowValues.push(TOTAL_BOXES_TO_ORDER);
-        rowValues.push(BOX_MEASURES);
-        rowValues.push(PRODUCT_NAME);
-        boxesToSendInOrder.push(rowValues);
+    console.log(box);
+    if (box == true) {
+      //PUSH TO rowValues the RECORDS TO SEND IN THE PDF
+      rowValues.push(BOX_ID);
+      rowValues.push(TOTAL_BOXES_TO_ORDER);
+      rowValues.push(BOX_MEASURES);
+      rowValues.push(PRODUCT_NAME);
+      boxesToSendInOrder.push(rowValues);
 
-        //PUSH TO arrayOrderProductToDelete THE COMBINATION ORDER_ID - CUSTOMER_PRODCUT_ID THAT SHOULD BE DELETED AFTER THE ORDER IS GENERATED
-        orderProductToDelete.push(ORDER_ID);
-        orderProductToDelete.push(CUSTOMER_PRODUCT_ID);
-        arrayOrderProductToDelete.push(orderProductToDelete);
+      //PUSH TO arrayOrderProductToDelete THE COMBINATION ORDER_ID - CUSTOMER_PRODCUT_ID THAT SHOULD BE DELETED AFTER THE ORDER IS GENERATED
+      orderProductToDelete.push(ORDER_ID);
+      orderProductToDelete.push(CUSTOMER_PRODUCT_ID);
+      arrayOrderProductToDelete.push(orderProductToDelete);
 
-        _clientname = CLIENT_NAME;
+      _clientname = CLIENT_NAME;
 
-        rowValues = [];
-        orderProductToDelete = [];
-      } else if (box == false && boxesToSendInOrder.length > 0) {
-        //boxesToSendInOrder = $filter('filter')(boxesToSendInOrder, {'CUSTOMER_PRODUCT_ID': CUSTOMER_PRODUCT_ID});
-        boxesToSendInOrder = boxesToSendInOrder.filter(function(el) {
-          return el[3] !== PRODUCT_NAME;
-        });
+      rowValues = [];
+      orderProductToDelete = [];
+    } else if (box == false && boxesToSendInOrder.length > 0) {
+      //boxesToSendInOrder = $filter('filter')(boxesToSendInOrder, {'CUSTOMER_PRODUCT_ID': CUSTOMER_PRODUCT_ID});
+      boxesToSendInOrder = boxesToSendInOrder.filter(function (el) {
+        return el[3] !== PRODUCT_NAME;
+      });
 
-        arrayOrderProductToDelete = arrayOrderProductToDelete.filter(function(el) {
-          return el[1] !== CUSTOMER_PRODUCT_ID;
-        });
-      }
+      arrayOrderProductToDelete = arrayOrderProductToDelete.filter(function (el) {
+        return el[1] !== CUSTOMER_PRODUCT_ID;
+      });
+    }
   }
 
-  $scope.send = function (mail){
+  $scope.send = function (mail) {
     $scope.loading = true;
     //$http.post('/sendmail', {
     //  from: 'aderito.nelson1@gmail.com',
@@ -4785,225 +4795,225 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
       html: "<b>Hello world?</b>"
     };
     //$http.post('/sendmail', {params: {name: 'ABCXYZ'}}).then(res=>{
-    $http.post('/sendmail', {params: {mailOptions}}).then(res=>{
-        $scope.loading = false;
-        $scope.serverMessage = 'Foi enviado um email para a sua caixa de email com a informação da encomenda!!!!';
-        //alert($scope.serverMessage);
+    $http.post('/sendmail', { params: { mailOptions } }).then(res => {
+      $scope.loading = false;
+      $scope.serverMessage = 'Foi enviado um email para a sua caixa de email com a informação da encomenda!!!!';
+      //alert($scope.serverMessage);
     });
   }
 
 
-  $scope.generateOrder = function() {
+  $scope.generateOrder = function () {
 
     var localCopyBoxesToSendInOrder = angular.copy(boxesToSendInOrder);
     var localCopyArrayOrderProductToDelete = angular.copy(arrayOrderProductToDelete);
-  
+
     var docDefinition = {
       content: [
         {
-            alignment: 'left',
-            columns: [
-                {
-                    //margin: [0, 0, 0, 0],
-                image: 'data:image/jpeg;base64,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',
-                      fit: [94.875 , 104.813]
-                    
-                },
-                {
-                    text: [
-                        {text: 'CASTANHEIRA & DANTAS, LDA', style: 'name'},
-                        {text: '\nFÁBRICA DE LOUÇAS DE CERÂMICA DECORATIVA - EXPORTAÇÂO', style: 'subname', bold:true},
-                        {text: '\nR.Cruz de Lombão,59 - Cervães - Vila Verde\n4730-106 CERVÃES (PORTUGAL)', style: 'subheader'},
-                        '\nEmail: ',
-                        {text: 'castanheira.dantas@hotmail.com', style: 'boldlabel'},
-                        '\nTel / Fax: ',
-                        {text: '253 841 463', style: 'boldlabel'},
-                        ' / ',
-                        {text: '253 844 164', style: 'boldlabel'}
-                    ],
-                    style: 'headerText'
-                    
-                },
-                {
-                    canvas: [
-                        {
-                            type: 'rect',
-                            x: 0,
-                            y: 0,
-                            w: 2.835,
-                            h: 72.584,
-                            r: 0,
-                            color: '#DADAD9',
-                            fillOpacity: 1,
-                        },
-                    ], style : 'firstLine'
-                },
-                {
-                    text: [
-                        {text: '\nCLIENTE', style: 'label'},
-                        {text: '\n_CLIENT_NAME_', style: 'client'},
-                        {text: '\n\nDATA DA ENCOMENDA', style: 'label'},
-                        {text: '\n_ORDER_DATE_', style: 'date'},
-                    ], style : 'orderDetails'
-                },
-                {
-                    canvas: [
-                        {
-                            type: 'rect',
-                            x: 0,
-                            y: 0,
-                            w: 2.835,
-                            h: 30,
-                            r: 0,
-                            color: '#dedede',
-                            fillOpacity: 1,
-                        },
-                    ], style : 'secondLine'
-                },
-                {
-                    text: [
-                        {text: '\nREQUISIÇÃO Nº', style: 'label'},
-                        {text: '\n_REQUISITION_ID_', style: 'client'}
-                    ], style : 'orderNumber'
-                }
-              ]
-        },
-          {
-            table: {
-              
-              headerRows: 1,
-              widths: [ '*','*', '*', '*'],
-              body: [
-                [ 
-                {text: 'Num. Caixa', style: "tblHeader"},
-                {text: 'QUANT. CAIXAS', style: "tblHeader"},
-                {text: 'MEDIDAS', style: "tblHeader"},
-                {text: 'DESCRIÇÃO', style: "tblHeader"}
-                ]
-              ]
+          alignment: 'left',
+          columns: [
+            {
+              //margin: [0, 0, 0, 0],
+              image: 'data:image/jpeg;base64,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',
+              fit: [94.875, 104.813]
+
             },
-            layout: 'lightHorizontalLines'
-          }//,
-          //{
-          //  text: '\n\n ENTREGA, SE POSSÍVEL, NO DECORRER DA PRÒXIMA SEMANA', style: 'bottomMessage',
-         // }
-        ],
-    styles: {
-      header: {
-        fontSize:12,
-        color: 'black',
-        bold: false,
-        lineHeight: 1.25,
-        margin: [-12, 0, -300, 21.33]
-      },
-      'headerText': {
-        fontSize:12,
-        color: 'black',
-        bold: false,
-        lineHeight: 1.25,
-        margin: [15, -4, -300, 21.33]  
-      },
-      subheader: {
-        fontSize: 12,
-        color: 'black',
-      },
-      superMargin: {
-        margin: [20, 0, 5, 0],
-        fontSize: 15
-      },
-      'name': {
-        fontSize: 20,
-        color: 'black',
-        bold: true,
-      },
-      table: {
-        margin: [0, 20, 0, 20]  
-      },
-      bottomMessage: {
-        fontSize:14,
-        color: 'black',
-        bold: true,
-        lineHeight: 1.25,
-        margin: [40,0,0,0]
-      },
-      'contacts': {
-          fontSize:12,
+            {
+              text: [
+                { text: 'CASTANHEIRA & DANTAS, LDA', style: 'name' },
+                { text: '\nFÁBRICA DE LOUÇAS DE CERÂMICA DECORATIVA - EXPORTAÇÂO', style: 'subname', bold: true },
+                { text: '\nR.Cruz de Lombão,59 - Cervães - Vila Verde\n4730-106 CERVÃES (PORTUGAL)', style: 'subheader' },
+                '\nEmail: ',
+                { text: 'castanheira.dantas@hotmail.com', style: 'boldlabel' },
+                '\nTel / Fax: ',
+                { text: '253 841 463', style: 'boldlabel' },
+                ' / ',
+                { text: '253 844 164', style: 'boldlabel' }
+              ],
+              style: 'headerText'
+
+            },
+            {
+              canvas: [
+                {
+                  type: 'rect',
+                  x: 0,
+                  y: 0,
+                  w: 2.835,
+                  h: 72.584,
+                  r: 0,
+                  color: '#DADAD9',
+                  fillOpacity: 1,
+                },
+              ], style: 'firstLine'
+            },
+            {
+              text: [
+                { text: '\nCLIENTE', style: 'label' },
+                { text: '\n_CLIENT_NAME_', style: 'client' },
+                { text: '\n\nDATA DA ENCOMENDA', style: 'label' },
+                { text: '\n_ORDER_DATE_', style: 'date' },
+              ], style: 'orderDetails'
+            },
+            {
+              canvas: [
+                {
+                  type: 'rect',
+                  x: 0,
+                  y: 0,
+                  w: 2.835,
+                  h: 30,
+                  r: 0,
+                  color: '#dedede',
+                  fillOpacity: 1,
+                },
+              ], style: 'secondLine'
+            },
+            {
+              text: [
+                { text: '\nREQUISIÇÃO Nº', style: 'label' },
+                { text: '\n_REQUISITION_ID_', style: 'client' }
+              ], style: 'orderNumber'
+            }
+          ]
+        },
+        {
+          table: {
+
+            headerRows: 1,
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [
+                { text: 'Num. Caixa', style: "tblHeader" },
+                { text: 'QUANT. CAIXAS', style: "tblHeader" },
+                { text: 'MEDIDAS', style: "tblHeader" },
+                { text: 'DESCRIÇÃO', style: "tblHeader" }
+              ]
+            ]
+          },
+          layout: 'lightHorizontalLines'
+        }//,
+        //{
+        //  text: '\n\n ENTREGA, SE POSSÍVEL, NO DECORRER DA PRÒXIMA SEMANA', style: 'bottomMessage',
+        // }
+      ],
+      styles: {
+        header: {
+          fontSize: 12,
+          color: 'black',
+          bold: false,
+          lineHeight: 1.25,
+          margin: [-12, 0, -300, 21.33]
+        },
+        'headerText': {
+          fontSize: 12,
+          color: 'black',
+          bold: false,
+          lineHeight: 1.25,
+          margin: [15, -4, -300, 21.33]
+        },
+        subheader: {
+          fontSize: 12,
+          color: 'black',
+        },
+        superMargin: {
+          margin: [20, 0, 5, 0],
+          fontSize: 15
+        },
+        'name': {
+          fontSize: 20,
+          color: 'black',
+          bold: true,
+        },
+        table: {
+          margin: [0, 20, 0, 20]
+        },
+        bottomMessage: {
+          fontSize: 14,
+          color: 'black',
+          bold: true,
+          lineHeight: 1.25,
+          margin: [40, 0, 0, 0]
+        },
+        'contacts': {
+          fontSize: 12,
           color: 'black',
           bold: false
-      },
-      'boldlabel': {
-          fontSize:12,
+        },
+        'boldlabel': {
+          fontSize: 12,
           color: 'black',
           bold: true
-      },
-     'subname': {
-        margin: [20, 0, 5, 0],
-      },
-      'orderDetails': {
-        margin: [-273, 110, 200, 20],
-        align: 'left',
-        color: 'black',
-      },
-      'orderNumber': {
-        margin: [-64, 110, 5, 0],
-        align: 'left',
-      },
-      'label': {
-        fontSize:10,
-      },
-      'client': {
-          fontSize:16,
-          bold:true
-      },
-      'date': {
-          fontSize:14,
-          bold:true
-      },
-      'firstLine': {
+        },
+        'subname': {
+          margin: [20, 0, 5, 0],
+        },
+        'orderDetails': {
+          margin: [-273, 110, 200, 20],
+          align: 'left',
+          color: 'black',
+        },
+        'orderNumber': {
+          margin: [-64, 110, 5, 0],
+          align: 'left',
+        },
+        'label': {
+          fontSize: 10,
+        },
+        'client': {
+          fontSize: 16,
+          bold: true
+        },
+        'date': {
+          fontSize: 14,
+          bold: true
+        },
+        'firstLine': {
           margin: [-190, 127.48, 0, 20],
-      },
-      'secondLine': {
+        },
+        'secondLine': {
           margin: [20, 126.15, -120, 20],
-      },
-      'tblHeader':{
+        },
+        'tblHeader': {
           margin: [0, 0, 5, 3],
           color: '#5B5758',
           borderWeight: 3,
-      },
-      'tableCell': {
+        },
+        'tableCell': {
           border: [false, false, false, true],
           margin: [0, 12, 5, 3],
-          bold:true,
+          bold: true,
           fontSize: 14,
-      },
-      'tableCellQt': {
+        },
+        'tableCellQt': {
           border: [false, false, false, true],
           margin: [0, 9, 1, 3],
-          bold:true,
+          bold: true,
           fontSize: 18,
           lineHeight: 0.1,
-      },
-      'tableCellDescription': {
+        },
+        'tableCellDescription': {
           border: [false, false, false, true],
           margin: [0, 12, 6, 3],
-          bold:false,
+          bold: false,
           fontSize: 12,
           lineHeight: 1.2,
-      }
-    },
-    pageMargins: [ 56.6, 42.5, 15, 15 ],
-    pageSize: 'A4',
-  };
+        }
+      },
+      pageMargins: [56.6, 42.5, 15, 15],
+      pageSize: 'A4',
+    };
 
-    for(i=0; i < localCopyBoxesToSendInOrder.length ; i++) {
-      docDefinition.content[1].table.body[i+1] = localCopyBoxesToSendInOrder[i];
+    for (i = 0; i < localCopyBoxesToSendInOrder.length; i++) {
+      docDefinition.content[1].table.body[i + 1] = localCopyBoxesToSendInOrder[i];
     }
 
-    function replaceAll(str, map){
-      for(key in map){
-          str2 = str.replace(key, map[key]);
-          str=str2;
-          str2=null;
+    function replaceAll(str, map) {
+      for (key in map) {
+        str2 = str.replace(key, map[key]);
+        str = str2;
+        str2 = null;
       }
       return str;
     }
@@ -5016,9 +5026,9 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
     var dateToPrintInFileName = day + "_" + month + "_" + year;
 
     var map = {
-      '_CLIENT_NAME_'    : _clientname,
-      '_ORDER_DATE_'     : dateToPrint,
-      '_REQUISITION_ID_' : $scope.sequence_value
+      '_CLIENT_NAME_': _clientname,
+      '_ORDER_DATE_': dateToPrint,
+      '_REQUISITION_ID_': $scope.sequence_value
     };
 
 
@@ -5026,34 +5036,34 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
     var documentDefintionString = JSON.stringify(docDefinition);
     var documentDefinitionToJSON = replaceAll(documentDefintionString, map);
 
-    var documentToPrint = JSON.parse(documentDefinitionToJSON); 
+    var documentToPrint = JSON.parse(documentDefinitionToJSON);
 
-    var filename = 'Encomenda_Caixas_' + _clientname.replace(/\./g,'_').replace(/\s/g,'_') + '_' + dateToPrintInFileName;
+    var filename = 'Encomenda_Caixas_' + _clientname.replace(/\./g, '_').replace(/\s/g, '_') + '_' + dateToPrintInFileName;
     pdfMake.createPdf(documentToPrint).download(filename);
 
     //DELETE THE ORDER_ID - CUSTOMER_PRODUCT_ID FROM THE order_boxes_closed_production_products TABLE
     var orderIdToDeleteArray = [];
     var customerProductIdToDeleteArray = [];
-    for(i=0; i<localCopyArrayOrderProductToDelete.length; i++) {
-            var orderProductToDelete = localCopyArrayOrderProductToDelete[i];
-            var orderID = orderProductToDelete[0];
-            var customerProductID = orderProductToDelete[1];
+    for (i = 0; i < localCopyArrayOrderProductToDelete.length; i++) {
+      var orderProductToDelete = localCopyArrayOrderProductToDelete[i];
+      var orderID = orderProductToDelete[0];
+      var customerProductID = orderProductToDelete[1];
 
-            //FUNCIONA
-            orderIdToDeleteArray.push(orderID);
-            customerProductIdToDeleteArray.push(customerProductID);
+      //FUNCIONA
+      orderIdToDeleteArray.push(orderID);
+      customerProductIdToDeleteArray.push(customerProductID);
     }
-    
+
     var arrayToSendToMySQL = {
-      orderIdArray : orderIdToDeleteArray,
-      customerProductIdArray : customerProductIdToDeleteArray
+      orderIdArray: orderIdToDeleteArray,
+      customerProductIdArray: customerProductIdToDeleteArray
     }
 
-    
-    var res = $http.post('/deleteOrderBoxes', arrayToSendToMySQL).then(function(data, status, headers, config) {
+
+    var res = $http.post('/deleteOrderBoxes', arrayToSendToMySQL).then(function (data, status, headers, config) {
     });
 
-    $timeout(function() { $scope.displayErrorMsg = false;}, 2000);
+    $timeout(function () { $scope.displayErrorMsg = false; }, 2000);
 
     //SEND EMAIL
     var mailOptions = {
@@ -5069,10 +5079,10 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
       html: "<b>Hello world?</b>"
     };
     //$http.post('/sendmail', {params: {name: 'ABCXYZ'}}).then(res=>{
-    $http.post('/sendmail', {params: {mailOptions}}).then(res=>{
-        $scope.loading = false;
-        $scope.serverMessage = 'Foi enviado um email para a sua caixa de email com a informação da encomenda!!!!';
-        //alert($scope.serverMessage);
+    $http.post('/sendmail', { params: { mailOptions } }).then(res => {
+      $scope.loading = false;
+      $scope.serverMessage = 'Foi enviado um email para a sua caixa de email com a informação da encomenda!!!!';
+      //alert($scope.serverMessage);
     });
 
     localCopyBoxesToSendInOrder = [];
@@ -5085,50 +5095,47 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
 }]);
 
 //ALL LABELS TO PRINT - Controller
-app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sendZPLCodeToPrinter', function($scope, $http, $rootScope, $state, sendZPLCodeToPrinter) {
-  
+app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sendZPLCodeToPrinter', function ($scope, $http, $rootScope, $state, sendZPLCodeToPrinter) {
+
   $rootScope.class = 'not-home';
-  $rootScope.name= "Lista de todas as etiquetas a imprimir";
+  $rootScope.name = "Lista de todas as etiquetas a imprimir";
   $scope.labelsToPrint = [];
-  var request = $http.get('/getLabelsToPrint');    
+  var request = $http.get('/getLabelsToPrint');
   request.then(function successCallback(response) {
-      $scope.labelsToPrint  = response.data;
-      return  $scope.labelsToPrint; 
+    $scope.labelsToPrint = response.data;
+    return $scope.labelsToPrint;
   },
-  function errorCallback(data){
+    function errorCallback(data) {
       console.log('Error: ' + data);
-  });
+    });
 
   // function to calculate EAN / UPC checkdigit
-  function eanCheckDigit(barCode)
-  {
+  function eanCheckDigit(barCode) {
     var result = 0;
     var rs = barCode.reverse();
-    for (counter = 0; counter < rs.length; counter++)
-    {
-      result = result + parseInt(rs.charAt(counter)) * Math.pow(3, ((counter+1) % 2));
+    for (counter = 0; counter < rs.length; counter++) {
+      result = result + parseInt(rs.charAt(counter)) * Math.pow(3, ((counter + 1) % 2));
     }
     return (10 - (result % 10)) % 10;
   }
 
-  String.prototype.reverse = function()
-  {
-      splitext = this.split("");
-      revertext = splitext.reverse();
-      reversed = revertext.join("");
-      return reversed;
+  String.prototype.reverse = function () {
+    splitext = this.split("");
+    revertext = splitext.reverse();
+    reversed = revertext.join("");
+    return reversed;
   }
 
-//PRINT LABEL ARTICLE
-  $scope.printLabelArticle = function (customer_product_id, order_id,quantity_article_labels, box_label_already_printed) {
+  //PRINT LABEL ARTICLE
+  $scope.printLabelArticle = function (customer_product_id, order_id, quantity_article_labels, box_label_already_printed) {
 
     $scope.productLabel = [];
-    var request = $http.get('/labelToPrintForProduct/'+  encodeURIComponent(customer_product_id));     
+    var request = $http.get('/labelToPrintForProduct/' + encodeURIComponent(customer_product_id));
     request.then(function successCallback(response) {
-      $scope.productLabel  = response.data;
+      $scope.productLabel = response.data;
 
-      var barCodeNumber =  $scope.productLabel[0].BAR_CODE_NUMBER;
-      var ZPLString     =  $scope.productLabel[0].ZPL_STRING_ARTICLE;
+      var barCodeNumber = $scope.productLabel[0].BAR_CODE_NUMBER;
+      var ZPLString = $scope.productLabel[0].ZPL_STRING_ARTICLE;
       var ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL = $scope.productLabel[0].ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL;
       var ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL = $scope.productLabel[0].ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL;
       var PrinterIPAddress = $scope.productLabel[0].ARTICLE_PRINTER_IP_ADDRESS;
@@ -5137,243 +5144,240 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
 
 
       //We need to remove the first digit to calculate the checksum for the EAN-13
-      if( barCodeNumber.charAt( 0 ) === '0' ) {
-        barCodeNumber = barCodeNumber.slice( 1 );
+      if (barCodeNumber.charAt(0) === '0') {
+        barCodeNumber = barCodeNumber.slice(1);
       }
 
+      //var cd = eanCheckDigit("0871886150940");
+      //alert("Bar Code Number: " + barCodeNumber);
+      var checkDigit = eanCheckDigit('' + barCodeNumber);
+      //alert("CheckDigit: " + checkDigit);
+
+      //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
+      //GS1-128 BarCode
+      var EanWithCheckDigit = barCodeNumber + checkDigit;
+      var quantityToReplace = 0;
+      var labelsWith2Columns = false;
+
+      function replaceAll(str, map) {
+        for (key in map) {
+          str2 = str.replace(key, map[key]);
+          str = str2;
+          str2 = null;
+        }
+        return str;
+      }
+
+      var map = {
+        '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+        '_NUM_ARTIGO': customerProductId,
+        '_PRINT_QUANTITY': quantityToReplace
+      };
+
+      if (labelsWith2Columns == false) {
+        //The _PRINT_QUANTITY in the map can only be changed directly
+        map._PRINT_QUANTITY = quantity_article_labels;
+        var sendToPrinter = replaceAll(ZPLString, map);
+      } else {
+        if (Quantity == 1) {
+          //ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL  --> Only 1 label is written and the other is blank
+          //ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL --> Both Labels are written
+          map._PRINT_QUANTITY = 1;
+          var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
+          return;
+        }
+        if (Quantity % 2 == 0) {
+          map._PRINT_QUANTITY = quantity_article_labels / 2;
+          var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
+        }
+        if (Quantity % 2 != 0) {
+          map._PRINT_QUANTITY = quantity_article_labels / 2;
+          var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
+
+          map._PRINT_QUANTITY = 1;
+          var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
+        }
+
+      }
+      sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
+
+      var dataToUpdate = {
+        COLUMN_TO_UPDATE: 'ARTICLE_LABEL_ALREADY_PRINTED',
+        ORDER_ID: order_id,
+        CUSTOMER_PRODUCT_ID: customer_product_id
+      };
+
+      //IF THE BOX LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
+      if (box_label_already_printed === 'true') {
+        var res = $http.post('/deleteLabelsToPrint', dataToUpdate).then(function (data, status, headers, config) {
+          $state.reload();
+        });
+      } else {
+        var res = $http.post('/updateLabelAlreadyPrinted', dataToUpdate).then(function (data, status, headers, config) {
+          $state.reload();
+        });
+      }
+
+    },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      });
+  }
+
+  //PRINT LABEL BOX
+  $scope.printProductBoxLabels = function (customer_product_id, order_id, quantity_box_labels, article_label_already_printed) {
+
+    $scope.productLabel = [];
+    var request = $http.get('/labelToPrintForProduct/' + encodeURIComponent(customer_product_id));
+    request.then(function successCallback(response) {
+      $scope.productLabel = response.data;
+
+      var barCodeNumber = $scope.productLabel[0].BAR_CODE_NUMBER;
+      var qtyByBox = $scope.productLabel[0].Qty_By_Box;
+      var productNameForLabel = $scope.productLabel[0].PRODUCT_NAME_FOR_LABEL;
+      var boxBarCodeType = $scope.productLabel[0].BOX_BARCODE_TYPE;
+      var ZPLString = $scope.productLabel[0].ZPL_STRING_BOX;
+      var PrinterIPAddress = $scope.productLabel[0].ARTICLE_PRINTER_IP_ADDRESS;
+      var PrinterPort = $scope.productLabel[0].ARTICLE_PRINTER_PORT;
+
+      if (boxBarCodeType == 'GS1-128') {
+
+        //alert("ZPL: " + ZPLString);
         //var cd = eanCheckDigit("0871886150940");
         //alert("Bar Code Number: " + barCodeNumber);
-        var checkDigit = eanCheckDigit( '' + barCodeNumber);
+        var checkDigit = eanCheckDigit('' + barCodeNumber);
         //alert("CheckDigit: " + checkDigit);
-        
+
+
+        function padDigits(number, digits) {
+          return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+        }
+
+        var Quantity_full = padDigits(qtyByBox, 4);
+
         //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
         //GS1-128 BarCode
         var EanWithCheckDigit = barCodeNumber + checkDigit;
-        var quantityToReplace = 0;
-        var labelsWith2Columns = false;
-    
-        function replaceAll(str, map){
-          for(key in map){
-              str2 = str.replace(key, map[key]);
-              str=str2;
-              str2=null;
+        var FullEan = "802" + barCodeNumber + checkDigit + "37" + Quantity_full;
+
+        //alert("fullEan: " + FullEan);
+
+        function replaceAll(str, map) {
+          for (key in map) {
+            str2 = str.replace(key, map[key]);
+            str = str2;
+            str2 = null;
           }
           return str;
         }
-    
+
         var map = {
-          '_EAN_CHECK_DIGIT' : EanWithCheckDigit,
-          '_NUM_ARTIGO' : customerProductId,
-          '_PRINT_QUANTITY' : quantityToReplace
+          '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+          '_QUANTIDADE_EXTENDIDA': Quantity_full,
+          '_FULL_EAN': FullEan,
+          '_NUM_ARTIGO': customer_product_id,
+          '_NOME_ARTIGO': productNameForLabel,
+          '_QUANTIDADE': qtyByBox,
+          '_PRINT_QUANTITY': quantity_box_labels
         };
-    
-        if(labelsWith2Columns == false)
-        {
-          //The _PRINT_QUANTITY in the map can only be changed directly
-          map._PRINT_QUANTITY = quantity_article_labels;
-          var sendToPrinter = replaceAll(ZPLString, map);
-        } else {
-          if(Quantity == 1) {
-            //ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL  --> Only 1 label is written and the other is blank
-            //ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL --> Both Labels are written
-            map._PRINT_QUANTITY = 1;
-            var sendToPrinter   = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
-            return;
-          }
-          if(Quantity % 2 == 0) {
-            map._PRINT_QUANTITY = quantity_article_labels / 2;
-            var sendToPrinter   = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
-          }
-          if(Quantity % 2 != 0) {
-            map._PRINT_QUANTITY = quantity_article_labels / 2;
-            var sendToPrinter   = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
-    
-            map._PRINT_QUANTITY = 1;
-            var sendToPrinter   = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
-          }
-    
-        }
+
+        var sendToPrinter = replaceAll(ZPLString, map);
+
         sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
+      }
 
-        var dataToUpdate = {
-          COLUMN_TO_UPDATE      : 'ARTICLE_LABEL_ALREADY_PRINTED',
-          ORDER_ID              : order_id,
-          CUSTOMER_PRODUCT_ID   : customer_product_id
+      if (boxBarCodeType == 'EAN13') {
+        //alert("ZPL: " + ZPLString);
+        //var cd = eanCheckDigit("0871886150940");
+        //alert("Bar Code Number: " + barCodeNumber);
+        var checkDigit = eanCheckDigit('' + barCodeNumber);
+        //alert("CheckDigit: " + checkDigit);
+
+
+        function padDigits(number, digits) {
+          return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+        }
+
+        var Quantity_full = padDigits(qtyByBox, 4);
+
+        //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
+        //GS1-128 BarCode
+        var EanWithCheckDigit = barCodeNumber + checkDigit;
+        //var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
+
+        //alert("fullEan: " + FullEan);
+
+        function replaceAll(str, map) {
+          for (key in map) {
+            str2 = str.replace(key, map[key]);
+            str = str2;
+            str2 = null;
+          }
+          return str;
+        }
+
+        var map = {
+          '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+          '_QUANTIDADE_EXTENDIDA': Quantity_full,
+          '_NUM_ARTIGO': customer_product_id,
+          '_NOME_ARTIGO': productNameForLabel,
+          '_QUANTIDADE': qtyByBox,
+          '_PRINT_QUANTITY': quantity_box_labels
         };
 
-        //IF THE BOX LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
-        if(box_label_already_printed === 'true') {
-          var res = $http.post('/deleteLabelsToPrint', dataToUpdate).then(function(data, status, headers, config) {
-            $state.reload();
-          });
-        } else {
-          var res = $http.post('/updateLabelAlreadyPrinted', dataToUpdate).then(function(data, status, headers, config) {
-            $state.reload();
-          });
-        }
+        var sendToPrinter = replaceAll(ZPLString, map);
 
-  },
-  function errorCallback(data){
-      console.log('Error: ' + data);
-  });
-}
-
-//PRINT LABEL BOX
-$scope.printProductBoxLabels = function (customer_product_id, order_id,quantity_box_labels, article_label_already_printed) {
-
-  $scope.productLabel = [];
-  var request = $http.get('/labelToPrintForProduct/'+  encodeURIComponent(customer_product_id));     
-  request.then(function successCallback(response) {
-  $scope.productLabel  = response.data;
-
-    var barCodeNumber 		  = $scope.productLabel[0].BAR_CODE_NUMBER;
-    var qtyByBox				    = $scope.productLabel[0].Qty_By_Box;
-    var productNameForLabel	= $scope.productLabel[0].PRODUCT_NAME_FOR_LABEL;
-    var boxBarCodeType      = $scope.productLabel[0].BOX_BARCODE_TYPE;
-    var ZPLString     		  = $scope.productLabel[0].ZPL_STRING_BOX;
-    var PrinterIPAddress 		= $scope.productLabel[0].ARTICLE_PRINTER_IP_ADDRESS;
-    var PrinterPort 			  = $scope.productLabel[0].ARTICLE_PRINTER_PORT;
-
-    if(boxBarCodeType == 'GS1-128')
-    {
-  
-      //alert("ZPL: " + ZPLString);
-      //var cd = eanCheckDigit("0871886150940");
-      //alert("Bar Code Number: " + barCodeNumber);
-      var checkDigit = eanCheckDigit( '' + barCodeNumber);
-      //alert("CheckDigit: " + checkDigit);
-
-  
-      function padDigits(number, digits) {
-        return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+        sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
       }
+    },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      });
 
-      var Quantity_full = padDigits(qtyByBox, 4);
+    var dataToUpdate = {
+      COLUMN_TO_UPDATE: 'BOX_LABEL_ALREADY_PRINTED',
+      ORDER_ID: order_id,
+      CUSTOMER_PRODUCT_ID: customer_product_id
+    };
 
-      //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
-      //GS1-128 BarCode
-      var EanWithCheckDigit = barCodeNumber + checkDigit;
-      var FullEan = "802" + barCodeNumber + checkDigit + "37" + Quantity_full;
-
-      //alert("fullEan: " + FullEan);
-
-      function replaceAll(str, map){
-        for(key in map){
-          str2 = str.replace(key, map[key]);
-          str=str2;
-          str2=null;
-        }
-      return str;
-      }
-
-      var map = {
-        '_EAN_CHECK_DIGIT' : EanWithCheckDigit,
-        '_QUANTIDADE_EXTENDIDA' : Quantity_full,
-        '_FULL_EAN' : FullEan,
-        '_NUM_ARTIGO' : customer_product_id,
-        '_NOME_ARTIGO' : productNameForLabel,
-        '_QUANTIDADE' : qtyByBox,
-        '_PRINT_QUANTITY'  : quantity_box_labels
-      };
-
-      var sendToPrinter = replaceAll(ZPLString, map);
-
-      sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
+    //IF THE ARTICLE LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
+    if (article_label_already_printed === 'true') {
+      var res = $http.post('/deleteLabelsToPrint', dataToUpdate).then(function (data, status, headers, config) {
+        $state.reload();
+      });
+    } else {
+      var res = $http.post('/updateLabelAlreadyPrinted', dataToUpdate).then(function (data, status, headers, config) {
+        $state.reload();
+      });
     }
 
-    if(boxBarCodeType == 'EAN13')
-    {
-      //alert("ZPL: " + ZPLString);
-      //var cd = eanCheckDigit("0871886150940");
-      //alert("Bar Code Number: " + barCodeNumber);
-      var checkDigit = eanCheckDigit( '' + barCodeNumber);
-      //alert("CheckDigit: " + checkDigit);
-
-  
-      function padDigits(number, digits) {
-        return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
-      }
-
-      var Quantity_full = padDigits(qtyByBox, 4);
-
-      //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
-      //GS1-128 BarCode
-      var EanWithCheckDigit = barCodeNumber + checkDigit;
-      //var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
-
-      //alert("fullEan: " + FullEan);
-
-      function replaceAll(str, map){
-        for(key in map){
-          str2 = str.replace(key, map[key]);
-          str=str2;
-          str2=null;
-        }
-      return str;
-      }	
-
-      var map = {
-        '_EAN_CHECK_DIGIT' : EanWithCheckDigit,
-        '_QUANTIDADE_EXTENDIDA' : Quantity_full,
-        '_NUM_ARTIGO' : customer_product_id ,
-        '_NOME_ARTIGO' : productNameForLabel,
-        '_QUANTIDADE' : qtyByBox,
-        '_PRINT_QUANTITY'  : quantity_box_labels
-      };
-
-      var sendToPrinter = replaceAll(ZPLString, map);
-
-    sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
   }
-  },
-  function errorCallback(data){
-    console.log('Error: ' + data);
-  });
-
-  var dataToUpdate = {
-    COLUMN_TO_UPDATE      : 'BOX_LABEL_ALREADY_PRINTED',
-    ORDER_ID              : order_id,
-    CUSTOMER_PRODUCT_ID   : customer_product_id
-  };
-
-  //IF THE ARTICLE LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
-  if(article_label_already_printed === 'true') {
-    var res = $http.post('/deleteLabelsToPrint', dataToUpdate).then(function(data, status, headers, config) {
-      $state.reload();
-    });
-  } else {
-    var res = $http.post('/updateLabelAlreadyPrinted', dataToUpdate).then(function(data, status, headers, config) {
-      $state.reload();
-    });
-  }
-
-}
 }]);
 
 
 //DAILY ORDER PRODUCTION - Controller
-app.controller('dailyProduction', function($scope, $http, $rootScope, ModalService) {
-  
+app.controller('dailyProduction', function ($scope, $http, $rootScope, ModalService) {
+
   $rootScope.class = 'not-home';
-  $rootScope.name= "Registo Produção Diária";
+  $rootScope.name = "Registo Produção Diária";
   $scope.dailyProduction = [];
-    var request = $http.get('/getDailyProduction');    
+  var request = $http.get('/getDailyProduction');
   request.then(function successCallback(response) {
-      $scope.dailyProduction  = response.data;
-      return  $scope.dailyProduction; 
+    $scope.dailyProduction = response.data;
+    return $scope.dailyProduction;
   },
-  function errorCallback(data){
+    function errorCallback(data) {
       console.log('Error: ' + data);
-  });
+    });
 
 
   //Delete daily production registry
-  $scope.delete = function(order_id, customer_product_id, employee_name) {
-    
+  $scope.delete = function (order_id, customer_product_id, employee_name) {
+
     var dataToDelete = {
-    ORDER_ID : order_id,
-    CUSTOMER_PRODUCT_ID : customer_product_id,
-    EMPLOYEE_NAME : employee_name
+      ORDER_ID: order_id,
+      CUSTOMER_PRODUCT_ID: customer_product_id,
+      EMPLOYEE_NAME: employee_name
     };
 
     ModalService.showModal({
@@ -5385,43 +5389,43 @@ app.controller('dailyProduction', function($scope, $http, $rootScope, ModalServi
         operationURL: '/deleteDailyProduction',
         dataObj: dataToDelete
       }
-    }).then(function(modal) {
-    modal.element.modal();
-    modal.close.then(function(result) {
-      if (!result) {
-        $scope.complexResult = "Modal forcibly closed..."
-      } else {
-        $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
-      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
     });
-   });
   };
 });
 
 
 //DAILY PAINTING - Controller
-app.controller('dailyPaintingController', function($scope, $http, $rootScope, ModalService) {
+app.controller('dailyPaintingController', function ($scope, $http, $rootScope, ModalService) {
 
   $rootScope.class = 'not-home';
-  $rootScope.name= "Registo Pintura Diária";
+  $rootScope.name = "Registo Pintura Diária";
   $scope.dailyPainting = [];
-    var request = $http.get('/getDailyPainting');    
+  var request = $http.get('/getDailyPainting');
   request.then(function successCallback(response) {
-      $scope.dailyPainting  = response.data;
-      return  $scope.dailyPainting; 
+    $scope.dailyPainting = response.data;
+    return $scope.dailyPainting;
   },
-  function errorCallback(data){
+    function errorCallback(data) {
       console.log('Error: ' + data);
-  });
+    });
 
 
   //Delete daily painting registry
-  $scope.delete = function(order_id, customer_product_id, employee_name) {
-    
+  $scope.delete = function (order_id, customer_product_id, employee_name) {
+
     var dataToDelete = {
-    ORDER_ID : order_id,
-    CUSTOMER_PRODUCT_ID : customer_product_id,
-    EMPLOYEE_NAME : employee_name
+      ORDER_ID: order_id,
+      CUSTOMER_PRODUCT_ID: customer_product_id,
+      EMPLOYEE_NAME: employee_name
     };
 
     ModalService.showModal({
@@ -5433,307 +5437,311 @@ app.controller('dailyPaintingController', function($scope, $http, $rootScope, Mo
         operationURL: '/deleteDailyPainting',
         dataObj: dataToDelete
       }
-    }).then(function(modal) {
-    modal.element.modal();
-    modal.close.then(function(result) {
-      if (!result) {
-        $scope.complexResult = "Modal forcibly closed..."
-      } else {
-        $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
-      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
     });
-   });
   };
 });
 
 //FACTORY TO SEARCH FOR THE SAME PRODUCT INTERNAL ID IN ALL OPEN ORDERS AND REGISTER THE DAILY PRODUCTION
-app.factory('productInOtherOpenOrdersOrOverProduction', function($http) { 
+app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', function ($http) {
 
-    //return {
-      var alertMsg = new Array();
-      //insertProduction : function ($scope, orderid, internalproductid, products_remaining_from_daily_production, alertMsg) { 
-      function insertProduction($scope, orderid, internalproductid, products_remaining_from_daily_production, employyee_name, productPriceInEuro) { 
-  
-        //INITIALIZE OVERPRODUCTION VARIABLE
-        $scope.overProduction = products_remaining_from_daily_production;
-        $scope.ordersWithThisInternalProductId = [];
-        var request = $http.get('/getallordersforopeninternalproductid/' +  encodeURIComponent(orderid) + '/'+ encodeURIComponent(internalproductid));  
-        request.then(function successCallback(response) {
-          $scope.ordersWithThisInternalProductId  = response.data;
+  //return {
+  var alertMsg = [];
+  //insertProduction : function ($scope, orderid, internalproductid, products_remaining_from_daily_production, alertMsg) { 
+  function insertProduction($scope, orderid, internalproductid, products_remaining_from_daily_production, employyee_name, productPriceInEuro) {
 
-          console.log("ordersWithThisInternalProductId.length: " + $scope.ordersWithThisInternalProductId.length);
-          if($scope.ordersWithThisInternalProductId.length > 0) {
-            for(i=0; i < $scope.ordersWithThisInternalProductId.length; i++) {
-              var orderproduct = $scope.ordersWithThisInternalProductId[i];
-       
-              var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PRODUCED;
-       
-              var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
-              var order_id = orderproduct.ORDER_ID;
+    //INITIALIZE OVERPRODUCTION VARIABLE
+    $scope.overProduction = products_remaining_from_daily_production;
+    $scope.ordersWithThisInternalProductId = [];
+    var request = $http.get('/getallordersforopeninternalproductid/' + encodeURIComponent(orderid) + '/' + encodeURIComponent(internalproductid));
+    request.then(function successCallback(response) {
+      $scope.ordersWithThisInternalProductId = response.data;
 
-              console.log("orderproduct: " + orderproduct);
-              console.log("customer_product_id: " + customer_product_id);
-              console.log("order_id: " + order_id);
-              console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
+      console.log("ordersWithThisInternalProductId.length: " + $scope.ordersWithThisInternalProductId.length);
+      if ($scope.ordersWithThisInternalProductId.length > 0) {
+        for (i = 0; i < $scope.ordersWithThisInternalProductId.length; i++) {
+          var orderproduct = $scope.ordersWithThisInternalProductId[i];
 
-              //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
-              //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
-              if(number_of_products_to_close_order <= products_remaining_from_daily_production) { 
+          var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PRODUCED;
 
-                alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + number_of_products_to_close_order);
-                //alert(alertMsg);
+          var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
+          var order_id = orderproduct.ORDER_ID;
 
-                products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
-                $scope.overProduction = products_remaining_from_daily_production;
-                var valueProducedByTheEmployee = number_of_products_to_close_order * productPriceInEuro;
+          console.log("orderproduct: " + orderproduct);
+          console.log("customer_product_id: " + customer_product_id);
+          console.log("order_id: " + order_id);
+          console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
 
-                var insertProductsInTheSameOrder = {
-                    ORDER_ID: order_id,
-                    INTERNAL_PRODUCT_ID : $scope.internalproductid,
-                    CUSTOMER_PRODUCT_ID: customer_product_id,
-                    PRODUCT_NAME: $scope.productnameinternal,
-                    EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-                    EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-                    TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
-                    PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
-                  };	
-      
-                  var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
-                  });
-              } else {
-                  //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
-                  //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
-                  //DAILY PRODUCTION
-                 if(products_remaining_from_daily_production > 0) {
-                  alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
-                  //alert(alertMsg.toString());
+          //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
+          //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
+          if (number_of_products_to_close_order <= products_remaining_from_daily_production) {
 
-                  var valueProducedByTheEmployee = products_remaining_from_daily_production * productPriceInEuro;
+            alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + number_of_products_to_close_order);
+            //alert(alertMsg);
 
-                  var insertProductsInTheSameOrder = {
-                    ORDER_ID: order_id,
-                    INTERNAL_PRODUCT_ID : $scope.internalproductid,
-                    CUSTOMER_PRODUCT_ID: customer_product_id,
-                    PRODUCT_NAME: $scope.productnameinternal,
-                    EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-                    EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-                    TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
-                    PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
-                  };	
+            products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
+            $scope.overProduction = products_remaining_from_daily_production;
+            var valueProducedByTheEmployee = number_of_products_to_close_order * productPriceInEuro;
 
-                  var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
-                  });
-
-                  products_remaining_from_daily_production = 0; 
-                }    
-            }
-          } //for
-          //WE NEED TO CHECK IF WE STILL HAVE PRODUCTS TO REGISTER AS OVER PRODUCTION
-          if($scope.overProduction > 0) {
-            var insertOverProductionData = {
-              INTERNAL_PRODUCT_ID : $scope.internalproductid,
+            var insertProductsInTheSameOrder = {
+              ORDER_ID: order_id,
+              INTERNAL_PRODUCT_ID: $scope.internalproductid,
+              CUSTOMER_PRODUCT_ID: customer_product_id,
               PRODUCT_NAME: $scope.productnameinternal,
               EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
               EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-              PRODUCTS_PRODUCED: $scope.overProduction,
+              TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
+              PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
             };
-    
-            var res = $http.post('/insertOverProductionStockTable', insertOverProductionData).then(function(data, status, headers, config) {
+
+            var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
             });
-          }
+          } else {
+            //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
+            //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
+            //DAILY PRODUCTION
+            if (products_remaining_from_daily_production > 0) {
+              alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
+              //alert(alertMsg.toString());
 
-         } //if 
-         //WE NEED TO CHECK IF WE STILL HAVE PRODUCTS TO REGISTER AS OVER PRODUCTION
-         else {
-                  if($scope.overProduction > 0) {
-                    var insertOverProductionData = {
-                      INTERNAL_PRODUCT_ID : $scope.internalproductid,
-                      PRODUCT_NAME: $scope.productnameinternal,
-                      EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-                      EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-                      EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
-                      PRODUCTS_PRODUCED: $scope.overProduction,
-                    };
-            
-                    var res = $http.post('/insertOverProductionStockTable', insertOverProductionData).then(function(data, status, headers, config) {
-                    });
-                  }
-         }
-        },
-        function errorCallback(data){
-          console.log('Error: ' + data);
-        });
-      } //function
-
-      function returAlertMsg () {
-          return alertMsg;
-      }
-    //}//return
-      return {
-        insertProduction: insertProduction,
-        returAlertMsg: returAlertMsg
-      };
-}); //app.factory
-
-//FACTORY TO SEARCH FOR THE SAME PRODUCT INTERNAL ID IN ALL OPEN ORDERS AND REGISTER THE DAILY PAINTING
-app.factory('productInOtherOpenOrdersForPainting', function($http) { 
-
-  //return {
-    var alertMsg = new Array();
-    //insertProduction : function ($scope, orderid, internalproductid, products_remaining_from_daily_production, alertMsg) { 
-    function insertPaiting($scope, orderid, internalproductid, products_remaining_from_daily_production, employyee_name, productPriceInEuro, qtybypallet) { 
-
-      //INITIALIZE OVERPRODUCTION VARIABLE
-      $scope.overProduction = products_remaining_from_daily_production;
-      $scope.ordersWithThisInternalProductId = [];
-      var request = $http.get('/getAllOrdersForPaintingInternalProductId/' +  encodeURIComponent(orderid) + '/'+ encodeURIComponent(internalproductid));  
-      request.then(function successCallback(response) {
-        $scope.ordersWithThisInternalProductId  = response.data;
-
-        console.log("ordersWithThisInternalProductId.length: " + $scope.ordersWithThisInternalProductId.length);
-        if($scope.ordersWithThisInternalProductId.length > 0) {
-          for(i=0; i < $scope.ordersWithThisInternalProductId.length; i++) {
-            var orderproduct = $scope.ordersWithThisInternalProductId[i];
-     
-            var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PAINTED;
-     
-            var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
-            var order_id = orderproduct.ORDER_ID;
-
-            console.log("orderproduct: " + orderproduct);
-            console.log("customer_product_id: " + customer_product_id);
-            console.log("order_id: " + order_id);
-            console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
-
-            //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
-            //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
-            if(number_of_products_to_close_order <= products_remaining_from_daily_production) { 
-
-              alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + number_of_products_to_close_order);
-              //alert(alertMsg);
-
-              products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
-              $scope.overProduction = products_remaining_from_daily_production;
-              var valueProducedByTheEmployee = number_of_products_to_close_order * productPriceInEuro;
-              var palletQuantity = number_of_products_to_close_order / qtybypallet;
+              var valueProducedByTheEmployee = products_remaining_from_daily_production * productPriceInEuro;
 
               var insertProductsInTheSameOrder = {
-                  ORDER_ID: order_id,
-                  INTERNAL_PRODUCT_ID : $scope.internalproductid,
-                  CUSTOMER_PRODUCT_ID: customer_product_id,
-                  PRODUCT_NAME: $scope.productnameinternal,
-                  EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-                  EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-                  TOTAL_PRODUCTS_PAINTED: number_of_products_to_close_order,
-                  PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
-                };	
-    
-                var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
-                });
+                ORDER_ID: order_id,
+                INTERNAL_PRODUCT_ID: $scope.internalproductid,
+                CUSTOMER_PRODUCT_ID: customer_product_id,
+                PRODUCT_NAME: $scope.productnameinternal,
+                EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+                EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+                TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
+                PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+              };
 
-                var dataObjPallet = {
-                  ORDER_ID: order_id,
-                  CUSTOMER_PRODUCT_ID: customer_product_id,
-                  INTERNAL_PRODUCT_ID : $scope.internalproductid,
-                  PRODUCT_NAME: $scope.productnameinternal,
-                  TOTAL_PRODUCTS_PAINTED: number_of_products_to_close_order,
-                  QUANTITY_IN_PALLETES: palletQuantity,
-                };
-            
-                var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function(data, status, headers, config) {
-                });
-            } else {
-                //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
-                //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
-                //DAILY PRODUCTION
-               if(products_remaining_from_daily_production > 0) {
-                alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
-                //alert(alertMsg.toString());
+              var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
+              });
 
-                var valueProducedByTheEmployee = products_remaining_from_daily_production * productPriceInEuro;
-                var palletQuantity = products_remaining_from_daily_production / $scope.qtybypallet;
-
-                var insertProductsInTheSameOrder = {
-                  ORDER_ID: order_id,
-                  INTERNAL_PRODUCT_ID : $scope.internalproductid,
-                  CUSTOMER_PRODUCT_ID: customer_product_id,
-                  PRODUCT_NAME: $scope.productnameinternal,
-                  EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-                  EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-                  TOTAL_PRODUCTS_PAINTED: products_remaining_from_daily_production,
-                  PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
-                };	
-
-                var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function(data, status, headers, config) {
-                });
-
-                var dataObjPallet = {
-                  ORDER_ID: order_id,
-                  CUSTOMER_PRODUCT_ID: customer_product_id,
-                  INTERNAL_PRODUCT_ID : $scope.internalproductid,
-                  PRODUCT_NAME: $scope.productnameinternal,
-                  TOTAL_PRODUCTS_PAINTED: products_remaining_from_daily_production,
-                  QUANTITY_IN_PALLETES: palletQuantity,
-                };
-            
-                var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function(data, status, headers, config) {
-                });
-
-                products_remaining_from_daily_production = 0; 
-              }    
+              products_remaining_from_daily_production = 0;
+            }
           }
+
+          //MsgSharingService.setsavedData(alertMsg);
+          return alertMsg; //RETURN THE INFORMATION ABOUT THE ORDERS WHERE THE PRODUCTS WHERE ADDED
+
         } //for
         //WE NEED TO CHECK IF WE STILL HAVE PRODUCTS TO REGISTER AS OVER PRODUCTION
-        if($scope.overProduction > 0) {
+        if ($scope.overProduction > 0) {
           var insertOverProductionData = {
-            INTERNAL_PRODUCT_ID : $scope.internalproductid,
+            INTERNAL_PRODUCT_ID: $scope.internalproductid,
             PRODUCT_NAME: $scope.productnameinternal,
             EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
             EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
             PRODUCTS_PRODUCED: $scope.overProduction,
           };
-  
-          var res = $http.post('/insertOverProductionStockTable', insertOverProductionData).then(function(data, status, headers, config) {
+
+          var res = $http.post('/insertOverProductionStockTable', insertOverProductionData).then(function (data, status, headers, config) {
           });
         }
 
-       } //if 
-       //WE NEED TO CHECK IF WE STILL HAVE PRODUCTS TO REGISTER AS OVER PRODUCTION
-       else {
-                if($scope.overProduction > 0) {
-                  var insertOverProductionData = {
-                    INTERNAL_PRODUCT_ID : $scope.internalproductid,
-                    PRODUCT_NAME: $scope.productnameinternal,
-                    EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-                    EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-                    EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
-                    PRODUCTS_PRODUCED: $scope.overProduction,
-                  };
-          
-                  var res = $http.post('/insertOverProductionStockTable', insertOverProductionData).then(function(data, status, headers, config) {
-                  });
-                }
-       }
-      },
-      function errorCallback(data){
+      } //if 
+      //WE NEED TO CHECK IF WE STILL HAVE PRODUCTS TO REGISTER AS OVER PRODUCTION
+      else {
+        if ($scope.overProduction > 0) {
+          var insertOverProductionData = {
+            INTERNAL_PRODUCT_ID: $scope.internalproductid,
+            PRODUCT_NAME: $scope.productnameinternal,
+            EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+            EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+            EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
+            PRODUCTS_PRODUCED: $scope.overProduction,
+          };
+
+          var res = $http.post('/insertOverProductionStockTable', insertOverProductionData).then(function (data, status, headers, config) {
+          });
+        }
+      }
+    },
+      function errorCallback(data) {
         console.log('Error: ' + data);
       });
-    } //function
+  } //function
 
-    function returAlertMsg () {
-        return alertMsg;
-    }
+  function returAlertMsg() {
+    return alertMsg;
+  }
   //}//return
-    return {
-      insertPaiting: insertPaiting,
-      returAlertMsg: returAlertMsg
-    };
+  return {
+    insertProduction: insertProduction,
+    returAlertMsg: returAlertMsg
+  };
+}]); //app.factory
+
+//FACTORY TO SEARCH FOR THE SAME PRODUCT INTERNAL ID IN ALL OPEN ORDERS AND REGISTER THE DAILY PAINTING
+app.factory('productInOtherOpenOrdersForPainting', function ($http) {
+
+  //return {
+  var alertMsg = new Array();
+  //insertProduction : function ($scope, orderid, internalproductid, products_remaining_from_daily_production, alertMsg) { 
+  function insertPaiting($scope, orderid, internalproductid, products_remaining_from_daily_production, employyee_name, productPriceInEuro, qtybypallet) {
+
+    //INITIALIZE OVERPRODUCTION VARIABLE
+    $scope.overProduction = products_remaining_from_daily_production;
+    $scope.ordersWithThisInternalProductId = [];
+    var request = $http.get('/getAllOrdersForPaintingInternalProductId/' + encodeURIComponent(orderid) + '/' + encodeURIComponent(internalproductid));
+    request.then(function successCallback(response) {
+      $scope.ordersWithThisInternalProductId = response.data;
+
+      console.log("ordersWithThisInternalProductId.length: " + $scope.ordersWithThisInternalProductId.length);
+      if ($scope.ordersWithThisInternalProductId.length > 0) {
+        for (i = 0; i < $scope.ordersWithThisInternalProductId.length; i++) {
+          var orderproduct = $scope.ordersWithThisInternalProductId[i];
+
+          var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PAINTED;
+
+          var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
+          var order_id = orderproduct.ORDER_ID;
+
+          console.log("orderproduct: " + orderproduct);
+          console.log("customer_product_id: " + customer_product_id);
+          console.log("order_id: " + order_id);
+          console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
+
+          //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
+          //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
+          if (number_of_products_to_close_order <= products_remaining_from_daily_production) {
+
+            alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + number_of_products_to_close_order);
+            //alert(alertMsg);
+
+            products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
+            $scope.overProduction = products_remaining_from_daily_production;
+            var valueProducedByTheEmployee = number_of_products_to_close_order * productPriceInEuro;
+            var palletQuantity = number_of_products_to_close_order / qtybypallet;
+
+            var insertProductsInTheSameOrder = {
+              ORDER_ID: order_id,
+              INTERNAL_PRODUCT_ID: $scope.internalproductid,
+              CUSTOMER_PRODUCT_ID: customer_product_id,
+              PRODUCT_NAME: $scope.productnameinternal,
+              EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+              EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+              TOTAL_PRODUCTS_PAINTED: number_of_products_to_close_order,
+              PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+            };
+
+            var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
+            });
+
+            var dataObjPallet = {
+              ORDER_ID: order_id,
+              CUSTOMER_PRODUCT_ID: customer_product_id,
+              INTERNAL_PRODUCT_ID: $scope.internalproductid,
+              PRODUCT_NAME: $scope.productnameinternal,
+              TOTAL_PRODUCTS_PAINTED: number_of_products_to_close_order,
+              QUANTITY_IN_PALLETES: palletQuantity,
+            };
+
+            var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
+            });
+          } else {
+            //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
+            //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
+            //DAILY PRODUCTION
+            if (products_remaining_from_daily_production > 0) {
+              alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
+              //alert(alertMsg.toString());
+
+              var valueProducedByTheEmployee = products_remaining_from_daily_production * productPriceInEuro;
+              var palletQuantity = products_remaining_from_daily_production / $scope.qtybypallet;
+
+              var insertProductsInTheSameOrder = {
+                ORDER_ID: order_id,
+                INTERNAL_PRODUCT_ID: $scope.internalproductid,
+                CUSTOMER_PRODUCT_ID: customer_product_id,
+                PRODUCT_NAME: $scope.productnameinternal,
+                EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+                EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+                TOTAL_PRODUCTS_PAINTED: products_remaining_from_daily_production,
+                PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+              };
+
+              var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
+              });
+
+              var dataObjPallet = {
+                ORDER_ID: order_id,
+                CUSTOMER_PRODUCT_ID: customer_product_id,
+                INTERNAL_PRODUCT_ID: $scope.internalproductid,
+                PRODUCT_NAME: $scope.productnameinternal,
+                TOTAL_PRODUCTS_PAINTED: products_remaining_from_daily_production,
+                QUANTITY_IN_PALLETES: palletQuantity,
+              };
+
+              var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
+              });
+
+              products_remaining_from_daily_production = 0;
+            }
+          }
+        } //for
+        //WE NEED TO CHECK IF WE STILL HAVE PRODUCTS TO REGISTER AS OVER PRODUCTION
+        if ($scope.overProduction > 0) {
+          var insertOverProductionData = {
+            INTERNAL_PRODUCT_ID: $scope.internalproductid,
+            PRODUCT_NAME: $scope.productnameinternal,
+            EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+            EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+            PRODUCTS_PRODUCED: $scope.overProduction,
+          };
+
+          var res = $http.post('/insertOverProductionStockTable', insertOverProductionData).then(function (data, status, headers, config) {
+          });
+        }
+
+      } //if 
+      //WE NEED TO CHECK IF WE STILL HAVE PRODUCTS TO REGISTER AS OVER PRODUCTION
+      else {
+        if ($scope.overProduction > 0) {
+          var insertOverProductionData = {
+            INTERNAL_PRODUCT_ID: $scope.internalproductid,
+            PRODUCT_NAME: $scope.productnameinternal,
+            EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+            EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+            EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
+            PRODUCTS_PRODUCED: $scope.overProduction,
+          };
+
+          var res = $http.post('/insertOverProductionStockTable', insertOverProductionData).then(function (data, status, headers, config) {
+          });
+        }
+      }
+    },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      });
+  } //function
+
+  function returAlertMsg() {
+    return alertMsg;
+  }
+  //}//return
+  return {
+    insertPaiting: insertPaiting,
+    returAlertMsg: returAlertMsg
+  };
 }); //app.factory
 
 //FACTORY TO SEARCH FOR THE SAME PRODUCT INTERNAL ID IN ALL OPEN ORDERS AND REGISTER THE DAILY PAINTING
-app.factory('sendZPLCodeToPrinter', function($http) { 
+app.factory('sendZPLCodeToPrinter', function ($http) {
 
-  function sendZplToPrinter(PrinterIPAddress, PrinterPort, Zpl) { 
+  function sendZplToPrinter(PrinterIPAddress, PrinterPort, Zpl) {
     console.log("Zpl Enviado para a Impressora" + Zpl);
 
     var url = "http://" + PrinterIPAddress + ":" + PrinterPort;
@@ -5742,20 +5750,20 @@ app.factory('sendZPLCodeToPrinter', function($http) {
     var request = new XMLHttpRequest();
 
     request.onload = function () {
-     var status = request.status; // HTTP response status, e.g., 200 for "200 OK"
-     var data = request.responseText; // Returned data, e.g., an HTML document.
-     output.innerHTML = "Status: " + status + "<br>" + data;
+      var status = request.status; // HTTP response status, e.g., 200 for "200 OK"
+      var data = request.responseText; // Returned data, e.g., an HTML document.
+      output.innerHTML = "Status: " + status + "<br>" + data;
     }
 
     request.open(method, url, async);
-   
+
     // Actually sends the request to the server.
-  
+
     console.log('sending...');
     request.timeout = 100;
     request.send(Zpl);
     //request.done;
-   
+
     console.log('end');
   }
 
@@ -5765,53 +5773,68 @@ app.factory('sendZPLCodeToPrinter', function($http) {
 }); //app.factory
 
 app.controller('LabelsBackupController', ['$scope', '$http', '$rootScope', "LabelsBackupService", function ($scope, $http, $rootScope, LabelsBackupService) {
-   
+
   $rootScope.class = 'not-home';
-    $rootScope.name= "Histórico - Etiquetas Impressas";
-    $scope.labelsToPrint = [];
-    var request = $http.get('/getLabelsToPrintHistoric');    
-    request.then(function successCallback(response) {
-        $scope.labelsToPrint  = response.data;
-        return  $scope.labelsToPrint; 
-    },
-    function errorCallback(data){
-        console.log('Error: ' + data);
+  $rootScope.name = "Histórico - Etiquetas Impressas";
+  $scope.labelsToPrint = [];
+  var request = $http.get('/getLabelsToPrintHistoric');
+  request.then(function successCallback(response) {
+    $scope.labelsToPrint = response.data;
+    return $scope.labelsToPrint;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
     });
 
-    //PRINT LABEL ARTICLE
-    $scope.printLabelArticle = function (customer_product_id, order_id,quantity_article_labels, box_label_already_printed) {
-        var status = LabelsBackupService.printLabelArticle(customer_product_id, order_id,quantity_article_labels, box_label_already_printed);
-    };
+  //PRINT LABEL ARTICLE
+  $scope.printLabelArticle = function (customer_product_id, order_id, quantity_article_labels, box_label_already_printed) {
+    var status = LabelsBackupService.printLabelArticle(customer_product_id, order_id, quantity_article_labels, box_label_already_printed);
+  };
 
-    //PRINT LABEL BOX
-    $scope.printProductBoxLabels = function (customer_product_id, order_id,quantity_box_labels, article_label_already_printed) {
-      var status = LabelsBackupService.printProductBoxLabels(customer_product_id, order_id,quantity_box_labels, article_label_already_printed);
-    };
-    
+  //PRINT LABEL BOX
+  $scope.printProductBoxLabels = function (customer_product_id, order_id, quantity_box_labels, article_label_already_printed) {
+    var status = LabelsBackupService.printProductBoxLabels(customer_product_id, order_id, quantity_box_labels, article_label_already_printed);
+  };
+
 
 }]);
 
 app.controller('BoxesOrderBackupController', ['$scope', '$http', '$rootScope', "BoxesToOrderService", function ($scope, $http, $rootScope, BoxesToOrderService) {
-   
-    $rootScope.class = 'not-home';
-    $rootScope.name= "Histórico - Caixas Encomendadas";
-    $scope.boxesToOrder = [];
-    $scope.sequence_value = 0;
-    var request = $http.get('/getAllOrderBoxesHistoric');    
-    request.then(function successCallback(response) {
-      $scope.boxesToOrder  = response.data;
-      return  $scope.boxesToOrder; 
-    },
-    function errorCallback(data){
+
+  $rootScope.class = 'not-home';
+  $rootScope.name = "Histórico - Caixas Encomendadas";
+  $scope.boxesToOrder = [];
+  $scope.sequence_value = 0;
+  var request = $http.get('/getAllOrderBoxesHistoric');
+  request.then(function successCallback(response) {
+    $scope.boxesToOrder = response.data;
+    return $scope.boxesToOrder;
+  },
+    function errorCallback(data) {
       console.log('Error: ' + data);
     });
 
-    $scope.changeValue = function (box, ORDER_ID, CUSTOMER_PRODUCT_ID, CLIENT_NAME, PRODUCT_NAME, BOX_MEASURES, BOX_ID, TOTAL_BOXES_TO_ORDER) {
-        var status = BoxesToOrderService.changeValue(box, ORDER_ID, CUSTOMER_PRODUCT_ID, CLIENT_NAME, PRODUCT_NAME, BOX_MEASURES, BOX_ID, TOTAL_BOXES_TO_ORDER);
-    };
+  $scope.changeValue = function (box, ORDER_ID, CUSTOMER_PRODUCT_ID, CLIENT_NAME, PRODUCT_NAME, BOX_MEASURES, BOX_ID, TOTAL_BOXES_TO_ORDER) {
+    var status = BoxesToOrderService.changeValue(box, ORDER_ID, CUSTOMER_PRODUCT_ID, CLIENT_NAME, PRODUCT_NAME, BOX_MEASURES, BOX_ID, TOTAL_BOXES_TO_ORDER);
+  };
 
-    $scope.generateOrder = function() {
-        var status = BoxesToOrderService.generateOrder();
-    };
-    
+  $scope.generateOrder = function () {
+    var status = BoxesToOrderService.generateOrder();
+  };
+
 }]);
+
+app.service('MsgSharingService', function () {
+  var savedData = [];
+
+  this.getsavedData = function () {
+    //You could also return specific attribute of the form data instead
+    //of the entire data
+    return savedData;
+  }
+  this.setsavedData = function (data) {
+    //You could also set specific attribute of the form data instead
+    savedData.push(data);
+  }
+
+});
