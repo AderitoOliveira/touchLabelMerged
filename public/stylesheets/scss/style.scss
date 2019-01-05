@@ -1661,6 +1661,25 @@ $colorVariable: var(--value);
         color: #ffffff;
         border: 0px;
     }
+
+    button.btn-remove {
+        height: 48px;
+        width: 100%;
+        text-align: center;
+        border-radius: 2px;
+        background-color: #DCD51E;
+        font-size: 16px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        color: #ffffff;
+        border: 0px;
+        img {
+            margin-top: -3px;
+        }
+    }
     
     button.btn-save {
         height: 48px;
