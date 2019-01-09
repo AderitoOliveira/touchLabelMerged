@@ -1189,7 +1189,7 @@ getProductionLast7Days = function(data, callback) {
 getUserInfo = function(req, callback) {
     console.log("req.body.User: " + req.params.User);
     con.connect(function(err) {
-    con.query('select USERNAME, PASSWORD, ITERATIONS from USER where USERNAME = ?', [req.params.User] ,function(err, rows) {
+    con.query('select USERNAME, PASSWORD, ITERATIONS from user where USERNAME = ?', [req.params.User] ,function(err, rows) {
         if (err) {
             throw err;
         } else
