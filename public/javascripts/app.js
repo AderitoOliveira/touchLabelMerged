@@ -183,8 +183,8 @@ app.controller('LoginController', ['$scope', '$rootScope', '$location', '$cookie
   $scope.login = function () {
     $scope.dataLoading = true;
     AuthenticationService.Login($scope.email, $scope.password, function (response) {
-      if (response.success) {
-      //if (response.data.success) {
+      //if (response.success) {
+      if (response.data.success) {
         AuthenticationService.SetCredentials($scope.email, $scope.password);
         $location.path('/');
       } else {
@@ -868,7 +868,7 @@ app.controller('labels', function ($scope, $http, $rootScope) {
 });
 
 //Controller for All the Orders
-app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams', '$state', 'ModalService', 'productInOtherOpenOrdersOrOverProduction', 'productInOtherOpenOrdersForPainting', function ($scope, $http, $rootScope, $stateParams, $state, ModalService, productInOtherOpenOrdersOrOverProduction) {
+app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams', '$state', '$q', 'ModalService', 'productInOtherOpenOrdersOrOverProduction', 'productInOtherOpenOrdersForPainting', function ($scope, $http, $rootScope, $stateParams, $state, $q, ModalService, productInOtherOpenOrdersOrOverProduction) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Lista de Produtos da Encomenda " + $stateParams.orderId;
@@ -1068,22 +1068,27 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
       //IF THE BOX_ID OR BOX_MEASURES ARE NOT DEFINED IN THE PRODUCT TECHNICAL SHEET OF THE PRODUCT
       //THE PRODUCT CANNOT BE CLOSED IN THIS ORDER
-      if ($scope.productTechSheet[0].Box_Id == null || $scope.productTechSheet[0].Box_Measures == null) {
+      if ($scope.productTechSheet.length == 0 || $scope.productTechSheet[0].Box_Id == null || $scope.productTechSheet[0].Box_Measures == null) {
 
         var messageToSend = "";
-        if ($scope.productTechSheet[0].CLIENT_NAME == null) {
-          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o nome do Cliente. Edite o produto e insira o nome do cliente."
+        if ($scope.productTechSheet.length == 0) {
+          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem a Ficha Técnica criada. Crie a Ficha Técnica e insira os atributos necessários."
+        } 
+        else 
+        {
+          if ($scope.productTechSheet[0].CLIENT_NAME == null && messageToSend == "") {
+            messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o nome do Cliente. Edite o produto e insira o nome do cliente."
+          }
+          if ($scope.productTechSheet[0].Qty_By_Box == null && messageToSend == "") {
+            messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por caixa. Edite a ficha técnica do produto e adicione a Quantidade por caixa para poder fechar o produto nesta encomenda."
+          }
+          if ($scope.productTechSheet[0].Box_Id == null && messageToSend == "") {
+            messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o número da Caixa. Edite a ficha técnica do produto e adicione o número da caixa para poder fechar o produto nesta encomenda."
+          }
+          if ($scope.productTechSheet[0].Box_Measures == null && messageToSend == "") {
+            messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido as MEDIDAS da Caixa. Edite a ficha técnica do produto e adicione o número da caixa para poder fechar o produto nesta encomenda."
+          }
         }
-        if ($scope.productTechSheet[0].Qty_By_Box == null && messageToSend == "") {
-          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por caixa. Edite a ficha técnica do produto e adicione a Quantidade por caixa para poder fechar o produto nesta encomenda."
-        }
-        if ($scope.productTechSheet[0].Box_Id == null && messageToSend == "") {
-          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o número da Caixa. Edite a ficha técnica do produto e adicione o número da caixa para poder fechar o produto nesta encomenda."
-        }
-        if ($scope.productTechSheet[0].Box_Measures == null && messageToSend == "") {
-          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido as MEDIDAS da Caixa. Edite a ficha técnica do produto e adicione o número da caixa para poder fechar o produto nesta encomenda."
-        }
-
         ModalService.showModal({
           templateUrl: "../modal/genericModal.html",
           controller: "GenericController",
@@ -1227,6 +1232,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     $scope.totalquantityproduced = totalquantityproduced;
     $scope.priceEuro = priceEuro;
 
+    var insertedProductionReport = [];
 
     //PRODUCTS STILL TO PRODUCE
     var products_still_to_produce = totalquantityordered - totalproductsproduced;
@@ -1303,9 +1309,21 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
 
       var res = $http.post('/insertDailyProduction', dataObj).then(function (data, status, headers, config) {
-        //$state.reload;
       });
 
+      //If the $http.post('/insertDailyProduction', dataObj) above didn't occur in the table, we need to guarantee that a new post 
+      //is not issued for the same product
+      var customerProductAlreadySentForRegister = $scope.customerproductid;
+
+      var msgArray = {
+        OrderId: $scope.orderid,
+        CustomerProductId: $scope.customerproductid,
+        ProductsRegistered: products_still_to_produce
+      };
+
+      insertedProductionReport.push(msgArray);
+      //insertedProductionReport.push("Foram registadas " + products_still_to_produce + " unidades do produto " + $scope.customerproductid  + " na encomenda " + $scope.orderid  + "\n");
+      //insertedProductionReport.push("OrderId: " + $scope.orderid + "  CustomerProductId: " +  $scope.customerproductid + "  ProductsRegistered: " + products_still_to_produce);
 
       //THE NUMBER OF PRODUCTS FROM THE DAILY PRODUCTION THAT WE STILL NEED TO REGISTE IN ANOTHER ORDER
       var products_remaining_from_daily_production = $scope.totalquantityproduced - products_still_to_produce;
@@ -1327,6 +1345,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           for (i = 0; i < $scope.productsToClose.length; i++) {
             var orderproduct = $scope.productsToClose[i];
 
+          if(orderproduct.CUSTOMER_PRODUCT_ID != customerProductAlreadySentForRegister) {
+           
             var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PRODUCED;
 
             var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
@@ -1357,6 +1377,17 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
               var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
               });
+
+              var msgArray = {
+                OrderId: order_id,
+                CustomerProductId: customer_product_id,
+                ProductsRegistered: number_of_products_to_close_order
+              };
+        
+              insertedProductionReport.push(msgArray);
+              //insertedProductionReport.push("Foram registadas " + products_remaining_from_daily_production + " unidades do produto " + customer_product_id + " na encomenda " + order_id + "\n");
+              //insertedProductionReport.push("OrderId: " + order_id + "  CustomerProductId: " +  customer_product_id + "  ProductsRegistered: " + number_of_products_to_close_order);
+
             } else {
 
               var valueProducedByTheEmployee = products_remaining_from_daily_production * $scope.priceEuro;
@@ -1377,33 +1408,82 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
               });
 
+              var msgArray = {
+                OrderId: order_id,
+                CustomerProductId: customer_product_id,
+                ProductsRegistered: products_remaining_from_daily_production
+              };
+        
+              insertedProductionReport.push(msgArray);
+              //insertedProductionReport.push("OrderId: " + order_id + "  CustomerProductId: " +  customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
+              //insertedProductionReport.push("Foram registadas " + products_remaining_from_daily_production + " unidades do produto " + customer_product_id + " na encomenda " + order_id + "\n");
+
               products_remaining_from_daily_production = 0;
 
             }
+           
+           } //if
 
           }//FOR
           //IF WE STILL HAVE PRODUCTS TO REGISTER IN THE DAILY PRODUCTION AND THEY CAN'T BE ADDED INTO THIS ORDER, WE NEED TO ITERATE OVER 
           //ALL THE ORDERS TO CHECK IF THE SAME INTERNAL PRODUCT ID IS OPENED TO BE REGISTERED
           if (products_remaining_from_daily_production > 0) {
-            var x = [];
-            productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro);
-            console.log("MENSAGEM!!!!!!!");
+            
+            productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro).then(function () {
+              
+            var msg = productInOtherOpenOrdersOrOverProduction.returAlertMsg();
+            insertedProductionReport.push(msg);
+
+              ModalService.showModal({
+                templateUrl: "../modal/dailyProductionReportModal.html",
+                controller: "InsertedProductionReportModalController",
+                preClose: (modal) => { modal.element.modal('hide'); },
+                inputs: {
+                  message: insertedProductionReport
+                }
+              }).then(function (modal) {
+                modal.element.modal();
+                modal.close.then(function (result) {
+                  if (!result) {
+                    $scope.complexResult = "Modal forcibly closed..."
+                  } else {
+                    $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+                  }
+                });
+              });
+
+            });
           } //if
 
         } //IF 
         else {
           //IN THIS ORDER THERE IS NOT A PRODUCT FOR THE SAME INTERNAL PRODUCT ID
           //WE NEED TO CHECK IF THERE'S ANTOHER ORDER WITH THE SAME INTERNAL PRODUCT ID
-          var alertMsg = [];
-          productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro);
 
-          /*
-          setTimeout(function () {
-            var msg = MsgSharingService.getsavedData();
-            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-          }, 1000);
-          */
-          console.log("MENSAGEM!!!!!!!");
+          productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro).then (function() {
+          var msg = productInOtherOpenOrdersOrOverProduction.returAlertMsg();
+          insertedProductionReport.push(msg);
+
+            ModalService.showModal({
+              templateUrl: "../modal/dailyProductionReportModal.html",
+              controller: "InsertedProductionReportModalController",
+              preClose: (modal) => { modal.element.modal('hide'); },
+              inputs: {
+                message: insertedProductionReport
+              }
+            }).then(function (modal) {
+              modal.element.modal();
+              modal.close.then(function (result) {
+                if (!result) {
+                  $scope.complexResult = "Modal forcibly closed..."
+                } else {
+                  $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+                }
+              });
+            });
+
+          });
+
         }
 
         $state.reload();
@@ -1746,7 +1826,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
         for (j = 0; j < $scope.products.length; j++) {
           if (!$scope.customerProductIdOnTechSheetArray.includes($scope.products[j].CUSTOMER_PRODUCT_ID)) {
-            $scope.productsWhereTechSheetNotExists.push($scope.products[j].CUSTOMER_PRODUCT_ID);
+            $scope.productsWhereTechSheetNotExists.push($scope.products[j].CUSTOMER_PRODUCT_ID + " ");
           }
         }
 
@@ -1845,7 +1925,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
         //The product doesn't contain the Ref_Glassed or Ref_Paint the productTechSheet shouldn't be printed
         if ($scope.productTechSheet[i].Ref_Glassed == null && $scope.productTechSheet[i].Ref_Paint == null) {
-          arrayProductMissingArguments.push($scope.productTechSheet[i].CUSTOMER_PRODUCT_ID);
+          arrayProductMissingArguments.push($scope.productTechSheet[i].CUSTOMER_PRODUCT_ID + ", ");
         }
 
       }
@@ -4151,6 +4231,52 @@ app.controller('GenericController', function ($scope, message) {
 
 });
 
+/*------------------------    Controller for the INSERTED PRODUCTION REPORT MODAL   -----------------------------*/
+app.controller('InsertedProductionReportModalController', function ($scope, $sce, message) {
+
+  var report = "<table style=\"width:100%\">";
+  report = report + "<thead>";
+  report = report + "<tr>";
+  report = report + "<th>Encomenda</th>";
+  report = report + "<th>Referência Producto</th>";
+  report = report + "<th>Quantidade</th>";
+  report = report + "</tr>";
+  report = report + "</thead>";
+  report = report + "<tbody>";
+
+  for(i=0; i < message.length; i++) {
+
+    if(message[i].OrderId) {
+      report = report + "<tr>";
+      report = report + "<td>" + message[i].OrderId + "</td>";
+      report = report + "<td>" + message[i].CustomerProductId + "</td>";
+      report = report + "<td>" + message[i].ProductsRegistered + "</td>";
+      report = report + "</tr>";
+    } else {
+      var arrayWithMoreLements = message[i];
+      for(j=0; j < arrayWithMoreLements.length ; j++) {
+        report = report + "<tr>";
+        report = report + "<td>" + arrayWithMoreLements[j].OrderId + "</td>";
+        report = report + "<td>" + arrayWithMoreLements[j].CustomerProductId + "</td>";
+        report = report + "<td>" + arrayWithMoreLements[j].ProductsRegistered + "</td>";
+        report = report + "</tr>";
+      }
+
+    }
+
+  }
+
+  report = report + "</tr>";
+  report = report + "</tbody>";
+  report = report + "</table>";
+  $scope.message = $sce.trustAsHtml(report);
+
+  $scope.yes = function () {
+    return true;
+  };
+
+});
+
 
 /*------------------------    Controller for the GENERIC MODAL   -----------------------------*/
 app.controller('registerExtraProductionForClosedProductInOrderController', function ($scope, $http, $state, message, ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_NAME, EMPLOYEE_ID, TOTAL_PRODUCTS_PRODUCED, PRODUCED_VALUE_IN_EURO) {
@@ -5372,9 +5498,10 @@ app.controller('dailyProduction', function ($scope, $http, $rootScope, ModalServ
 
 
   //Delete daily production registry
-  $scope.delete = function (order_id, customer_product_id, employee_name) {
+  $scope.delete = function (unique_id, order_id, customer_product_id, employee_name) {
 
     var dataToDelete = {
+      UNIQUE_ID: unique_id,
       ORDER_ID: order_id,
       CUSTOMER_PRODUCT_ID: customer_product_id,
       EMPLOYEE_NAME: employee_name
@@ -5451,12 +5578,13 @@ app.controller('dailyPaintingController', function ($scope, $http, $rootScope, M
 });
 
 //FACTORY TO SEARCH FOR THE SAME PRODUCT INTERNAL ID IN ALL OPEN ORDERS AND REGISTER THE DAILY PRODUCTION
-app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', function ($http) {
+app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', '$q', function ($http, $q) {
 
   //return {
   var alertMsg = [];
   //insertProduction : function ($scope, orderid, internalproductid, products_remaining_from_daily_production, alertMsg) { 
   function insertProduction($scope, orderid, internalproductid, products_remaining_from_daily_production, employyee_name, productPriceInEuro) {
+    var deferred = $q.defer();
 
     //INITIALIZE OVERPRODUCTION VARIABLE
     $scope.overProduction = products_remaining_from_daily_production;
@@ -5484,7 +5612,16 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', function ($htt
           //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
           if (number_of_products_to_close_order <= products_remaining_from_daily_production) {
 
-            alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + number_of_products_to_close_order);
+            var msgArray = {
+              OrderId: order_id,
+              CustomerProductId: customer_product_id,
+              ProductsRegistered: number_of_products_to_close_order
+            };
+
+            alertMsg.push(msgArray);
+            //alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + number_of_products_to_close_order);
+            //alertMsg.push("Foram registadas " + number_of_products_to_close_order + " unidades do produto " + customer_product_id  + " na encomenda " + order_id  + "\n");
+
             //alert(alertMsg);
 
             products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
@@ -5509,8 +5646,6 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', function ($htt
             //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
             //DAILY PRODUCTION
             if (products_remaining_from_daily_production > 0) {
-              alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
-              //alert(alertMsg.toString());
 
               var valueProducedByTheEmployee = products_remaining_from_daily_production * productPriceInEuro;
 
@@ -5528,12 +5663,21 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', function ($htt
               var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
               });
 
+              var msgArray = {
+                OrderId: order_id,
+                CustomerProductId: customer_product_id,
+                ProductsRegistered: products_remaining_from_daily_production
+              };
+  
+              alertMsg.push(msgArray);
+              //alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
+              //alertMsg.push("Foram registadas " + products_remaining_from_daily_production + " unidades do produto " + customer_product_id  + " na encomenda " + order_id  + "\n");
+
               products_remaining_from_daily_production = 0;
             }
           }
 
           //MsgSharingService.setsavedData(alertMsg);
-          return alertMsg; //RETURN THE INFORMATION ABOUT THE ORDERS WHERE THE PRODUCTS WHERE ADDED
 
         } //for
         //WE NEED TO CHECK IF WE STILL HAVE PRODUCTS TO REGISTER AS OVER PRODUCTION
@@ -5549,6 +5693,9 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', function ($htt
           var res = $http.post('/insertOverProductionStockTable', insertOverProductionData).then(function (data, status, headers, config) {
           });
         }
+
+        deferred.resolve(alertMsg);
+        return true; //RETURN THE INFORMATION ABOUT THE ORDERS WHERE THE PRODUCTS WHERE ADDED
 
       } //if 
       //WE NEED TO CHECK IF WE STILL HAVE PRODUCTS TO REGISTER AS OVER PRODUCTION
@@ -5571,6 +5718,9 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', function ($htt
       function errorCallback(data) {
         console.log('Error: ' + data);
       });
+
+    alertMsg = [];
+    return deferred.promise;  
   } //function
 
   function returAlertMsg() {

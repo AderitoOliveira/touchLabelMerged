@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 
+
 /*
 var con = mysql.createConnection({
     host: '127.0.0.1',
@@ -764,7 +765,7 @@ deleteDailyProduction = function(req, res) {
 //GET DAILY PRODUCTION - order_products_production_registry
 fetchDailyProduction = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_ID, EMPLOYEE_NAME, TOTAL_PRODUCTS_PRODUCED, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE, PRODUCED_VALUE_IN_EURO FROM order_products_production_registry ORDER BY CREATED_DATE DESC', function(err, rows) {
+    con.query('SELECT UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_ID, EMPLOYEE_NAME, TOTAL_PRODUCTS_PRODUCED, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE, PRODUCED_VALUE_IN_EURO FROM order_products_production_registry ORDER BY CREATED_DATE DESC', function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -820,7 +821,7 @@ deleteDailyPainting = function(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     con.connect(function(err) {
-    con.query('DELETE from order_products_painting_registry where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ? and EMPLOYEE_NAME = ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID, req.body.EMPLOYEE_NAME], function (error, results, fields) {
+    con.query('DELETE from order_products_painting_registry where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ? and UNIQUE_ID = ? and EMPLOYEE_NAME = ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID, req.body.UNIQUE_ID, req.body.EMPLOYEE_NAME], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });
@@ -1189,6 +1190,63 @@ getUserInfo = function(req, callback) {
     console.log("req.body.User: " + req.params.User);
     con.connect(function(err) {
     con.query('select USERNAME, PASSWORD, ITERATIONS from USER where USERNAME = ?', [req.params.User] ,function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        //callback.end(JSON.stringify(rows));
+        console.log('SERVER.js --> PASSWORD: ' + rows[0].PASSWORD);
+        callback.append("PASS", rows[0].PASSWORD);
+        callback.append("XPTO", JSON.stringify(rows));
+        var XPTO = JSON.stringify(rows);
+        //callback = rows;
+        //callback.end(JSON.stringify(rows));
+        var arrayToSendBack = {
+            PASSWORD: rows[0].PASSWORD
+        };
+        //callback.end(JSON.stringify(arrayToSendBack));
+        console.log("rows: " + JSON.stringify(rows)); 
+        console.log("GET USER");   
+    });
+});
+}
+
+//GET USER INFO
+postAuthenticateUserInfo = function(req, callback) {
+    console.log("req.body.email: " + req.body.email);
+    console.log("req.body.password: " + req.body.password);
+    con.connect(function(err) {
+    con.query('select USERNAME, PASSWORD, ITERATIONS from USER where USERNAME = ?', [req.body.email] ,function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        //callback.end(JSON.stringify(rows));
+        console.log('SERVER.js --> PASSWORD: ' + rows[0].PASSWORD);
+        callback.append("PASS", rows[0].PASSWORD);
+        callback.append("XPTO", JSON.stringify(rows));
+        var XPTO = JSON.stringify(rows);
+        //callback = rows;
+        //callback.end(JSON.stringify(rows));
+        var arrayToSendBack = {
+            PASSWORD: rows[0].PASSWORD
+        };
+        //callback.end(JSON.stringify(arrayToSendBack));
+        console.log("rows: " + JSON.stringify(rows)); 
+        console.log("GET USER");   
+    });
+});
+}
+
+//AUTHENTICATE USER
+authenticateLogin = function(req, callback) {
+    console.log("req.body.User: " + req.body.User);
+    con.connect(function(err) {
+    con.query('select USERNAME, PASSWORD, ITERATIONS from USER where USERNAME = ?', [req.body.User] ,function(err, rows) {
         if (err) {
             throw err;
         } else

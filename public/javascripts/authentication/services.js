@@ -10,6 +10,7 @@ authentication.factory('AuthenticationService', ['Base64', '$http', '$cookies', 
             /* Dummy authentication for testing, uses $timeout to simulate api call
              ----------------------------------------------*/
             
+             /*
             $timeout(function(){
                 var response = { success: email === 'sergio.moreira@hotmail.com' && password === 'sergio.moreira@123' };
                 if(!response.success) {
@@ -17,28 +18,48 @@ authentication.factory('AuthenticationService', ['Base64', '$http', '$cookies', 
                 }
                 callback(response);
             }, 1000);
+            */
+            
+            var userArray = {
+                email       : email,
+                password    : password
+            };
+
+            $http.post("/getUserinfo/", userArray ) 
+            .then(function successCallback(response) {
+                if (response.status == 200) {
+                   //var x = response.data~
+                   if(!response.data.success) {
+                        response.message = 'Email or password is incorrect';
+                   } 
+                    callback(response);
+                }
+            });
+            
             
 
-
-            /* CORRECT FUNCTION
+            /* CORRECT FUNCTION 
             var URI = '/getUserinfo/' + encodeURIComponent(email);
             var request = $http.get(URI);    
             request.then(function successCallback(response) {
                 userInfo  = response.data;
-                console.log('userInfo: ' + userInfo);
-                callback(userInfo);
+                callback(response);
                 //return  $scope.clients; 
             },
             function errorCallback(data){
-              console.log('Error: ' + data);
-            }); */
+              console.log('Error: ' + JSON.stringify(data));
+            });
+            */
+            
     
             /* Use this for real authentication
              ----------------------------------------------*/
-            //$http.post('/api/authenticate', { email: email, password: password })
-            //    .success(function (response) {
-            //        callback(response);
-            //    });
+            /*
+             $http.post('/api/authenticate', { email: email, password: password })
+                .success(function (response) {
+                    callback(response);
+            });
+            */
 
         };
  
