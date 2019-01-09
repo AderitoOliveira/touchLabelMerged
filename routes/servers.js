@@ -1218,7 +1218,7 @@ postAuthenticateUserInfo = function(req, callback) {
     console.log("req.body.email: " + req.body.email);
     console.log("req.body.password: " + req.body.password);
     con.connect(function(err) {
-    con.query('select USERNAME, PASSWORD, ITERATIONS from USER where USERNAME = ?', [req.body.email] ,function(err, rows) {
+    con.query('select USERNAME, PASSWORD, ITERATIONS from user where USERNAME = ?', [req.body.email] ,function(err, rows) {
         if (err) {
             throw err;
         } else
