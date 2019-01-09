@@ -755,7 +755,7 @@ deleteDailyProduction = function(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     con.connect(function(err) {
-    con.query('DELETE from order_products_production_registry where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ? and UNIQUE_ID = ?and EMPLOYEE_NAME = ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID, req.body.UNIQUE_ID, req.body.EMPLOYEE_NAME], function (error, results, fields) {
+    con.query('DELETE from order_products_production_registry where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ? and UNIQUE_ID = ? and EMPLOYEE_NAME = ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID, req.body.UNIQUE_ID, req.body.EMPLOYEE_NAME], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });
@@ -799,7 +799,7 @@ insertDailyPainting = function(req, res) {
 //GET DAILY PAINTING - order_products_painting_registry
 fetchDailyPainting = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_ID, EMPLOYEE_NAME, TOTAL_PRODUCTS_PAINTED, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE, PRODUCED_VALUE_IN_EURO FROM order_products_painting_registry ORDER BY CREATED_DATE DESC', function(err, rows) {
+    con.query('SELECT UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_ID, EMPLOYEE_NAME, TOTAL_PRODUCTS_PAINTED, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE, PRODUCED_VALUE_IN_EURO FROM order_products_painting_registry ORDER BY CREATED_DATE DESC', function(err, rows) {
         if (err) {
             throw err;
         } else
