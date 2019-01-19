@@ -137,6 +137,9 @@ body.not_loggedin{
             margin-top: -6px;
             margin-right: 6px;
         }
+        &:hover{
+            background-color:#27ae60 !important;
+        }
     }
     .login-messages > div {
         margin-top: 24px;
@@ -1703,6 +1706,22 @@ $colorVariable: var(--value);
     .button-holder {
         padding-top: 12px;
     }
+}
+
+button.btn-copy{
+    background-color:#826B6B !important;
+}
+
+.btn-datepicker{
+    padding:3px;
+    float: left;
+    margin-left: -40px;
+    margin-top: 12px;
+    height: 36px;
+    border-radius: 2px;
+    width: 40px;
+    background-color: transparent;
+    border-left: 1px solid lightgray;
 }
 
 #image-edit-wrap{

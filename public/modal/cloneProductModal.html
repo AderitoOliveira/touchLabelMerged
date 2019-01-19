@@ -1,15 +1,17 @@
 <div class="modal fade">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">{{title}}</h4>
-        </div>
-        <div class="modal-body">
+          <div class="modal-header">
+              <span class="warning-text"><img src="assets/icons/symbol-copy-black.svg" width="28px" height="28px" /> Aviso</span>
+              <button type="button" class="close" ng-click="close(false)" data-dismiss="modal" aria-hidden="true"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" /></button>
+            </div>
+        <div class="modal-body" style="padding:12px;">
+              <h4 class="modal-title">Insira a referência do novo produto:</h4>
               <form class="form-horizontal" role="form">
-                <div class="form-group">
-                  <label for="cloneProductId" class="col-sm-3 control-label">Referência do novo produto</label>
-                  <div class="col-sm-6">
+                <div class="form-group form-wrap" style="margin:0px 0px 24px !important;">
+                  
+                  <label for="cloneProductId" class="control-label" >Referência do novo produto</label>
+                  <div class="input-wrap-inner">
                     <input type="text" class="form-control" id="cloneProductId" placeholder="Ref do nov produto" ng-model="cloneProductId">
                   </div>
                 </div>
