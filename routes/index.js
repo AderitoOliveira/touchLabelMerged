@@ -118,6 +118,11 @@ router.get('/products', function (req, res) {
   fetchAllProducts(req, res);
 });
 
+//Get SINGLE Product information
+router.get('/product/:id', function (req, res) {
+  fetchSingleProduct(req, res);
+});
+
 //Get Product_Id and Product_Name from Products for Orders Insertion Modal information
 router.get('/productForModal', function (req, res) {
   fetchProductsForOrderModal(req, res);

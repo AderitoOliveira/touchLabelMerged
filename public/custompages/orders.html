@@ -47,6 +47,9 @@
                                 <input type="text" autocomplete="off" class="form-control" id="clientname" placeholder="Nome do Cliente" ng-model="clientname" uib-typeahead="client as client.CLIENT_NAME for client in clients | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}">
                             </div>
                             <div class="col-md-4">
+                                <md-datepicker ng-model="ctrl.myDate" md-current-view="year" md-placeholder="Enter date">
+                            </div>
+                            <div class="col-md-4">
                                 <div class="add-actions-wrap">
                                     <button type="submit" ng-click="save()" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px" />Adicionar</button>
                                     <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" /></button>

@@ -1,16 +1,16 @@
 var mysql = require('mysql');
 
 
-/*
+
 var con = mysql.createConnection({
     host: '127.0.0.1',
-    user: 'easylabel',
-    password: 'easylabel',
+    user: 'easylabeldb',
+    password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'
 });
-*/
 
+/*
 var con = mysql.createConnection({
     host: '172.30.184.178',
     user: 'easylabeldb',
@@ -18,7 +18,7 @@ var con = mysql.createConnection({
     database: 'easylabeldb',
     port: '3306'	
 });
-
+*/
 
 //GET ALL CLIENTS
 fetchAllClients = function(data, callback) {
@@ -128,6 +128,23 @@ fetchAllProducts = function(data, callback) {
         callback.end(JSON.stringify(rows));
         callback = rows;
         console.log("GET ALL PRODUCTS");      
+    });
+});
+}
+
+//GET SINGLE PRODUCT INFORMATION
+fetchSingleProduct = function(data, callback) {
+    con.connect(function(err) {
+    con.query('SELECT * FROM products where CUSTOMER_PRODUCT_ID = ?', [data.params.id], function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET SINGLE PRODUCT INFORMATION");      
     });
 });
 }

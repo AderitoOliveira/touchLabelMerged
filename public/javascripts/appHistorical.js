@@ -386,6 +386,17 @@ historical.service('BoxesToOrderService', ['$http', '$timeout', '$state', functi
   this.generateOrder = function() {
 
     var localCopyBoxesToSendInOrder = angular.copy(boxesToSendInOrder);
+    for(i=0; i < localCopyBoxesToSendInOrder.length -1; i++) {
+      for(j=i+1; j< localCopyBoxesToSendInOrder.length; j++) {
+         //localCopyBoxesToSendInOrder[i].0 --> BOX_ID
+         //localCopyBoxesToSendInOrder[i].2 --> BOX_MEASURES
+          if(localCopyBoxesToSendInOrder[i][0] == localCopyBoxesToSendInOrder[j][0] && localCopyBoxesToSendInOrder[i][2] == localCopyBoxesToSendInOrder[j][2] ) {
+            console.log("GENERATE ORDER --> localCopyBoxesToSendInOrder[i].BOX_ID " + localCopyBoxesToSendInOrder[i].BOX_ID);
+            console.log("GENERATE ORDER --> localCopyBoxesToSendInOrder[j].BOX_ID " + localCopyBoxesToSendInOrder[j].BOX_ID);
+          }
+
+      }
+    }
     var localCopyArrayOrderProductToDelete = angular.copy(arrayOrderProductToDelete);
   
     var docDefinition = {
@@ -473,9 +484,6 @@ historical.service('BoxesToOrderService', ['$http', '$timeout', '$state', functi
               ]
             },
             layout: 'lightHorizontalLines'
-          },
-          {
-            text: '\n\n ENTREGA, SE POSSÍVEL, NO DECORRER DA PRÒXIMA SEMANA', style: 'bottomMessage',
           }
         ],
     styles: {

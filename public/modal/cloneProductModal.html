@@ -1,0 +1,25 @@
+<div class="modal fade">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">{{title}}</h4>
+        </div>
+        <div class="modal-body">
+              <form class="form-horizontal" role="form">
+                <div class="form-group">
+                  <label for="cloneProductId" class="col-sm-3 control-label">Referência do novo produto</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" id="cloneProductId" placeholder="Ref do nov produto" ng-model="cloneProductId">
+                  </div>
+                </div>
+              </form>
+        </div>
+      <div class="modal-footer">
+          <button type="submit" ng-click="close()" data-dismiss="modal" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" />Cancelar</button>           
+          <button type="submit" ng-click="yes()" data-dismiss="modal" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Aceitar</button>
+      </div>
+      </div>
+    </div>
+  </div>
+  

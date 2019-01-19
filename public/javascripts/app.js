@@ -6,7 +6,7 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
     .state('editProduct', {
       url: '/editProduct',
       templateUrl: '../custompages/editProduct.html',
-      controller: 'editproducts',
+      //controller: 'editproducts',
       params: { productName: null, customerProductId: null, productId: null, clientname: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, preco1: null, preco2: null }
     })
     .state('home', {
@@ -16,13 +16,13 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
     })
     .state('clientstate', {
       url: '/client',
-      templateUrl: '../custompages/clients.html',
-      controller: 'clients'
+      templateUrl: '../custompages/clients.html'
+      //controller: 'clients'
     })
     .state('listProducts', {
       url: '/listProducts',
-      templateUrl: '../custompages/products.html',
-      controller: 'ProductsController'
+      templateUrl: '../custompages/products.html'
+      //controller: 'ProductsController'
     })
     .state('createProduct', {
       url: '/createProduct',
@@ -98,7 +98,7 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
     .state('listOrderProducts', {
       url: '/listOrderProducts',
       templateUrl: '../custompages/orderProducts.html',
-      controller: 'orderProducts',
+      //controller: 'orderProducts',
       params: { orderId: null, clientname: null }
     })
     .state('createTechnicalSheet', {
@@ -121,8 +121,8 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
     })
     .state('listOrders', {
       url: '/listOrders',
-      templateUrl: '../custompages/orders.html',
-      controller: 'ordersController'
+      templateUrl: '../custompages/orders.html'
+      //controller: 'ordersController'
     })
     .state('palletesReadyForShipping', {
       url: '/palletesReadyForShipping',
@@ -3838,7 +3838,7 @@ app.controller('ProductsController', function ($scope, $http, $location, $rootSc
 
 
 //EDITAR Produtos - Controller
-app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', function ($http, $scope, $rootScope, $state, $stateParams, $templateCache) {
+app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', 'ModalService', 'CloneProductService', function ($http, $scope, $rootScope, $state, $stateParams, $templateCache, ModalService, CloneProductService) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Editar Produto " + $stateParams.productName;
@@ -3956,7 +3956,61 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
     $state.transitionTo("editTechnicalSheet", { 'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'productId': $scope.productId, 'clientName': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2});
   };
 
+  $scope.cloneProduct = function (customerProductId) {
 
+  var URI = '/checkIfProductTechSheetExists/' + encodeURIComponent(customerProductId);
+  var request = $http.get(URI);
+  //var request = $http.get('/checkIfProductTechSheetExists/' + encodeURI(productId)); 
+  request.then(function successCallback(response) {
+    $scope.existsTechSheet = response.data;
+
+    if ($scope.existsTechSheet[0].EXISTS == 1) {
+
+      ModalService.showModal({
+        templateUrl: "../modal/cloneProductModal.html",
+        controller: "CloneProductModalController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          customerProductId: customerProductId
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      }); 
+      
+    } else {
+
+      ModalService.showModal({
+        templateUrl: "../modal/genericModal.html",
+        controller: "GenericController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: "O produto " + customerProductId + " não tem ficha técnica criada e não pode ser criada um cópia sem ficha técnica."
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+    }
+    //return  $scope.dataProducts; 
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
+
+  };
 
   $scope.back = function () {
     $state.go("listProducts", null, { reload: true });
@@ -4373,6 +4427,37 @@ app.controller('genericModalController', ['$scope', '$http', '$state', 'operatio
     };
   }]);
 
+
+//MODAL for the copy of the Product
+app.controller('CloneProductModalController', ['$scope', '$http', '$state', 'customerProductId', 'ModalService', 'CloneProductService', function ($scope, $http, $state, customerProductId, ModalService, CloneProductService) {
+
+  //Save Content Modal  
+  $scope.yes = function () {
+
+    CloneProductService.productClone(customerProductId,  $scope.cloneProductId).then(function() {
+
+      ModalService.showModal({
+        templateUrl: "../modal/genericModal.html",
+        controller: "GenericController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: "Foi criada uma cópia do produto " +  customerProductId + " com sucesso. O produto " +  $scope.cloneProductId + " foi criado."
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+
+    });
+
+  };
+}]);
 
 
 /*------------------ Controller for the CREATE MODAL of the ORDER-----------------------*/
@@ -4944,6 +5029,15 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
   $scope.generateOrder = function () {
 
     var localCopyBoxesToSendInOrder = angular.copy(boxesToSendInOrder);
+    for(i=0; i < localCopyBoxesToSendInOrder.length -1; i++) {
+      for(j=i+1; j< localCopyBoxesToSendInOrder.length; j++) {
+          if(localCopyBoxesToSendInOrder[i].BOX_ID != localCopyBoxesToSendInOrder[j].BOX_ID) {
+            console.log("GENERATE ORDER --> localCopyBoxesToSendInOrder[i].BOX_ID " + localCopyBoxesToSendInOrder[i].BOX_ID);
+            console.log("GENERATE ORDER --> localCopyBoxesToSendInOrder[j].BOX_ID " + localCopyBoxesToSendInOrder[j].BOX_ID);
+          }
+
+      }
+    }
     var localCopyArrayOrderProductToDelete = angular.copy(arrayOrderProductToDelete);
 
     var docDefinition = {
@@ -5988,6 +6082,7 @@ app.controller('BoxesOrderBackupController', ['$scope', '$http', '$rootScope', "
 }]);
 
 app.service('MsgSharingService', function () {
+
   var savedData = [];
 
   this.getsavedData = function () {
@@ -6001,3 +6096,103 @@ app.service('MsgSharingService', function () {
   }
 
 });
+
+
+app.factory('CloneProductService', ['$http', '$q', function ($http, $q) {
+
+  //this.productClone = function (customerProductId, cloneCustomerProductId) {
+  function productClone(customerProductId, cloneCustomerProductId) {
+    var deferred = $q.defer();
+
+    var product = [];
+    var productTechnicalSheet = [];
+
+    var request = $http.get('/product/' + encodeURIComponent(customerProductId));
+    request.then(function successCallback(response) {
+      product = response.data;
+      
+      //////////////////  GET TECHNICAL SHEET ////////////////////
+      var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerProductId));
+      request.then(function successCallback(response) {
+        productTechnicalSheet = response.data;
+
+        var cloneProduct = {
+          PRODUCT_NAME: product[0].PRODUCT_NAME,
+          INTERNAL_PRODUCT_ID: product[0].INTERNAL_PRODUCT_ID,
+          CUSTOMER_PRODUCT_ID: cloneCustomerProductId,
+          CLIENT_NAME: product[0].CLIENT_NAME,
+          IMAGE_NAME: 'products_default.png',
+          BAR_CODE_NUMBER: product[0].BAR_CODE_NUMBER,
+          PRODUCT_NAME_FOR_LABEL: product[0].PRODUCT_NAME_FOR_LABEL,
+          PRICE_EURO_1: product[0].PRICE_EURO_1,
+          PRICE_EURO_2: product[0].PRICE_EURO_2
+        };
+
+        var cloneProductTechSheet = {
+          CUSTOMER_PRODUCT_ID: cloneCustomerProductId,
+          INTERNAL_PRODUCT_ID: productTechnicalSheet[0].INTERNAL_PRODUCT_ID,
+          Raw_Material: productTechnicalSheet[0].Raw_Material,
+          Raw_Material_Extra: productTechnicalSheet[0].Raw_Material_Extra,
+          Dimensions_In_Wet: productTechnicalSheet[0].Dimensions_In_Wet,
+          Product_Weight: productTechnicalSheet[0].Product_Weight,
+          Product_Height: productTechnicalSheet[0].Product_Height,
+          Product_Width: productTechnicalSheet[0].Product_Width,
+          Top_Width: productTechnicalSheet[0].Top_Width,
+          Bottom_Width: productTechnicalSheet[0].Bottom_Width,
+          Relief: productTechnicalSheet[0].Relief,
+          Sponge: productTechnicalSheet[0].Sponge,
+          Cooking: productTechnicalSheet[0].Cooking,
+          Cooking_Temperature: productTechnicalSheet[0].Cooking_Temperature,
+          Painted_Cold: productTechnicalSheet[0].Painted_Cold,
+          Ref_Paint: productTechnicalSheet[0].Ref_Paint,
+          Ref_Paint_Qty: productTechnicalSheet[0].Ref_Paint_Qty,
+          Glassed: productTechnicalSheet[0].Glassed,
+          Ref_Glassed: productTechnicalSheet[0].Ref_Glassed,
+          Ref_Paint_Smoked: productTechnicalSheet[0].Ref_Paint_Smoked,
+          Ref_Paint_Smoked_Qty: productTechnicalSheet[0].Ref_Paint_Smoked_Qty,
+          Finish_Type_Obs: productTechnicalSheet[0].Finish_Type_Obs,
+          Bar_Code_Tech_Sheet: productTechnicalSheet[0].Bar_Code_Tech_Sheet,
+          Label_Water_Proof: productTechnicalSheet[0].Label_Water_Proof,
+          Felts: productTechnicalSheet[0].Felts,
+          Felts_Qty: productTechnicalSheet[0].Felts_Qty,
+          Bag: productTechnicalSheet[0].Bag,
+          Bag_Size: productTechnicalSheet[0].Bag_Size,
+          Qty_By_Box: productTechnicalSheet[0].Qty_By_Box,
+          Box_Measures: productTechnicalSheet[0].Box_Measures,
+          Box_Id: productTechnicalSheet[0].Box_Id,
+          Disposition_By_Row: productTechnicalSheet[0].Disposition_By_Row,
+          Qty_By_Pallet: productTechnicalSheet[0].Qty_By_Pallet,
+          Final_Observations: productTechnicalSheet[0].Final_Observations
+        };
+
+        var res = $http.post('/insertProduct', cloneProduct).then(function (data, status, headers, config) {
+          //var currentPageTemplate = $state.current.templateUrl;
+          //$templateCache.remove(currentPageTemplate);
+          //$state.go("listProducts", null, { reload: true });
+        });
+
+        var res = $http.post('/insertProductTechSheet', cloneProductTechSheet).then(function (data, status, headers, config) {
+          //var currentPageTemplate = $state.current.templateUrl;
+          //$templateCache.remove(currentPageTemplate);
+          //$state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2 });
+        });
+
+      },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      });
+      ////////////////////////////////////////////////////////////
+    },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
+
+    deferred.resolve(true);
+    return deferred.promise; 
+  }
+
+  return {
+    productClone: productClone
+  };
+
+}]);
