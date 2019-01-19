@@ -1,7 +1,6 @@
 var mysql = require('mysql');
 
-
-
+/*
 var con = mysql.createConnection({
     host: '127.0.0.1',
     user: 'easylabeldb',
@@ -9,8 +8,9 @@ var con = mysql.createConnection({
     database: 'easylabeldb',
     port: '3306'
 });
+*/
 
-/*
+
 var con = mysql.createConnection({
     host: '172.30.184.178',
     user: 'easylabeldb',
@@ -18,7 +18,7 @@ var con = mysql.createConnection({
     database: 'easylabeldb',
     port: '3306'	
 });
-*/
+
 
 //GET ALL CLIENTS
 fetchAllClients = function(data, callback) {
