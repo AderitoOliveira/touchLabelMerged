@@ -4052,6 +4052,33 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
     $state.go("listProducts", null, { reload: true });
   };
 
+  $scope.delete = function (customerProductId) {
+
+    var operationsToExecute  =  ['/deleteProduct', '/deleteProductTechSheet'];
+
+    var dataToDelete  = [{"CUSTOMER_PRODUCT_ID": customerProductId}, {"CUSTOMER_PRODUCT_ID": customerProductId}];
+
+    ModalService.showModal({
+      templateUrl: "../modal/yesNoGeneric.html",
+      controller: "genericMultOperationsModalController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        message: "Deseja mesmo apagar o produto " + customerProductId + " ?",
+        operationsObj: operationsToExecute,
+        dataObjs: dataToDelete
+      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
+});
+  };
+
 }]);
 
 
@@ -4477,6 +4504,31 @@ app.controller('genericModalController', ['$scope', '$http', '$state', 'operatio
     };
   }]);
 
+
+//Generic Modal for deleting/confirming operation where we receive several dataObj array and the several operation to execute
+app.controller('genericMultOperationsModalController', ['$scope', '$http', '$state', 'operationsObj', 'dataObjs', 'message',
+  function ($scope, $http, $state, operationsObj, dataObjs, message) {
+
+    $scope.message = message;
+  
+    //  This close function doesn't need to use jQuery or bootstrap, because
+    //  the button has the 'data-dismiss' attribute.
+
+    //Save Content Modal  
+    $scope.yes = function () {
+
+      for(i=0; i < operationsObj.length; i++) {
+
+        var res = $http.post(operationsObj[i], dataObjs[i]).then(function (data, status, headers, config) {
+          if(i == operationsObj.length) {
+            $state.go("listProducts", null, { reload: true });
+          }
+        });
+
+      }
+      
+    };
+  }]);
 
 //MODAL for the copy of the Product
 app.controller('CloneProductModalController', ['$scope', '$http', '$state', 'customerProductId', 'ModalService', 'CloneProductService', function ($scope, $http, $state, customerProductId, ModalService, CloneProductService) {

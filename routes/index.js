@@ -128,6 +128,12 @@ router.get('/product/:id', function (req, res) {
   fetchSingleProduct(req, res);
 });
 
+
+//DELETE PRODUCT INFORMATION
+router.post('/deleteProduct', function (req, res) {
+  deleteProduct(req, res);
+});
+
 //Get Product_Id and Product_Name from Products for Orders Insertion Modal information
 router.get('/productForModal', function (req, res) {
   fetchProductsForOrderModal(req, res);
@@ -285,6 +291,12 @@ router.get('/getProductTechSheet/:productid', function (req, res) {
   console.log("GET PRODUCT TECHNICAL SHEET");
   //console.log(req.body);
   getProductTechSheet(req, res);
+});
+
+//DELETE PRODUCT TECHNICAL SHEET
+router.post('/deleteProductTechSheet', function (req, res) {
+  console.log("DELETE PRODUCT TECHNICAL SHEET");
+  deleteProductTechSheet(req, res);
 });
 
 //CHECK IF PRODUCT TECHNICAL SHEET EXISTS
