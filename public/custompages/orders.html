@@ -48,13 +48,13 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="input-wrap">
-                                    <label class="control-label" for="clientname">Número de Encomenda</label>
+                                    <label class="control-label" for="clientname">Nome do Cliente</label>
                                     <input type="text" autocomplete="off" name="clientname" class="form-control" id="clientname" placeholder="Nome do Cliente" ng-model="clientname" uib-typeahead="client as client.CLIENT_NAME for client in clients | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}">
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-wrap">
-                                <label class="control-label" for="deliverDate">Número de Encomenda</label>
+                                <label class="control-label" for="deliverDate">Data de Entrega</label>
                                 <md-datepicker class="delivery-date" name="deliverDate" ng-model="deliverDate" md-current-view="year" md-placeholder="Enter date">
                                 </md-datepicker>
                                 </div>
