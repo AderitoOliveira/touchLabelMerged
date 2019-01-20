@@ -1525,6 +1525,7 @@ $colorVariable: var(--value);
     button.md-datepicker-triangle-button.md-icon-button.md-button {
         margin-top: 8px;
     }
+    md-datepicker{ input{ pointer-events:none; } }
 }
 #add-order{
     display:none;
