@@ -146,6 +146,29 @@ body.not_loggedin{
     }
 }
 
+md-datepicker.delivery-date {
+    float: left;
+    margin-top: 0px;
+    height: 36px;
+    border-radius: 2px;
+    border: solid 1px #c4c4c4;
+    box-shadow: inset -1px -1px 2px 0 rgba(118,118,118,0.25);
+    font-size: 16px;
+}
+
+md-calendar {
+    float: left;
+    background: white;
+    border: 0px !important;
+    margin: 0 auto !important;
+}
+
+.md-calendar-scroll-mask .md-virtual-repeat-container{
+    width:100%;
+    float:left;
+    box-shadow:none;
+}
+
 
 
 .input-wrap-inner{
@@ -1459,9 +1482,44 @@ $colorVariable: var(--value);
         }
 
     }
-    .col-md-3:first-child input, {
+    
+}
+
+#add-order .add-product-form{
+    .col-md-3:first-child .input-wrap, {
         margin-left: 8px !important;
         width: calc(100% - 8px);
+    }
+    .input-wrap {
+        float: left;
+        width: 100%;
+        margin-top: 24px;
+        .form-control {
+            margin-top: 0px !important;
+        }
+    }
+    .add-actions-wrap{
+        margin: 49px 0px 12px !important;
+    }
+    button.md-datepicker-button {
+        height: 36px !important;
+        padding-top: 6px !important;
+        float:left;
+    }
+    
+    button.md-datepicker-button.md-icon-button.md-button.md-ink-ripple {
+        padding-top: 6px !important;
+        float: left;
+    }
+    
+    .md-datepicker-input-container {
+        float: left;
+        height: 36px;
+        line-height: 33px;
+    }
+    
+    button.md-datepicker-triangle-button.md-icon-button.md-button {
+        margin-top: 8px;
     }
 }
 #add-order{

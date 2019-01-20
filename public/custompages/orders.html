@@ -41,17 +41,23 @@
                     <div class="col-md-12 add-product-form">
                         <div class="row">
                             <div class="col-md-3">
-                                <input type="text" autocomplete="off" class="form-control" id="orderid" placeholder="Número de Encomenda" ng-model="orderid">
+                                <div class="input-wrap">
+                                    <label class="control-label" for="orderid">Número de Encomenda</label>
+                                    <input type="text" autocomplete="off" class="form-control" name="orderid" id="orderid" placeholder="Número de Encomenda" ng-model="orderid">
+                                </div>
                             </div>
                             <div class="col-md-3">
-                                <input type="text" autocomplete="off" class="form-control" id="clientname" placeholder="Nome do Cliente" ng-model="clientname" uib-typeahead="client as client.CLIENT_NAME for client in clients | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}">
+                                <div class="input-wrap">
+                                    <label class="control-label" for="clientname">Número de Encomenda</label>
+                                    <input type="text" autocomplete="off" name="clientname" class="form-control" id="clientname" placeholder="Nome do Cliente" ng-model="clientname" uib-typeahead="client as client.CLIENT_NAME for client in clients | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}">
+                                </div>
                             </div>
                             <div class="col-md-3">
-                                <!--input class="form-control" placeholder="Data de Entrega" name="dp" ng-model="ctrl.myDate" ngbDatepicker #d="ngbDatepicker" style="float:left;"-->
-                                <!--md-datepicker class="form-control"  ng-model="ctrl.myDate" md-current-view="year" md-placeholder="Enter date" ngbDatepicker #d="ngbDatepicker" style="float:left;" name="dp"-->
-                                <md-datepicker ng-model="deliverDate" md-current-view="year" md-placeholder="Enter date">
+                                <div class="input-wrap">
+                                <label class="control-label" for="deliverDate">Número de Encomenda</label>
+                                <md-datepicker class="delivery-date" name="deliverDate" ng-model="deliverDate" md-current-view="year" md-placeholder="Enter date">
                                 </md-datepicker>
-                                <!-- button class="btn btn-datepicker btn-outline-secondary calendar" (click)="d.toggle()" type="button"><img src="assets/icons/icon-calendar.svg" width="20px" height="23px"></button-->
+                                </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="add-actions-wrap">
