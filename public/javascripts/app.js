@@ -1,4 +1,4 @@
-var app = angular.module('easyLabel', ['ui.router', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'ngCookies', 'historicalModule', 'Authentication']);
+var app = angular.module('easyLabel', ['ui.router', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'ngCookies', 'historicalModule', 'Authentication', 'ngMaterial', 'ngMessages']);
 
 app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
 
@@ -27,7 +27,7 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
     .state('createProduct', {
       url: '/createProduct',
       templateUrl: '../custompages/insertProduct.html',
-      controller: 'CreateProductController',
+      //controller: 'CreateProductController',
       params: { product_id: null, product_name: null, image_name: null, bar_code: null, name_in_the_label: null, num_article_by_box: null }
     })
     .state('createClient', {
@@ -589,7 +589,7 @@ app.controller('editclient', function ($scope, $http, $rootScope, $state, $state
 });
 
 
-app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$stateParams', 'sendZPLCodeToPrinter', function ($scope, $http, $rootScope, $state, $stateParams, sendZPLCodeToPrinter) {
+app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$stateParams', 'sendZPLCodeToPrinter', 'ModalService', function ($scope, $http, $rootScope, $state, $stateParams, sendZPLCodeToPrinter, ModalService) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Imprimir etiquetas do Produto " + $stateParams.productName;
@@ -598,6 +598,28 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
   var request = $http.get('/labelToPrintForProduct/' + encodeURIComponent(productId));
   request.then(function successCallback(response) {
     $scope.data = response.data;
+
+    if($scope.data.length == 0) {
+      ModalService.showModal({
+        templateUrl: "../modal/genericModal.html",
+        controller: "GenericController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: "O produto " + productId + " não tem ficha técnica criada. Crie a ficha técnica com a informação necessária para imprimir as etiquetas."
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+
+      $state.go("listProducts", null, { reload: true });
+    }
     console.log(response.data);
     //$scope.image = '/images' + '/' + $scope.data.image_name;
     return $scope.data;
@@ -2546,6 +2568,9 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
   $rootScope.class = 'not-home';
   $rootScope.name = "Lista de todas as Encomendas";
   $scope.orders = [];
+
+  $scope.deliverDate = new Date();
+
   var request = $http.get('/orders');
   request.then(function successCallback(response) {
     $scope.orders = response.data;
@@ -2594,10 +2619,21 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
 
   //Save Content Modal  
   $scope.save = function () {
+
+    console.log("A MINHA DATA: " + $scope.deliverDate);
+
+    var dateFormatted = Date.parse($scope.deliverDate, 'yyyy-MM-dd');
+    var day = $scope.deliverDate.getDate();
+    var month = $scope.deliverDate.getMonth() + 1;
+    var year = $scope.deliverDate.getFullYear();
+    $scope.formatedDeliverDate = day + "/" + month + "/" + year;
+    console.log("Data formatada: " + $scope.formatedDeliverDate);
+
     var dataObj = {
       ORDER_ID: $scope.orderid,
       CLIENT_NAME: $scope.clientname.CLIENT_NAME,
       CLIENT_ID: $scope.clientname.CLIENT_ID,
+      MODIFIED_DATE: $scope.deliverDate,
       STATUS: 'EM ABERTO'
     };
 
@@ -3877,7 +3913,7 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
 
   //GET ALL CLIENT_ID, CLIENT_NAME FOR THE TYPEAHEAD
   $scope.clients = [];
-  var URIClients = '/clientstypeahed';
+  var URIClients = 'clientstypeahed';
   var request = $http.get(URIClients);
   request.then(function successCallback(response) {
     $scope.clients = response.data;
@@ -4048,6 +4084,8 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
 
   //GET ALL CLIENT_ID, CLIENT_NAME FOR THE TYPEAHEAD
   $scope.clients = [];
+  var clientid = null;
+
   var URIClients = '/clientstypeahed';
   var request = $http.get(URIClients);
   request.then(function successCallback(response) {
@@ -4063,10 +4101,11 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
     if (!$scope.clientname.CLIENT_NAME) {
       $scope.clientname = $scope.clientname;
     } else {
+      clientid   = $scope.clientname.CLIENT_ID;
       $scope.clientname = $scope.clientname.CLIENT_NAME;
     }
 
-    var dataObj = {
+    var insertProduct = {
       PRODUCT_NAME: $scope.productName,
       INTERNAL_PRODUCT_ID: $scope.productId,
       CUSTOMER_PRODUCT_ID: $scope.customerproductId,
@@ -4077,6 +4116,11 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
       PRICE_EURO_1: $scope.preco1,
       PRICE_EURO_2: $scope.preco2
     };
+
+    var insertClientProduct = {
+      CLIENT_ID : clientid,
+      PRODUCT_ID: $scope.customerproductId
+    }
 
     $("#product-create-form").validate({
       rules: {
@@ -4096,7 +4140,13 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
     });
 
     if ($("#product-create-form").valid()) {
-      var res = $http.post('/insertProduct', dataObj).then(function (data, status, headers, config) {
+      var res = $http.post('/insertProduct', insertProduct).then(function (data, status, headers, config) {
+        //var currentPageTemplate = $state.current.templateUrl;
+        //$templateCache.remove(currentPageTemplate);
+        //$state.go("listProducts", null, { reload: true });
+      });
+
+      var res = $http.post('/insertclientproduct', insertClientProduct).then(function (data, status, headers, config) {
         var currentPageTemplate = $state.current.templateUrl;
         $templateCache.remove(currentPageTemplate);
         $state.go("listProducts", null, { reload: true });

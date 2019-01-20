@@ -108,6 +108,11 @@ router.get('/clientproduct', function (req, res) {
   fetchAllClientProduct(req, res);
 });
 
+//INSERT Client Product association
+router.post('/insertclientproduct', function (req, res) {
+  insertClientProduct(req, res);
+});
+
 //Get Single Client Product association
 router.get('/clientproduct/:id', function (req, res) {
   fetchSingleClientProduct(req, res);

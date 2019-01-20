@@ -1,5 +1,7 @@
 var mysql = require('mysql');
 
+
+
 /*
 var con = mysql.createConnection({
     host: '127.0.0.1',
@@ -9,7 +11,6 @@ var con = mysql.createConnection({
     port: '3306'
 });
 */
-
 
 var con = mysql.createConnection({
     host: '172.30.184.178',
@@ -79,6 +80,26 @@ fetchSingleClient = function(data, callback) {
 fetchAllClientProduct = function(data, callback) {
     con.connect(function(err) {
     con.query('SELECT * FROM client_product', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');        
+        callback.end(JSON.stringify(rows));
+        //console.log(rows); 
+        callback = rows;
+        console.log("--------------------------------------------------");   
+        console.log(rows);   
+        console.log("--------------------------------------------------");    
+    });
+});
+}
+
+//INSERT THE CIENT PRODUCT RELATION WHEN THE PRODUCT IS CREATED
+insertClientProduct = function(data, callback) {
+    con.connect(function(err) {
+    con.query('INSERT INTO client_product SET ?', data.body, function(err, rows) {
         if (err) {
             throw err;
         } else
