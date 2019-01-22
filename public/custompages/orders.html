@@ -55,7 +55,7 @@
                             <div class="col-md-3">
                                 <div class="input-wrap">
                                 <label class="control-label" for="deliverDate">Data de Entrega</label>
-                                <md-datepicker class="delivery-date" name="deliverDate" ng-model="deliverDate" md-current-view="year" md-placeholder="Enter date">
+                                <md-datepicker class="delivery-date" name="deliverDate" ng-model="deliverDate" md-current-view="year" md-placeholder="Enter date" is-open="isOpen" ng-keydown="$event.preventDefault(); isOpen = true;">
                                 </md-datepicker>
                                 </div>
                             </div>
