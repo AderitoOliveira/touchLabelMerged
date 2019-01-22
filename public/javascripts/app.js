@@ -1793,7 +1793,6 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       });
 
       for (j = 0; j < allValuesForKey.length; j++) {
-        console.log("j: " + j + "  " + formattedArr.length);
         var CUSTOMER_PRODUCT_ID = allValuesForKey[j].CUSTOMER_PRODUCT_ID;
         var PRODUCT_NAME = allValuesForKey[j].PRODUCT_NAME;
         var TOTAL_QUANTITY_ORDERED = allValuesForKey[j].TOTAL_QUANTITY_ORDERED;
@@ -2554,9 +2553,6 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
     var documentToPrint = JSON.parse(pdfDocumentProductionToJSON);
 
-    console.log(documentToPrint);
-    console.log(pdfDocumentProductionToJSON);
-    console.log(pdfDocumentProductionString);
     var filename = 'Encomenda_' + orderId + '_Folha_Produção';
     pdfMake.createPdf(documentToPrint).download(filename);
   };
@@ -4268,12 +4264,10 @@ app.controller('ProductCreateModalController', [
 
     $scope.$watch('productname', function () {
       $scope.productid = $scope.productname;
-      console.log($scope.productname);
     });
 
     $scope.$watch('productid', function () {
       $scope.productname = $scope.productid;
-      console.log($scope.productid);
     });
 
     $scope.dataProducts = [];
