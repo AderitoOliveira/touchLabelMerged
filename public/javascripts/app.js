@@ -901,12 +901,10 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
   $scope.$watch('productname', function () {
     $scope.productid = $scope.productname;
-    console.log($scope.productname);
   });
 
   $scope.$watch('productid', function () {
     $scope.productname = $scope.productid;
-    console.log($scope.productid);
   });
 
   $scope.dataProducts = [];
