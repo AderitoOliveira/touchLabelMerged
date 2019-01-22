@@ -1410,35 +1410,38 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
             } else {
 
-              var valueProducedByTheEmployee = products_remaining_from_daily_production * $scope.priceEuro;
-              //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
-              //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
-              //DAILY PRODUCTION
-              var insertProductsInTheSameOrder = {
-                ORDER_ID: order_id,
-                INTERNAL_PRODUCT_ID: $scope.internalproductid,
-                CUSTOMER_PRODUCT_ID: customer_product_id,
-                PRODUCT_NAME: orderproduct.PRODUCT_NAME,
-                EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-                EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-                TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
-                PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
-              };
+              if (products_remaining_from_daily_production > 0) {
 
-              var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
-              });
-
-              var msgArray = {
-                OrderId: order_id,
-                CustomerProductId: customer_product_id,
-                ProductsRegistered: products_remaining_from_daily_production
-              };
-        
-              insertedProductionReport.push(msgArray);
-              //insertedProductionReport.push("OrderId: " + order_id + "  CustomerProductId: " +  customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
-              //insertedProductionReport.push("Foram registadas " + products_remaining_from_daily_production + " unidades do produto " + customer_product_id + " na encomenda " + order_id + "\n");
-
-              products_remaining_from_daily_production = 0;
+                var valueProducedByTheEmployee = products_remaining_from_daily_production * $scope.priceEuro;
+                //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
+                //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
+                //DAILY PRODUCTION
+                var insertProductsInTheSameOrder = {
+                  ORDER_ID: order_id,
+                  INTERNAL_PRODUCT_ID: $scope.internalproductid,
+                  CUSTOMER_PRODUCT_ID: customer_product_id,
+                  PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                  EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+                  EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+                  TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
+                  PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+                };
+  
+                var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
+                });
+  
+                var msgArray = {
+                  OrderId: order_id,
+                  CustomerProductId: customer_product_id,
+                  ProductsRegistered: products_remaining_from_daily_production
+                };
+          
+                insertedProductionReport.push(msgArray);
+                //insertedProductionReport.push("OrderId: " + order_id + "  CustomerProductId: " +  customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
+                //insertedProductionReport.push("Foram registadas " + products_remaining_from_daily_production + " unidades do produto " + customer_product_id + " na encomenda " + order_id + "\n");
+  
+                products_remaining_from_daily_production = 0;
+              }
 
             }
            
