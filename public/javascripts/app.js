@@ -2189,6 +2189,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         },
         pageMargins: [56.6, 42.5, 15, 15],
         pageSize: 'A4',
+        pageOrientation: 'landscape' 
       };
   
       function replaceAll(str, map) {
