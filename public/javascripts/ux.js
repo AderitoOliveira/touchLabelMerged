@@ -118,12 +118,12 @@
         $('#add-order').slideToggle(200);
     })
 
-     $(document).on('click','#order-products-table .item-inner-wrap',function(){
-         if(!$(this).hasClass('expanded')){
+     $(document).on('click','#order-products-table .detail-toggle',function(){
+         if(!$(this).closest('.item-inner-wrap').hasClass('expanded')){
             $('#order-products-table .item-inner-wrap').removeClass('expanded');
-            $(this).addClass('expanded');
+            $(this).closest('.item-inner-wrap').addClass('expanded');
          } else {
-            $('#order-products-table .item-inner-wrap').removeClass('expanded');
+            $(this).closest('.item-inner-wrap').removeClass('expanded');
          }  
     })
 
