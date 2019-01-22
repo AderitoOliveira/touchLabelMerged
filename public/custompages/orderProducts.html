@@ -83,7 +83,8 @@
                         </div>
                     </div>
                     <div class="order-table-content row">
-                        <div class="col-md-12 {{product.ORDER_PRODUCT_STATUS_RAW}}" dir-paginate="product in products | orderBy : 'QUANTITY_PRODUCED' |filter:searchChar | itemsPerPage:15" ng-click="dailyProductionDetails(product.CUSTOMER_PRODUCT_ID, product.ORDER_PRODUCT_STATUS_RAW)">
+                        <!--div class="col-md-12 {{product.ORDER_PRODUCT_STATUS_RAW}}" dir-paginate="product in products | orderBy : 'QUANTITY_PRODUCED' |filter:searchChar | itemsPerPage:15" ng-click="dailyProductionDetails(product.CUSTOMER_PRODUCT_ID, product.ORDER_PRODUCT_STATUS_RAW)"-->
+                        <div class="col-md-12 {{product.ORDER_PRODUCT_STATUS_RAW}}" dir-paginate="product in products | orderBy : 'QUANTITY_PRODUCED' |filter:searchChar | itemsPerPage:15">
                             <div class="row">
                                 <div class="item-inner-wrap {{product.ORDER_PRODUCT_STATUS_RAW}}">
                                     <div class="col-md-1 table-item item-order-nr"><img src="{{product.IMAGE_PATH}}/{{product.IMAGE_NAME}}" class="img-product img-rounded" height="50" width="50"/></div>
@@ -107,13 +108,15 @@
                                             <a id="btn-close-paint" class="btn btn-sm btn-success" ng-click="closeProductPainting(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_PRODUCTS_PRODUCED)" data-toggle="tooltip" title="Fechar Produto em Pintura">
                                                 <img src="assets/icons/btn-success-paint.svg" width="24px" height="24px" />
                                             </a>
-                                            <a class="btn btn-sm btn-success" ng-click="seeProductDetailInOrder(product.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="Ver Detalhes de Produção do Produto">
+                                            <!--a class="btn btn-sm btn-success" ng-click="seeProductDetailInOrder(product.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="Ver Detalhes de Produção do Produto"-->
+                                            <a class="btn btn-sm btn-success detail-toggle" ng-click="dailyProductionDetails(product.CUSTOMER_PRODUCT_ID, product.ORDER_PRODUCT_STATUS_RAW)" data-toggle="tooltip" title="Ver Detalhes de Produção do Produto">
                                                 <img src="assets/icons/btn-view.svg" width="24px" height="24px" />
                                             </a>
                                         </div>
                                     </div>
                                     </div>
-                                    <div class="order-product-details item-row col-md-12" ng-if="seeProductDetailInOrder(product.CUSTOMER_PRODUCT_ID)">
+                                    <!--div class="order-product-details item-row col-md-12" ng-if="seeProductDetailInOrder(product.CUSTOMER_PRODUCT_ID)"-->
+                                    <div class="order-product-details item-row col-md-12">
                                         <div class="row">
                                             <div class="col-md-12 order-product-details-header">
                                                 <div class="header-inner">
@@ -130,14 +133,6 @@
                                                             Data
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <!--<div class="order-header-actions">
-                                                                <a class="btn btn-sm btn-success" ng-click="closeProductPainting(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_PRODUCTS_PRODUCED)" data-toggle="tooltip" title="Fechar Produto em Pintura">
-                                                                    <img src="assets/icons/btn-success-paint.svg" width="24px" height="24px" />
-                                                                </a>
-                                                                <a class="btn btn-sm btn-success" ng-click="insertDailyProductionModal(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME)" data-toggle="tooltip" title="Inserir Produção diária">
-                                                                    <img src="assets/icons/btn-view.svg" width="24px" height="24px" />
-                                                                </a>
-                                                            </div>-->
                                                         </div>
                                                     </div>
                                                 </div>                                                
