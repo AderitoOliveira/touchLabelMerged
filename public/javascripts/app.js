@@ -1783,7 +1783,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               { text: 'Ref Produto', style: "tblSmallHeader" },
               { text: 'Nome Produto', style: "tblSmallHeader" },
               { text: 'Quantidade', style: "tblSmallHeader" },
-              { text: 'Ref Tinta Fuminho', style: "tblSmallHeader" },
+              { text: 'Ref Tinta Patine', style: "tblSmallHeader" },
               { text: 'Observações', style: "tblSmallHeader" },
               { text: 'Nome Pintor', style: "tblSmallHeader" },
               { text: 'Data Pintura', style: "tblSmallHeader" }
@@ -2868,7 +2868,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
             headerRows: 1,
             widths: ['*', '*', '*', '*'],
             body: [
-              [{ text: 'Pintado a frio', style: 'tblBigHeader' }, { text: 'Quantidade Tinta', style: 'tblBigHeader' }, { text: 'Quanti. Fuminho', style: 'tblBigHeader' }, { text: 'Quanti. Vidrado', style: 'tblBigHeader' }],
+              [{ text: 'Pintado a frio', style: 'tblBigHeader' }, { text: 'Quantidade Tinta', style: 'tblBigHeader' }, { text: 'Quanti. Patine', style: 'tblBigHeader' }, { text: 'Quanti. Vidrado', style: 'tblBigHeader' }],
               [
                 '$scope.paintedCold',
                 '$scope.refPaintQty',
@@ -2885,7 +2885,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
             headerRows: 1,
             widths: ['*', '*', '*'],
             body: [
-              [{ text: 'Referência Tinta', style: 'tblBigHeader' }, { text: 'Referência Fuminho', style: 'tblBigHeader' }, { text: 'Referência Vidrado', style: 'tblBigHeader' }],
+              [{ text: 'Referência Tinta', style: 'tblBigHeader' }, { text: 'Referência Patine', style: 'tblBigHeader' }, { text: 'Referência Vidrado', style: 'tblBigHeader' }],
               [
                 '$scope.refPaint',
                 '$scope.refPaintSmoked',
@@ -3405,7 +3405,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
                 "text": "Quantidade Tinta",
                 "style": "tblBigHeader"
               }, {
-                "text": "Quanti. Fuminho",
+                "text": "Quanti. Patine",
                 "style": "tblBigHeader"
               }, {
                 "text": "Quanti. Vidrado",
@@ -3430,7 +3430,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
                 "text": "Referência Tinta",
                 "style": "tblBigHeader"
               }, {
-                "text": "Referência Fuminho",
+                "text": "Referência Patine",
                 "style": "tblBigHeader"
               }, {
                 "text": "Referência Vidrado",
@@ -4749,7 +4749,7 @@ app.controller('closeProductInOrderToProduction', [
         CUSTOMER_PRODUCT_ID: $scope.customerproductid,
         INTERNAL_PRODUCT_ID: $scope.internalproductid,
         PRODUCT_NAME: $scope.productname,
-        TOTAL_PRODUCTS_PRODUCED: $scope.totalproductsproduced,
+        TOTAL_PRODUCTS_PRODUCED: $scope.quantityordered,
         QTY_BY_BOX: $scope.qtybybox,
         TOTAL_BOXES_TO_ORDER: numBoxesToOrder,
         CLIENT_NAME: $scope.clientname,
