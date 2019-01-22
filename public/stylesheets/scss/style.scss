@@ -1526,6 +1526,10 @@ $colorVariable: var(--value);
         margin-top: 8px;
     }
     md-datepicker{ input{ pointer-events:none; } }
+    
+}
+.md-datepicker-input-mask{
+    display:none !important;
 }
 #add-order{
     display:none;
