@@ -1,4 +1,4 @@
-var app = angular.module('easyLabel', ['ui.router', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'ngCookies', 'historicalModule', 'Authentication', 'ngMaterial', 'ngMessages']);
+var app = angular.module('easyLabel', ['ui.router', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'ngCookies', 'historicalModule', 'Authentication']);
 
 app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
 
@@ -908,6 +908,34 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   });
 
   $scope.dataProducts = [];
+
+  //ANGULAR UI BOOTSTRAP DATEPICKER TESTS/////////////////////////////
+
+  $scope.today = function() {
+    $scope.dt = new Date();
+  };
+  $scope.today();
+   
+  $scope.dateOptions = {
+    //dateDisabled: disabled,
+    formatYear: 'yy',
+    maxDate: new Date(2020, 5, 22),
+    minDate: new Date(2018, 12, 01),
+    startingDay: 1
+  };
+
+  $scope.open1 = function() {
+    $scope.popup1.opened = true;
+  };
+
+  $scope.setDate = function(year, month, day) {
+    $scope.dt = new Date(year, month, day);
+  };
+
+  $scope.popup1 = {
+    opened: false
+  };
+  ////////////////////////////////////////////////////////////////////
 
   var request = $http.get('/productForModal');
   request.then(function successCallback(response) {
@@ -2567,7 +2595,33 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
   $rootScope.name = "Lista de todas as Encomendas";
   $scope.orders = [];
 
-  $scope.deliverDate = new Date();
+  //ANGULAR UI BOOTSTRAP DATEPICKER TESTS/////////////////////////////
+
+  $scope.today = function() {
+    $scope.deliverDate = new Date();
+  };
+  $scope.today();
+   
+  $scope.dateOptions = {
+    //dateDisabled: disabled,
+    formatYear: 'yy',
+    maxDate: new Date(2020, 5, 22),
+    minDate: new Date(2018, 12, 01),
+    startingDay: 1
+  };
+
+  $scope.open1 = function() {
+    $scope.popup1.opened = true;
+  };
+
+  $scope.setDate = function(year, month, day) {
+    $scope.dt = new Date(year, month, day);
+  };
+
+  $scope.popup1 = {
+    opened: false
+  };
+  ////////////////////////////////////////////////////////////////////
 
   var request = $http.get('/orders');
   request.then(function successCallback(response) {
