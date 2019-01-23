@@ -1533,7 +1533,21 @@ $colorVariable: var(--value);
         } 
     }
 }
-
+.order-product-details-add{
+    .btn-datepicker{
+        margin-left: -40px;
+        float: left;
+        margin-top: -12px;
+        border-radius: 2px;
+        padding-top: 8px;
+    }
+}
+.btn-datepicker-single{
+    margin-top: -12px;
+    margin-left: -2px !important;
+    padding-top: 8px;
+    border-radius: 2px;
+}
 .order-product-details {
     cursor: default;
 }

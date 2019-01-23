@@ -169,13 +169,8 @@
                                                         <div class="col-md-3">
                                                             <!-- <input type="text" class="form-control" id="productName" placeholder="Data de Produção" ng-model="productName"> -->
                                                             <!--md-datepicker class="delivery-date" name="productName" ng-model="productName" md-current-view="year" md-placeholder="Data de Produção" is-open="isOpen" ng-keydown="$event.preventDefault(); isOpen = true;"></md-datepicker-->
-                                                            <p class="input-group">
-                                                                <input type="text" class="form-control deliver-date" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" show-button-bar="false" close-text="Fechar" clear-text="Limpar" current-text="Hoje" alt-input-formats="altInputFormats" />
-                                                                <span class="input-group-btn">
-                                                                  <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
-                                                                </span>
-                                                            </p>
-                                                        </div>
+                                                                <input style="float:left;" type="text" class="form-control deliver-date" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" show-button-bar="false" close-text="Fechar" clear-text="Limpar" current-text="Hoje" alt-input-formats="altInputFormats" />
+                                                                  <button type="button" class="btn btn-default btn-datepicker" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="add-actions-wrap">
