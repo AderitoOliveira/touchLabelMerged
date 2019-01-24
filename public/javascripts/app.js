@@ -909,17 +909,12 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
   $scope.dataProducts = [];
 
-  //ANGULAR UI BOOTSTRAP DATEPICKER TESTS/////////////////////////////
-
-  $scope.today = function() {
-    $scope.dt = new Date();
-  };
-  $scope.today();
+    $scope.productiondate = new Date();
    
   $scope.dateOptions = {
     //dateDisabled: disabled,
     formatYear: 'yy',
-    maxDate: new Date(2020, 5, 22),
+    maxDate: new Date(2050, 5, 22),
     minDate: new Date(2018, 12, 01),
     startingDay: 1
   };
@@ -935,8 +930,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   $scope.popup1 = {
     opened: false
   };
-  ////////////////////////////////////////////////////////////////////
-
+  
   var request = $http.get('/productForModal');
   request.then(function successCallback(response) {
     $scope.dataProducts = response.data;
@@ -1269,7 +1263,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
   //INSERT DAILY PRODUCTION
-  $scope.insertDailyProduction = function (internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro) {
+  $scope.insertDailyProduction = function (internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, productiondate) {
 
     //$scope.title = title;
     $scope.orderid = $scope.orderid;
@@ -1302,6 +1296,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
           TOTAL_PRODUCTS_PRODUCED: $scope.totalquantityproduced,
           PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+          CREATED_DATE: productiondate
         }
       }).then(function (modal) {
         modal.element.modal();
@@ -1334,6 +1329,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
         TOTAL_PRODUCTS_PRODUCED: $scope.totalquantityproduced,
         PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+        CREATED_DATE: productiondate
       };
 
       var res = $http.post('/insertDailyProduction', dataObj).then(function (data, status, headers, config) {
@@ -1353,6 +1349,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
         TOTAL_PRODUCTS_PRODUCED: products_still_to_produce,
         PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+        CREATED_DATE: productiondate
       };
 
 
@@ -1421,6 +1418,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
                 TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
                 PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+                CREATED_DATE: productiondate
               };
 
               var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
@@ -1453,6 +1451,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                   EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
                   TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
                   PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+                  CREATED_DATE: productiondate
                 };
   
                 var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
@@ -1480,7 +1479,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           //ALL THE ORDERS TO CHECK IF THE SAME INTERNAL PRODUCT ID IS OPENED TO BE REGISTERED
           if (products_remaining_from_daily_production > 0) {
             
-            productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro).then(function () {
+            productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro, productiondate).then(function () {
               
             var msg = productInOtherOpenOrdersOrOverProduction.returAlertMsg();
             insertedProductionReport.push(msg);
@@ -1511,7 +1510,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           //IN THIS ORDER THERE IS NOT A PRODUCT FOR THE SAME INTERNAL PRODUCT ID
           //WE NEED TO CHECK IF THERE'S ANTOHER ORDER WITH THE SAME INTERNAL PRODUCT ID
 
-          productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro).then (function() {
+          productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro, productiondate).then (function() {
           var msg = productInOtherOpenOrdersOrOverProduction.returAlertMsg();
           insertedProductionReport.push(msg);
 
@@ -2595,8 +2594,6 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
   $rootScope.name = "Lista de todas as Encomendas";
   $scope.orders = [];
 
-  //ANGULAR UI BOOTSTRAP DATEPICKER TESTS/////////////////////////////
-
   $scope.today = function() {
     $scope.deliverDate = new Date();
   };
@@ -2605,7 +2602,7 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
   $scope.dateOptions = {
     //dateDisabled: disabled,
     formatYear: 'yy',
-    maxDate: new Date(2020, 5, 22),
+    maxDate: new Date(2050, 5, 22),
     minDate: new Date(2018, 12, 01),
     startingDay: 1
   };
@@ -2621,7 +2618,6 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
   $scope.popup1 = {
     opened: false
   };
-  ////////////////////////////////////////////////////////////////////
 
   var request = $http.get('/orders');
   request.then(function successCallback(response) {
@@ -5842,7 +5838,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', '$q', function
   //return {
   var alertMsg = [];
   //insertProduction : function ($scope, orderid, internalproductid, products_remaining_from_daily_production, alertMsg) { 
-  function insertProduction($scope, orderid, internalproductid, products_remaining_from_daily_production, employyee_name, productPriceInEuro) {
+  function insertProduction($scope, orderid, internalproductid, products_remaining_from_daily_production, employyee_name, productPriceInEuro, productiondate) {
     var deferred = $q.defer();
 
     //INITIALIZE OVERPRODUCTION VARIABLE
@@ -5896,6 +5892,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', '$q', function
               EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
               TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
               PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+              CREATED_DATE: productiondate
             };
 
             var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
@@ -5917,6 +5914,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', '$q', function
                 EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
                 TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
                 PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+                CREATED_DATE: productiondate
               };
 
               var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
@@ -5947,6 +5945,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', '$q', function
             EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
             EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
             PRODUCTS_PRODUCED: $scope.overProduction,
+            CREATED_DATE: productiondate
           };
 
           var res = $http.post('/insertOverProductionStockTable', insertOverProductionData).then(function (data, status, headers, config) {
@@ -5967,6 +5966,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', '$q', function
             EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
             EMPLOYEE_ID: $scope.nameemployee.EMPLOYEE_ID,
             PRODUCTS_PRODUCED: $scope.overProduction,
+            CREATED_DATE: productiondate
           };
 
           var res = $http.post('/insertOverProductionStockTable', insertOverProductionData).then(function (data, status, headers, config) {
