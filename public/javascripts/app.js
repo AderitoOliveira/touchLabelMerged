@@ -99,7 +99,7 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
       url: '/listOrderProducts',
       templateUrl: '../custompages/orderProducts.html',
       //controller: 'orderProducts',
-      params: { orderId: null, clientname: null }
+      params: { orderId: null, clientname: null, order_modified_date: null}
     })
     .state('createTechnicalSheet', {
       url: '/createTechnicalSheet',
@@ -898,6 +898,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   var orderId = $stateParams.orderId;
   $scope.orderid = $stateParams.orderId;
   $scope.clientname = $stateParams.clientname;
+  $scope.deliverydate = $stateParams.order_modified_date;
 
   $scope.$watch('productname', function () {
     $scope.productid = $scope.productname;
@@ -909,7 +910,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
   $scope.dataProducts = [];
 
-    $scope.productiondate = new Date();
+  $scope.productiondate = new Date();
    
   $scope.dateOptions = {
     //dateDisabled: disabled,
@@ -2086,8 +2087,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               },
               {
                 text: [
-                  { text: '\nDATA', style: 'label' },
-                  { text: '\n_CURRENT_DATE_', style: 'client' }
+                  { text: '\nPRAZO LIMITE DE ENTREGA', style: 'label' },
+                  { text: '\n_DELIVER_DATE_', style: 'client' }
                 ], style: 'orderNumber'
               }
             ]
@@ -2243,7 +2244,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
       var map = {
         '_CLIENT_NAME_': $scope.clientname,
-        '_CURRENT_DATE_': dateToPrint,
+        //'_CURRENT_DATE_': dateToPrint,
+        '_DELIVER_DATE_' : moment($scope.deliverydate).format('YYYY-MM-DD'),
         '_ORDER_ID_'    : orderId
       };
 
@@ -2317,7 +2319,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     return customer_product_id === customerproductid;
   };
 
-  //GET TECHNICAL SHEET INFORMATION FOR THE PRODUCTS IN THE ORDER TO SEND IT FOR PAINTING
+  //GET TECHNICAL SHEET INFORMATION FOR THE PRODUCTS IN THE ORDER TO SEND IT FOR PRODUCTION
   $scope.getOrderProductsInfoForProduction = function () {
 
     var formattedArrForProduction = [];
@@ -2402,8 +2404,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             },
             {
               text: [
-                { text: '\nDATA', style: 'label' },
-                { text: '\n_CURRENT_DATE_', style: 'client' }
+                { text: '\nPRAZO LIMITE DE ENTREGA', style: 'label' },
+                { text: '\n_DELIVER_DATE_', style: 'client' }
               ], style: 'orderNumber'
             }
           ]
@@ -2565,7 +2567,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     var map = {
       '_CLIENT_NAME_': $scope.clientname,
       '_ORDER_ID_': $scope.orderid,
-      '_CURRENT_DATE_': dateToPrint
+      //'_CURRENT_DATE_': dateToPrint
+      '_DELIVER_DATE_' : moment($scope.deliverydate).format('YYYY-MM-DD')
     };
 
     function replaceAll(str, map) {
@@ -2692,8 +2695,8 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
 
   };
 
-  $scope.showProductsForOrder = function (orderId, clientname) {
-    $state.transitionTo("listOrderProducts", { 'orderId': orderId, 'clientname': clientname });
+  $scope.showProductsForOrder = function (orderId, clientname, order_modified_date) {
+    $state.transitionTo("listOrderProducts", { 'orderId': orderId, 'clientname': clientname, 'order_modified_date':order_modified_date });
   }
 
 }]);
