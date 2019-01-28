@@ -2324,7 +2324,100 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
     var formattedArrForProduction = [];
     var totalProductsOrdered = 0;
+    var arrayDistinctProductId = {};
 
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
+    for (i = 0; i < $scope.products.length; i++) {
+  
+      var productId = $scope.products[i].INTERNAL_PRODUCT_ID;
+      
+      if(arrayDistinctProductId[productId] == null) {
+        
+        var distinctOrderQuantity = [];  
+        distinctOrderQuantity.push($scope.products[i].TOTAL_QUANTITY_ORDERED);
+
+        var productInfo = {
+          TOTAL_QUANTITY_ORDERED : $scope.products[i].TOTAL_QUANTITY_ORDERED,
+          DISTINCT_ORDER_QUANTITY : distinctOrderQuantity
+        };
+
+        arrayDistinctProductId[productId] = productInfo;
+
+      } else {
+        
+        var distinctOrderQuantity = arrayDistinctProductId[productId].DISTINCT_ORDER_QUANTITY;
+        distinctOrderQuantity.push($scope.products[i].TOTAL_QUANTITY_ORDERED);
+
+        var productInfo = {
+          TOTAL_QUANTITY_ORDERED  : arrayDistinctProductId[productId].TOTAL_QUANTITY_ORDERED + $scope.products[i].TOTAL_QUANTITY_ORDERED,
+          DISTINCT_ORDER_QUANTITY : distinctOrderQuantity
+        };
+
+        arrayDistinctProductId[productId] = productInfo;
+        console.log("TESTE");
+      };
+    }    
+
+    var allKeys = Object.keys(arrayDistinctProductId);
+
+    for(j = 0; j < allKeys.length; j++) {
+
+      var TOTAL_QUANTITY_ORDERED = arrayDistinctProductId[allKeys[j]].TOTAL_QUANTITY_ORDERED;
+      totalProductsOrdered = totalProductsOrdered + TOTAL_QUANTITY_ORDERED;
+
+      if(arrayDistinctProductId[allKeys[j]].DISTINCT_ORDER_QUANTITY.length > 1) {
+
+        formattedArrForProduction.push({
+          table: {
+            headerRows: 1, widths: [100, 100, '*'],
+            body: [
+              [
+                { text: allKeys[j], style: "tblRows" },
+                { text: TOTAL_QUANTITY_ORDERED, style: "tblRows" },
+                { text: arrayDistinctProductId[allKeys[j]].DISTINCT_ORDER_QUANTITY.toString().replace(/,/g," + ") , style: "tblRows" }
+              ]
+            ]
+          },
+          layout: 'lightHorizontalLines'
+        });
+
+      } else {
+
+        formattedArrForProduction.push({
+          table: {
+            headerRows: 1, widths: [100, 100, '*'],
+            body: [
+              [
+                { text: allKeys[j], style: "tblRows" },
+                { text: TOTAL_QUANTITY_ORDERED, style: "tblRows" },
+                { text: "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _", style: "tblRows" }
+              ]
+            ]
+          },
+          layout: 'lightHorizontalLines'
+        });
+      }
+
+    };
+
+    formattedArrForProduction.push({
+      table: {
+        headerRows: 1, widths: [100, 100],
+        body: [
+          [
+            { text: "TOTAL: ", style: "tblSingleRowLeft" },
+            { text: totalProductsOrdered, style: "tblSingleRowLeft" }
+          ]
+        ]
+      },
+      layout: 'lightHorizontalLines'
+    });
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
+    /*
     for (i = 0; i < $scope.products.length; i++) {
 
       var INTERNAL_PRODUCT_ID = $scope.products[i].INTERNAL_PRODUCT_ID;
@@ -2359,6 +2452,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       },
       layout: 'lightHorizontalLines'
     });
+    */
 
     var pdfDocumentProduction = {
       content: [
@@ -2417,14 +2511,13 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           body: [
             [
               { text: 'Ref Producto', style: "tblHeader" },
-              { text: 'Quantidade', style: "tblHeader" },
+              { text: 'Quantidade', style: "tblHeaderQuantidade" },
               { text: 'Observações', style: "tblHeader" }
             ]
           ]
 
         }, layout: 'lightHorizontalLines'
       },
-        //{table: {headerRows: 1,widths: ['*'],body: [[ {text: 'REFERENCE PAINT', style: "tblHeader"}]]},layout:'lightHorizontalLines'}
         {}
       ],
       styles: {
@@ -2501,7 +2594,15 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           margin: [0, 20, 10, 40],
         },
         'tblHeader': {
-          "margin": [-12, 0, 5, 10],
+          margin: [-12, 0, 5, 10],
+          color: '#816f6f',
+          borderWeight: 3,
+          alignment: 'center',
+          bold: 'true',
+          fontSize: 14,
+        },
+        'tblHeaderQuantidade': {
+          margin: [-30, 0, 5, 10],
           color: '#816f6f',
           borderWeight: 3,
           alignment: 'center',
