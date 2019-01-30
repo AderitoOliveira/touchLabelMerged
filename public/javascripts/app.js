@@ -1952,11 +1952,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
             var dataTechSheet = {
               Finish_Type_Obs: $scope.productTechSheet[i].Finish_Type_Obs,
-              //Glassed : $scope.productTechSheet[i].Glassed,
               CUSTOMER_PRODUCT_ID: $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
               PRODUCT_NAME: $scope.productTechSheet[i].PRODUCT_NAME,
-              //Painted_Cold : $scope.productTechSheet[i].Painted_Cold,
-              //Ref_Glassed : $scope.productTechSheet[i].Ref_Glassed,
+              TOTAL_QUANTITY_ORDERED: $scope.productTechSheet[i].TOTAL_QUANTITY_ORDERED,
               Ref_Paint_Smoked: $scope.productTechSheet[i].Ref_Paint_Smoked
             };
 
@@ -1967,11 +1965,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             var internalArray = [];
             var dataTechSheet = {
               Finish_Type_Obs: $scope.productTechSheet[i].Finish_Type_Obs,
-              //Glassed : $scope.productTechSheet[i].Glassed,
               CUSTOMER_PRODUCT_ID: $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
               PRODUCT_NAME: $scope.productTechSheet[i].PRODUCT_NAME,
-              //Painted_Cold : $scope.productTechSheet[i].Painted_Cold,
-              //Ref_Glassed : $scope.productTechSheet[i].Ref_Glassed,
+              TOTAL_QUANTITY_ORDERED: $scope.productTechSheet[i].TOTAL_QUANTITY_ORDERED,
               Ref_Paint_Smoked: $scope.productTechSheet[i].Ref_Paint_Smoked
             };
             internalArray.push(dataTechSheet);
@@ -5291,8 +5287,16 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
           
         } else {
             var previousBoxQtyToOrder = arrayDistinctBoxes[boxId|boxMeasures][1];
-            arrayDistinctBoxes[boxId|boxMeasures][1] = previousBoxQtyToOrder + localCopyBoxesToSendInOrder[i][1];
-            console.log("BOXES TO ORDER");
+
+            var index = localCopyBoxesToSendInOrder[i][3].indexOf("(");                     // Gets the first index where a ( occours
+            var fullProductName = localCopyBoxesToSendInOrder[i][3].substr(0, index - 1);   // Gets the full productName and remote the last space
+            var internalPorductId = localCopyBoxesToSendInOrder[i][3].substr(index);        // Gets the internal product id with the parenthesis
+
+            var lastIndexofSpace = fullProductName.lastIndexOf(" ");
+            var productNameForPDF = fullProductName.substr(0, lastIndexofSpace + 1) + internalPorductId;
+
+            arrayDistinctBoxes[boxId|boxMeasures][1] = previousBoxQtyToOrder + localCopyBoxesToSendInOrder[i][1]; //Sum the quantity of boxes to Order
+            arrayDistinctBoxes[boxId|boxMeasures][3] = productNameForPDF; //Write the Product Name without the color of the specific product
         };
 
     };
