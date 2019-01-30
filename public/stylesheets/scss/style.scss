@@ -2325,6 +2325,43 @@ img.label-detail {
     }
 }
 
+.modal-body .ng-binding {
+    margin-bottom: 32px;
+    padding:0px 32px;
+}
+
+.modal-body .ng-binding table{
+
+    display:table;
+    box-shadow:0px 1px 3px rgba(0,0,0,0.25);
+    border-radius:4px;
+}
+
+thead tr th {
+    background: #dedede;
+    padding: 12px 12px;
+    font-size:16px;
+    color:#222;
+}
+
+.model-w-table{
+    h4.modal-title {
+        padding: 12px 32px 0px;
+    }
+}
+thead tr th:first-child {
+    border-top-left-radius: 4px;
+}
+
+thead tr th:last-child {
+    border-top-right-radius: 4px;
+}
+
+tbody tr td{
+    padding:12px 12px 14px;
+    font-size:16px;
+}
+
 .home-block{
     .header-label-customer-id, .header-label-own-id {
         line-height: 1 !important;
