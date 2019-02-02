@@ -235,6 +235,12 @@ router.post('/insertorder', function (req, res) {
   insertOrder(req, res);
 });
 
+//Delete Order
+router.post('/deleteOrder', function (req, res) {
+  console.log("DELETE ORDER");
+  console.log(req.body);
+  deleteOrder(req, res);
+});
 
 //Insert Order Products
 router.post('/insertorderproduct', function (req, res) {
@@ -255,6 +261,14 @@ router.post('/deleteorderproduct', function (req, res) {
   console.log("DELETE PRODUCT FROM ORDER");
   console.log(req.body);
   deleteOrderProduct(req, res);
+});
+
+//Delete ALL Products from Order Products. This is executed when we need to delete an Order 
+//and all the products associated
+router.post('/deleteAllProductsFromOrder', function (req, res) {
+  console.log("DELETE ALL PRODUCTS FROM THE ORDER");
+  console.log(req.body);
+  deleteAllProductsFromOrder(req, res);
 });
 
 //UPDATE Order Products - CHANGE THE STATUS OF THE PRODUCT IN THE ORDER 

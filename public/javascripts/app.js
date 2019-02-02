@@ -930,10 +930,6 @@ app.controller('labels', function ($scope, $http, $rootScope) {
     }
 
     request.open(method, url, async);
-    //request.setRequestHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    //request.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
-    //request.setRequestHeader("Content-Length", ZPLString.length);
-
 
     // Actually sends the request to the server.
 
@@ -992,6 +988,37 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     opened: false
   };
   
+  //DELETE THE ORDER. THIS BUTTON WAS SET IN THIS ORDER PRODUCT PAGE AND NOT IN THE ORDER PAGE JUST TO PREVENT AN ERROR 
+  //FROM THE CUSTOMER AND ACCIDENTALLY REMOVE AN ORDER WITH PRODUCTS
+  $scope.deleteOrder = function(){  
+
+    var operationsToExecute  =  ['/deleteOrder', '/deleteAllProductsFromOrder'];
+
+    var dataToDelete  = [{"ORDER_ID": $scope.orderid, "CLIENT_NAME": $scope.clientname}, {"ORDER_ID": $scope.orderid}];
+
+    ModalService.showModal({
+      templateUrl: "../modal/yesNoGeneric.html",
+      controller: "genericMultOperationsModalController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        message: "Pretende remover a encomenda " + $scope.orderid + " do cliente " + $scope.clientname + " ?",
+        operationsObj: operationsToExecute,
+        dataObjs: dataToDelete,
+        stateToGo: "listOrders"
+      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
+    });
+
+  };
+
   var request = $http.get('/productForModal');
   request.then(function successCallback(response) {
     $scope.dataProducts = response.data;
@@ -4266,7 +4293,8 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
       inputs: {
         message: "Deseja mesmo apagar o produto " + customerProductId + " ?",
         operationsObj: operationsToExecute,
-        dataObjs: dataToDelete
+        dataObjs: dataToDelete,
+        stateToGo: "listProducts"
       }
     }).then(function (modal) {
       modal.element.modal();
@@ -4277,7 +4305,7 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
           $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
         }
       });
-});
+    });
   };
 
 }]);
@@ -4705,8 +4733,8 @@ app.controller('genericModalController', ['$scope', '$http', '$state', 'operatio
 
 
 //Generic Modal for deleting/confirming operation where we receive several dataObj array and the several operation to execute
-app.controller('genericMultOperationsModalController', ['$scope', '$http', '$state', 'operationsObj', 'dataObjs', 'message',
-  function ($scope, $http, $state, operationsObj, dataObjs, message) {
+app.controller('genericMultOperationsModalController', ['$scope', '$http', '$state', 'operationsObj', 'dataObjs', 'message', 'stateToGo',
+  function ($scope, $http, $state, operationsObj, dataObjs, message, stateToGo) {
 
     $scope.message = message;
   
@@ -4720,7 +4748,7 @@ app.controller('genericMultOperationsModalController', ['$scope', '$http', '$sta
 
         var res = $http.post(operationsObj[i], dataObjs[i]).then(function (data, status, headers, config) {
           if(i == operationsObj.length) {
-            $state.go("listProducts", null, { reload: true });
+            $state.go(stateToGo, null);
           }
         });
 

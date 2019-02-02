@@ -505,6 +505,21 @@ insertOrder = function(req, res) {
  });
 }
 
+//DELETE ORDER 
+deleteOrder = function(req, res) {
+    var postData  = req.body;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    con.query('DELETE from orders where ORDER_ID = ? and CLIENT_NAME = ?', [req.body.ORDER_ID, req.body.CLIENT_NAME], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
 //INSERT PRODUCT INTO ORDER
 insertOrderProduct = function(req, res) {
     var postData  = req.body;
@@ -512,9 +527,6 @@ insertOrderProduct = function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
-    console.log("##########################################################");
-    console.log(req.body);
-    console.log("##########################################################");
     con.connect(function(err) {
     con.query('INSERT INTO orders_products SET ?', postData, function (error, results, fields) {
     if (error) throw error;
@@ -525,9 +537,6 @@ insertOrderProduct = function(req, res) {
 
 //DELETE ORDER PRODUCT
 deleteOrderProduct = function(req, res) {
-    console.log("#################################### POSTDATA #################################");
-    console.log(req.body);
-    console.log("#################################### POSTDATA #################################");
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
@@ -540,6 +549,19 @@ deleteOrderProduct = function(req, res) {
  });
 }
 
+//DELETE ALL PRODUCTS FROM ORDER PRODUCTS
+deleteAllProductsFromOrder = function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    con.query('DELETE from orders_products where ORDER_ID = ?', [req.body.ORDER_ID], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
 
 //UPDATE ORDER PRODUCT - CHANGE THE STATUS OF THE PRODUCT IN THE ORDER
 updateOrderProductStatus = function(req, res) {
