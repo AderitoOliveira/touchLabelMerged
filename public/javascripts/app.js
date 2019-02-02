@@ -1957,9 +1957,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
             var dataTechSheet = {
               Finish_Type_Obs: $scope.productTechSheet[i].Finish_Type_Obs,
+              //Glassed : $scope.productTechSheet[i].Glassed,
               CUSTOMER_PRODUCT_ID: $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
               PRODUCT_NAME: $scope.productTechSheet[i].PRODUCT_NAME,
-              TOTAL_QUANTITY_ORDERED: $scope.productTechSheet[i].TOTAL_QUANTITY_ORDERED,
+              //Painted_Cold : $scope.productTechSheet[i].Painted_Cold,
+              //Ref_Glassed : $scope.productTechSheet[i].Ref_Glassed,
               Ref_Paint_Smoked: $scope.productTechSheet[i].Ref_Paint_Smoked
             };
 
@@ -1970,9 +1972,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             var internalArray = [];
             var dataTechSheet = {
               Finish_Type_Obs: $scope.productTechSheet[i].Finish_Type_Obs,
+              //Glassed : $scope.productTechSheet[i].Glassed,
               CUSTOMER_PRODUCT_ID: $scope.productTechSheet[i].CUSTOMER_PRODUCT_ID,
               PRODUCT_NAME: $scope.productTechSheet[i].PRODUCT_NAME,
-              TOTAL_QUANTITY_ORDERED: $scope.productTechSheet[i].TOTAL_QUANTITY_ORDERED,
+              //Painted_Cold : $scope.productTechSheet[i].Painted_Cold,
+              //Ref_Glassed : $scope.productTechSheet[i].Ref_Glassed,
               Ref_Paint_Smoked: $scope.productTechSheet[i].Ref_Paint_Smoked
             };
             internalArray.push(dataTechSheet);
@@ -5140,6 +5144,17 @@ app.controller('closeProductInOrderForPainting', [
     //  This close function doesn't need to use jQuery or bootstrap, because
     //  the button has the 'data-dismiss' attribute.
 
+    /* $scope.productTechSheet = [];
+    var request = $http.get('/getProductTechSheet/' + $scope.customerproductid);    
+    request.then(function successCallback(response) {
+        $scope.productTechSheet  = response.data;
+        return  $scope.productTechSheet; 
+        },
+        function errorCallback(data){
+            console.log('Error: ' + data);
+    }); */
+
+
     //Save Content Modal  
     $scope.yes = function () {
 
@@ -5271,40 +5286,17 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
 
   $scope.generateOrder = function () {
 
-    var localCopyArrayOrderProductToDelete = angular.copy(arrayOrderProductToDelete);
     var localCopyBoxesToSendInOrder = angular.copy(boxesToSendInOrder);
+    for(i=0; i < localCopyBoxesToSendInOrder.length -1; i++) {
+      for(j=i+1; j< localCopyBoxesToSendInOrder.length; j++) {
+          if(localCopyBoxesToSendInOrder[i].BOX_ID != localCopyBoxesToSendInOrder[j].BOX_ID) {
+            console.log("GENERATE ORDER --> localCopyBoxesToSendInOrder[i].BOX_ID " + localCopyBoxesToSendInOrder[i].BOX_ID);
+            console.log("GENERATE ORDER --> localCopyBoxesToSendInOrder[j].BOX_ID " + localCopyBoxesToSendInOrder[j].BOX_ID);
+          }
 
-    var arrayDistinctBoxes = {};
-
-    for (i = 0; i < localCopyBoxesToSendInOrder.length; i++) {
-        var boxId = localCopyBoxesToSendInOrder[i][0];
-        var boxMeasures = localCopyBoxesToSendInOrder[i][2];
-
-        if(arrayDistinctBoxes[boxId|boxMeasures] == null) {
-
-          var boxQtyAndDetails = [];
-          boxQtyAndDetails.push(localCopyBoxesToSendInOrder[i][0]);
-          boxQtyAndDetails.push(localCopyBoxesToSendInOrder[i][1]);
-          boxQtyAndDetails.push(localCopyBoxesToSendInOrder[i][2]);
-          boxQtyAndDetails.push(localCopyBoxesToSendInOrder[i][3]);
-
-          arrayDistinctBoxes[boxId|boxMeasures] = boxQtyAndDetails;
-          
-        } else {
-            var previousBoxQtyToOrder = arrayDistinctBoxes[boxId|boxMeasures][1];
-
-            var index = localCopyBoxesToSendInOrder[i][3].indexOf("(");                     // Gets the first index where a ( occours
-            var fullProductName = localCopyBoxesToSendInOrder[i][3].substr(0, index - 1);   // Gets the full productName and remote the last space
-            var internalPorductId = localCopyBoxesToSendInOrder[i][3].substr(index);        // Gets the internal product id with the parenthesis
-
-            var lastIndexofSpace = fullProductName.lastIndexOf(" ");
-            var productNameForPDF = fullProductName.substr(0, lastIndexofSpace + 1) + internalPorductId;
-
-            arrayDistinctBoxes[boxId|boxMeasures][1] = previousBoxQtyToOrder + localCopyBoxesToSendInOrder[i][1]; //Sum the quantity of boxes to Order
-            arrayDistinctBoxes[boxId|boxMeasures][3] = productNameForPDF; //Write the Product Name without the color of the specific product
-        };
-
-    };
+      }
+    }
+    var localCopyArrayOrderProductToDelete = angular.copy(arrayOrderProductToDelete);
 
     var docDefinition = {
       content: [
@@ -5503,14 +5495,8 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
       pageSize: 'A4',
     };
 
-    //for (i = 0; i < localCopyBoxesToSendInOrder.length; i++) {
-    //  docDefinition.content[1].table.body[i + 1] = localCopyBoxesToSendInOrder[i];
-    //}
-
-    var allKeys = Object.keys(arrayDistinctBoxes);
-
-    for(j = 0; j < allKeys.length; j++) {
-        docDefinition.content[1].table.body[j + 1] = arrayDistinctBoxes[allKeys[j]];
+    for (i = 0; i < localCopyBoxesToSendInOrder.length; i++) {
+      docDefinition.content[1].table.body[i + 1] = localCopyBoxesToSendInOrder[i];
     }
 
     function replaceAll(str, map) {

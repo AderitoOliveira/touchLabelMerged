@@ -101,7 +101,7 @@
             <div id="boxes-configurations" class="toggle-panel configurations-panel">
               <div class="col-md-12">
                   <div class="row">
-                      <div class="col-md-5">
+                      <div class="col-md-6">
                           <div class="row">
                             <div  id="boxes-conf-table" class="col-md-12">
                                 <div class="label-table-wrap">
@@ -109,7 +109,7 @@
                                         <div class="inner-wrap">
                                             <div class="col-md-2 label-header-item header-label-boxid">ID</div>
                                             <div class="col-md-5 label-header-item header-label-boxdim">Dimensões</div>
-                                            <div class="col-md-5 label-header-item header-label-boxclient">Cliente</div>
+                                            <div class="col-md-4 label-header-item header-label-boxclient">Cliente</div>
                                         </div>
                                     </div>
                                     <div class="order-labels-content row" dir-paginate="box in boxes | orderBy : 'ID' |filter:searchChar | itemsPerPage:7" pagination-id="box">
@@ -118,7 +118,12 @@
                                                     <div class="item-inner-wrap">
                                                         <div class="col-md-2 table-item item-label-boxid">{{box.ID}}</div>
                                                         <div class="col-md-5 table-item item-label-boxdim">{{box.MEASURES}}</div>
-                                                        <div class="col-md-5 table-item item-label-boxclient">{{box.CLIENT_NAME}}</div>
+                                                        <div class="col-md-3 table-item item-label-boxclient">{{box.CLIENT_NAME}}</div>
+                                                        <div class="col-md-2 table-item item-button-action">
+                                                            <a class="btn btn-sm btn-danger" ng-click="" data-toggle="tooltip" title="Remover Produto">
+                                                                <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -196,7 +201,7 @@
             <div id="workers-configurations" class="toggle-panel configurations-panel">
                 <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                             <div class="row">
                                 <div  id="workers-conf-table" class="col-md-12">
                                     <div class="label-table-wrap">
@@ -213,7 +218,12 @@
                                                         <div class="item-inner-wrap">
                                                             <div class="col-md-2 table-item item-label-boxid">{{employee.EMPLOYEE_ID}}</div>
                                                             <div class="col-md-5 table-item item-label-boxdim">{{employee.EMPLOYEE_NAME}}</div>
-                                                            <div class="col-md-5 table-item item-label-boxclient">{{employee.EMPLOYEE_FUNCTION}}</div>
+                                                            <div class="col-md-3 table-item item-label-boxclient">{{employee.EMPLOYEE_FUNCTION}}</div>
+                                                            <div class="col-md-2 table-item item-button-action">
+                                                                <a class="btn btn-sm btn-danger" ng-click="" data-toggle="tooltip" title="Remover Produto">
+                                                                    <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
+                                                                </a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
