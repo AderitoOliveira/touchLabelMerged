@@ -83,31 +83,34 @@
                 <div class="order-table-wrap">
                     <div class="order-table-header row">
                         <div class="inner-wrap">
-                            <div class="col-xs-2 col-md-2 header-order-nr">Encomenda</div>
-                            <div class="col-xs-2 col-md-2 header-order-client">Cliente</div>
+                            <div class="col-xs-2 col-md-one-half header-order-nr">Encomenda</div>
+                            <div class="col-xs-2 col-md-one-half header-order-client">Cliente</div>
                             <div class="col-xs-2 col-md-2 header-order-date">Data de encomenda</div>
                             <div class="col-xs-2 col-md-2 header-order-date-end">Data de Fecho</div>
                             <div class="col-xs-2 col-md-2 header-order-products"><span class="light">Total Produtos</span><br>Total Produzidos</div>
-                            <div class="col-xs-1 col-md-1 header-order-state">Estado</div>
-                            <div class="col-xs-1 col-md-1"></div>
+                            <div class="col-xs-1 col-md-one-half header-order-state">Estado</div>
+                            <div class="col-xs-1 col-md-one-half"></div>
                         </div>
                     </div>
                     <div class="order-table-content row">
                         <div class="col-md-12" dir-paginate="order in orders |filter:searchChar | itemsPerPage:100">
                             <div class="row">
                                 <div class="item-inner-wrap">
-                                    <div class="col-xs-2 col-md-2 table-item item-order-nr" title="{{order.ORDER_ID}}">{{order.ORDER_ID}}</div>
-                                    <div class="col-xs-2 col-md-2 table-item item-order-client">{{order.CLIENT_NAME}}</div>
+                                    <div class="col-xs-2 col-md-one-half table-item item-order-nr" title="{{order.ORDER_ID}}">{{order.ORDER_ID}}</div>
+                                    <div class="col-xs-2 col-md-one-half table-item item-order-client">{{order.CLIENT_NAME}}</div>
                                     <div class="col-xs-2 col-md-2 table-item item-order-date">{{order.CREATED_DATE}}</div>
                                     <div class="col-xs-2 col-md-2 table-item item-order-date-end">{{order.MODIFIED_DATE}}</div>
                                     <div class="col-xs-2 col-md-2 table-item item-order-products">{{order.QTY_ORDERED}}<strong> / {{order.QTY_PRODUCED}}</strong></div>
-                                    <div class="col-xs-1 col-md-1 table-item item-order-state">Estado</div>
-                                    <div class="col-xs-2 col-md-1 table-item item-order-actions">
+                                    <div class="col-xs-1 col-md-one-half table-item item-order-state">Estado</div>
+                                    <div class="col-xs-2 col-md-one-half table-item item-order-actions">
                                         <a class="btn btn-sm btn-primary" ng-click="printLabelProduct(order.ORDER_ID, order.CLIENT_NAME)" data-toggle="tooltip" title="Imprimir Etiquetas do Produto.">
                                             <img src="assets/icons/btn-paint.svg" width="24px" height="24px" />
                                         </a>
                                         <a class="btn btn-sm btn-warning" ng-click="showProductsForOrder(order.ORDER_ID, order.CLIENT_NAME, order.MODIFIED_DATE)" data-toggle="tooltip" title="Editar Produto.">
                                             <img src="assets/icons/btn-view.svg" width="24px" height="24px" />
+                                        </a>
+                                        <a id="btn-clear-order" class="btn btn-sm btn-success" ng-click="" data-toggle="tooltip" title="Fechar Produção">
+                                            <img src="assets/icons/btn-success.svg" width="24px" height="24px" />
                                         </a>
                                     </div>
                                     <div class="progressrow item-row col-md-12">
