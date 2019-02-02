@@ -1270,7 +1270,11 @@ button.button {
         > div {
             padding-top: 5px;
             padding-bottom: 5px;
-            line-height: 2;
+            line-height: 1.2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 60px;
             span.light{
                 font-weight:normal;
             }
@@ -2035,6 +2039,11 @@ div[ng-controller="OverProductionController"] div[ng-table="dailyProductionTable
     line-height:1 !important;
 }
 
+.header-label-checkbox .checkbox-wrap {
+    margin-top: -12px;
+    position: absolute;
+}
+
 .em_pintura {
     .item-inner-wrap{
         background-color: #D9FED6;
@@ -2387,6 +2396,17 @@ thead tr th {
             box-shadow: inset 0 1px 2px 0 rgba(0,0,0,0.25);
         }
     }
+}
+
+a.btn-remove-order {
+    float: right;
+    margin-right: 15px !important;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    height: 62px;
 }
 
 .model-w-table{

@@ -58,7 +58,6 @@
                             <div class="col-md-3">
                                 <div class="add-actions-wrap">
                                     <button type="submit" ng-click="save()" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px" />Adicionar</button>
-                                    <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" /></button>
                                 </div>                                
                             </div>
                         </div>
@@ -78,8 +77,13 @@
                             <div class="col-md-1 header-order-client">Referência Interna</div>
                             <div class="col-md-2 header-order-date">Nome</div>
                             <div class="col-md-2 header-order-date-end">Data Encomenda</div>
-                            <div class="col-md-2 header-order-products"><span class="light">Total Produtos</span><br>Total Produzidos</div>
-                            <div class="col-md-3 header-order-state">Estado</div>
+                            <div class="col-md-2 header-order-products"><span class="light">Total Produtos</span>Total Produzidos</div>
+                            <div class="col-md-2 header-order-state">Estado</div>
+                            <div class="col-md-1 header-order-remove">
+                                <a class="btn btn-sm btn-danger btn-remove-order" ng-click="" data-toggle="tooltip" title="Remover Encomenda">
+                                    <img src="assets/icons/btn-remove.svg" width="36px" height="36px" />
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <div class="order-table-content row">
