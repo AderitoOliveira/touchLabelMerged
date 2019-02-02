@@ -360,6 +360,13 @@ router.post('/insertEmployee', function (req, res) {
   insertEmployee(req, res);
 });
 
+//DELETE EMPLOYEE
+router.post('/deleteEmployee', function (req, res) {
+  console.log("DELETE EMPLOYEE");
+  console.log(req.body);
+  deleteEmployee(req, res);
+});
+
 //INSERT DAILY PRODUCTION - order_products_production_registry
 router.post('/insertDailyProduction', function (req, res) {
   console.log("INSERT ORDER PRODUCTS DAILY PRODUCTION");
@@ -522,6 +529,13 @@ router.post('/insertBoxMeasure', function (req, res) {
   console.log("INSERT NEW BOX MEASURE");
   console.log(req.body);
   insertBoxMeasure(req, res);
+});
+
+//DELETE BOX_MEASURES FROM CONFIGURATIONS
+router.post('/deleteBoxMeasure', function (req, res) {
+  console.log("DELETE BOX MEASURE");
+  console.log(req.body);
+  deleteBoxMeasure(req, res);
 });
 
 //GET BOX_MEASURES AND ID FROM BOX_MEASURES FOR TYPEAHEAD

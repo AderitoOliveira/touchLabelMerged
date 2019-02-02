@@ -312,6 +312,37 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
 
   };
 
+  //DELETE BOX MEASURE
+  $scope.deleteBoxMeasure = function(unique_id, id, box_measures) {
+
+    var dataToDelete = {
+      UNIQUE_ID : unique_id , 
+      ID        : id, 
+      MEASURES  : box_measures
+    };
+
+    ModalService.showModal({
+      templateUrl: "../modal/yesNoGeneric.html",
+      controller: "genericModalController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        message: "Pretende apagar a caixa com o número " + id + " e com as dimensões - " + box_measures + " ?",
+        operationURL: '/deleteBoxMeasure',
+        dataObj: dataToDelete
+      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
+    });
+
+  };
+
   //INSERT EMPLOYEE
   $scope.insertEmployee = function () {
     var dataToInsert = {
@@ -342,11 +373,35 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
 
   };
 
-  //$scope.$watch('boxMeasures', function(){
-  //  $scope.boxId = $scope.boxMeasures;
-  //});
+  //DELETE EMPLOYEE
+  $scope.deleteEmployee = function (employee_id, employee_name, employee_function) {
+    var dataToDelete = {
+      EMPLOYEE_ID: employee_id,
+      EMPLOYEE_NAME: employee_name,
+      EMPLOYEE_FUNCTION: employee_function
+    };
 
+    ModalService.showModal({
+      templateUrl: "../modal/yesNoGeneric.html",
+      controller: "genericModalController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        message: "Pretende remover o funcionário " + employee_name + " com a função " + employee_function + " ?",
+        operationURL: '/deleteEmployee',
+        dataObj: dataToDelete
+      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
+    });
 
+  };
 
 });
 
@@ -2742,18 +2797,10 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
       }
       $scope.orders[i].percent = percentage;
       $scope.orders[i].width = percentage;
-      //NEWSTYLES
-      /*  if(percentage > 33) {
-         $scope.orders[i].progressBarColor = "#e31b1b";
-       }
-       if(percentage >= 34 && percentage <= 66) {
-         $scope.orders[i].progressBarColor = "#e3cf1b";
-       }
-       if( percentage > 66) {
-         $scope.orders[i].progressBarColor = "#1be36b";
-       }
-       console.log("SCOPE CLIENT NAME: " + $scope.orders[i].CLIENT_NAME)
-       console.log("Percentagem Total: " + percentage); */
+      
+      if ($scope.orders[i].STATUS == 'FECHADA') {
+        $scope.orders[i].ORDER_STATUS_RAW = 'fechado_na_encomenda';
+      }
 
     }
     return $scope.orders;
