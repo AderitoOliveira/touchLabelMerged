@@ -1,6 +1,5 @@
 var mysql = require('mysql');
 
-
 /*
 var con = mysql.createConnection({
     host: '127.0.0.1',
@@ -11,7 +10,6 @@ var con = mysql.createConnection({
 });
 */
 
-
 var con = mysql.createConnection({
     host: '172.30.184.178',
     user: 'easylabeldb',
@@ -19,7 +17,6 @@ var con = mysql.createConnection({
     database: 'easylabeldb',
     port: '3306'	
 });
-
 
 //GET ALL CLIENTS
 fetchAllClients = function(data, callback) {
@@ -1238,9 +1235,8 @@ updatePrintersConfiguration = function(req, res) {
 //GET PRODUCTS PRODUCED IN THE LAST 7 DAYS
 getProductionLast7Days = function(data, callback) {
     con.connect(function(err) {
-    //con.query('select DATE(CREATED_DATE) as DATE, SUM(TOTAL_PRODUCTS_PRODUCED) as TOTAL_DAILY_PRODUCTION from order_products_production_registry where DATE(CREATED_DATE) > (DATE(sysdate()) -7) and DATE(CREATED_DATE) <= DATE(sysdate()) group by DATE(CREATED_DATE)', function(err, rows) {
-    con.query('select INTERNAL_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PRODUCED) as TOTAL_WEEK_PRODUCTION,  SUM(PRODUCED_VALUE_IN_EURO) as TOTAL_WEEK_VALUE_IN_EUR from order_products_production_registry where DATE(CREATED_DATE) > (DATE(sysdate()) -7) and DATE(CREATED_DATE) <= DATE(sysdate()) group by INTERNAL_PRODUCT_ID', function(err, rows) {
-    //con.query('select PRODUCT_NAME, SUM(TOTAL_PRODUCTS_PRODUCED) as TOTAL_WEEK_PRODUCTION,  SUM(PRODUCED_VALUE_IN_EURO) as TOTAL_WEEK_VALUE_IN_EUR from order_products_production_registry where DATE(CREATED_DATE) > (DATE(sysdate()) -7) and DATE(CREATED_DATE) <= DATE(sysdate()) group by PRODUCT_NAME', function(err, rows) {    
+    //con.query('select INTERNAL_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PRODUCED) as TOTAL_WEEK_PRODUCTION,  SUM(PRODUCED_VALUE_IN_EURO) as TOTAL_WEEK_VALUE_IN_EUR from order_products_production_registry where DATE(CREATED_DATE) > (DATE(sysdate()) -7) and DATE(CREATED_DATE) <= DATE(sysdate()) group by INTERNAL_PRODUCT_ID', function(err, rows) {
+    con.query('select DATE(CREATED_DATE) as PRODUCTION_DAY, SUM(TOTAL_PRODUCTS_PRODUCED) as TOTAL_DAY_PRODUCTION, SUM(PRODUCED_VALUE_IN_EURO) as TOTAL_DAY_VALUE_IN_EUR from order_products_production_registry where DATE(CREATED_DATE) > (DATE(sysdate()) -15) and DATE(CREATED_DATE) <= DATE(sysdate()) group by PRODUCTION_DAY order by PRODUCTION_DAY;', function(err, rows) {
         if (err) {
             throw err;
         } else
