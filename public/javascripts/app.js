@@ -2797,18 +2797,10 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
       }
       $scope.orders[i].percent = percentage;
       $scope.orders[i].width = percentage;
-      //NEWSTYLES
-      /*  if(percentage > 33) {
-         $scope.orders[i].progressBarColor = "#e31b1b";
-       }
-       if(percentage >= 34 && percentage <= 66) {
-         $scope.orders[i].progressBarColor = "#e3cf1b";
-       }
-       if( percentage > 66) {
-         $scope.orders[i].progressBarColor = "#1be36b";
-       }
-       console.log("SCOPE CLIENT NAME: " + $scope.orders[i].CLIENT_NAME)
-       console.log("Percentagem Total: " + percentage); */
+      
+      if ($scope.orders[i].STATUS == 'FECHADA') {
+        $scope.orders[i].ORDER_STATUS_RAW = 'fechado_na_encomenda';
+      }
 
     }
     return $scope.orders;
