@@ -2044,6 +2044,16 @@ div[ng-controller="OverProductionController"] div[ng-table="dailyProductionTable
     position: absolute;
 }
 
+#btn-clear-order{
+    display:none;
+}
+
+.fechado_na_encomenda{
+    #btn-clear-order{
+        display:block;
+    }
+}
+
 .em_pintura {
     .item-inner-wrap{
         background-color: #D9FED6;
