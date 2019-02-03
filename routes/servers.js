@@ -1365,7 +1365,7 @@ postAuthenticateUserInfo = function(req, callback) {
 authenticateLogin = function(req, callback) {
     console.log("req.body.User: " + req.body.User);
     con.connect(function(err) {
-    con.query('select USERNAME, PASSWORD, ITERATIONS from USER where USERNAME = ?', [req.body.User] ,function(err, rows) {
+    con.query('select USERNAME, PASSWORD, ITERATIONS from user where USERNAME = ?', [req.body.User] ,function(err, rows) {
         if (err) {
             throw err;
         } else

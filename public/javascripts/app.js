@@ -2825,7 +2825,7 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
       $scope.orders[i].percent = percentage;
       $scope.orders[i].width = percentage;
       
-      if ($scope.orders[i].STATUS == 'FECHADA') {
+      if ($scope.orders[i].STATUS == 'Fechada') {
         $scope.orders[i].ORDER_STATUS_RAW = 'fechado_na_encomenda';
       }
 
@@ -2862,7 +2862,7 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
       CLIENT_NAME: $scope.clientname.CLIENT_NAME,
       CLIENT_ID: $scope.clientname.CLIENT_ID,
       MODIFIED_DATE: $scope.formattedDate,
-      STATUS: 'EM ABERTO'
+      STATUS: 'Em Aberto'
     };
 
     var res = $http.post('/insertorder', dataObj).then(function (data, status, headers, config) {
@@ -2874,6 +2874,37 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
   $scope.showProductsForOrder = function (orderId, clientname, order_modified_date) {
     $state.transitionTo("listOrderProducts", { 'orderId': orderId, 'clientname': clientname, 'order_modified_date':order_modified_date });
   }
+
+  //CLOSE THE ORDER IN PRODUCTION
+  $scope.closeProduction = function(order_id, client_name) {
+
+    var operationsToExecute  =  ['/deleteOrder', '/deleteAllProductsFromOrder'];
+
+    var dataToDelete  = [{"ORDER_ID": order_id, "CLIENT_NAME": client_name}, {"ORDER_ID": order_id}];
+
+    ModalService.showModal({
+      templateUrl: "../modal/yesNoGeneric.html",
+      controller: "genericMultOperationsModalController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        message: "A encomenda " + order_id + " do cliente " + client_name + " vai ser removida desta lista e pode ser consultada na lista de histórico de encomendas.",
+        operationsObj: operationsToExecute,
+        dataObjs: dataToDelete,
+        stateToGo: "listOrders"
+      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
+    });
+
+
+  };
 
 }]);
 
@@ -4748,7 +4779,7 @@ app.controller('genericMultOperationsModalController', ['$scope', '$http', '$sta
 
         var res = $http.post(operationsObj[i], dataObjs[i]).then(function (data, status, headers, config) {
           if(i == operationsObj.length) {
-            $state.go(stateToGo, null);
+            $state.go(stateToGo, null, {refresh:true});
           }
         });
 
@@ -5056,7 +5087,7 @@ app.controller('DailyProductionModalController', [
       var products_still_to_produce = totalquantityordered - totalquantityproduced;
       //THE NUMBER OF PRODUCTS TO REGISTER ARE STILL INFERIOR TO THE NUMBER OF PRODUCTS TO PRODUCE
       if ($scope.qtyproduzida <= products_still_to_produce) {
-        $scope.orderproductstatus = 'EM ABERTO';
+        $scope.orderproductstatus = 'Em Aberto';
 
         var dataObj = {
           ORDER_ID: $scope.orderid,
