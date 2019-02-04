@@ -1004,7 +1004,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         message: "Pretende remover a encomenda " + $scope.orderid + " do cliente " + $scope.clientname + " ?",
         operationsObj: operationsToExecute,
         dataObjs: dataToDelete,
-        stateToGo: "listOrders"
+        stateToGo: "listOrders",
+        needToReload: false
       }
     }).then(function (modal) {
       modal.element.modal();
@@ -2890,7 +2891,8 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
         message: "A encomenda " + order_id + " do cliente " + client_name + " vai ser removida desta lista e pode ser consultada na lista de histórico de encomendas.",
         operationsObj: operationsToExecute,
         dataObjs: dataToDelete,
-        stateToGo: "listOrders"
+        stateToGo: "listOrders",
+        needToReload: true
       }
     }).then(function (modal) {
       modal.element.modal();
@@ -4325,7 +4327,8 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
         message: "Deseja mesmo apagar o produto " + customerProductId + " ?",
         operationsObj: operationsToExecute,
         dataObjs: dataToDelete,
-        stateToGo: "listProducts"
+        stateToGo: "listProducts",
+        needToReload: false
       }
     }).then(function (modal) {
       modal.element.modal();
@@ -4764,11 +4767,11 @@ app.controller('genericModalController', ['$scope', '$http', '$state', 'operatio
 
 
 //Generic Modal for deleting/confirming operation where we receive several dataObj array and the several operation to execute
-app.controller('genericMultOperationsModalController', ['$scope', '$http', '$state', 'operationsObj', 'dataObjs', 'message', 'stateToGo',
-  function ($scope, $http, $state, operationsObj, dataObjs, message, stateToGo) {
+app.controller('genericMultOperationsModalController', ['$scope', '$http', '$state', 'operationsObj', 'dataObjs', 'message', 'stateToGo', 'needToReload', 
+  function ($scope, $http, $state, operationsObj, dataObjs, message, stateToGo, needToReload) {
 
     $scope.message = message;
-  
+
     //  This close function doesn't need to use jQuery or bootstrap, because
     //  the button has the 'data-dismiss' attribute.
 
@@ -4779,8 +4782,13 @@ app.controller('genericMultOperationsModalController', ['$scope', '$http', '$sta
 
         var res = $http.post(operationsObj[i], dataObjs[i]).then(function (data, status, headers, config) {
           if(i == operationsObj.length) {
-            $state.go(stateToGo, null, {refresh:true});
-            $state.reload();
+            if(needToReload == false)
+            {
+              $state.go(stateToGo, null, {refresh:true});
+            } else {
+              $state.go(stateToGo, null, {refresh:true});
+              $state.reload();
+            }
           }
         });
 
