@@ -4780,6 +4780,7 @@ app.controller('genericMultOperationsModalController', ['$scope', '$http', '$sta
         var res = $http.post(operationsObj[i], dataObjs[i]).then(function (data, status, headers, config) {
           if(i == operationsObj.length) {
             $state.go(stateToGo, null, {refresh:true});
+            $state.reload();
           }
         });
 
