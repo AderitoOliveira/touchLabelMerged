@@ -12,7 +12,6 @@ var con = mysql.createConnection({
 });
 */
 
-
 var con = mysql.createConnection({
     host: '172.30.184.178',
     user: 'easylabeldb',
@@ -20,6 +19,7 @@ var con = mysql.createConnection({
     database: 'easylabeldb',
     port: '3306'	
 });
+
 
 
 //GET ALL CLIENTS
