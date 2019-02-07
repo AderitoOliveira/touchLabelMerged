@@ -159,11 +159,25 @@ router.get('/orders', function (req, res) {
   fetchAllOrders(req, res);
 });
 
+//Get ALL Orders Historic
+router.get('/ordersHistoric', function (req, res) {
+  console.log("List All Orders Historic");
+  console.log(req.body);
+  fetchAllOrdersHistoric(req, res);
+});
+
 //Get ALL Products for an Order
 router.get('/orderproducts/:id', function (req, res) {
   console.log("List All Orders");
   console.log(req.body);
   fetchAllProductsForAnOrder(req, res);
+});
+
+//Get ALL Products for an Order Historic
+router.get('/orderproductshistoric/:id', function (req, res) {
+  console.log("List All Orders Historic");
+  console.log(req.body);
+  fetchAllProductsForAnOrderHistoric(req, res);
 });
 
 //Get All the Products for an Order tthat isn't complete and the daily production needs to be updated

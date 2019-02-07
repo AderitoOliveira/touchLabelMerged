@@ -1,0 +1,138 @@
+<div class="wrap"  ng-controller="ordersControllerHistoric">
+    <div id="actions">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header-actions">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="button-wrap col-md-4">
+                                    <button id="add-order-toggle" class="inset-button button add" ng-click="insertOrderModal()">
+                                        <span class="button-inner-wrap">
+                                            <img src="assets/icons/btn-add.svg" width="20px" height="20px">
+                                            <span class="btn-text">Adicionar</span>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6 vert-spacer"></div>
+                                <div class="col-md-6">
+                                    <div class="search-wrap">
+                                        <input type="text" name="Pesquisa" ng-model="searchChar" placeholder=" Pesquisar">  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="add-order">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12 add-order-label">
+                        <h2>Adicionar Encomenda</h2>
+                    </div>
+                    <div class="col-md-12 add-product-form">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="input-wrap">
+                                    <label class="control-label" for="orderid">Número de Encomenda</label>
+                                    <input type="text" autocomplete="off" class="form-control" name="orderid" id="orderid" placeholder="Número de Encomenda" ng-model="orderid">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-wrap">
+                                    <label class="control-label" for="clientname">Nome do Cliente</label>
+                                    <input type="text" autocomplete="off" name="clientname" class="form-control" id="clientname" placeholder="Nome do Cliente" ng-model="clientname" uib-typeahead="client as client.CLIENT_NAME for client in clients | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-wrap">
+                                <label class="control-label" for="deliverDate">Data de Entrega</label>
+                                <!--md-datepicker class="delivery-date" name="deliverDate" ng-model="deliverDate" md-current-view="year" md-placeholder="Enter date" is-open="isOpen" ng-keydown="$event.preventDefault(); isOpen = true;">
+                                </md-datepicker-->
+                                <p class="input-group">
+                                    <input type="text" class="form-control deliver-date" uib-datepicker-popup="{{format}}" ng-model="deliverDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" show-button-bar="false" close-text="Fechar" clear-text="Limpar" current-text="Hoje" alt-input-formats="altInputFormats" />
+                                    <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default btn-datepicker-single" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="add-actions-wrap">
+                                    <button type="submit" ng-click="save()" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px" />Adicionar</button>
+                                    <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" /></button>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="list-content">
+        <div class="row">
+            <div id="order-table" class="col-md-12">
+                <div class="order-table-wrap">
+                    <div class="order-table-header row">
+                        <div class="inner-wrap">
+                            <div class="col-xs-2 col-md-one-half header-order-nr">Encomenda</div>
+                            <div class="col-xs-2 col-md-one-half header-order-client">Cliente</div>
+                            <div class="col-xs-2 col-md-2 header-order-date">Data de encomenda</div>
+                            <div class="col-xs-2 col-md-2 header-order-date-end">Data de Fecho</div>
+                            <div class="col-xs-2 col-md-2 header-order-products"><span class="light">Total Produtos</span>Total Produzidos</div>
+                            <div class="col-xs-1 col-md-one-half header-order-state">Estado</div>
+                            <div class="col-xs-1 col-md-one-half"></div>
+                        </div>
+                    </div>
+                    <div class="order-table-content row">
+                        <div class="col-md-12 {{order.ORDER_STATUS_RAW}}" dir-paginate="order in orders |filter:searchChar | itemsPerPage:100">
+                            <div class="row">
+                                <div class="item-inner-wrap">
+                                    <div class="col-xs-2 col-md-one-half table-item item-order-nr" title="{{order.ORDER_ID}}">{{order.ORDER_ID}}</div>
+                                    <div class="col-xs-2 col-md-one-half table-item item-order-client">{{order.CLIENT_NAME}}</div>
+                                    <div class="col-xs-2 col-md-2 table-item item-order-date">{{order.CREATED_DATE}}</div>
+                                    <div class="col-xs-2 col-md-2 table-item item-order-date-end">{{order.MODIFIED_DATE}}</div>
+                                    <div class="col-xs-2 col-md-2 table-item item-order-products">{{order.QTY_ORDERED}}<strong> / {{order.QTY_PRODUCED}}</strong></div>
+                                    <div class="col-xs-1 col-md-one-half table-item item-order-state">{{order.STATUS   }}</div>
+                                    <div class="col-xs-2 col-md-one-half table-item item-order-actions">
+                                        <a class="btn btn-sm btn-primary" ng-click="printLabelProduct(order.ORDER_ID, order.CLIENT_NAME)" data-toggle="tooltip" title="Imprimir Etiquetas do Produto.">
+                                            <img src="assets/icons/btn-paint.svg" width="24px" height="24px" />
+                                        </a>
+                                        <a class="btn btn-sm btn-warning" ng-click="showProductsForOrder(order.ORDER_ID, order.CLIENT_NAME, order.MODIFIED_DATE)" data-toggle="tooltip" title="Editar Produto.">
+                                            <img src="assets/icons/btn-view.svg" width="24px" height="24px" />
+                                        </a>
+                                        <a id="btn-clear-order" class="btn btn-sm btn-success" ng-click="closeProduction(order.ORDER_ID, order.CLIENT_NAME)" data-toggle="tooltip" title="Fechar Produção">
+                                            <img src="assets/icons/btn-success.svg" width="24px" height="24px" />
+                                        </a>
+                                    </div>
+                                    <div class="progressrow item-row col-md-12">
+                                        <div class="progress-bar-wrap">
+                                            <div class="progressbar-inner" data-status={{order.width}} style="width:{{order.width}}%;background-color:hsl(calc({{order.width}} * .9), 50%, 50%);"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div align="center">
+            <dir-pagination-controls
+                    max-size="10"
+                    direction-links="true"
+                    boundary-links="true" >
+            </dir-pagination-controls>
+        </div>
+    </div>
+</div>

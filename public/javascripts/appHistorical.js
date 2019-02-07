@@ -681,3 +681,136 @@ historical.service('BoxesToOrderService', ['$http', '$timeout', '$state', functi
   }
 
 }]);
+
+
+//CONTROLLER FOR ALL THE ORDERS
+historical.controller('ordersControllerHistoric', ['$scope', '$http', '$rootScope', '$stateParams', '$state', 'ModalService', function ($scope, $http, $rootScope, $stateParams, $state, ModalService) {
+
+  $rootScope.class = 'not-home';
+  $rootScope.name = "Lista de todas as Encomendas";
+  $scope.orders = [];
+
+  $scope.today = function() {
+    $scope.deliverDate = new Date();
+  };
+  $scope.today();
+   
+  $scope.dateOptions = {
+    //dateDisabled: disabled,
+    formatYear: 'yy',
+    maxDate: new Date(2050, 5, 22),
+    minDate: new Date(2018, 12, 01),
+    startingDay: 1
+  };
+
+  $scope.open1 = function() {
+    $scope.popup1.opened = true;
+  };
+
+  $scope.setDate = function(year, month, day) {
+    $scope.dt = new Date(year, month, day);
+  };
+
+  $scope.popup1 = {
+    opened: false
+  };
+
+  var request = $http.get('/ordersHistoric');
+  request.then(function successCallback(response) {
+    $scope.orders = response.data;
+    for (i = 0; i < $scope.orders.length; i++) {
+      if ($scope.orders[i].QTY_PRODUCED > 0) {
+        var percentage = Math.round($scope.orders[i].QTY_PRODUCED / $scope.orders[i].QTY_ORDERED * 100);
+      } else {
+        var percentage = 0;
+      }
+      $scope.orders[i].percent = percentage;
+      $scope.orders[i].width = percentage;
+      
+      if ($scope.orders[i].STATUS == 'Fechada') {
+        $scope.orders[i].ORDER_STATUS_RAW = 'fechado_na_encomenda';
+      }
+
+    }
+    return $scope.orders;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
+
+
+  $scope.dataProducts = [];
+  $scope.SimpleSelectedData = 143432;
+
+  $scope.clients = [];
+
+  var request = $http.get('clientstypeahed');
+  request.then(function successCallback(response) {
+    $scope.clients = response.data;
+    return $scope.clients;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
+
+  //Save Content Modal  
+  $scope.save = function () {
+
+    $scope.formattedDate = moment($scope.deliverDate).format('YYYY-MM-DD 00:00:00');
+    console.log("A MINHA DATA: " + $scope.formattedDate);
+
+    var dataObj = {
+      ORDER_ID: $scope.orderid,
+      CLIENT_NAME: $scope.clientname.CLIENT_NAME,
+      CLIENT_ID: $scope.clientname.CLIENT_ID,
+      MODIFIED_DATE: $scope.formattedDate,
+      STATUS: 'Em Aberto'
+    };
+
+    var res = $http.post('/insertorder', dataObj).then(function (data, status, headers, config) {
+      $state.reload();
+    });
+
+  };
+
+  $scope.showProductsForOrder = function (orderId, clientname, order_modified_date) {
+    $state.transitionTo("listOrderProductsHistoric", { 'orderId': orderId, 'clientname': clientname, 'order_modified_date':order_modified_date });
+  }
+
+
+}]);
+
+
+//Controller for All the Orders
+historical.controller('orderProductsHistorical', ['$scope', '$http', '$rootScope', '$stateParams', '$state', '$q', 'ModalService', 'productInOtherOpenOrdersOrOverProduction', 'productInOtherOpenOrdersForPainting', function ($scope, $http, $rootScope, $stateParams, $state, $q, ModalService, productInOtherOpenOrdersOrOverProduction) {
+
+  $rootScope.class = 'not-home';
+  $rootScope.name = "Lista de Produtos da Encomenda " + $stateParams.orderId;
+  $scope.products = [];
+  var orderId = $stateParams.orderId;
+  $scope.orderid = $stateParams.orderId;
+  $scope.clientname = $stateParams.clientname;
+  $scope.deliverydate = $stateParams.order_modified_date;
+
+  var request = $http.get('/orderproductshistoric/' + encodeURIComponent(orderId));
+  request.then(function successCallback(response) {
+    $scope.products = response.data;
+
+    for (i = 0; i < $scope.products.length; i++) {
+      //IF fechado_na_encomenda
+      if ($scope.products[i].ORDER_PRODUCT_STATUS == 'fechado_na_encomenda') {
+        $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
+        $scope.products[i].ORDER_PRODUCT_STATUS = 'Fechado na Encomenda';
+
+        $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PRODUCED;
+      }
+
+    }
+    return $scope.products;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
+
+
+}]);

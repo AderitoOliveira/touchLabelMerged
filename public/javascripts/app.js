@@ -98,7 +98,11 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
     .state('listOrderProducts', {
       url: '/listOrderProducts',
       templateUrl: '../custompages/orderProducts.html',
-      //controller: 'orderProducts',
+      params: { orderId: null, clientname: null, order_modified_date: null}
+    })
+    .state('listOrderProductsHistoric', {
+      url: '/listorderproductshistoric',
+      templateUrl: '../custompages/orderProductsHistoric.html',
       params: { orderId: null, clientname: null, order_modified_date: null}
     })
     .state('createTechnicalSheet', {
@@ -122,7 +126,10 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
     .state('listOrders', {
       url: '/listOrders',
       templateUrl: '../custompages/orders.html'
-      //controller: 'ordersController'
+    })
+    .state('listOrdersHistoric', {
+      url: '/listordershistoric',
+      templateUrl: '../custompages/ordersHistoric.html'
     })
     .state('palletesReadyForShipping', {
       url: '/palletesReadyForShipping',
