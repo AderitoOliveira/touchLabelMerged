@@ -687,7 +687,7 @@ historical.service('BoxesToOrderService', ['$http', '$timeout', '$state', functi
 historical.controller('ordersControllerHistoric', ['$scope', '$http', '$rootScope', '$stateParams', '$state', 'ModalService', function ($scope, $http, $rootScope, $stateParams, $state, ModalService) {
 
   $rootScope.class = 'not-home';
-  $rootScope.name = "Lista de todas as Encomendas";
+  $rootScope.name = "Histórico de todas as Encomendas Fechadas";
   $scope.orders = [];
 
   $scope.today = function() {
@@ -781,11 +781,11 @@ historical.controller('ordersControllerHistoric', ['$scope', '$http', '$rootScop
 }]);
 
 
-//Controller for All the Orders
+//Controller for All the Orders - HISTORICAL
 historical.controller('orderProductsHistorical', ['$scope', '$http', '$rootScope', '$stateParams', '$state', '$q', 'ModalService', 'productInOtherOpenOrdersOrOverProduction', 'productInOtherOpenOrdersForPainting', function ($scope, $http, $rootScope, $stateParams, $state, $q, ModalService, productInOtherOpenOrdersOrOverProduction) {
 
   $rootScope.class = 'not-home';
-  $rootScope.name = "Lista de Produtos da Encomenda " + $stateParams.orderId;
+  $rootScope.name = "Histórico da Encomenda " + $stateParams.orderId ;
   $scope.products = [];
   var orderId = $stateParams.orderId;
   $scope.orderid = $stateParams.orderId;
