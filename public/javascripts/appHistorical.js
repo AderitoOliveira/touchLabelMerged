@@ -690,31 +690,6 @@ historical.controller('ordersControllerHistoric', ['$scope', '$http', '$rootScop
   $rootScope.name = "Histórico de todas as Encomendas Fechadas";
   $scope.orders = [];
 
-  $scope.today = function() {
-    $scope.deliverDate = new Date();
-  };
-  $scope.today();
-   
-  $scope.dateOptions = {
-    //dateDisabled: disabled,
-    formatYear: 'yy',
-    maxDate: new Date(2050, 5, 22),
-    minDate: new Date(2018, 12, 01),
-    startingDay: 1
-  };
-
-  $scope.open1 = function() {
-    $scope.popup1.opened = true;
-  };
-
-  $scope.setDate = function(year, month, day) {
-    $scope.dt = new Date(year, month, day);
-  };
-
-  $scope.popup1 = {
-    opened: false
-  };
-
   var request = $http.get('/ordersHistoric');
   request.then(function successCallback(response) {
     $scope.orders = response.data;
@@ -738,45 +713,9 @@ historical.controller('ordersControllerHistoric', ['$scope', '$http', '$rootScop
       console.log('Error: ' + data);
     });
 
-
-  $scope.dataProducts = [];
-  $scope.SimpleSelectedData = 143432;
-
-  $scope.clients = [];
-
-  var request = $http.get('clientstypeahed');
-  request.then(function successCallback(response) {
-    $scope.clients = response.data;
-    return $scope.clients;
-  },
-    function errorCallback(data) {
-      console.log('Error: ' + data);
-    });
-
-  //Save Content Modal  
-  $scope.save = function () {
-
-    $scope.formattedDate = moment($scope.deliverDate).format('YYYY-MM-DD 00:00:00');
-    console.log("A MINHA DATA: " + $scope.formattedDate);
-
-    var dataObj = {
-      ORDER_ID: $scope.orderid,
-      CLIENT_NAME: $scope.clientname.CLIENT_NAME,
-      CLIENT_ID: $scope.clientname.CLIENT_ID,
-      MODIFIED_DATE: $scope.formattedDate,
-      STATUS: 'Em Aberto'
-    };
-
-    var res = $http.post('/insertorder', dataObj).then(function (data, status, headers, config) {
-      $state.reload();
-    });
-
-  };
-
   $scope.showProductsForOrder = function (orderId, clientname, order_modified_date) {
     $state.transitionTo("listOrderProductsHistoric", { 'orderId': orderId, 'clientname': clientname, 'order_modified_date':order_modified_date });
   }
-
 
 }]);
 
@@ -814,3 +753,38 @@ historical.controller('orderProductsHistorical', ['$scope', '$http', '$rootScope
 
 
 }]);
+
+//DAILY ORDER PRODUCTION HISTORIC - Controller
+historical.controller('dailyProductionHistoric', function ($scope, $http, $rootScope, ModalService) {
+
+  $rootScope.class = 'not-home';
+  $rootScope.name = "Histórico do Registo de Registo Produção Diária";
+  $scope.dailyProduction = [];
+  var request = $http.get('/getDailyProductionHistoric');
+  request.then(function successCallback(response) {
+    $scope.dailyProduction = response.data;
+    return $scope.dailyProduction;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+  });
+
+  });
+
+
+//DAILY PAINTING HISTORIC - Controller
+historical.controller('dailyPaintingControllerHistoric', function ($scope, $http, $rootScope, ModalService) {
+
+  $rootScope.class = 'not-home';
+  $rootScope.name = "Histórico do Registo de Pintura Diária";
+  $scope.dailyPainting = [];
+  var request = $http.get('/getDailyPaintingHistoric');
+  request.then(function successCallback(response) {
+    $scope.dailyPainting = response.data;
+    return $scope.dailyPainting;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
+  
+  });

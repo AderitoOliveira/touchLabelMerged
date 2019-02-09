@@ -72,10 +72,20 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
       templateUrl: '../custompages/dailyProduction.html',
       controller: 'dailyProduction'
     })
+    .state('listDailyProductionHistoric', {
+      url: '/listDailyProductionHistoric',
+      templateUrl: '../custompages/dailyProductionHistoric.html'
+      //controller: 'dailyProductionHistoric'
+    })
     .state('listDailyPaint', {
       url: '/listDailyPaint',
       templateUrl: '../custompages/dailyPaint.html',
       controller: 'dailyPaintingController'
+    })
+    .state('listDailyPaintHistoric', {
+      url: '/listDailyPaintHistoric',
+      templateUrl: '../custompages/dailyPaintHistoric.html'
+      //controller: 'dailyPaintingControllerHistoric'
     })
     .state('printLabel', {
       url: '/printLabel',

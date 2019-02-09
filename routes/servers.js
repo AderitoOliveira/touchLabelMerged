@@ -937,6 +937,24 @@ fetchDailyProduction = function(data, callback) {
 });
 }
 
+//GET DAILY PRODUCTION HISTORIC - order_products_production_registry_bck
+fetchDailyProductionHistoric = function(data, callback) {
+    con.connect(function(err) {
+    con.query('SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_ID, EMPLOYEE_NAME, TOTAL_PRODUCTS_PRODUCED, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE, PRODUCED_VALUE_IN_EURO FROM order_products_production_registry_bck ORDER BY CREATED_DATE DESC', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET DAILY PRODUCTION");   
+
+    });
+});
+}
+
 //INSERT DAILY PAINTING - order_products_painting_registry
 insertDailyPainting = function(req, res) {
     var postData  = req.body;
@@ -952,7 +970,6 @@ insertDailyPainting = function(req, res) {
  });
 }
 
-
 //GET DAILY PAINTING - order_products_painting_registry
 fetchDailyPainting = function(data, callback) {
     con.connect(function(err) {
@@ -966,6 +983,24 @@ fetchDailyPainting = function(data, callback) {
         callback.end(JSON.stringify(rows));
         callback = rows;
         console.log("GET DAILY PAINTING");   
+
+    });
+});
+}
+
+//GET DAILY PAINTING HISTORIC - order_products_painting_registry_bck
+fetchDailyPaintingHistoric = function(data, callback) {
+    con.connect(function(err) {
+    con.query('SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_ID, EMPLOYEE_NAME, TOTAL_PRODUCTS_PAINTED, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE, PRODUCED_VALUE_IN_EURO FROM order_products_painting_registry_bck ORDER BY CREATED_DATE DESC', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET DAILY PAINTING HISTORIC");   
 
     });
 });

@@ -1,0 +1,81 @@
+<div class="wrap" ng-controller="dailyPaintingControllerHistoric">
+        <div id="actions">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="header-actions">
+                        <div class="row">
+                            <div class="col-md-6">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6 vert-spacer"></div>
+                                    <div class="col-md-6">
+                                        <div class="search-wrap">
+                                            <input type="text" name="Pesquisa" ng-model="searchChar" placeholder=" Pesquisar">  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="list-content">
+            <div class="row">
+                <div ng-table="dailyPaintTable" id="order-table" class="col-md-12">
+                    <div class="label-table-wrap">
+                        <div class="label-table-header row">
+                            <div class="inner-wrap">
+                                <div class="col-md-1 label-header-item header-label-order">Encomenda</div>
+                                <div class="col-md-2 label-header-item header-label-clientref">Ref. Cliente</div>
+                                <div class="col-md-1 label-header-item header-label-innerref">Ref. Interna</div>
+                                <div class="col-md-2 label-header-item header-label-prodname">Nome Produto</div>
+                                <div class="col-md-2 label-header-item header-label-workername">Nome Pintor</div>
+                                <div class="col-md-1 label-header-item header-label-quantity">Quantidade Pintada</div>
+                                <div class="col-md-1 label-header-item header-label-value">Valor em Euros</div>                            
+                                <div class="col-md-2 label-header-item header-label-date">Data de Registo</div>
+                            </div>
+                        </div>
+                        <div class="order-labels-content row">
+                                <div class="col-md-12" dir-paginate="productsProduced in dailyPainting | filter:searchChar | itemsPerPage:100">
+                                    <div class="row">
+                                        <div class="item-inner-wrap">
+                                            <div class="col-md-1 table-item item-label-order">{{productsProduced.ORDER_ID}}</div>
+                                            <div class="col-md-2 table-item item-label-clientref">{{productsProduced.CUSTOMER_PRODUCT_ID}}</div>
+                                            <div class="col-md-1 table-item item-label-innerref">{{productsProduced.INTERNAL_PRODUCT_ID}}</div>
+                                            <div class="col-md-2 table-item item-label-prodname">{{productsProduced.PRODUCT_NAME}}</div>
+                                            <div class="col-md-2 table-item item-label-workername">{{productsProduced.EMPLOYEE_NAME}}</div>
+                                            <div class="col-md-1 table-item item-label-quantity"><strong>{{productsProduced.TOTAL_PRODUCTS_PAINTED}}</strong></div>
+                                            <div class="col-md-1 table-item item-label-value"><strong>{{productsProduced.PRODUCED_VALUE_IN_EURO}}</strong></div>
+                                            <div class="col-md-2 table-item item-label-date short">
+                                                {{productsProduced.CREATED_DATE}}
+                                                <div class="item-order-actions">
+                                                    <a class="btn btn-sm btn-danger" ng-click="delete(productsProduced.UNIQUE_ID, productsProduced.ORDER_ID, productsProduced.CUSTOMER_PRODUCT_ID, productsProduced.EMPLOYEE_NAME)" data-toggle="tooltip" title="Remover Produto">
+                                                        <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div id="pagination">
+            <div class="row">
+                <div class="container">
+                    <div align="center">
+                        <dir-pagination-controls
+                                max-size="10"
+                                direction-links="true"
+                                boundary-links="true" >
+                        </dir-pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
