@@ -409,6 +409,13 @@ router.post('/deleteDailyProduction', function (req, res) {
   deleteDailyProduction(req, res);
 });
 
+//DELETE DAILY PRODUCTION - ALL THE PRODUCTION FOR AN ORDER THAT WILL BE CLOSED - order_products_production_registry
+router.post('/deleteDailyProductionForClosedOrder', function (req, res) {
+  console.log("DELETE ORDER PRODUCTS FROM DAILY PRODUCTION");
+  console.log(req.body);
+  deleteDailyProductionForClosedOrder(req, res);
+});
+
 //GET DAILY PRODUCTION - order_products_production_registry
 router.get('/getDailyProduction', function (req, res) {
   console.log("GET DAILY PRODUCTION");
@@ -434,6 +441,13 @@ router.post('/deleteDailyPainting', function (req, res) {
   console.log("DELETE ORDER PRODUCTS FROM DAILY PAINTING");
   console.log(req.body);
   deleteDailyPainting(req, res);
+});
+
+//DELETE DAILY PAINTING - ALL THE PRODUCTION FOR AN ORDER THAT WILL BE CLOSED - order_products_painting_registry
+router.post('/deleteDailyPaintingForClosedOrder', function (req, res) {
+  console.log("DELETE ORDER PRODUCTS FROM DAILY PAINTING");
+  console.log(req.body);
+  deleteDailyPaintingForClosedOrder(req, res);
 });
 
 //GET THE DAILY PRODUCTION RECORDS THAT HAVE BEEN SAVED FOR THIS ORDER - order_products_production_registry

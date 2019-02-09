@@ -2886,9 +2886,9 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
   //CLOSE THE ORDER IN PRODUCTION
   $scope.closeProduction = function(order_id, client_name) {
 
-    var operationsToExecute  =  ['/deleteOrder', '/deleteAllProductsFromOrder'];
+    var operationsToExecute  =  ['/deleteOrder', '/deleteAllProductsFromOrder', '/deleteDailyProductionForClosedOrder', '/deleteDailyPaintingForClosedOrder'];
 
-    var dataToDelete  = [{"ORDER_ID": order_id, "CLIENT_NAME": client_name}, {"ORDER_ID": order_id}];
+    var dataToDelete  = [{"ORDER_ID": order_id, "CLIENT_NAME": client_name}, {"ORDER_ID": order_id}, {"ORDER_ID": order_id}, {"ORDER_ID": order_id}];
 
     ModalService.showModal({
       templateUrl: "../modal/yesNoGeneric.html",
