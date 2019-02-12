@@ -5304,7 +5304,7 @@ app.controller('closeProductInOrderForPainting', [
 
 
 //ALL BOXES TO ORDER - Controller
-app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$state', function ($scope, $http, $rootScope, $timeout, $state) {
+app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$state', 'GetBoxesSequence', function ($scope, $http, $rootScope, $timeout, $state, GetBoxesSequence) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Lista de todas as caixas a encomendar";
@@ -5319,6 +5319,7 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
       console.log('Error: ' + data);
     });
 
+  /*
   var request = $http.get('/getPDFRequistionIdSequence');
   request.then(function successCallback(response) {
     $scope.sequence_value = response.data[0].NEXT_VALUE;
@@ -5326,6 +5327,7 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
     function errorCallback(data) {
       console.log('Error: ' + data);
     });
+  */
 
   var rowValues = [];
   var boxesToSendInOrder = [];
@@ -5654,53 +5656,68 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
       return str;
     }
 
-    var currentDate = new Date();
-    var day = currentDate.getDate();
-    var month = currentDate.getMonth() + 1;
-    var year = currentDate.getFullYear();
-    var dateToPrint = day + "/" + month + "/" + year;
-    var dateToPrintInFileName = day + "_" + month + "_" + year;
 
-    var map = {
-      '_CLIENT_NAME_': _clientname,
-      '_ORDER_DATE_': dateToPrint,
-      '_REQUISITION_ID_': $scope.sequence_value
-    };
+    GetBoxesSequence.nextValue().then(function(sequenceValue){
 
+      var currentDate = new Date();
+      var day = currentDate.getDate();
+      var month = currentDate.getMonth() + 1;
+      var year = currentDate.getFullYear();
+      var dateToPrint = day + "/" + month + "/" + year;
+      var dateToPrintInFileName = day + "_" + month + "_" + year;
 
-
-    var documentDefintionString = JSON.stringify(docDefinition);
-    var documentDefinitionToJSON = replaceAll(documentDefintionString, map);
-
-    var documentToPrint = JSON.parse(documentDefinitionToJSON);
-
-    var filename = 'Encomenda_Caixas_' + _clientname.replace(/\./g, '_').replace(/\s/g, '_') + '_' + dateToPrintInFileName;
-    pdfMake.createPdf(documentToPrint).download(filename);
-
-    //DELETE THE ORDER_ID - CUSTOMER_PRODUCT_ID FROM THE order_boxes_closed_production_products TABLE
-    var orderIdToDeleteArray = [];
-    var customerProductIdToDeleteArray = [];
-    for (i = 0; i < localCopyArrayOrderProductToDelete.length; i++) {
-      var orderProductToDelete = localCopyArrayOrderProductToDelete[i];
-      var orderID = orderProductToDelete[0];
-      var customerProductID = orderProductToDelete[1];
-
-      //FUNCIONA
-      orderIdToDeleteArray.push(orderID);
-      customerProductIdToDeleteArray.push(customerProductID);
-    }
-
-    var arrayToSendToMySQL = {
-      orderIdArray: orderIdToDeleteArray,
-      customerProductIdArray: customerProductIdToDeleteArray
-    }
+      var map = {
+        '_CLIENT_NAME_': _clientname,
+        '_ORDER_DATE_': dateToPrint,
+        '_REQUISITION_ID_': sequenceValue
+      };
 
 
-    var res = $http.post('/deleteOrderBoxes', arrayToSendToMySQL).then(function (data, status, headers, config) {
+      var documentDefintionString = JSON.stringify(docDefinition);
+      var documentDefinitionToJSON = replaceAll(documentDefintionString, map);
+
+      var documentToPrint = JSON.parse(documentDefinitionToJSON);
+
+      var filename = 'Encomenda_Caixas_' + _clientname.replace(/\./g, '_').replace(/\s/g, '_') + '_' + dateToPrintInFileName;
+      pdfMake.createPdf(documentToPrint).download(filename);
+
+      //DELETE THE ORDER_ID - CUSTOMER_PRODUCT_ID FROM THE order_boxes_closed_production_products TABLE
+      var orderIdToDeleteArray = [];
+      var customerProductIdToDeleteArray = [];
+      for (i = 0; i < localCopyArrayOrderProductToDelete.length; i++) {
+        var orderProductToDelete = localCopyArrayOrderProductToDelete[i];
+        var orderID = orderProductToDelete[0];
+        var customerProductID = orderProductToDelete[1];
+
+        //FUNCIONA
+        orderIdToDeleteArray.push(orderID);
+        customerProductIdToDeleteArray.push(customerProductID);
+      }
+
+      var arrayToSendToMySQL = {
+        orderIdArray: orderIdToDeleteArray,
+        customerProductIdArray: customerProductIdToDeleteArray
+      }
+
+
+      var res = $http.post('/deleteOrderBoxes', arrayToSendToMySQL).then(function (data, status, headers, config) {
+      });
+
+      localCopyBoxesToSendInOrder = [];
+      localCopyArrayOrderProductToDelete = [];
+      boxesToSendInOrder = [];
+  
+      $state.reload(); //FINALLY RELOAD THE STATE
+
+    }, 
+    function(error){
+      console.log('failed'+error);  
     });
+    
 
     $timeout(function () { $scope.displayErrorMsg = false; }, 2000);
 
+    /*
     //SEND EMAIL
     var mailOptions = {
       from: 'aderito.nelson1@gmail.com',
@@ -5720,14 +5737,9 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
       $scope.serverMessage = 'Foi enviado um email para a sua caixa de email com a informação da encomenda!!!!';
       //alert($scope.serverMessage);
     });
-
-    localCopyBoxesToSendInOrder = [];
-    localCopyArrayOrderProductToDelete = [];
-    boxesToSendInOrder = [];
-
-    $state.reload(); //FINALLY RELOAD THE STATE
+    */
   }
-
+  
 }]);
 
 //ALL LABELS TO PRINT - Controller
@@ -6509,6 +6521,25 @@ app.service('MsgSharingService', function () {
 
 });
 
+app.factory('GetBoxesSequence', function($http, $q) {
+  return {
+    nextValue: function () {
+
+      var deferred = $q.defer();
+  
+      var request = $http.get('/getPDFRequistionIdSequence');
+      request.then(function successCallback(response) {
+        sequence_value = response.data[0].NEXT_VALUE;
+        deferred.resolve(sequence_value);
+      },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      });
+
+      return deferred.promise;
+    }
+  };
+});
 
 app.factory('CloneProductService', ['$http', '$q', function ($http, $q) {
 
