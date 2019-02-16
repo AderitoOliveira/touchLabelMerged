@@ -123,6 +123,17 @@ router.get('/products', function (req, res) {
   fetchAllProducts(req, res);
 });
 
+//GET ALL PRODUCTS THAT ARE CHILDREN OF THE PARENT PRODUCT
+router.get('/childProductsOfParentProduct/:customer_product_id', function (req, res) {
+  childProductsOfParentProduct(req, res);
+});
+
+
+//GET ALL PRODUCTS FOR THE ADD CHILD TO COMPOUND PRODUCT PAGE
+router.get('/productsForChildPage', function (req, res) {
+  fetchAllProductsForChildPage(req, res);
+});
+
 //Get SINGLE Product information
 router.get('/product/:id', function (req, res) {
   fetchSingleProduct(req, res);

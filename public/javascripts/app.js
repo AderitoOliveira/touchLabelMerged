@@ -33,8 +33,8 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
     .state('addChildProduct', {
       url: '/addChildProduct',
       templateUrl: '../custompages/addChildProduct.html',
-      //controller: 'CreateProductController',
-      params: { product_id: null, product_name: null, image_name: null, bar_code: null, name_in_the_label: null, num_article_by_box: null }
+      controller: 'addChildProductController',
+      params: {customer_product_id: null}
     })
     .state('createClient', {
       url: '/createClient',
@@ -4368,8 +4368,39 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
     });
   };
 
+  $scope.addChildProducts = function(customerProductId) {
+      $state.transitionTo("addChildProduct", { 'customer_product_id': customerProductId});
+  };
+
 }]);
 
+app.controller('addChildProductController', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', 'ModalService', function ($http, $scope, $rootScope, $state, $stateParams, $templateCache, ModalService) {
+  
+  $scope.customerProductId = $stateParams.customer_product_id;
+  $scope.products = [];
+  $scope.childProducts = [];
+
+  //GET ALL PRODUCTS THAT CAN BE ADDED TO THE PARENT PRODUCT 
+  var request = $http.get('/productsForChildPage');
+  request.then(function successCallback(response) {
+    $scope.products = response.data;
+    return $scope.dataProducts;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+  });
+
+  var URI = '/childProductsOfParentProduct/' + encodeURIComponent($scope.customerProductId);
+  var request = $http.get(URI);
+  //var request = $http.get('/checkIfProductTechSheetExists/' + encodeURI(productId)); 
+  request.then(function successCallback(response) {
+    $scope.childProducts = response.data;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+  });
+
+}]);
 
 //GET OVERPRODUCTION CONTROLER
 app.controller('OverProductionController', function ($http, $scope, $rootScope) {
@@ -4573,7 +4604,7 @@ app.controller('ProductCreateModalController', [
     },
       function errorCallback(data) {
         console.log('Error: ' + data);
-      });
+    });
 
     //Save Content Modal  
     $scope.save = function () {

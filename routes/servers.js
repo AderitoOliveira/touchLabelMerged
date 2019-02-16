@@ -1,7 +1,5 @@
 var mysql = require('mysql');
 
-
-
 /*
 var con = mysql.createConnection({
     host: '127.0.0.1',
@@ -12,7 +10,6 @@ var con = mysql.createConnection({
 });
 */
 
-
 var con = mysql.createConnection({
     host: '172.30.184.178',
     user: 'easylabeldb',
@@ -20,6 +17,7 @@ var con = mysql.createConnection({
     database: 'easylabeldb',
     port: '3306'	
 });
+
 
 
 //GET ALL CLIENTS
@@ -141,6 +139,40 @@ fetchSingleClientProduct = function(data, callback) {
 fetchAllProducts = function(data, callback) {
     con.connect(function(err) {
     con.query('SELECT * FROM products', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET ALL PRODUCTS");      
+    });
+});
+}
+
+//GET ALL PRODUCTS FOR THE ADD CHILD TO COMPOUND PRODUCT PAGE
+fetchAllProductsForChildPage = function(data, callback) {
+    con.connect(function(err) {
+    con.query('SELECT CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME FROM products WHERE IS_PARENT = \'N\'', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET ALL PRODUCTS");      
+    });
+});
+}
+
+//GET ALL PRODUCTS THAT ARE CHILDREN OF THE PARENT PRODUCT
+childProductsOfParentProduct = function(req, callback) {
+    con.connect(function(err) {
+    con.query('SELECT CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME FROM products where PARENT_CUSTOMER_PRODUCT_ID = ?', [req.params.customer_product_id], function(err, rows) {
         if (err) {
             throw err;
         } else
