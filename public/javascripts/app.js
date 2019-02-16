@@ -30,6 +30,12 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
       //controller: 'CreateProductController',
       params: { product_id: null, product_name: null, image_name: null, bar_code: null, name_in_the_label: null, num_article_by_box: null }
     })
+    .state('createCompoundProduct', {
+      url: '/createCompoundProduct',
+      templateUrl: '../custompages/insertCompoundProduct.html',
+      //controller: 'CreateProductController',
+      params: { product_id: null, product_name: null, image_name: null, bar_code: null, name_in_the_label: null, num_article_by_box: null }
+    })
     .state('createClient', {
       url: '/createClient',
       templateUrl: '../custompages/createClient.html',
