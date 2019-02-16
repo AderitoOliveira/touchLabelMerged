@@ -1,7 +1,5 @@
 var mysql = require('mysql');
 
-
-
 /*
 var con = mysql.createConnection({
     host: '127.0.0.1',
@@ -11,7 +9,6 @@ var con = mysql.createConnection({
     port: '3306'
 });
 */
-
 
 var con = mysql.createConnection({
     host: '172.30.184.178',
