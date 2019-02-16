@@ -30,9 +30,9 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
       //controller: 'CreateProductController',
       params: { product_id: null, product_name: null, image_name: null, bar_code: null, name_in_the_label: null, num_article_by_box: null }
     })
-    .state('createCompoundProduct', {
-      url: '/createCompoundProduct',
-      templateUrl: '../custompages/insertCompoundProduct.html',
+    .state('addChildProduct', {
+      url: '/addChildProduct',
+      templateUrl: '../custompages/addChildProduct.html',
       //controller: 'CreateProductController',
       params: { product_id: null, product_name: null, image_name: null, bar_code: null, name_in_the_label: null, num_article_by_box: null }
     })
@@ -4481,13 +4481,6 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
   };
 
 }]);
-
-
-//CREATE COMPOUND PRODUCT - Controller
-app.controller('CreateCompoundProductController', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', function ($http, $scope, $rootScope, $state, $stateParams, $templateCache) {
-
-}]);
-
 
 
 //LIST ALL THE PALLETES READY TO BE SHIPPED - PalletesController
