@@ -4100,11 +4100,14 @@ app.controller('ProductsController', function ($scope, $http, $location, $rootSc
     $state.transitionTo("printLabel", { 'productId': productId, 'productName': productName });
   }
 
-  //Criar Produto
+  //Criar Produto simples
   $scope.insertProductPath = function (productName, productId, imageName, barCode) {
     $state.transitionTo("createProduct", { 'image_name': '/images/vaso_600x600.jpg' });
-    //$state.transitionTo("createProduct", {'product_id': ' ', 'product_name': ' ', 'imageName': ' ', 'barCode': "", 'nameInTheLabel':"" , 'numArticleByBox': ""}) 
-    //$state.transitionTo("createProduct", {'product_name': "878787878787", 'product_id': "9899999999", 'image_name': null, 'bar_code': null, 'name_in_the_label': null, 'num_article_by_box': null}) ;
+  }
+
+  //Criar Produto simples
+  $scope.insertCompoundProductPath = function (productName, productId, imageName, barCode) {
+    $state.transitionTo("createCompoundProduct", { 'image_name': '/images/vaso_600x600.jpg' });
   }
 
   //Function to Open the UPDATE the Modal
@@ -4478,6 +4481,14 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
   };
 
 }]);
+
+
+//CREATE COMPOUND PRODUCT - Controller
+app.controller('CreateCompoundProductController', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', function ($http, $scope, $rootScope, $state, $stateParams, $templateCache) {
+
+}]);
+
+
 
 //LIST ALL THE PALLETES READY TO BE SHIPPED - PalletesController
 app.controller('PalletesController', function ($scope, $http, $rootScope, ModalService) {
