@@ -671,8 +671,12 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
   $rootScope.class = 'not-home';
   $rootScope.name = "Imprimir etiquetas do Produto " + $stateParams.productName;
   $scope.data = [];
+  var arrayForGET = {
+    customer_product_id : productId
+  };
   var productId = $stateParams.productId;
-  var request = $http.get('/labelToPrintForProduct/' + encodeURIComponent(productId));
+  //var request = $http.get('/labelToPrintForProduct/' + encodeURIComponent(productId));
+  var request = $http({method: 'GET',  url: '/labelToPrintForProduct', arrayForGET});	
   request.then(function successCallback(response) {
     $scope.data = response.data;
 
@@ -5778,7 +5782,11 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
   $scope.printLabelArticle = function (customer_product_id, order_id, quantity_article_labels, box_label_already_printed) {
 
     $scope.productLabel = [];
-    var request = $http.get('/labelToPrintForProduct/' + encodeURIComponent(customer_product_id));
+    var params = {
+      "customer_product_id" : customer_product_id
+    };
+    //var request = $http.get('/labelToPrintForProduct/' + encodeURIComponent(customer_product_id));
+    var request = $http({method: 'GET',  url: '/labelToPrintForProduct', body: { 'customer_product_id': customer_product_id }, json: true });
     request.then(function successCallback(response) {
       $scope.productLabel = response.data;
 
@@ -5876,7 +5884,11 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
   $scope.printProductBoxLabels = function (customer_product_id, order_id, quantity_box_labels, article_label_already_printed) {
 
     $scope.productLabel = [];
-    var request = $http.get('/labelToPrintForProduct/' + encodeURIComponent(customer_product_id));
+    var params = {
+      customer_product_id : customer_product_id
+    };
+    //var request = $http.get('/labelToPrintForProduct/' + encodeURIComponent(customer_product_id));
+    var request = $http({method: 'GET',  url: '/labelToPrintForProduct', params});	
     request.then(function successCallback(response) {
       $scope.productLabel = response.data;
 
