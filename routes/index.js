@@ -141,7 +141,10 @@ router.get('/productForModal', function (req, res) {
 
 
 //GET COMPLETE INFORMATION OF A PRODUCT FOR THE LABELS PRINTING
-router.get('/labelToPrintForProduct', function (req, res) {
+router.get('/labelToPrintForProduct/:id', function (req, res) {
+  console.log('************************** ------------------------------------ *******************************');
+  console.log(req.params);
+  console.log('************************** ------------------------------------ *******************************');
   fetchSingleProductLabels(req, res);
 });
 
@@ -757,7 +760,7 @@ router.post('/vuePrintLabels', function (req, res) {
     fetchSingleProductLabels(req, res);
 
     console.log("------------AFTER fetchSingleProductLabels-------------");
-    //console.log(res);
+    console.log(res);
     console.log("-------------------------------------------------------");
 
 

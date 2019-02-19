@@ -206,11 +206,17 @@ fetchProductsForOrderModal = function(data, callback) {
 
 
 fetchSingleProductLabels = function(data, callback) {
+    if(data.body.id) {
+        var customer_product_id = data.body.id;
+    } else if (data.params.id) {
+        var customer_product_id = data.params.id;
+    }
     console.log('-------------------- SINGLE PRODUCT LABELS -------------------------');
     console.log(data.body);
+    console.log(data.params);
     console.log('--------------------------------------------------------------------');
     con.connect(function(err) {
-    con.query('SELECT prod.CUSTOMER_PRODUCT_ID, prod.PRODUCT_NAME, prod.PRODUCT_NAME_FOR_LABEL, tecsheet.Qty_By_Box, prod.IMAGE_PATH, prod.IMAGE_NAME, prod.BAR_CODE_NUMBER, label.ARTICLE_BARCODE_TYPE,  label.BOX_BARCODE_TYPE, label.ZPL_STRING_ARTICLE, label.ZPL_STRING_BOX, label.ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, label.ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL ,printers.ARTICLE_PRINTER_IP_ADDRESS, printers.BOX_PRINTER_IP_ADDRESS, printers.ARTICLE_PRINTER_PORT, printers.BOX_PRINTER_PORT FROM products prod, products_technical_sheet tecsheet, label_templates label, client_product cliprod, printers_ip_address printers WHERE prod.CUSTOMER_PRODUCT_ID = ? and cliprod.PRODUCT_ID = ? and label.ClientID = cliprod.CLIENT_ID and prod.CUSTOMER_PRODUCT_ID = tecsheet.CUSTOMER_PRODUCT_ID', [data.body.customer_product_id, data.body.customer_product_id], function(err, rows) {
+    con.query('SELECT prod.CUSTOMER_PRODUCT_ID, prod.PRODUCT_NAME, prod.PRODUCT_NAME_FOR_LABEL, tecsheet.Qty_By_Box, prod.IMAGE_PATH, prod.IMAGE_NAME, prod.BAR_CODE_NUMBER, label.ARTICLE_BARCODE_TYPE,  label.BOX_BARCODE_TYPE, label.ZPL_STRING_ARTICLE, label.ZPL_STRING_BOX, label.ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, label.ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL ,printers.ARTICLE_PRINTER_IP_ADDRESS, printers.BOX_PRINTER_IP_ADDRESS, printers.ARTICLE_PRINTER_PORT, printers.BOX_PRINTER_PORT FROM products prod, products_technical_sheet tecsheet, label_templates label, client_product cliprod, printers_ip_address printers WHERE prod.CUSTOMER_PRODUCT_ID = ? and cliprod.PRODUCT_ID = ? and label.ClientID = cliprod.CLIENT_ID and prod.CUSTOMER_PRODUCT_ID = tecsheet.CUSTOMER_PRODUCT_ID', [customer_product_id, customer_product_id], function(err, rows) {
         if (err) {
             throw err;
         } else
