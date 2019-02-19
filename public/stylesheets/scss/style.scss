@@ -1492,7 +1492,7 @@ $colorVariable: var(--value);
 }
 
 #add-order .add-product-form{
-    .col-md-3:first-child .input-wrap, {
+    .col-md-3:first-child .input-wrap {
         margin-left: 8px !important;
         width: calc(100% - 8px);
     }
@@ -1556,7 +1556,7 @@ $colorVariable: var(--value);
     cursor: default;
 }
 .order-product-details-add{
-    .col-md-3:first-child .input-wrap, {
+    .col-md-3:first-child .input-wrap {
         margin-left: 8px !important;
         width: calc(100% - 8px);
     }
@@ -1702,7 +1702,7 @@ $colorVariable: var(--value);
     }
 }
 
-.form-wrap, .label-quantity {
+.form-wrap, .label-quantity, #main-action-wrap {
     padding-top: 36px;
     label.control-label {
         width: 100%;
@@ -2438,6 +2438,21 @@ a.btn-remove-order {
         padding:12px 12px 14px;
         font-size:16px;
     }
+}
+
+.item-action{
+    display:flex;
+    justify-content: center;
+}
+
+.table-heading-before {
+    font-size: 20px;
+    font-weight: bold;
+    padding-bottom: 24px;
+}
+
+.header-client-id{
+    text-indent:6px;
 }
 
 .home-block{
