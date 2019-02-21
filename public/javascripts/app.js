@@ -4400,6 +4400,15 @@ app.controller('addChildProductController', ['$http', '$scope', '$rootScope', '$
       console.log('Error: ' + data);
   });
 
+  $scope.addChild = function (customer_product_id, internal_product_id, product_name) {
+    var child = {
+      CUSTOMER_PRODUCT_ID : customer_product_id,
+      INTERNAL_PRODUCT_ID : internal_product_id,
+      PRODUCT_NAME        : product_name
+    }
+    $scope.childProducts.push(child);
+  };
+
 }]);
 
 //GET OVERPRODUCTION CONTROLER
