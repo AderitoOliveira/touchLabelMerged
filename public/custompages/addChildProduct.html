@@ -1,4 +1,4 @@
-<div class="wrap"  ng-controller="">
+<div class="wrap"  ng-controller="addChildProductController">
     <div id="actions">
         <div class="row">
             <div class="col-md-12">
@@ -40,13 +40,13 @@
                                 </div>
                             </div>
                             <div class="order-table-content row">
-                                <div class="col-md-12" dir-paginate="order in orders |filter:searchChar | itemsPerPage:100">
+                                <div class="col-md-12" dir-paginate="product in products |filter:searchChar | itemsPerPage:10">
                                     <div class="row">
                                         <div class="item-inner-wrap">
-                                            <div class="col-md-3 table-item item-client-id" title="{{order.ORDER_ID}}">1234567</div>
-                                            <div class="col-md-3 table-item item-internal-id" title="{{order.ORDER_ID}}">1234567</div>
-                                            <div class="col-md-4 table-item item-name" title="{{order.ORDER_ID}}">Vaso ABCD</div>
-                                            <div class="col-md-2 table-item item-action" title="{{order.ORDER_ID}}">
+                                            <div class="col-md-3 table-item item-client-id">{{product.CUSTOMER_PRODUCT_ID}}</div>
+                                            <div class="col-md-3 table-item item-internal-id">{{product.INTERNAL_PRODUCT_ID}}</div>
+                                            <div class="col-md-4 table-item item-name">{{product.PRODUCT_NAME}}</div>
+                                            <div class="col-md-2 table-item item-action">
                                                 <a id="btn-add-child" class="btn btn-sm btn-success" ng-click="" data-toggle="tooltip" title="">
                                                     <img src="assets/icons/btn-success.svg" width="24px" height="24px" />
                                                 </a>
@@ -54,6 +54,13 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div align="center">
+                                <dir-pagination-controls
+                                        max-size="7"
+                                        direction-links="true"
+                                        boundary-links="true" >
+                                </dir-pagination-controls>
                             </div>
                         </div>
                     </div>
@@ -92,6 +99,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <div>
                         </div>
                     </div>
                 </div>
