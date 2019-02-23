@@ -33,8 +33,7 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
     .state('addChildProduct', {
       url: '/addChildProduct',
       templateUrl: '../custompages/addChildProduct.html',
-      controller: 'addChildProductController',
-      params: {customer_product_id: null}
+      params: { productName: null, customer_product_id: null, productId: null, clientname: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, preco1: null, preco2:null }
     })
     .state('createClient', {
       url: '/createClient',
@@ -4160,7 +4159,7 @@ app.controller('ProductsController', function ($scope, $http, $location, $rootSc
 });
 
 
-//EDITAR Produtos - Controller
+//EDIT PRODUCTS - Controller
 app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', 'ModalService', 'CloneProductService', function ($http, $scope, $rootScope, $state, $stateParams, $templateCache, ModalService, CloneProductService) {
 
   $rootScope.class = 'not-home';
@@ -4369,7 +4368,8 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
   };
 
   $scope.addChildProducts = function(customerProductId) {
-      $state.transitionTo("addChildProduct", { 'customer_product_id': customerProductId});
+     // $state.transitionTo("addChildProduct", { 'customer_product_id': customerProductId});
+     $state.transitionTo("addChildProduct", { 'productName': $scope.productName, 'customer_product_id': customerProductId, 'productId': $scope.productId , 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2':$scope.preco2 });
   };
 
 }]);
@@ -4407,6 +4407,10 @@ app.controller('addChildProductController', ['$http', '$scope', '$rootScope', '$
       PRODUCT_NAME        : product_name
     }
     $scope.childProducts.push(child);
+  };
+
+  $scope.goback = function () {
+    $state.transitionTo("editProduct", { 'productName': $stateParams.productName, 'customerProductId': $scope.customerProductId, 'clientname': $stateParams.clientname, 'productId': $stateParams.productId, 'clientname': $stateParams.clientname, 'imageName': $stateParams.imageName, 'barCode': $stateParams.barCode, 'nameInTheLabel': $stateParams.nameInTheLabel, 'numArticleByBox': $stateParams.numArticleByBox, 'preco1': $stateParams.preco1, 'preco2': $stateParams.preco2 });
   };
 
 }]);
