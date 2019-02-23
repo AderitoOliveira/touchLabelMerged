@@ -1144,21 +1144,36 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
   //CREATE PRODDUCT IN THE ORDER
   $scope.save = function () {
-    $scope.orderproductstatus = 'em_producao';
 
-    var dataObj = {
-      ORDER_ID: $scope.orderid,
-      INTERNAL_PRODUCT_ID: $scope.productid.INTERNAL_PRODUCT_ID,
-      CUSTOMER_PRODUCT_ID: $scope.productid.CUSTOMER_PRODUCT_ID,
-      PRODUCT_NAME: $scope.productid.PRODUCT_NAME,
-      TOTAL_QUANTITY_ORDERED: $scope.qtyencomenda,
-      QUANTITY_PRODUCED: $scope.qtyproduzida,
-      ORDER_PRODUCT_STATUS: $scope.orderproductstatus
-    };
+    if($scope.productid.IS_PARENT == 'N') {
+      $scope.orderproductstatus = 'em_producao';
 
-    var res = $http.post('/insertorderproduct', dataObj).then(function (data, status, headers, config) {
-      $state.reload();
-    });
+      var dataObj = {
+        ORDER_ID: $scope.orderid,
+        INTERNAL_PRODUCT_ID: $scope.productid.INTERNAL_PRODUCT_ID,
+        CUSTOMER_PRODUCT_ID: $scope.productid.CUSTOMER_PRODUCT_ID,
+        PRODUCT_NAME: $scope.productid.PRODUCT_NAME,
+        TOTAL_QUANTITY_ORDERED: $scope.qtyencomenda,
+        QUANTITY_PRODUCED: $scope.qtyproduzida,
+        ORDER_PRODUCT_STATUS: $scope.orderproductstatus
+      };
+
+      var res = $http.post('/insertorderproduct', dataObj).then(function (data, status, headers, config) {
+        $state.reload();
+      });
+    } else if ($scope.productid.IS_PARENT == 'Y') {
+
+      var childProducts = [];
+      var request = $http.get('/childProductsOfParentProduct/' + encodeURIComponent($scope.productid.CUSTOMER_PRODUCT_ID));
+      request.then(function successCallback(response) {
+        $scope.childProducts = response.data;
+      },
+        function errorCallback(data) {
+          console.log('Error: ' + data);
+      });
+
+      
+    }
 
   };
 

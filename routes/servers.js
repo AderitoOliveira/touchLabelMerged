@@ -1,14 +1,14 @@
 var mysql = require('mysql');
 
-/*
-var con = mysql.createConnection({
+
+/* var con = mysql.createConnection({
     host: '127.0.0.1',
     user: 'easylabeldb',
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'
 });
-*/
+ */
 
 var con = mysql.createConnection({
     host: '172.30.184.178',
@@ -224,7 +224,7 @@ deleteProduct = function(data, callback) {
 
 fetchProductsForOrderModal = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME FROM products', function(err, rows) {
+    con.query('SELECT INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, IS_PARENT FROM products', function(err, rows) {
         if (err) {
             throw err;
         } else
