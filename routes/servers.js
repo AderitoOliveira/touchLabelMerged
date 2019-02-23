@@ -1435,6 +1435,36 @@ getProductionLast7Days = function(data, callback) {
 });
 }
 
+//INSERT/UPDATE CHILD PRODUCTS FOR THE PARENT PRODUCT
+insertUpdateChildProducts = function(req, res) {
+    console.log(req.body);
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+     con.query('update products set PARENT_CUSTOMER_PRODUCT_ID = ? where CUSTOMER_PRODUCT_ID in (?)',  [req.body.PARENT_CUSTOMER_PRODUCT_ID, req.body.CHILD_CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
+//DELETE SINGLE CHILD PRODUCT FOR THE PARENT PRODUCT
+deleteChildProduct = function(req, res) {
+    console.log(req.body);
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+     con.query('update products set PARENT_CUSTOMER_PRODUCT_ID = null where CUSTOMER_PRODUCT_ID = ?',  [req.body.CHILD_CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
 //GET USER INFO
 getUserInfo = function(req, callback) {
     console.log("req.body.User: " + req.params.User);

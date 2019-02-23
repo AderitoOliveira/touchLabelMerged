@@ -91,7 +91,7 @@
                                             <div class="col-md-3 table-item item-internal-id" >{{childProduct.INTERNAL_PRODUCT_ID}}</div>
                                             <div class="col-md-4 table-item item-name" >{{childProduct.PRODUCT_NAME}}</div>
                                             <div class="col-md-2 table-item item-action" >
-                                                <a class="btn btn-sm btn-danger" ng-click="" data-toggle="tooltip" title="">
+                                                <a class="btn btn-sm btn-danger" ng-click="removeChildProduct(childProduct.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="">
                                                     <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
                                                 </a>
                                             </div>
@@ -113,7 +113,7 @@
                 <button type="submit" name="product-save-children" id="product-save-children" ng-click="goback()" class="btn btn-default btn-cancel"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Cancelar</button>
             </div>
             <div class="col-md-3" id="main-action-wrap">
-                <button type="submit" name="product-save-children" id="product-save-children" ng-click="submit()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
+                <button type="submit" name="product-save-children" id="product-save-children" ng-click="save()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
             </div>
         </div>
     </div>

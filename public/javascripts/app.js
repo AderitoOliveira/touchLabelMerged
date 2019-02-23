@@ -4368,7 +4368,6 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
   };
 
   $scope.addChildProducts = function(customerProductId) {
-     // $state.transitionTo("addChildProduct", { 'customer_product_id': customerProductId});
      $state.transitionTo("addChildProduct", { 'productName': $scope.productName, 'customer_product_id': customerProductId, 'productId': $scope.productId , 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2':$scope.preco2 });
   };
 
@@ -4376,7 +4375,7 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
 
 app.controller('addChildProductController', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', 'ModalService', function ($http, $scope, $rootScope, $state, $stateParams, $templateCache, ModalService) {
   
-  $scope.customerProductId = $stateParams.customer_product_id;
+  var customerProductId = $stateParams.customer_product_id;
   $scope.products = [];
   $scope.childProducts = [];
 
@@ -4390,7 +4389,7 @@ app.controller('addChildProductController', ['$http', '$scope', '$rootScope', '$
       console.log('Error: ' + data);
   });
 
-  var URI = '/childProductsOfParentProduct/' + encodeURIComponent($scope.customerProductId);
+  var URI = '/childProductsOfParentProduct/' + encodeURIComponent(customerProductId);
   var request = $http.get(URI);
   //var request = $http.get('/checkIfProductTechSheetExists/' + encodeURI(productId)); 
   request.then(function successCallback(response) {
@@ -4409,8 +4408,42 @@ app.controller('addChildProductController', ['$http', '$scope', '$rootScope', '$
     $scope.childProducts.push(child);
   };
 
+  $scope.removeChildProduct = function (customer_product_id) {
+    for (var i = $scope.childProducts.length - 1; i >= 0; --i) {
+      if ($scope.childProducts[i].CUSTOMER_PRODUCT_ID == customer_product_id) {
+        $scope.childProducts.splice(i,1);
+      }
+    }
+
+    var childProductToDelete = {
+      CHILD_CUSTOMER_PRODUCT_ID : customer_product_id
+    }
+
+    var res = $http.post('/deleteChildProduct', childProductToDelete).then(function (data, status, headers, config) {
+    });
+
+  };
+
+  $scope.save = function () {
+    var childCustomerProductIdToSave = [];
+    for (var i = $scope.childProducts.length - 1; i >= 0; --i) {
+      childCustomerProductIdToSave.push($scope.childProducts[i].CUSTOMER_PRODUCT_ID);
+    }
+
+    var dataToSave = {
+      PARENT_CUSTOMER_PRODUCT_ID : customerProductId,
+      CHILD_CUSTOMER_PRODUCT_ID  : childCustomerProductIdToSave
+    }
+
+    var res = $http.post('/insertUpdateChildProducts', dataToSave).then(function (data, status, headers, config) {
+      $state.transitionTo("editProduct", { 'productName': $stateParams.productName, 'customerProductId': customerProductId, 'clientname': $stateParams.clientname, 'productId': $stateParams.productId, 'clientname': $stateParams.clientname, 'imageName': $stateParams.imageName, 'barCode': $stateParams.barCode, 'nameInTheLabel': $stateParams.nameInTheLabel, 'numArticleByBox': $stateParams.numArticleByBox, 'preco1': $stateParams.preco1, 'preco2': $stateParams.preco2 });
+    });
+
+
+  }
+
   $scope.goback = function () {
-    $state.transitionTo("editProduct", { 'productName': $stateParams.productName, 'customerProductId': $scope.customerProductId, 'clientname': $stateParams.clientname, 'productId': $stateParams.productId, 'clientname': $stateParams.clientname, 'imageName': $stateParams.imageName, 'barCode': $stateParams.barCode, 'nameInTheLabel': $stateParams.nameInTheLabel, 'numArticleByBox': $stateParams.numArticleByBox, 'preco1': $stateParams.preco1, 'preco2': $stateParams.preco2 });
+    $state.transitionTo("editProduct", { 'productName': $stateParams.productName, 'customerProductId': customerProductId, 'clientname': $stateParams.clientname, 'productId': $stateParams.productId, 'clientname': $stateParams.clientname, 'imageName': $stateParams.imageName, 'barCode': $stateParams.barCode, 'nameInTheLabel': $stateParams.nameInTheLabel, 'numArticleByBox': $stateParams.numArticleByBox, 'preco1': $stateParams.preco1, 'preco2': $stateParams.preco2 });
   };
 
 }]);

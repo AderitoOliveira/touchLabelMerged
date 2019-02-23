@@ -635,6 +635,17 @@ router.get('/getProductionLast7Days', function (req, res) {
   getProductionLast7Days(req, res);
 });
 
+//INSERT/UPDATE CHILD PRODUCTS FOR THE PARENT PRODUCT
+router.post('/insertUpdateChildProducts', function (req, res) {
+  console.log("INSERT/UPDATE CHILD PRODUCTS FOR THE PARENT PRODUCT");
+  insertUpdateChildProducts(req, res);
+});
+
+//DELETE SINGLE CHILD PRODUCT FOR THE PARENT PRODUCT
+router.post('/deleteChildProduct', function (req, res) {
+  console.log("DELETE SINGLE CHILD PRODUCT FOR THE PARENT PRODUCT");
+  deleteChildProduct(req, res);
+});
 
 //GET THE PASSWORD FOR THE USER FROM THE DATABASE
 router.get('/getUserInfo/:User', function (req, res) {
