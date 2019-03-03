@@ -1145,8 +1145,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   //CREATE PRODDUCT IN THE ORDER
   $scope.save = function () {
 
+    $scope.orderproductstatus = 'em_producao';
+    
     if($scope.productid.IS_PARENT == 'N') {
-      $scope.orderproductstatus = 'em_producao';
 
       var dataObj = {
         ORDER_ID: $scope.orderid,
@@ -1163,10 +1164,48 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       });
     } else if ($scope.productid.IS_PARENT == 'Y') {
 
+      var quantityOfPalletesToProduce =  $scope.qtyencomenda / $scope.productid.Qty_By_Pallet_Compound_Product;
+
       var childProducts = [];
       var request = $http.get('/childProductsOfParentProduct/' + encodeURIComponent($scope.productid.CUSTOMER_PRODUCT_ID));
       request.then(function successCallback(response) {
+        
         $scope.childProducts = response.data;
+
+        var dataObj = {
+          ORDER_ID: $scope.orderid,
+          INTERNAL_PRODUCT_ID: $scope.productid.INTERNAL_PRODUCT_ID,
+          CUSTOMER_PRODUCT_ID: $scope.productid.CUSTOMER_PRODUCT_ID,
+          PRODUCT_NAME: $scope.productid.PRODUCT_NAME,
+          TOTAL_QUANTITY_ORDERED: $scope.qtyencomenda,
+          QUANTITY_PRODUCED: $scope.qtyproduzida,
+          ORDER_PRODUCT_STATUS: $scope.orderproductstatus
+        };
+  
+        var res = $http.post('/insertorderproduct', dataObj).then(function (data, status, headers, config) {
+        });
+
+        for(i=0; i <  $scope.childProducts.length; i++) {
+
+          var quantityOrdered = $scope.childProducts[i].Qty_By_Pallet_Compound_Product * quantityOfPalletesToProduce;
+
+          var dataObj = {
+            ORDER_ID: $scope.orderid,
+            INTERNAL_PRODUCT_ID: $scope.childProducts[i].INTERNAL_PRODUCT_ID,
+            CUSTOMER_PRODUCT_ID: $scope.childProducts[i].CUSTOMER_PRODUCT_ID,
+            PRODUCT_NAME: $scope.childProducts[i].PRODUCT_NAME,
+            TOTAL_QUANTITY_ORDERED: quantityOrdered,
+            QUANTITY_PRODUCED: $scope.qtyproduzida,
+            ORDER_PRODUCT_STATUS: $scope.orderproductstatus
+          };
+    
+          var res = $http.post('/insertorderproduct', dataObj).then(function (data, status, headers, config) {
+          });
+
+        }
+
+        $state.reload();
+
       },
         function errorCallback(data) {
           console.log('Error: ' + data);
