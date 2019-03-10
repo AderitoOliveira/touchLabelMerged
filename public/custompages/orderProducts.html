@@ -87,8 +87,8 @@
                         </div>
                     </div>
                     <div class="order-table-content row">
-                        <!--div class="col-md-12 {{product.ORDER_PRODUCT_STATUS_RAW}}" dir-paginate="product in products | orderBy : 'QUANTITY_PRODUCED' |filter:searchChar | itemsPerPage:15" ng-click="dailyProductionDetails(product.CUSTOMER_PRODUCT_ID, product.ORDER_PRODUCT_STATUS_RAW)"-->
-                        <div class="col-md-12 order-item *item-filho* {{product.ORDER_PRODUCT_STATUS_RAW}}" dir-paginate="product in products | orderBy : 'QUANTITY_PRODUCED' |filter:searchChar | itemsPerPage:100">
+                        <!--div class="col-md-12 order-item {{product.IS_CHILD_PRODUCT}} {{product.ORDER_PRODUCT_STATUS_RAW}}" ng-show="product.PARENT_CUSTOMER_PRODUCT_ID == null" dir-paginate="product in products | orderBy : 'QUANTITY_PRODUCED' |filter:searchChar | itemsPerPage:100"-->
+                        <div class="col-md-12 order-item {{product.ITEM_FILHO}} {{product.ORDER_PRODUCT_STATUS_RAW}}"  dir-paginate="product in products | orderBy : 'QUANTITY_PRODUCED' |filter:searchChar | itemsPerPage:100">
                             <div class="row">
                                 <div class="item-inner-wrap {{product.ORDER_PRODUCT_STATUS_RAW}}">
                                     <div class="col-md-1 table-item item-order-nr"><img src="{{product.IMAGE_PATH}}/{{product.IMAGE_NAME}}" class="img-product img-rounded" height="50" width="50"/></div>
@@ -100,7 +100,7 @@
                                     <div class="col-md-3 table-item item-order-state">
                                         <span class="order-status">{{product.ORDER_PRODUCT_STATUS}}</span>
                                         <div class="item-order-actions">
-                                            <a class="btn btn-sm btn-danger" ng-click="deleteProductInOrder(product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME)" data-toggle="tooltip" title="Remover Produto.">
+                                            <a class="btn btn-sm btn-danger" ng-show="product.CAN_BE_DELETED" ng-click="deleteProductInOrder(product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME)" data-toggle="tooltip" title="Remover Produto.">
                                                 <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
                                             </a>
                                             <a class="btn btn-sm btn-warning" ng-click="showEditProductModal(product.INTERNAL_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.QUANTITY_PRODUCED)" data-toggle="tooltip" title="Editar Produto.">

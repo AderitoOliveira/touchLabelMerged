@@ -986,7 +986,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     $scope.productname = $scope.productid;
   });
 
-  $scope.dataProducts = [];
+  $scope.dataProducts  = [];
+  $scope.childProducts = [];
 
   $scope.productiondate = new Date();
    
@@ -1049,24 +1050,56 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   },
     function errorCallback(data) {
       console.log('Error: ' + data);
-    });
+  });
+
+  
+  $scope.parentProductsIndex = [];
 
   var request = $http.get('/orderproducts/' + orderId);
   request.then(function successCallback(response) {
     $scope.products = response.data;
 
+    var x = 0;
     for (i = 0; i < $scope.products.length; i++) {
+      
+      if($scope.products[i].IS_PARENT == 'Y') {
+          $scope.parentProductsIndex [$scope.products[i].CUSTOMER_PRODUCT_ID] = i;
+          console.log("PARENT_CUSTOMER_ID: " + $scope.products[i].CUSTOMER_PRODUCT_ID + " INDEX_POSITION: " + i);
+      }
+
+      if($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID == null) {
+          $scope.products[i].CAN_BE_DELETED = 'true';
+      }
+
       //IF em_producao
       if ($scope.products[i].ORDER_PRODUCT_STATUS == 'em_producao') {
+
         var percentage = Math.round($scope.products[i].TOTAL_PRODUCTS_PRODUCED / $scope.products[i].TOTAL_QUANTITY_ORDERED * 100);
         $scope.products[i].percent = percentage;
         $scope.products[i].width = percentage;
-
         $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
         $scope.products[i].ORDER_PRODUCT_STATUS = 'Em Produção';
-        $scope.products[i].INSERT_PRODUCTION = true;
+        $scope.products[i].INSERT_PRODUCTION = 'true';
 
         $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PRODUCED;
+
+        if($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null) {
+          $scope.products[i].ITEM_FILHO       = 'item-filho';
+          var position =  $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
+          if(position != 0) {
+            x = x + 1;
+            console.log("PARENT_CUSTOMER_ID: " + $scope.products[i].PARENT_CUSTOMER_PRODUCT_ID + " INDEX_POSITION: " + position);
+            console.log("INDEX_I_POSITION: " + i + " PRODUCT_ID: " + $scope.products[i].CUSTOMER_PRODUCT_ID);
+            $scope.products.splice(x + position + 1 , 0, $scope.products[i]);
+            $scope.products.splice(i + 1, 1);
+          } else {
+            console.log("PARENT_CUSTOMER_ID: " + $scope.products[i].PARENT_CUSTOMER_PRODUCT_ID + " INDEX_POSITION: " + position);
+            console.log("INDEX_I_POSITION: " + i + " PRODUCT_ID: " + $scope.products[i].CUSTOMER_PRODUCT_ID);
+            $scope.products.splice(position + 1 , 0, $scope.products[i]);
+            $scope.products.splice(i + 1, 1);
+          }
+          
+        }
       }
 
       //IF em_pintura
@@ -1087,9 +1120,26 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
         $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
         $scope.products[i].ORDER_PRODUCT_STATUS = 'Em Pintura';
-        $scope.products[i].INSERT_PAINTING = true;
+        $scope.products[i].INSERT_PAINTING = 'true';
 
         $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PAINTED;
+        
+        if($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null) {
+          $scope.products[i].ITEM_FILHO       = 'item-filho';
+          var position =  $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
+          if(position != 0) {
+            x = x + 1;
+            console.log("PARENT_CUSTOMER_ID: " + $scope.products[i].PARENT_CUSTOMER_PRODUCT_ID + " INDEX_POSITION: " + position);
+            console.log("INDEX_I_POSITION: " + i + " PRODUCT_ID: " + $scope.products[i].CUSTOMER_PRODUCT_ID);
+            $scope.products.splice(x + position + 1 , 0, $scope.products[i]);
+            $scope.products.splice(i + 1, 1);
+          } else {
+            console.log("PARENT_CUSTOMER_ID: " + $scope.products[i].PARENT_CUSTOMER_PRODUCT_ID + " INDEX_POSITION: " + position);
+            console.log("INDEX_I_POSITION: " + i + " PRODUCT_ID: " + $scope.products[i].CUSTOMER_PRODUCT_ID);
+            $scope.products.splice(position + 1 , 0, $scope.products[i]);
+            $scope.products.splice(i + 1, 1);
+          }
+        }
       }
 
       //IF fechado_na_encomenda
@@ -1117,6 +1167,13 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     function errorCallback(data) {
       console.log('Error: ' + data);
     });
+
+  //SHOW THE COMPOUND PRODUCTS OF THE PARENT PRODUCT
+  $scope.showCompoundProducts = function(customer_product_id) {
+
+    $scope.childProductsInCompountProduct = [];
+    $scope.childProductsInCompountProduct = $scope.childProducts[customer_product_id];
+  }
 
   //EDIT PRODUCT IN AN ORDER
   $scope.showEditProductModal = function (productId, productName, qtyencomenda) {
