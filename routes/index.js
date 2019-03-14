@@ -757,11 +757,17 @@ router.post('/vuePrintLabels', function (req, res) {
     //  quantity_article_labels, 
     //  box_label_already_printed
     //} 
-    fetchSingleProductLabels(req, res);
+    //fetchSingleProductLabels(req, res);
 
-    console.log("------------AFTER fetchSingleProductLabels-------------");
-    console.log(res);
-    console.log("-------------------------------------------------------");
+    if(req.body.labelTypeToPrint == 'Article') {
+
+      console.log("ARTICLE");
+
+
+    } else if (req.body.labelTypeToPrint == 'Box') {
+      console.log("BOX");
+      var request = new XMLHttpRequest();
+    }
 
 
 
