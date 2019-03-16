@@ -986,7 +986,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     $scope.productname = $scope.productid;
   });
 
-  $scope.dataProducts  = [];
+  $scope.dataProducts = [];
+  $scope.parentProductsIndex = [];
+  $scope.singleProductsIndex = [];
   $scope.childProducts = [];
 
   $scope.productiondate = new Date();
@@ -1052,9 +1054,6 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       console.log('Error: ' + data);
   });
 
-  
-  $scope.parentProductsIndex = [];
-
   var request = $http.get('/orderproducts/' + orderId);
   request.then(function successCallback(response) {
     $scope.products = response.data;
@@ -1063,8 +1062,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     for (i = 0; i < $scope.products.length; i++) {
       
       if($scope.products[i].IS_PARENT == 'Y') {
-          $scope.parentProductsIndex [$scope.products[i].CUSTOMER_PRODUCT_ID] = i;
-          console.log("PARENT_CUSTOMER_ID: " + $scope.products[i].CUSTOMER_PRODUCT_ID + " INDEX_POSITION: " + i);
+        var parentProductsArray = [];
+        parentProductsArray.push($scope.products[i]);
+        $scope.parentProductsIndex[$scope.products[i].CUSTOMER_PRODUCT_ID] = parentProductsArray;
+
+          console.log("PARENT_CUSTOMER_ID: " + $scope.products[i].CUSTOMER_PRODUCT_ID);
       }
 
       if($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID == null) {
@@ -1085,21 +1087,16 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
         if($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null) {
           $scope.products[i].ITEM_FILHO       = 'item-filho';
-          var position =  $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
-          if(position != 0) {
-            x = x + 1;
-            console.log("PARENT_CUSTOMER_ID: " + $scope.products[i].PARENT_CUSTOMER_PRODUCT_ID + " INDEX_POSITION: " + position);
-            console.log("INDEX_I_POSITION: " + i + " PRODUCT_ID: " + $scope.products[i].CUSTOMER_PRODUCT_ID);
-            $scope.products.splice(x + position + 1 , 0, $scope.products[i]);
-            $scope.products.splice(i + 1, 1);
-          } else {
-            console.log("PARENT_CUSTOMER_ID: " + $scope.products[i].PARENT_CUSTOMER_PRODUCT_ID + " INDEX_POSITION: " + position);
-            console.log("INDEX_I_POSITION: " + i + " PRODUCT_ID: " + $scope.products[i].CUSTOMER_PRODUCT_ID);
-            $scope.products.splice(position + 1 , 0, $scope.products[i]);
-            $scope.products.splice(i + 1, 1);
-          }
+
+          var parentProductsArray =  $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
+          parentProductsArray.push($scope.products[i]);
+          $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID] = parentProductsArray;
           
+            
+        }  else if ($scope.products[i].IS_PARENT == 'N') {
+          $scope.singleProductsIndex.push($scope.products[i]);
         }
+        
       }
 
       //IF em_pintura
@@ -1126,20 +1123,16 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         
         if($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null) {
           $scope.products[i].ITEM_FILHO       = 'item-filho';
-          var position =  $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
-          if(position != 0) {
-            x = x + 1;
-            console.log("PARENT_CUSTOMER_ID: " + $scope.products[i].PARENT_CUSTOMER_PRODUCT_ID + " INDEX_POSITION: " + position);
-            console.log("INDEX_I_POSITION: " + i + " PRODUCT_ID: " + $scope.products[i].CUSTOMER_PRODUCT_ID);
-            $scope.products.splice(x + position + 1 , 0, $scope.products[i]);
-            $scope.products.splice(i + 1, 1);
-          } else {
-            console.log("PARENT_CUSTOMER_ID: " + $scope.products[i].PARENT_CUSTOMER_PRODUCT_ID + " INDEX_POSITION: " + position);
-            console.log("INDEX_I_POSITION: " + i + " PRODUCT_ID: " + $scope.products[i].CUSTOMER_PRODUCT_ID);
-            $scope.products.splice(position + 1 , 0, $scope.products[i]);
-            $scope.products.splice(i + 1, 1);
-          }
+
+          var parentProductsArray =  $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
+          parentProductsArray.push($scope.products[i]);
+          $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID] = parentProductsArray;
+          
+            
+        }  else if ($scope.products[i].IS_PARENT == 'N') {
+          $scope.singleProductsIndex.push($scope.products[i]);
         }
+      
       }
 
       //IF fechado_na_encomenda
@@ -1148,9 +1141,39 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         $scope.products[i].ORDER_PRODUCT_STATUS = 'Fechado na Encomenda';
 
         $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PRODUCED;
+
+        if($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null) {
+          $scope.products[i].ITEM_FILHO       = 'item-filho';
+
+          var parentProductsArray =  $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
+          parentProductsArray.push($scope.products[i]);
+          $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID] = parentProductsArray;
+          
+            
+        }  else if ($scope.products[i].IS_PARENT == 'N') {
+          $scope.singleProductsIndex.push($scope.products[i]);
+        }
       }
 
     }
+
+    $scope.products = [];
+
+    var allParentCustomerProductKey = Object.keys($scope.parentProductsIndex);
+
+    for (i = 0; i < allParentCustomerProductKey.length; i++) {
+      var parentAndChildProductsArray = $scope.parentProductsIndex[allParentCustomerProductKey[i]];
+      for(j = 0; j < parentAndChildProductsArray.length; j++) {
+        $scope.products.push(parentAndChildProductsArray[j]);
+      }
+    }
+
+    for(k = 0; k < $scope.singleProductsIndex.length; k++) {
+      $scope.products.push($scope.singleProductsIndex[k]);
+    }
+
+    $scope.singleProductsIndex = [];
+
     return $scope.products;
   },
     function errorCallback(data) {
@@ -1296,7 +1319,18 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
   //DELETE PRODUCT IN AN ORDER
-  $scope.deleteProductInOrder = function (productid, productname) {
+  $scope.deleteProductInOrder = function (productid, productname, is_parent) {
+
+    var arrayProductsToDelete = [];
+    
+    if(is_parent == 'Y') {
+      var productsToDelete = $scope.parentProductsIndex[productid];
+
+      for(i=0; i < productsToDelete.length; i++) {
+        arrayProductsToDelete.push(productsToDelete[i].CUSTOMER_PRODUCT_ID);
+      }
+
+    }
 
     ModalService.showModal({
       templateUrl: "../modal/yesno.html",
@@ -1306,7 +1340,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         title: "Apagar Produto",
         orderid: $stateParams.orderId,
         productid: productid,
-        productname: productname
+        productname: productname,
+        is_parent : is_parent,
+        products_to_delete : arrayProductsToDelete
       }
     }).then(function (modal) {
       modal.element.modal();
@@ -4924,26 +4960,44 @@ app.controller('registerExtraProductionForClosedProductInOrderController', funct
 /*------------------ Controller for the MODAL to DELETE the PRODUCT in the ORDER-----------------------*/
 
 app.controller('ProductDeleteModalController', [
-  '$scope', '$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid', 'productid', 'productname',
-  function ($scope, $http, $element, $urlRouter, $templateCache, $state, title, close, orderid, productid, productname) {
+  '$scope', '$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid', 'productid', 'productname', 'is_parent', 'products_to_delete',
+  function ($scope, $http, $element, $urlRouter, $templateCache, $state, title, close, orderid, productid, productname, is_parent, products_to_delete) {
 
     $scope.title = title;
     $scope.orderid = orderid;
     $scope.productid = productid;
     $scope.productname = productname;
+    
     //  This close function doesn't need to use jQuery or bootstrap, because
     //  the button has the 'data-dismiss' attribute.
 
     //Save Content Modal  
     $scope.yes = function () {
-      var dataObj = {
-        ORDER_ID: $scope.orderid,
-        PRODUCT_ID: $scope.productid,
-      };
 
-      var res = $http.post('/deleteorderproduct', dataObj).then(function (data, status, headers, config) {
-        $state.reload();
-      });
+      if(is_parent == 'N') {
+        
+        var dataObj = {
+          ORDER_ID: $scope.orderid,
+          PRODUCT_ID: $scope.productid,
+        };
+  
+        var res = $http.post('/deleteorderproduct', dataObj).then(function (data, status, headers, config) {
+          $state.reload();
+        });
+
+      } else {
+        
+        var dataObj = {
+          ORDER_ID: $scope.orderid,
+          PRODUCT_ID: products_to_delete,
+        };
+  
+        var res = $http.post('/deletecompoundorderproduct', dataObj).then(function (data, status, headers, config) {
+          $state.reload();
+        });
+
+      }
+
 
     };
     //  This cancel function must use the bootstrap, 'modal' function because

@@ -288,6 +288,13 @@ router.post('/deleteorderproduct', function (req, res) {
   deleteOrderProduct(req, res);
 });
 
+//Delete Compound Product from Order
+router.post('/deletecompoundorderproduct', function (req, res) {
+  console.log("DELETE COMPOUND PRODUCT FROM ORDER");
+  console.log(req.body);
+  deleteOrderCompoundProduct(req, res);
+});
+
 //Delete ALL Products from Order Products. This is executed when we need to delete an Order 
 //and all the products associated
 router.post('/deleteAllProductsFromOrder', function (req, res) {
