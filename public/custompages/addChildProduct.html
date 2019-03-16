@@ -1,5 +1,5 @@
 <div class="wrap"  ng-controller="addChildProductController">
-    <div id="actions">
+    <!-- <div id="actions">
         <div class="row">
             <div class="col-md-12">
                 <div class="header-actions">
@@ -19,15 +19,26 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <div id="add-child">
         <div class="row">
             <div class="col-md-6">
                 <div class="row">
                     <div id="order-table" class="col-md-12">
-                        <div class="row">
-                            <div class="table-heading-before col-md-12">
-                                Produtos Disponíveis
+                        <div class="header-actions">
+                            <div class="row">
+                                <div class="table-heading-before col-md-6">
+                                    Produtos Disponíveis
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="search-wrap">
+                                                <input type="text" name="Pesquisa" ng-model="searchChar" placeholder=" Pesquisar">  
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="order-table-wrap">
@@ -69,11 +80,22 @@
             <div class="col-md-6">
                 <div class="row">
                     <div id="order-table" class="col-md-12">
-                        <div class="row">
-                            <div class="table-heading-before col-md-12">
-                                Produtos Filho
+                        <div class="header-actions">
+                                <div class="row">
+                                    <div class="table-heading-before col-md-6">
+                                        Produtos Filho
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="search-wrap">
+                                                    <input type="text" name="Pesquisa" ng-model="searchChar" placeholder=" Pesquisar">  
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
                         <div class="order-table-wrap">
                             <div class="order-table-header row">
                                 <div class="inner-wrap">

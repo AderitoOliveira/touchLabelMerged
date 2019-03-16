@@ -1182,6 +1182,17 @@ button.button {
     padding-top: 36px;
 }
 
+#order-table{
+    .table-heading-before {
+        padding-bottom: 0px;
+        line-height: 50px;
+        text-indent: 12px;
+    }
+    .header-actions {
+        margin-bottom: 24px;
+    }
+}
+
 .order-labels-content{
     .item-inner-wrap{
         padding-bottom:9px;
