@@ -617,6 +617,20 @@ deleteOrderProduct = function(req, res) {
  });
 }
 
+//DELETE ORDER COMPOUND PRODUCT
+deleteOrderCompoundProduct = function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    con.query('DELETE from orders_products where ORDER_ID = ? and CUSTOMER_PRODUCT_ID in (?)', [req.body.ORDER_ID, req.body.PRODUCT_ID], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
 //DELETE ALL PRODUCTS FROM ORDER PRODUCTS
 deleteAllProductsFromOrder = function(req, res) {
     res.setHeader('Content-Type', 'application/json');
