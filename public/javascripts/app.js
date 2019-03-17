@@ -2615,31 +2615,34 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   
       var productId = $scope.products[i].INTERNAL_PRODUCT_ID;
       
-      if(arrayDistinctProductId[productId] == null) {
-        
-        var distinctOrderQuantity = [];  
-        distinctOrderQuantity.push($scope.products[i].TOTAL_QUANTITY_ORDERED);
+      if($scope.products[i].IS_PARENT == 'N') { //WE WILL ONLY PRINT SINGLE AND CHILD PRODUCTS
 
-        var productInfo = {
-          TOTAL_QUANTITY_ORDERED : $scope.products[i].TOTAL_QUANTITY_ORDERED,
-          DISTINCT_ORDER_QUANTITY : distinctOrderQuantity
+        if(arrayDistinctProductId[productId] == null) {
+          
+          var distinctOrderQuantity = [];  
+          distinctOrderQuantity.push($scope.products[i].TOTAL_QUANTITY_ORDERED);
+
+          var productInfo = {
+            TOTAL_QUANTITY_ORDERED : $scope.products[i].TOTAL_QUANTITY_ORDERED,
+            DISTINCT_ORDER_QUANTITY : distinctOrderQuantity
+          };
+
+          arrayDistinctProductId[productId] = productInfo;
+
+        } else {
+          
+          var distinctOrderQuantity = arrayDistinctProductId[productId].DISTINCT_ORDER_QUANTITY;
+          distinctOrderQuantity.push($scope.products[i].TOTAL_QUANTITY_ORDERED);
+
+          var productInfo = {
+            TOTAL_QUANTITY_ORDERED  : arrayDistinctProductId[productId].TOTAL_QUANTITY_ORDERED + $scope.products[i].TOTAL_QUANTITY_ORDERED,
+            DISTINCT_ORDER_QUANTITY : distinctOrderQuantity
+          };
+
+          arrayDistinctProductId[productId] = productInfo;
+          console.log("TESTE");
         };
-
-        arrayDistinctProductId[productId] = productInfo;
-
-      } else {
-        
-        var distinctOrderQuantity = arrayDistinctProductId[productId].DISTINCT_ORDER_QUANTITY;
-        distinctOrderQuantity.push($scope.products[i].TOTAL_QUANTITY_ORDERED);
-
-        var productInfo = {
-          TOTAL_QUANTITY_ORDERED  : arrayDistinctProductId[productId].TOTAL_QUANTITY_ORDERED + $scope.products[i].TOTAL_QUANTITY_ORDERED,
-          DISTINCT_ORDER_QUANTITY : distinctOrderQuantity
-        };
-
-        arrayDistinctProductId[productId] = productInfo;
-        console.log("TESTE");
-      };
+      }
     }    
 
     var allKeys = Object.keys(arrayDistinctProductId);
