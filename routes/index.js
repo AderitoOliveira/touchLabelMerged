@@ -153,6 +153,9 @@ router.get('/productForModal', function (req, res) {
 
 //GET COMPLETE INFORMATION OF A PRODUCT FOR THE LABELS PRINTING
 router.get('/labelToPrintForProduct/:id', function (req, res) {
+  console.log('************************** ------------------------------------ *******************************');
+  console.log(req.params);
+  console.log('************************** ------------------------------------ *******************************');
   fetchSingleProductLabels(req, res);
 });
 
@@ -763,5 +766,42 @@ router.post('/authenticate', function (req, res) {
   console.log("AUTHENTICATION");
   authenticateLogin(req, res);
 });
+
+
+router.post('/vuePrintLabels', function (req, res) {
+
+    var labelToPrint = req.body;
+
+    console.log(res.body)
+    console.log("-------------------LABEL BODY TO PRINT-----------------");
+    console.log(labelToPrint);
+    console.log(req.params.xpto);
+    console.log(req.body.xpto);
+    console.log("-------------------------------------------------------");
+
+    
+    //label array = {
+    //  customer_product_id, 
+    //  order_id, 
+    //  quantity_article_labels, 
+    //  box_label_already_printed
+    //} 
+    //fetchSingleProductLabels(req, res);
+
+    if(req.body.labelTypeToPrint == 'Article') {
+
+      console.log("ARTICLE");
+
+
+    } else if (req.body.labelTypeToPrint == 'Box') {
+      console.log("BOX");
+      var request = new XMLHttpRequest();
+    }
+
+
+
+});
+
+
 
 module.exports = router;

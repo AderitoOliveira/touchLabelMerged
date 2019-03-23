@@ -2205,7 +2205,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       for (i = 0; i < $scope.productTechSheet.length; i++) {
 
         //PAINTED COLD - IT MUST CONTAIN Ref_Paint
-        if ($scope.productTechSheet[i].Ref_Paint != null) {
+        if ($scope.productTechSheet[i].Ref_Paint != null && $scope.productTechSheet[i].Ref_Paint != "") {
 
           currentRefPaint = $scope.productTechSheet[i].Ref_Paint + ' ( FRIO)';
 
@@ -2237,7 +2237,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         }
 
         //GLASSED (HOT) - IT MUST CONTAIN Ref_Glassed
-        if ($scope.productTechSheet[i].Ref_Glassed != null) {
+        if ($scope.productTechSheet[i].Ref_Glassed != null && $scope.productTechSheet[i].Ref_Glassed != "") {
           currentRefPaint = $scope.productTechSheet[i].Ref_Glassed + ' (VIDRADO)';
 
           if (arrayForAll[currentRefPaint] != null) {
