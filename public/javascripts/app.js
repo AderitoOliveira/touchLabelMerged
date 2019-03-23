@@ -856,7 +856,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
   }
 
   //PRINT LABEL ARTICLE
-  $scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductName, ProductID, ZPLString, ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, BoxBarCodeType, Quantity) {
+  $scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductName, ProductID, ZPLString, ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, BoxBarCodeType, Quantity, labelsWith2Columns) {
 
     if (BarCodeNumber.charAt(0) === '0') {
       BarCodeNumber = BarCodeNumber.slice(1);
@@ -872,11 +872,16 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
     //GS1-128 BarCode
     var EanWithCheckDigit = BarCodeNumber + checkDigit;
     var quantityToReplace = 0;
-    var labelsWith2Columns = false;
+
+    if(labelsWith2Columns) {
+      labelsWith2Columns = true;
+    } else {
+      labelsWith2Columns = false;
+    }
 
     function replaceAll(str, map) {
       for (key in map) {
-        str2 = str.replace(key, map[key]);
+        str2 = str.split(key).join(map[key]);
         str = str2;
         str2 = null;
       }
@@ -890,7 +895,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
     };
 
     if (labelsWith2Columns == false) {
-      quantityToReplace = Quantity;
+      map._PRINT_QUANTITY = Quantity;
       var sendToPrinter = replaceAll(ZPLString, map);
     } else {
       if (Quantity == 1) {
@@ -6107,7 +6112,8 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
 
       function replaceAll(str, map) {
         for (key in map) {
-          str2 = str.replace(key, map[key]);
+          //str2 = str.replace(key, map[key]);
+          str2 = str.split(key).join(map[key]);
           str = str2;
           str2 = null;
         }
@@ -6755,7 +6761,7 @@ app.factory('sendZPLCodeToPrinter', function ($http) {
     // Actually sends the request to the server.
 
     console.log('sending...');
-    request.timeout = 100;
+    //request.timeout = 100;
     request.send(Zpl);
     //request.done;
 

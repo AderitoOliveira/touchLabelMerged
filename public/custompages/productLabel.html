@@ -33,13 +33,13 @@
               <div class="label-bottom">
                 <div class="label-options">
                     <div class="checkbox-wrap">
-                      <input id="label-type" name="label-type" class="special-checkbox" type="checkbox" ng-model="box" ng-change=""/>
+                      <input id="label-type" name="label-type" class="special-checkbox" type="checkbox" ng-model="qtyLabelsByLine" ng-change=""/>
                       <span class="checkbox-item"></span>
                       <label for="label-type">2 etiquetas por linha</label>
                     </div>
                 </div>
                 <div class="label-button">
-                    <button type="submit" ng-click="printLabelArticle(product.ARTICLE_PRINTER_IP_ADDRESS, product.ARTICLE_PRINTER_PORT, product.BAR_CODE_NUMBER, product.PRODUCT_NAME_FOR_LABEL, product.CUSTOMER_PRODUCT_ID, product.ZPL_STRING_ARTICLE, product.ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, product.ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, product.ARTICLE_BARCODE_TYPE, qtyArticle)" class="btn btn-default btn-save"><img src="assets/icons/symbol-print.svg" width="20px" height="18px" />Imprimir</button>
+                    <button type="submit" ng-click="printLabelArticle(product.ARTICLE_PRINTER_IP_ADDRESS, product.ARTICLE_PRINTER_PORT, product.BAR_CODE_NUMBER, product.PRODUCT_NAME_FOR_LABEL, product.CUSTOMER_PRODUCT_ID, product.ZPL_STRING_ARTICLE, product.ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, product.ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, product.ARTICLE_BARCODE_TYPE, qtyArticle, qtyLabelsByLine)" class="btn btn-default btn-save"><img src="assets/icons/symbol-print.svg" width="20px" height="18px" />Imprimir</button>
                 </div>
               </div>
             </div>
