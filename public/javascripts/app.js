@@ -805,7 +805,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
 
       var sendToPrinter = replaceAll(ZPLString, map);
 
-      sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
+      sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
     }
 
     if (BoxBarCodeType == 'EAN13') {
@@ -850,7 +850,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
 
       var sendToPrinter = replaceAll(ZPLString, map);
 
-      sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
+      sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
     }
 
   }
