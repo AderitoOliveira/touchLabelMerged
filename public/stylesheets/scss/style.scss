@@ -1182,6 +1182,17 @@ button.button {
     padding-top: 36px;
 }
 
+#order-table{
+    .table-heading-before {
+        padding-bottom: 0px;
+        line-height: 50px;
+        text-indent: 12px;
+    }
+    .header-actions {
+        margin-bottom: 24px;
+    }
+}
+
 .order-labels-content{
     .item-inner-wrap{
         padding-bottom:9px;
@@ -1492,7 +1503,7 @@ $colorVariable: var(--value);
 }
 
 #add-order .add-product-form{
-    .col-md-3:first-child .input-wrap, {
+    .col-md-3:first-child .input-wrap {
         margin-left: 8px !important;
         width: calc(100% - 8px);
     }
@@ -1556,7 +1567,7 @@ $colorVariable: var(--value);
     cursor: default;
 }
 .order-product-details-add{
-    .col-md-3:first-child .input-wrap, {
+    .col-md-3:first-child .input-wrap {
         margin-left: 8px !important;
         width: calc(100% - 8px);
     }
@@ -1702,7 +1713,7 @@ $colorVariable: var(--value);
     }
 }
 
-.form-wrap, .label-quantity {
+.form-wrap, .label-quantity, #main-action-wrap {
     padding-top: 36px;
     label.control-label {
         width: 100%;
@@ -2389,7 +2400,7 @@ thead tr th {
             top: 0%;
             left: 25px;
             width: 10px;
-            border: 2px solid #222;
+            border: 2px solid #fff;
             border-top: 0px;
             border-right: 0px;
             z-index:1;
@@ -2401,10 +2412,13 @@ thead tr th {
             top: 0px;
             left: 5px;
             height: 100%;
-            background-color: #fff;
+            background-color: rgba(39, 85, 174,0.8);
             width: 30px;
             box-shadow: inset 0 1px 2px 0 rgba(0,0,0,0.25);
         }
+    }
+    .item-order-state {
+        padding-right: 3px;
     }
 }
 
@@ -2438,6 +2452,21 @@ a.btn-remove-order {
         padding:12px 12px 14px;
         font-size:16px;
     }
+}
+
+.item-action{
+    display:flex;
+    justify-content: center;
+}
+
+.table-heading-before {
+    font-size: 20px;
+    font-weight: bold;
+    padding-bottom: 24px;
+}
+
+.header-client-id{
+    text-indent:6px;
 }
 
 .home-block{

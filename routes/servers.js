@@ -7,8 +7,7 @@ var mysql = require('mysql');
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'
-});
- */
+}); */
 
 
 var con = mysql.createConnection({
@@ -18,6 +17,7 @@ var con = mysql.createConnection({
     database: 'easylabeldb',
     port: '3306'	
 });
+
 
 
 //GET ALL CLIENTS
@@ -152,6 +152,40 @@ fetchAllProducts = function(data, callback) {
 });
 }
 
+//GET ALL PRODUCTS FOR THE ADD CHILD TO COMPOUND PRODUCT PAGE
+fetchAllProductsForChildPage = function(data, callback) {
+    con.connect(function(err) {
+    con.query('SELECT CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME FROM products WHERE IS_PARENT = \'N\'', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET ALL PRODUCTS");      
+    });
+});
+}
+
+//GET ALL PRODUCTS THAT ARE CHILDREN OF THE PARENT PRODUCT
+childProductsOfParentProduct = function(req, callback) {
+    con.connect(function(err) {
+    con.query('SELECT childProducts.CUSTOMER_PRODUCT_ID, childProducts.INTERNAL_PRODUCT_ID, childProducts.PRODUCT_NAME, childTechSheet.Qty_By_Pallet_Compound_Product from (SELECT CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME FROM products where PARENT_CUSTOMER_PRODUCT_ID = ? ) as childProducts LEFT OUTER JOIN (SELECT CUSTOMER_PRODUCT_ID, Qty_By_Pallet_Compound_Product FROM products_technical_sheet) as childTechSheet ON childProducts.CUSTOMER_PRODUCT_ID = childTechSheet.CUSTOMER_PRODUCT_ID', [req.params.customer_product_id], function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET ALL PRODUCTS");      
+    });
+});
+}
+
 //GET SINGLE PRODUCT INFORMATION
 fetchSingleProduct = function(data, callback) {
     con.connect(function(err) {
@@ -190,7 +224,7 @@ deleteProduct = function(data, callback) {
 
 fetchProductsForOrderModal = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME FROM products', function(err, rows) {
+    con.query('SELECT product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.IS_PARENT, productTechSheet.Qty_By_Pallet_Compound_Product FROM (SELECT INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, IS_PARENT FROM products) as product left outer join (SELECT CUSTOMER_PRODUCT_ID, Qty_By_Pallet_Compound_Product FROM products_technical_sheet) as productTechSheet ON product.CUSTOMER_PRODUCT_ID = productTechSheet.CUSTOMER_PRODUCT_ID', function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -252,7 +286,7 @@ fetchLabelsConfiguration = function(data, callback) {
 //GET ALL ORDERS
 fetchAllOrders = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT s1.ORDER_ID, s1.CLIENT_ID, s1.CLIENT_NAME, DATE_FORMAT(s1.CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE, DATE_FORMAT(s1.MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") AS MODIFIED_DATE, IFNULL(SUM(s2.TOTAL_QUANTITY_ORDERED), 0) AS QTY_ORDERED, IFNULL(SUM(s3.TOTAL_PRODUCTS_PRODUCED), 0) AS QTY_PRODUCED, STATUS FROM (select ORDER_ID, CLIENT_ID, CLIENT_NAME, CREATED_DATE, MODIFIED_DATE, STATUS from orders group by ORDER_ID) as s1 LEFT OUTER JOIN (SELECT ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, SUM(TOTAL_QUANTITY_ORDERED) AS TOTAL_QUANTITY_ORDERED  FROM orders_products group by ORDER_ID) as s2 ON s1.ORDER_ID = s2.ORDER_ID LEFT OUTER JOIN (SELECT ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PRODUCED) AS TOTAL_PRODUCTS_PRODUCED FROM order_products_production_registry GROUP BY ORDER_ID) as s3 ON s1.ORDER_ID = s3.ORDER_ID GROUP BY s1.ORDER_ID ORDER BY s1.MODIFIED_DATE asc', function(err, rows) {
+    con.query('select s1.ORDER_ID, s1.CLIENT_ID, s1.CLIENT_NAME, date_format(s1.CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(s1.MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE, IFNULL(sum(s2.TOTAL_QUANTITY_ORDERED), 0) as QTY_ORDERED, IFNULL(sum(s3.TOTAL_PRODUCTS_PRODUCED), 0) as QTY_PRODUCED, STATUS from (select ORDER_ID, CLIENT_ID, CLIENT_NAME, CREATED_DATE, MODIFIED_DATE, STATUS from orders group by ORDER_ID) as s1 left outer join (select ord_.ORDER_ID, ord_.INTERNAL_PRODUCT_ID, ord_.CUSTOMER_PRODUCT_ID, sum(ord_.TOTAL_QUANTITY_ORDERED) as TOTAL_QUANTITY_ORDERED from orders_products ord_, products prod where ord_.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID and prod.IS_PARENT = \'N\' group by ORDER_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID left outer join (select ord_registry.ORDER_ID, ord_registry.INTERNAL_PRODUCT_ID, ord_registry.CUSTOMER_PRODUCT_ID, sum(ord_registry.TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry ord_registry, products prod where ord_registry.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID and prod.IS_PARENT = \'N\' group by ORDER_ID) as s3 on s1.ORDER_ID = s3.ORDER_ID group by s1.ORDER_ID order by s1.MODIFIED_DATE asc', function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -288,7 +322,7 @@ fetchAllOrdersHistoric = function(data, callback) {
 fetchAllProductsForAnOrder = function(data, callback) {
     con.connect(function(err) {
     // Query Correcta --2018-08-30 con.query('SELECT s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED, 0) AS TOTAL_PRODUCTS_PRODUCED FROM (SELECT ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE, DATE_FORMAT(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") AS MODIFIED_DATE FROM orders_products WHERE ORDER_ID = ?) AS s1 LEFT OUTER JOIN (SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PRODUCED) AS TOTAL_PRODUCTS_PRODUCED FROM order_products_production_registry GROUP BY ORDER_ID, CUSTOMER_PRODUCT_ID ) AS s2 ON s1.ORDER_ID = s2.ORDER_ID AND s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID', [data.params.id], function(err, rows) {
-    con.query('SELECT s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED, 0) AS TOTAL_PRODUCTS_PRODUCED, IFNULL(s5.TOTAL_PRODUCTS_PAINTED, 0) AS TOTAL_PRODUCTS_PAINTED, s3.IMAGE_NAME, s3.IMAGE_PATH, s3.PRICE_EURO_1, s4.QTY_BY_PALLET FROM (SELECT ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE, DATE_FORMAT(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") AS MODIFIED_DATE FROM orders_products WHERE ORDER_ID = ?) AS s1 LEFT OUTER JOIN (SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PRODUCED) AS TOTAL_PRODUCTS_PRODUCED FROM order_products_production_registry GROUP BY ORDER_ID, CUSTOMER_PRODUCT_ID) AS s2 ON s1.ORDER_ID = s2.ORDER_ID AND s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID LEFT OUTER JOIN (SELECT IMAGE_NAME, IMAGE_PATH, CUSTOMER_PRODUCT_ID, PRICE_EURO_1 FROM products) AS s3 ON s1.CUSTOMER_PRODUCT_ID = s3.CUSTOMER_PRODUCT_ID LEFT OUTER JOIN (SELECT CUSTOMER_PRODUCT_ID, QTY_BY_PALLET FROM products_technical_sheet) AS s4 ON s1.CUSTOMER_PRODUCT_ID = s4.CUSTOMER_PRODUCT_ID LEFT OUTER JOIN (SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PAINTED) AS TOTAL_PRODUCTS_PAINTED FROM order_products_painting_registry GROUP BY ORDER_ID, CUSTOMER_PRODUCT_ID) AS s5 ON s1.ORDER_ID = s5.ORDER_ID AND s1.CUSTOMER_PRODUCT_ID = s5.CUSTOMER_PRODUCT_ID', [data.params.id], function(err, rows) {
+    con.query('select s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED,0) as TOTAL_PRODUCTS_PRODUCED, IFNULL(s5.TOTAL_PRODUCTS_PAINTED,0) as TOTAL_PRODUCTS_PAINTED, s3.IMAGE_NAME, s3.IMAGE_PATH, s3.PRICE_EURO_1, s3.IS_PARENT, s3.PARENT_CUSTOMER_PRODUCT_ID, s4.QTY_BY_PALLET from (select ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE from orders_products where ORDER_ID = ?) as s1 left outer join (select ORDER_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID left outer join (select IMAGE_NAME, IMAGE_PATH, CUSTOMER_PRODUCT_ID, PRICE_EURO_1, IS_PARENT, PARENT_CUSTOMER_PRODUCT_ID from products) as s3 on s1.CUSTOMER_PRODUCT_ID = s3.CUSTOMER_PRODUCT_ID left outer join (select CUSTOMER_PRODUCT_ID, QTY_BY_PALLET from products_technical_sheet) as s4 on s1.CUSTOMER_PRODUCT_ID = s4.CUSTOMER_PRODUCT_ID left outer join (select ORDER_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PAINTED) as TOTAL_PRODUCTS_PAINTED from order_products_painting_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID) as s5 on s1.ORDER_ID = s5.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s5.CUSTOMER_PRODUCT_ID order by IS_PARENT desc', [data.params.id], function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -582,6 +616,20 @@ deleteOrderProduct = function(req, res) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     con.connect(function(err) {
     con.query('DELETE from orders_products where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [req.body.ORDER_ID, req.body.PRODUCT_ID], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
+//DELETE ORDER COMPOUND PRODUCT
+deleteOrderCompoundProduct = function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    con.query('DELETE from orders_products where ORDER_ID = ? and CUSTOMER_PRODUCT_ID in (?)', [req.body.ORDER_ID, req.body.PRODUCT_ID], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });
@@ -1404,6 +1452,36 @@ getProductionLast7Days = function(data, callback) {
 
     });
 });
+}
+
+//INSERT/UPDATE CHILD PRODUCTS FOR THE PARENT PRODUCT
+insertUpdateChildProducts = function(req, res) {
+    console.log(req.body);
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+     con.query('update products set PARENT_CUSTOMER_PRODUCT_ID = ? where CUSTOMER_PRODUCT_ID in (?)',  [req.body.PARENT_CUSTOMER_PRODUCT_ID, req.body.CHILD_CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
+//DELETE SINGLE CHILD PRODUCT FOR THE PARENT PRODUCT
+deleteChildProduct = function(req, res) {
+    console.log(req.body);
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+     con.query('update products set PARENT_CUSTOMER_PRODUCT_ID = null where CUSTOMER_PRODUCT_ID = ?',  [req.body.CHILD_CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
 }
 
 //GET USER INFO

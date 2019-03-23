@@ -1,0 +1,142 @@
+<div class="wrap"  ng-controller="addChildProductController">
+    <!-- <div id="actions">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header-actions">
+                    <div class="row">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6 vert-spacer"></div>
+                                <div class="col-md-6">
+                                    <div class="search-wrap">
+                                        <input type="text" name="Pesquisa" ng-model="searchChar" placeholder=" Pesquisar">  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div id="add-child">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div id="order-table" class="col-md-12">
+                        <div class="header-actions">
+                            <div class="row">
+                                <div class="table-heading-before col-md-6">
+                                    Produtos Disponíveis
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="search-wrap">
+                                                <input type="text" name="Pesquisa" ng-model="searchChar" placeholder=" Pesquisar">  
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-table-wrap">
+                            <div class="order-table-header row">
+                                <div class="inner-wrap">
+                                    <div class="col-md-3 header-client-id">Ref. Cliente</div>
+                                    <div class="col-md-3 header-internal-id">Ref. Interna</div>
+                                    <div class="col-md-4 header-name">Nome</div>
+                                    <div class="col-md-2 header-action"></div>
+                                </div>
+                            </div>
+                            <div class="order-table-content row">
+                                <div class="col-md-12" dir-paginate="product in products |filter:searchChar | itemsPerPage:10">
+                                    <div class="row">
+                                        <div class="item-inner-wrap">
+                                            <div class="col-md-3 table-item item-client-id">{{product.CUSTOMER_PRODUCT_ID}}</div>
+                                            <div class="col-md-3 table-item item-internal-id">{{product.INTERNAL_PRODUCT_ID}}</div>
+                                            <div class="col-md-4 table-item item-name">{{product.PRODUCT_NAME}}</div>
+                                            <div class="col-md-2 table-item item-action">
+                                                <a id="btn-add-child" class="btn btn-sm btn-success" ng-click="addChild(product.CUSTOMER_PRODUCT_ID, product.INTERNAL_PRODUCT_ID, product.PRODUCT_NAME)" data-toggle="tooltip" title="">
+                                                    <img src="assets/icons/btn-success.svg" width="24px" height="24px" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div align="center">
+                                <dir-pagination-controls
+                                        max-size="7"
+                                        direction-links="true"
+                                        boundary-links="true" >
+                                </dir-pagination-controls>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div id="order-table" class="col-md-12">
+                        <div class="header-actions">
+                                <div class="row">
+                                    <div class="table-heading-before col-md-6">
+                                        Produtos Filho
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="search-wrap">
+                                                    <input type="text" name="Pesquisa" ng-model="searchCharChild" placeholder=" Pesquisar">  
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="order-table-wrap">
+                            <div class="order-table-header row">
+                                <div class="inner-wrap">
+                                    <div class="col-md-3 header-client-id">Ref. Cliente</div>
+                                    <div class="col-md-3 header-internal-id">Ref. Interna</div>
+                                    <div class="col-md-4 header-name">Nome</div>
+                                    <div class="col-md-2 header-action"></div>
+                                </div>
+                            </div>
+                            <div class="order-table-content row">
+                                <div class="col-md-12" dir-paginate="childProduct in childProducts |filter:searchCharChild | itemsPerPage:100">
+                                    <div class="row">
+                                        <div class="item-inner-wrap">
+                                            <div class="col-md-3 table-item item-client-id" >{{childProduct.CUSTOMER_PRODUCT_ID}}</div>
+                                            <div class="col-md-3 table-item item-internal-id" >{{childProduct.INTERNAL_PRODUCT_ID}}</div>
+                                            <div class="col-md-4 table-item item-name" >{{childProduct.PRODUCT_NAME}}</div>
+                                            <div class="col-md-2 table-item item-action" >
+                                                <a class="btn btn-sm btn-danger" ng-click="removeChildProduct(childProduct.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="">
+                                                    <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-actions">
+        <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-3" id="main-action-wrap">
+                <button type="submit" name="product-save-children" id="product-save-children" ng-click="goback()" class="btn btn-default btn-cancel"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Cancelar</button>
+            </div>
+            <div class="col-md-3" id="main-action-wrap">
+                <button type="submit" name="product-save-children" id="product-save-children" ng-click="save()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

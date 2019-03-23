@@ -123,6 +123,17 @@ router.get('/products', function (req, res) {
   fetchAllProducts(req, res);
 });
 
+//GET ALL PRODUCTS THAT ARE CHILDREN OF THE PARENT PRODUCT
+router.get('/childProductsOfParentProduct/:customer_product_id', function (req, res) {
+  childProductsOfParentProduct(req, res);
+});
+
+
+//GET ALL PRODUCTS FOR THE ADD CHILD TO COMPOUND PRODUCT PAGE
+router.get('/productsForChildPage', function (req, res) {
+  fetchAllProductsForChildPage(req, res);
+});
+
 //Get SINGLE Product information
 router.get('/product/:id', function (req, res) {
   fetchSingleProduct(req, res);
@@ -278,6 +289,13 @@ router.post('/deleteorderproduct', function (req, res) {
   console.log("DELETE PRODUCT FROM ORDER");
   console.log(req.body);
   deleteOrderProduct(req, res);
+});
+
+//Delete Compound Product from Order
+router.post('/deletecompoundorderproduct', function (req, res) {
+  console.log("DELETE COMPOUND PRODUCT FROM ORDER");
+  console.log(req.body);
+  deleteOrderCompoundProduct(req, res);
 });
 
 //Delete ALL Products from Order Products. This is executed when we need to delete an Order 
@@ -627,6 +645,17 @@ router.get('/getProductionLast7Days', function (req, res) {
   getProductionLast7Days(req, res);
 });
 
+//INSERT/UPDATE CHILD PRODUCTS FOR THE PARENT PRODUCT
+router.post('/insertUpdateChildProducts', function (req, res) {
+  console.log("INSERT/UPDATE CHILD PRODUCTS FOR THE PARENT PRODUCT");
+  insertUpdateChildProducts(req, res);
+});
+
+//DELETE SINGLE CHILD PRODUCT FOR THE PARENT PRODUCT
+router.post('/deleteChildProduct', function (req, res) {
+  console.log("DELETE SINGLE CHILD PRODUCT FOR THE PARENT PRODUCT");
+  deleteChildProduct(req, res);
+});
 
 //GET THE PASSWORD FOR THE USER FROM THE DATABASE
 router.get('/getUserInfo/:User', function (req, res) {
