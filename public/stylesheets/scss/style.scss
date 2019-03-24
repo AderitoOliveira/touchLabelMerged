@@ -1193,6 +1193,27 @@ button.button {
     }
 }
 
+#parent-section{
+    .item-label-checkbox {
+        width: 100%;
+        max-width: 100%;
+        padding: 12px 24px;
+        border: 1px solid #dedede;
+        background-color: #fdfdfd;
+        box-shadow: inset 0px 0px 4px #dedede;
+        float:left;
+        border-radius: 2px;
+        label {
+            width: auto;
+            padding-left: 30px;
+            line-height: 26px;
+            font-size: 16px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+    }
+}
+
 .order-labels-content{
     .item-inner-wrap{
         padding-bottom:9px;
@@ -1715,7 +1736,7 @@ $colorVariable: var(--value);
 
 .form-wrap, .label-quantity, #main-action-wrap {
     padding-top: 36px;
-    label.control-label {
+    label.control-label, .control-label {
         width: 100%;
         float: left;
         text-align: left !important;

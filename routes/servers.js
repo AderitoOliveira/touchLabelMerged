@@ -1,22 +1,22 @@
 var mysql = require('mysql');
 
 
-/* var con = mysql.createConnection({
+var con = mysql.createConnection({
     host: '127.0.0.1',
-    user: 'easylabeldb',
-    password: 'easylabeldb',
+    user: 'root',
+    password: '',
     database: 'easylabeldb',
     port: '3306'
-}); */
+});
 
 
-var con = mysql.createConnection({
+/* var con = mysql.createConnection({
     host: '172.30.184.178',
     user: 'easylabeldb',
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'	
-});
+}); */
 
 
 
@@ -616,20 +616,6 @@ deleteOrderProduct = function(req, res) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     con.connect(function(err) {
     con.query('DELETE from orders_products where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [req.body.ORDER_ID, req.body.PRODUCT_ID], function (error, results, fields) {
-    if (error) throw error;
-    res.end(JSON.stringify(results));
-  });
- });
-}
-
-//DELETE ORDER COMPOUND PRODUCT
-deleteOrderCompoundProduct = function(req, res) {
-    res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
-    con.connect(function(err) {
-    con.query('DELETE from orders_products where ORDER_ID = ? and CUSTOMER_PRODUCT_ID in (?)', [req.body.ORDER_ID, req.body.PRODUCT_ID], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });
