@@ -110,13 +110,31 @@
                             <input type="barCode" class="form-control" id="barCode" placeholder="Número do código de Barras" ng-model="barCode">
                           </div>
                       </div>
-                      <div class="form-input-item col-md-6">
-                          <label class="control-label nolabel"></label>
-                          <div class="input-wrap-inner">
-                              <button type="submit" ng-show="techSheetExist == true" ng-click="editTechnicalSheet()" class="btn btn-default btn-tech-sheet"><img src="assets/icons/btn-add.svg" width="20px" height="20px">Editar Ficha Técnica</button> 
+                    </div>
+                  </div>
+                  <div class="col-md-12 form-row">
+                      <div class="row">
+                          <div id="parent-section" class="col-md-12">
+                              <span class="control-label">Produto Composto</span>
+                              <div class="item-label-checkbox">
+                                  <div class="checkbox-wrap">
+                                      <input id="parent-checkbox" class="special-checkbox" type="checkbox" ng-model="box" ng-change=""/>
+                                      <span class="checkbox-item"></span>
+                                      <label for="parent-checkbox">Produto Pai</label>
+                                  </div>
+                              </div>
                           </div>
                       </div>
-                    </div>
+                  </div>
+                  <div class="col-md-12 form-row">
+                      <div class="row">
+                          <div class="form-input-item col-md-6">
+                              <label class="control-label nolabel"></label>
+                              <div class="input-wrap-inner">
+                                  <button type="submit" ng-show="techSheetExist == true" ng-click="editTechnicalSheet()" class="btn btn-default btn-tech-sheet"><img src="assets/icons/btn-add.svg" width="20px" height="20px">Editar Ficha Técnica</button> 
+                              </div>
+                          </div>
+                      </div>
                   </div>
                   <div class="col-md-12 button-holder">
                     <div class="row">
