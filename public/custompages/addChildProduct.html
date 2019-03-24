@@ -89,7 +89,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="search-wrap">
-                                                    <input type="text" name="Pesquisa" ng-model="searchChar" placeholder=" Pesquisar">  
+                                                    <input type="text" name="Pesquisa" ng-model="searchCharChild" placeholder=" Pesquisar">  
                                                 </div>
                                             </div>
                                         </div>
@@ -106,7 +106,7 @@
                                 </div>
                             </div>
                             <div class="order-table-content row">
-                                <div class="col-md-12" dir-paginate="childProduct in childProducts |filter:searchChar | itemsPerPage:100">
+                                <div class="col-md-12" dir-paginate="childProduct in childProducts |filter:searchCharChild | itemsPerPage:100">
                                     <div class="row">
                                         <div class="item-inner-wrap">
                                             <div class="col-md-3 table-item item-client-id" >{{childProduct.CUSTOMER_PRODUCT_ID}}</div>
