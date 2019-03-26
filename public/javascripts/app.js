@@ -7,7 +7,7 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
       url: '/editProduct',
       templateUrl: '../custompages/editProduct.html',
       //controller: 'editproducts',
-      params: { productName: null, customerProductId: null, productId: null, clientname: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, preco1: null, preco2: null }
+      params: { productName: null, customerProductId: null, productId: null, clientname: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, preco1: null, preco2: null, isparent:null}
     })
     .state('home', {
       url: '/',
@@ -124,13 +124,13 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
       url: '/createTechnicalSheet',
       templateUrl: '../custompages/createTechnicalSheet.html',
       controller: 'createTechSheet',
-      params: { productName: null, customerProductId: null, internalProductId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null }
+      params: { productName: null, customerProductId: null, internalProductId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, isparent: null}
     })
     .state('editTechnicalSheet', {
       url: '/editTechnicalSheet',
       templateUrl: '../custompages/editTechnicalSheet.html',
       controller: 'editTechSheet',
-      params: { productName: null, customerProductId: null, productId: null, clientName: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, preco1: null, preco2:null }
+      params: { productName: null, customerProductId: null, productId: null, clientName: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, preco1: null, preco2:null, isparent: null }
     })
     .state('configuration', {
       url: '/configuration',
@@ -3150,6 +3150,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
   $scope.numArticleByBox = $stateParams.numArticleByBox;
   $scope.preco1 = $stateParams.preco1;
   $scope.preco2 = $stateParams.preco2;
+  $scope.isparent = $stateParams.isparent;
 
   $scope.data = [];
   var productId = $stateParams.productId;
@@ -3224,7 +3225,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
     var res = $http.post('/insertProductTechSheet', dataObj).then(function (data, status, headers, config) {
       var currentPageTemplate = $state.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
-      $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2 });
+      $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2, 'isparent': $scope.isparent});
 
     });
 
@@ -3543,7 +3544,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
   $scope.back = function () {
     var currentPageTemplate = $state.current.templateUrl;
     $templateCache.remove(currentPageTemplate);
-    $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2 });
+    $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2, 'isparent': $scope.isparent});
   };
 
 });
@@ -3565,6 +3566,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
   $scope.numArticleByBox = $stateParams.numArticleByBox;
   $scope.preco1 = $stateParams.preco1;
   $scope.preco2 = $stateParams.preco2;
+  $scope.isparent = $stateParams.isparent;
 
 
   $scope.data = [];
@@ -3678,7 +3680,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
     var res = $http.post('/updateProductTechSheet', dataObj).then(function (data, status, headers, config) {
       var currentPageTemplate = $state.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
-      $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2 });
+      $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2, 'isparent': $scope.isparent});
 
     });
 
@@ -3687,7 +3689,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
   $scope.back = function () {
     var currentPageTemplate = $state.current.templateUrl;
     $templateCache.remove(currentPageTemplate);
-    $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2 });
+    $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2, 'isparent': $scope.isparent});
   };
 
 
@@ -4275,8 +4277,8 @@ app.controller('ProductsController', function ($scope, $http, $location, $rootSc
 
 
   //EDITAR Produto
-  $scope.editProductPath = function (productName, customerProductId, productId, clientname, imageName, barCode, nameInTheLabel, numArticleByBox, preco1, preco2) {
-    $state.transitionTo("editProduct", { 'productName': productName, 'customerProductId': customerProductId, 'productId': productId, 'clientname': clientname, 'imageName': imageName, 'barCode': barCode, 'nameInTheLabel': nameInTheLabel, 'numArticleByBox': numArticleByBox, 'preco1': preco1, 'preco2': preco2 });
+  $scope.editProductPath = function (productName, customerProductId, productId, clientname, imageName, barCode, nameInTheLabel, numArticleByBox, preco1, preco2, isparent) {
+    $state.transitionTo("editProduct", { 'productName': productName, 'customerProductId': customerProductId, 'productId': productId, 'clientname': clientname, 'imageName': imageName, 'barCode': barCode, 'nameInTheLabel': nameInTheLabel, 'numArticleByBox': numArticleByBox, 'preco1': preco1, 'preco2': preco2, 'isparent': isparent});
   }
 
   //IMPRIMIR ETIQUETAS do Produto
@@ -4360,6 +4362,13 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
   $scope.techSheetExist = $stateParams.techSheetExist;
   $scope.preco1 = $stateParams.preco1;
   $scope.preco2 = $stateParams.preco2;
+  $scope.isparentproduct = "";
+  
+  if($stateParams.isparent == 'Y' || $stateParams.isparent == true) {
+    $scope.isparentproduct = true;
+  } else if ($stateParams.isparent == 'N' || $stateParams.isparent == false) {
+    $scope.isparentproduct = false;
+  }
 
   $scope.image = '/images' + '/' + $stateParams.imageName;
 
@@ -4406,6 +4415,12 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
       $scope.clientname = $scope.clientname.CLIENT_NAME;
     }
 
+    if($scope.isparentproduct == true) {
+      $scope.isparentproduct = 'Y';
+    } else {
+      $scope.isparentproduct = 'N';
+    }
+
     var dataObj = {
       productname: $scope.productName,
       internalproductid: $scope.productId,
@@ -4416,7 +4431,8 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
       numArticleByBox: $scope.numArticleByBox,
       nameInTheLabel: $scope.nameInTheLabel,
       preco1: $scope.preco1,
-      preco2: $scope.preco2
+      preco2: $scope.preco2,
+      isparent: $scope.isparentproduct 
     };
 
     $("#product-edit-form").validate({
@@ -4455,12 +4471,12 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
 
   $scope.createTechnicalSheet = function () {
     //$state.go("editImage", null, { reload: true });
-    $state.transitionTo("createTechnicalSheet", { 'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'internalProductId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox });
+    $state.transitionTo("createTechnicalSheet", { 'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'internalProductId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'isparent': $scope.isparentproduct});
   };
 
   $scope.editTechnicalSheet = function () {
     //$state.go("editImage", null, { reload: true });
-    $state.transitionTo("editTechnicalSheet", { 'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'productId': $scope.productId, 'clientName': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2});
+    $state.transitionTo("editTechnicalSheet", { 'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'productId': $scope.productId, 'clientName': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2, 'isparent': $scope.isparentproduct});
   };
 
   $scope.cloneProduct = function (customerProductId) {
@@ -4621,14 +4637,14 @@ app.controller('addChildProductController', ['$http', '$scope', '$rootScope', '$
     }
 
     var res = $http.post('/insertUpdateChildProducts', dataToSave).then(function (data, status, headers, config) {
-      $state.transitionTo("editProduct", { 'productName': $stateParams.productName, 'customerProductId': customerProductId, 'clientname': $stateParams.clientname, 'productId': $stateParams.productId, 'clientname': $stateParams.clientname, 'imageName': $stateParams.imageName, 'barCode': $stateParams.barCode, 'nameInTheLabel': $stateParams.nameInTheLabel, 'numArticleByBox': $stateParams.numArticleByBox, 'preco1': $stateParams.preco1, 'preco2': $stateParams.preco2 });
+      $state.transitionTo("editProduct", { 'productName': $stateParams.productName, 'customerProductId': customerProductId, 'clientname': $stateParams.clientname, 'productId': $stateParams.productId, 'clientname': $stateParams.clientname, 'imageName': $stateParams.imageName, 'barCode': $stateParams.barCode, 'nameInTheLabel': $stateParams.nameInTheLabel, 'numArticleByBox': $stateParams.numArticleByBox, 'preco1': $stateParams.preco1, 'preco2': $stateParams.preco2, 'isparent': $stateParams.isparent });
     });
 
 
   }
 
   $scope.goback = function () {
-    $state.transitionTo("editProduct", { 'productName': $stateParams.productName, 'customerProductId': customerProductId, 'clientname': $stateParams.clientname, 'productId': $stateParams.productId, 'clientname': $stateParams.clientname, 'imageName': $stateParams.imageName, 'barCode': $stateParams.barCode, 'nameInTheLabel': $stateParams.nameInTheLabel, 'numArticleByBox': $stateParams.numArticleByBox, 'preco1': $stateParams.preco1, 'preco2': $stateParams.preco2 });
+    $state.transitionTo("editProduct", { 'productName': $stateParams.productName, 'customerProductId': customerProductId, 'clientname': $stateParams.clientname, 'productId': $stateParams.productId, 'clientname': $stateParams.clientname, 'imageName': $stateParams.imageName, 'barCode': $stateParams.barCode, 'nameInTheLabel': $stateParams.nameInTheLabel, 'numArticleByBox': $stateParams.numArticleByBox, 'preco1': $stateParams.preco1, 'preco2': $stateParams.preco2, 'isparent': $stateParams.isparent});
   };
 
 }]);
@@ -4663,6 +4679,7 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
   //GET ALL CLIENT_ID, CLIENT_NAME FOR THE TYPEAHEAD
   $scope.clients = [];
   var clientid = null;
+  $scope.isparentproduct = false;
 
   var URIClients = '/clientstypeahed';
   var request = $http.get(URIClients);
@@ -4683,6 +4700,12 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
       $scope.clientname = $scope.clientname.CLIENT_NAME;
     }
 
+    if($scope.isparentproduct == true) {
+      $scope.isparentproduct = 'Y';
+    } else {
+      $scope.isparentproduct = 'N';
+    }
+
     var insertProduct = {
       PRODUCT_NAME: $scope.productName,
       INTERNAL_PRODUCT_ID: $scope.productId,
@@ -4692,7 +4715,8 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
       BAR_CODE_NUMBER: $scope.barCode,
       PRODUCT_NAME_FOR_LABEL: $scope.nameInTheLabel,
       PRICE_EURO_1: $scope.preco1,
-      PRICE_EURO_2: $scope.preco2
+      PRICE_EURO_2: $scope.preco2,
+      IS_PARENT: $scope.isparentproduct
     };
 
     var insertClientProduct = {

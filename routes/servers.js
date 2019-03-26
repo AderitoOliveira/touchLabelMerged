@@ -1,22 +1,22 @@
 var mysql = require('mysql');
 
 
-var con = mysql.createConnection({
+/* var con = mysql.createConnection({
     host: '127.0.0.1',
-    user: 'root',
-    password: '',
+    user: 'easylabeldb',
+    password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'
-});
+}); */
 
 
-/* var con = mysql.createConnection({
+var con = mysql.createConnection({
     host: '172.30.184.178',
     user: 'easylabeldb',
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'	
-}); */
+});
 
 
 
@@ -517,7 +517,7 @@ insertPrintedLables = function(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     con.connect(function(err) {
-    var query =con.query('UPDATE products SET INTERNAL_PRODUCT_ID = ?, PRODUCT_NAME = ?, PRODUCT_NAME_FOR_LABEL = ?, IMAGE_NAME = ?, BAR_CODE_NUMBER = ?, PRICE_EURO_1 = ?, PRICE_EURO_2 = ?, CLIENT_NAME = ? where CUSTOMER_PRODUCT_ID = ?',  [req.body.internalproductid, req.body.productname, req.body.nameInTheLabel, req.body.imagename, req.body.barcode, req.body.preco1, req.body.preco2, req.body.clientname, req.body.productid], function (error, results, fields) {
+    var query =con.query('UPDATE products SET INTERNAL_PRODUCT_ID = ?, PRODUCT_NAME = ?, PRODUCT_NAME_FOR_LABEL = ?, IMAGE_NAME = ?, BAR_CODE_NUMBER = ?, PRICE_EURO_1 = ?, PRICE_EURO_2 = ?, IS_PARENT = ?, CLIENT_NAME = ? where CUSTOMER_PRODUCT_ID = ?',  [req.body.internalproductid, req.body.productname, req.body.nameInTheLabel, req.body.imagename, req.body.barcode, req.body.preco1, req.body.preco2, req.body.isparent, req.body.clientname, req.body.productid], function (error, results, fields) {
     console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     console.log(query.sql);
     console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
