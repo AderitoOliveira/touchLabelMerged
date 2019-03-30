@@ -3200,6 +3200,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
       Sponge: $scope.sponge,
       Cooking: $scope.cooking,
       Cooking_Temperature: $scope.cookingTemperature,
+      Production_Observations: $scope.productionObservations,
       Painted_Cold: $scope.paintedCold,
       Ref_Paint: $scope.refPaint,
       Ref_Paint_Qty: $scope.refPaintQty,
@@ -3219,6 +3220,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
       Box_Id: $scope.boxId,
       Disposition_By_Row: $scope.dispositionByRow,
       Qty_By_Pallet: $scope.qtyByPallet,
+      Qty_By_Pallet_Compound_Product: $scope.qtyByPalletCompoundProduct,
       Final_Observations: $scope.finalObservations
     };
 
@@ -3587,6 +3589,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
     $scope.sponge = $scope.data[0].Sponge;
     $scope.cooking = $scope.data[0].Cooking;
     $scope.cookingTemperature = $scope.data[0].Cooking_Temperature;
+    $scope.productionObservations = $scope.data[0].Production_Observations;
     $scope.paintedCold = $scope.data[0].Painted_Cold;
     $scope.refPaint = $scope.data[0].Ref_Paint;
     $scope.refPaintQty = $scope.data[0].Ref_Paint_Qty;
@@ -3606,6 +3609,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
     $scope.boxId = $scope.data[0].Box_Id;
     $scope.dispositionByRow = $scope.data[0].Disposition_By_Row;
     $scope.qtyByPallet = $scope.data[0].Qty_By_Pallet;
+    $scope.qtyByPalletCompoundProduct = $scope.data[0].Qty_By_Pallet_Compound_Product;
     $scope.finalObservations = $scope.data[0].Final_Observations;
     console.log(response.data);
     //$scope.image = '/images' + '/' + $scope.data.image_name;
@@ -3655,6 +3659,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
       Sponge: $scope.sponge,
       Cooking: $scope.cooking,
       Cooking_Temperature: $scope.cookingTemperature,
+      Production_Observations: $scope.productionObservations,
       Painted_Cold: $scope.paintedCold,
       Ref_Paint: $scope.refPaint,
       Ref_Paint_Qty: $scope.refPaintQty,
@@ -3674,6 +3679,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
       Box_Id: $scope.boxId,
       Disposition_By_Row: $scope.dispositionByRow,
       Qty_By_Pallet: $scope.qtyByPallet,
+      Qty_By_Pallet_Compound_Product: $scope.qtyByPalletCompoundProduct,
       Final_Observations: $scope.finalObservations
     };
 
@@ -3843,7 +3849,23 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
           },
           "layout": "noBorders",
           "style": "tableRowsText"
-        }, {
+        }, 
+           { "table": {
+            "headerRows": 1,
+            "widths": ["*"],
+            "body": [
+              [{
+                "text": "Observações - Produção",
+                "style": "tblBigHeader"
+              }],
+              [
+                '_PRODUCTION_OBSERVATIONS_'
+              ]
+            ]
+          },
+          "layout": "noBorders",
+          "style": "tableRowsTextLast"
+        },{
           "text": "",
           "margin": [20, 10]
         },
@@ -4187,6 +4209,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
         '_SPONGE_': $scope.sponge,
         '_COOKING_': $scope.cooking,
         '_COOKING_TEMPERATURE_': $scope.cookingTemperature,
+        '_PRODUCTION_OBSERVATIONS_' : $scope.productionObservations,
         '_PAINTED_COLD_': $scope.paintedCold,
         '_REF_PAINT_QTY_': $scope.refPaintQty,
         '_REF_PAINT_SMOKED_QTY_': $scope.refPaintSmokedQty,
