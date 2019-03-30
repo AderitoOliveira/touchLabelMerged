@@ -224,7 +224,7 @@ deleteProduct = function(data, callback) {
 
 fetchProductsForOrderModal = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.IS_PARENT, productTechSheet.Qty_By_Pallet_Compound_Product FROM (SELECT INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, IS_PARENT FROM products) as product left outer join (SELECT CUSTOMER_PRODUCT_ID, Qty_By_Pallet_Compound_Product FROM products_technical_sheet) as productTechSheet ON product.CUSTOMER_PRODUCT_ID = productTechSheet.CUSTOMER_PRODUCT_ID', function(err, rows) {
+    con.query('SELECT product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.IS_PARENT, productTechSheet.Qty_By_Pallet FROM (SELECT INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, IS_PARENT FROM products) as product left outer join (SELECT CUSTOMER_PRODUCT_ID, Qty_By_Pallet FROM products_technical_sheet) as productTechSheet ON product.CUSTOMER_PRODUCT_ID = productTechSheet.CUSTOMER_PRODUCT_ID', function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -616,6 +616,20 @@ deleteOrderProduct = function(req, res) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     con.connect(function(err) {
     con.query('DELETE from orders_products where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [req.body.ORDER_ID, req.body.PRODUCT_ID], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
+//DELETE ORDER COMPOUND PRODUCT
+deleteOrderCompoundProduct = function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    con.query('DELETE from orders_products where ORDER_ID = ? and CUSTOMER_PRODUCT_ID in (?)', [req.body.ORDER_ID, req.body.PRODUCT_ID], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });

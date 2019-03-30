@@ -1247,7 +1247,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       });
     } else if ($scope.productid.IS_PARENT == 'Y') {
 
-      var quantityOfPalletesToProduce =  $scope.qtyencomenda / $scope.productid.Qty_By_Pallet_Compound_Product;
+      var quantityOfPalletesToProduce =  $scope.qtyencomenda / $scope.productid.Qty_By_Pallet;
 
       var childProducts = [];
       var request = $http.get('/childProductsOfParentProduct/' + encodeURIComponent($scope.productid.CUSTOMER_PRODUCT_ID));
@@ -1459,16 +1459,17 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       //IF the Qty_By_Box value is not defined in the TechSheet we cannot close the Product in Painting
       //IF THE Qty_By_Box OR Qty_By_Pallet OR Bar_Code_Tech_Sheet ARE NOT DEFINED IN THE PRODUCT TECHNICAL SHEET OF THE PRODUCT
       //THE PRODUCT CANNOT BE CLOSED FOR PAINTING IN THIS ORDER
-      if ($scope.productTechSheet[0].Qty_By_Box == null || $scope.productTechSheet[0].Qty_By_Pallet == null || $scope.productTechSheet[0].Bar_Code_Tech_Sheet == null) {
+      //IF the Qty_By_Pallet_Compound_Product is defined then it's a child product
+      if (($scope.productTechSheet[0].Qty_By_Box == null || $scope.productTechSheet[0].Qty_By_Pallet == null || $scope.productTechSheet[0].Bar_Code_Tech_Sheet == null) && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null) {
 
         var messageToSend = "";
-        if ($scope.productTechSheet[0].Qty_By_Box == null) {
+        if ($scope.productTechSheet[0].Qty_By_Box == null && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null) {
           messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por caixa. Edite a ficha técnica do produto e adicione a Quantidade por caixa para poder fechar o produto nesta encomenda."
         }
-        if ($scope.productTechSheet[0].Qty_By_Pallet == null && messageToSend == "") {
+        if ($scope.productTechSheet[0].Qty_By_Pallet == null && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null && messageToSend == "") {
           messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por Palete. Edite a ficha técnica do produto e adicione a Quantidade por Palete para poder fechar o produto nesta encomenda."
         }
-        if ($scope.productTechSheet[0].Bar_Code_Tech_Sheet == null && messageToSend == "") {
+        if ($scope.productTechSheet[0].Bar_Code_Tech_Sheet == null && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null && messageToSend == "") {
           messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o Código de Barras. Edite a ficha técnica do produto e adicione o Código de Barras para poder fechar o produto nesta encomenda."
         }
 
@@ -1493,6 +1494,13 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       else {
         var qtyBoxLabelsToPrint = qtyproduced / $scope.productTechSheet[0].Qty_By_Box;
 
+        if($scope.productTechSheet[0].Qty_By_Pallet_Compound_Product || $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product > 0)
+        {
+            var isChildProduct = true;
+        } else {
+            var isChildProduct = false;
+        }
+
         ModalService.showModal({
           templateUrl: "../modal/closeProductForPainting.html",
           controller: "closeProductInOrderForPainting",
@@ -1504,7 +1512,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             customerproductid: customerproductid,
             productname: productName,
             totalproductsproduced: qtyproduced,
-            qtyBoxLabelsToPrint: qtyBoxLabelsToPrint
+            qtyBoxLabelsToPrint: qtyBoxLabelsToPrint,
+            isChildProduct : isChildProduct
           }
         }).then(function (modal) {
           modal.element.modal();
@@ -5610,8 +5619,8 @@ app.controller('DailyProductionModalController', [
 /*------------------ Controller for the MODAL to CLOSE the PRODUCT for PAITING in the ORDER-----------------------*/
 
 app.controller('closeProductInOrderForPainting', [
-  '$scope', '$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid', 'productname', 'totalproductsproduced', 'qtyBoxLabelsToPrint',
-  function ($scope, $http, $element, $urlRouter, $templateCache, $state, title, close, orderid, internalproductid, customerproductid, productname, totalproductsproduced, qtyBoxLabelsToPrint) {
+  '$scope', '$http', '$element', '$urlRouter', '$templateCache', '$state', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid', 'productname', 'totalproductsproduced', 'qtyBoxLabelsToPrint', 'isChildProduct',
+  function ($scope, $http, $element, $urlRouter, $templateCache, $state, title, close, orderid, internalproductid, customerproductid, productname, totalproductsproduced, qtyBoxLabelsToPrint, isChildProduct) {
 
     $scope.title = title;
     $scope.orderid = orderid;
@@ -5640,9 +5649,10 @@ app.controller('closeProductInOrderForPainting', [
         CUSTOMER_PRODUCT_ID: $scope.customerproductid,
       };
 
-      var res = $http.post('/insertLabelsToPrint', dataObj).then(function (data, status, headers, config) {
-        //$state.reload();
-      });
+      if(isChildProduct == false) {
+        var res = $http.post('/insertLabelsToPrint', dataObj).then(function (data, status, headers, config) {
+        });
+      }
 
       var res = $http.post('/updateorderproductstatus', dataUpdateOrderProductStatus).then(function (data, status, headers, config) {
         $state.reload();
