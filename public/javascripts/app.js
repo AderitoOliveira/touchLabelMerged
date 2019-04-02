@@ -2996,6 +2996,30 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     pdfMake.createPdf(documentToPrint).download(filename);
   };
 
+  //REVERT THE PAINTING REGISTRY FROM ONE PRODUCT TO ANOTHER
+  $scope.revertPaintingRegsitry = function (internalproductid) {
+
+    ModalService.showModal({
+      templateUrl: "../modal/revertPaintingRegistryModal.html",
+      controller: "RevertPaintingModalController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        customerProductId: customerProductId
+      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
+    }); 
+  
+  };
+
+
 }]);
 
 //CONTROLLER FOR ALL THE ORDERS
@@ -5192,6 +5216,37 @@ app.controller('CloneProductModalController', ['$scope', '$http', '$state', 'cus
 }]);
 
 
+//MODAL FOR REVERTING THE PAINTING REGISTRY OF A PRODUCT
+app.controller('RevertPaintingModalController', ['$scope', '$http', '$state', 'customerProductId', 'ModalService', 'RevertPaintingRegistryService', function ($scope, $http, $state, customerProductId, ModalService, RevertPaintingRegistryService) {
+
+  //Save Content Modal  
+  $scope.yes = function () {
+
+    RevertPaintingRegistryService.revertPainting(customerProductId,  $scope.productIdRevertedTo).then(function() {
+
+      ModalService.showModal({
+        templateUrl: "../modal/genericModal.html",
+        controller: "GenericController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: "Foi criada uma cópia do produto " +  customerProductId + " com sucesso. O produto " +  $scope.cloneProductId + " foi criado."
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+
+    });
+
+  };
+}]);
+
 /*------------------ Controller for the CREATE MODAL of the ORDER-----------------------*/
 
 app.controller('orderCreateModalController', [
@@ -7013,6 +7068,44 @@ app.factory('CloneProductService', ['$http', '$q', function ($http, $q) {
 
   return {
     productClone: productClone
+  };
+
+}]);
+
+//FACTORY FOR REVERTING THE PAINTING REGISTRY
+app.actory('RevertPaintingRegistryService', ['$http', '$q', function ($http, $q) {
+
+  function revertPainting(customerProductId, productIdRevertedTo) {
+    var deferred = $q.defer();
+
+    var product = [];
+    var productTechnicalSheet = [];
+
+    var request = $http.get('/product/' + encodeURIComponent(customerProductId));
+    request.then(function successCallback(response) {
+      product = response.data;
+      
+      //////////////////  GET TECHNICAL SHEET ////////////////////
+      var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerProductId));
+      request.then(function successCallback(response) {
+        productTechnicalSheet = response.data;
+
+      },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      });
+      ////////////////////////////////////////////////////////////
+    },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
+
+    deferred.resolve(true);
+    return deferred.promise; 
+  }
+
+  return {
+    revertPainting: revertPainting
   };
 
 }]);
