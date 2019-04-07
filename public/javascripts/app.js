@@ -33,7 +33,7 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
     .state('addChildProduct', {
       url: '/addChildProduct',
       templateUrl: '../custompages/addChildProduct.html',
-      params: { productName: null, customer_product_id: null, productId: null, clientname: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, preco1: null, preco2:null }
+      params: { productName: null, customer_product_id: null, productId: null, clientname: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, preco1: null, preco2:null, isparent:null}
     })
     .state('createClient', {
       url: '/createClient',
@@ -124,7 +124,7 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
       url: '/createTechnicalSheet',
       templateUrl: '../custompages/createTechnicalSheet.html',
       controller: 'createTechSheet',
-      params: { productName: null, customerProductId: null, internalProductId: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, isparent: null}
+      params: { productName: null, customerProductId: null, internalProductId: null, clientName: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, isparent: null}
     })
     .state('editTechnicalSheet', {
       url: '/editTechnicalSheet',
@@ -1088,7 +1088,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
         $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PRODUCED;
 
-        if($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null) {
+        if($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null && $scope.products[i].IN_COMPOUND_PRODUCT == 'Y') {
           $scope.products[i].ITEM_FILHO       = 'item-filho';
 
           var parentProductsArray =  $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
@@ -1124,7 +1124,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
         $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PAINTED;
         
-        if($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null) {
+        if($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null && $scope.products[i].IN_COMPOUND_PRODUCT == 'Y') {
           $scope.products[i].ITEM_FILHO       = 'item-filho';
 
           var parentProductsArray =  $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
@@ -1239,6 +1239,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         PRODUCT_NAME: $scope.productid.PRODUCT_NAME,
         TOTAL_QUANTITY_ORDERED: $scope.qtyencomenda,
         QUANTITY_PRODUCED: $scope.qtyproduzida,
+        IN_COMPOUND_PRODUCT: 'N',
         ORDER_PRODUCT_STATUS: $scope.orderproductstatus
       };
 
@@ -1262,6 +1263,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           PRODUCT_NAME: $scope.productid.PRODUCT_NAME,
           TOTAL_QUANTITY_ORDERED: $scope.qtyencomenda,
           QUANTITY_PRODUCED: $scope.qtyproduzida,
+          IN_COMPOUND_PRODUCT: 'Y',
           ORDER_PRODUCT_STATUS: $scope.orderproductstatus
         };
   
@@ -1279,6 +1281,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             PRODUCT_NAME: $scope.childProducts[i].PRODUCT_NAME,
             TOTAL_QUANTITY_ORDERED: quantityOrdered,
             QUANTITY_PRODUCED: $scope.qtyproduzida,
+            IN_COMPOUND_PRODUCT: 'Y',
             ORDER_PRODUCT_STATUS: $scope.orderproductstatus
           };
     
@@ -3176,7 +3179,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
 
   $scope.productName = $stateParams.productName;
   $scope.productId = $stateParams.internalProductId;
-  $scope.clientname = $stateParams.clientname;
+  $scope.clientname = $stateParams.clientName;
   $scope.imageName = $stateParams.imageName;
   $scope.barCode = $stateParams.barCode;
   $scope.nameInTheLabel = $stateParams.nameInTheLabel;
@@ -4527,7 +4530,7 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
 
   $scope.createTechnicalSheet = function () {
     //$state.go("editImage", null, { reload: true });
-    $state.transitionTo("createTechnicalSheet", { 'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'internalProductId': $scope.productId, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'isparent': $scope.isparentproduct});
+    $state.transitionTo("createTechnicalSheet", { 'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'internalProductId': $scope.productId, 'clientName': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'isparent': $scope.isparentproduct});
   };
 
   $scope.editTechnicalSheet = function () {
@@ -4625,7 +4628,7 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
   };
 
   $scope.addChildProducts = function(customerProductId) {
-     $state.transitionTo("addChildProduct", { 'productName': $scope.productName, 'customer_product_id': customerProductId, 'productId': $scope.productId , 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2':$scope.preco2 });
+     $state.transitionTo("addChildProduct", { 'productName': $scope.productName, 'customer_product_id': customerProductId, 'productId': $scope.productId , 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2':$scope.preco2, 'isparent': $scope.isparentproduct});
   };
 
 }]);
@@ -4635,6 +4638,7 @@ app.controller('addChildProductController', ['$http', '$scope', '$rootScope', '$
   var customerProductId = $stateParams.customer_product_id;
   $scope.products = [];
   $scope.childProducts = [];
+  $scope.isParent = $stateParams.isparent;
 
   //GET ALL PRODUCTS THAT CAN BE ADDED TO THE PARENT PRODUCT 
   var request = $http.get('/productsForChildPage');
@@ -4682,19 +4686,26 @@ app.controller('addChildProductController', ['$http', '$scope', '$rootScope', '$
   };
 
   $scope.save = function () {
+    
     var childCustomerProductIdToSave = [];
     for (var i = $scope.childProducts.length - 1; i >= 0; --i) {
       childCustomerProductIdToSave.push($scope.childProducts[i].CUSTOMER_PRODUCT_ID);
     }
 
-    var dataToSave = {
-      PARENT_CUSTOMER_PRODUCT_ID : customerProductId,
-      CHILD_CUSTOMER_PRODUCT_ID  : childCustomerProductIdToSave
-    }
+    if(childCustomerProductIdToSave.length > 0) {
 
-    var res = $http.post('/insertUpdateChildProducts', dataToSave).then(function (data, status, headers, config) {
+      var dataToSave = {
+        PARENT_CUSTOMER_PRODUCT_ID : customerProductId,
+        CHILD_CUSTOMER_PRODUCT_ID  : childCustomerProductIdToSave
+      }
+
+      var res = $http.post('/insertUpdateChildProducts', dataToSave).then(function (data, status, headers, config) {
+        $state.transitionTo("editProduct", { 'productName': $stateParams.productName, 'customerProductId': customerProductId, 'clientname': $stateParams.clientname, 'productId': $stateParams.productId, 'clientname': $stateParams.clientname, 'imageName': $stateParams.imageName, 'barCode': $stateParams.barCode, 'nameInTheLabel': $stateParams.nameInTheLabel, 'numArticleByBox': $stateParams.numArticleByBox, 'preco1': $stateParams.preco1, 'preco2': $stateParams.preco2, 'isparent': $stateParams.isparent });
+      });
+  
+    } else {
       $state.transitionTo("editProduct", { 'productName': $stateParams.productName, 'customerProductId': customerProductId, 'clientname': $stateParams.clientname, 'productId': $stateParams.productId, 'clientname': $stateParams.clientname, 'imageName': $stateParams.imageName, 'barCode': $stateParams.barCode, 'nameInTheLabel': $stateParams.nameInTheLabel, 'numArticleByBox': $stateParams.numArticleByBox, 'preco1': $stateParams.preco1, 'preco2': $stateParams.preco2, 'isparent': $stateParams.isparent });
-    });
+    }
 
 
   }
@@ -7073,7 +7084,7 @@ app.factory('CloneProductService', ['$http', '$q', function ($http, $q) {
 }]);
 
 //FACTORY FOR REVERTING THE PAINTING REGISTRY
-app.actory('RevertPaintingRegistryService', ['$http', '$q', function ($http, $q) {
+app.factory('RevertPaintingRegistryService', ['$http', '$q', function ($http, $q) {
 
   function revertPainting(customerProductId, productIdRevertedTo) {
     var deferred = $q.defer();
