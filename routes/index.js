@@ -194,6 +194,13 @@ router.get('/orderproductshistoric/:id', function (req, res) {
   fetchAllProductsForAnOrderHistoric(req, res);
 });
 
+//Get PARENT UNIQUE ORDER ID FOR COMPOUND PRODUCTS
+router.get('/getParentUniqueOrderId/:orderid/:parentproductid', function (req, res) {
+  console.log("Get PARENT UNIQUE ORDER ID");
+  console.log(req.body);
+  getParentUniqueOrderId(req, res);
+});
+
 //Get All the Products for an Order tthat isn't complete and the daily production needs to be updated
 router.get('/productstilltocloseinthisorder/:orderid/:productid', function (req, res) {
   console.log("List All Orders");

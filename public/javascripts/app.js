@@ -1537,7 +1537,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
   //INSERT DAILY PRODUCTION
-  $scope.insertDailyProduction = function (internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, productiondate, parent_customer_product_id) {
+  $scope.insertDailyProduction = function (orderproductuniqueid ,internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, productiondate, parent_customer_product_id) {
 
     //$scope.title = title;
     $scope.orderid = $scope.orderid;
@@ -1551,6 +1551,16 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     productiondate = moment(productiondate).format('YYYY-MM-DD 00:00:00');
 
     var insertedProductionReport = [];
+
+    if(parent_customer_product_id != null) {
+      var request = $http.get('/getParentUniqueOrderId/' + encodeURIComponent($scope.orderid) + '/' + encodeURIComponent(parent_customer_product_id));
+      request.then(function successCallback(response) {
+          $scope.parent_unique_ord_id = response.data;
+      },
+      function errorCallback(data) {
+      console.log('Error: ' + data);
+      });
+    }
 
     //PRODUCTS STILL TO PRODUCE
     var products_still_to_produce = totalquantityordered - totalproductsproduced;
@@ -1568,6 +1578,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           INTERNAL_PRODUCT_ID: $scope.internalproductid,
           CUSTOMER_PRODUCT_ID: $scope.customerproductid,
           PRODUCT_NAME: $scope.productnameinternal,
+          ORDER_PRODUCTS_UNIQUE_ID: orderproductuniqueid,
           EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
           EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
           TOTAL_PRODUCTS_PRODUCED: $scope.totalquantityproduced,
@@ -1601,6 +1612,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         INTERNAL_PRODUCT_ID: $scope.internalproductid,
         CUSTOMER_PRODUCT_ID: $scope.customerproductid,
         PRODUCT_NAME: $scope.productnameinternal,
+        ORDER_PRODUCTS_UNIQUE_ID: orderproductuniqueid,
         EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
         EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
         TOTAL_PRODUCTS_PRODUCED: $scope.totalquantityproduced,
@@ -1609,7 +1621,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       };
 
       if(parent_customer_product_id != null) {
-        insertDailyProductionParentProduct.insertParentProduction($scope.orderid, parent_customer_product_id, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, $scope.totalquantityproduced, productiondate) ;
+        insertDailyProductionParentProduct.insertParentProduction(orderproductuniqueid, $scope.orderid, parent_customer_product_id, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, $scope.totalquantityproduced, productiondate) ;
       }
 
       var res = $http.post('/insertDailyProduction', dataObj).then(function (data, status, headers, config) {
@@ -1626,6 +1638,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         INTERNAL_PRODUCT_ID: $scope.internalproductid,
         CUSTOMER_PRODUCT_ID: $scope.customerproductid,
         PRODUCT_NAME: $scope.productnameinternal,
+        ORDER_PRODUCTS_UNIQUE_ID: orderproductuniqueid,
         EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
         EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
         TOTAL_PRODUCTS_PRODUCED: products_still_to_produce,
@@ -1634,7 +1647,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       };
 
       if(parent_customer_product_id != null) {
-        insertDailyProductionParentProduct.insertParentProduction($scope.orderid, parent_customer_product_id, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_still_to_produce, productiondate) ;
+        insertDailyProductionParentProduct.insertParentProduction(orderproductuniqueid, $scope.orderid, parent_customer_product_id, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_still_to_produce, productiondate) ;
       }
 
       var res = $http.post('/insertDailyProduction', dataObj).then(function (data, status, headers, config) {
@@ -1698,6 +1711,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 INTERNAL_PRODUCT_ID: $scope.internalproductid,
                 CUSTOMER_PRODUCT_ID: customer_product_id,
                 PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                ORDER_PRODUCTS_UNIQUE_ID: orderproductuniqueid,
                 EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
                 EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
                 TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
@@ -1706,7 +1720,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               };
 
               if(parent_customer_product_id != null) {
-                insertDailyProductionParentProduct.insertParentProduction(order_id, parent_customer_product_id, parent_customer_product_id, orderproduct.PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate) ;
+                insertDailyProductionParentProduct.insertParentProduction(orderproductuniqueid, order_id, parent_customer_product_id, parent_customer_product_id, orderproduct.PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate) ;
               }
 
               var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
@@ -1735,6 +1749,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                   INTERNAL_PRODUCT_ID: $scope.internalproductid,
                   CUSTOMER_PRODUCT_ID: customer_product_id,
                   PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                  ORDER_PRODUCTS_UNIQUE_ID: orderproductuniqueid,
                   EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
                   EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
                   TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
@@ -1743,7 +1758,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 };
   
                 if(parent_customer_product_id != null) {
-                  insertDailyProductionParentProduct.insertParentProduction(order_id, parent_customer_product_id, parent_customer_product_id, orderproduct.PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate) ;
+                  insertDailyProductionParentProduct.insertParentProduction(orderproductuniqueid, order_id, parent_customer_product_id, parent_customer_product_id, orderproduct.PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate) ;
                 }
 
                 var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
@@ -7123,13 +7138,14 @@ app.factory('RevertPaintingRegistryService', ['$http', '$q', function ($http, $q
 
 app.factory('insertDailyProductionParentProduct', ['$http', function ($http) {
 
-  function insertParentProduction(orderid, internalproductid, customerproductid, productnameinternal, employyee_name, employyee_id, totalquantityproduced, productiondate) {
+  function insertParentProduction(orderproductuniqueid, orderid, internalproductid, customerproductid, productnameinternal, employyee_name, employyee_id, totalquantityproduced, productiondate) {
   
     var dataObj = {
         ORDER_ID: orderid,
         INTERNAL_PRODUCT_ID: internalproductid,
         CUSTOMER_PRODUCT_ID: customerproductid,
         PRODUCT_NAME: productnameinternal,
+        ORDER_PRODUCTS_UNIQUE_ID: orderproductuniqueid,
         EMPLOYEE_NAME: employyee_name,
         EMPLOYEE_ID: employyee_id,
         TOTAL_PRODUCTS_PRODUCED: totalquantityproduced,
