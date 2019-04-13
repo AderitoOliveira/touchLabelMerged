@@ -1537,7 +1537,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
   //INSERT DAILY PRODUCTION
-  $scope.insertDailyProduction = function (orderproductuniqueid ,internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, productiondate, parent_customer_product_id) {
+  $scope.insertDailyProduction = function (orderproductuniqueid ,internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, productiondate, parent_customer_product_id, in_compound_product) {
 
     //$scope.title = title;
     $scope.orderid = $scope.orderid;
@@ -1552,7 +1552,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
     var insertedProductionReport = [];
 
-    if(parent_customer_product_id != null) {
+    /* if(parent_customer_product_id != null) {
       var request = $http.get('/getParentUniqueOrderId/' + encodeURIComponent($scope.orderid) + '/' + encodeURIComponent(parent_customer_product_id));
       request.then(function successCallback(response) {
           $scope.parent_unique_ord_id = response.data;
@@ -1560,7 +1560,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       function errorCallback(data) {
       console.log('Error: ' + data);
       });
-    }
+    } */
 
     //PRODUCTS STILL TO PRODUCE
     var products_still_to_produce = totalquantityordered - totalproductsproduced;
@@ -1620,8 +1620,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         CREATED_DATE: productiondate
       };
 
-      if(parent_customer_product_id != null) {
-        insertDailyProductionParentProduct.insertParentProduction(orderproductuniqueid, $scope.orderid, parent_customer_product_id, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, $scope.totalquantityproduced, productiondate) ;
+      if(parent_customer_product_id != null && in_compound_product == 'Y') {
+        parentOrderProductUniqueId = $scope.parentProductsIndex[parent_customer_product_id][0].UNIQUE_ORDER_ID;
+        insertDailyProductionParentProduct.insertParentProduction(parentOrderProductUniqueId, $scope.orderid, parent_customer_product_id, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, $scope.totalquantityproduced, productiondate) ;
       }
 
       var res = $http.post('/insertDailyProduction', dataObj).then(function (data, status, headers, config) {
@@ -1646,8 +1647,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         CREATED_DATE: productiondate
       };
 
-      if(parent_customer_product_id != null) {
-        insertDailyProductionParentProduct.insertParentProduction(orderproductuniqueid, $scope.orderid, parent_customer_product_id, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_still_to_produce, productiondate) ;
+      if(parent_customer_product_id != null && in_compound_product == 'Y') {
+        parentOrderProductUniqueId = $scope.parentProductsIndex[parent_customer_product_id][0].UNIQUE_ORDER_ID;
+        insertDailyProductionParentProduct.insertParentProduction(parentOrderProductUniqueId, $scope.orderid, parent_customer_product_id, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_still_to_produce, productiondate) ;
       }
 
       var res = $http.post('/insertDailyProduction', dataObj).then(function (data, status, headers, config) {
@@ -1719,8 +1721,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 CREATED_DATE: productiondate
               };
 
-              if(parent_customer_product_id != null) {
-                insertDailyProductionParentProduct.insertParentProduction(orderproductuniqueid, order_id, parent_customer_product_id, parent_customer_product_id, orderproduct.PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate) ;
+              if(parent_customer_product_id != null && in_compound_product == 'Y') {
+                parentOrderProductUniqueId = $scope.parentProductsIndex[parent_customer_product_id][0].UNIQUE_ORDER_ID;
+                insertDailyProductionParentProduct.insertParentProduction(parentOrderProductUniqueId, order_id, parent_customer_product_id, parent_customer_product_id, orderproduct.PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate) ;
               }
 
               var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
@@ -1757,8 +1760,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                   CREATED_DATE: productiondate
                 };
   
-                if(parent_customer_product_id != null) {
-                  insertDailyProductionParentProduct.insertParentProduction(orderproductuniqueid, order_id, parent_customer_product_id, parent_customer_product_id, orderproduct.PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate) ;
+                if(parent_customer_product_id != null && in_compound_product == 'Y') {
+                  parentOrderProductUniqueId = $scope.parentProductsIndex[parent_customer_product_id][0].UNIQUE_ORDER_ID;
+                  insertDailyProductionParentProduct.insertParentProduction(parentOrderProductUniqueId, order_id, parent_customer_product_id, parent_customer_product_id, orderproduct.PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate) ;
                 }
 
                 var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
@@ -2584,13 +2588,13 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
   //GET DETAILS FOR THE DAILY PRODUCTION FOR A PRODUCT IN AN ORDER
   var customer_product_id = 0;
-  $scope.dailyProductionDetails = function (customerproductid, orderproductstatusraw) {
+  $scope.dailyProductionDetails = function (customerproductid, orderproductstatusraw, uniqueorderid) {
 
     customer_product_id = customerproductid;
 
     if (orderproductstatusraw == 'em_producao') {
       $scope.dailyProduction = [];
-      var request = $http.get('/getDailyProductionOrderProduct/' + encodeURIComponent(orderId) + '/' + encodeURIComponent(customerproductid));
+      var request = $http.get('/getDailyProductionOrderProduct/' + encodeURIComponent(orderId) + '/' + encodeURIComponent(customerproductid) + '/' + encodeURIComponent(uniqueorderid));
       request.then(function successCallback(response) {
         $scope.dailyProduction = response.data;
 

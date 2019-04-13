@@ -493,7 +493,7 @@ router.post('/deleteDailyPaintingForClosedOrder', function (req, res) {
 });
 
 //GET THE DAILY PRODUCTION RECORDS THAT HAVE BEEN SAVED FOR THIS ORDER - order_products_production_registry
-router.get('/getDailyProductionOrderProduct/:orderid/:productid', function (req, res) {
+router.get('/getDailyProductionOrderProduct/:orderid/:productid/:uniqueorderid', function (req, res) {
   console.log("GET DAILY PRODUCTION FOR AN PRODUCT IN AN ORDER 1");
   console.log("REQ.BODY: " + req.params.orderid);
   console.log("REQ.INTERNAL_PRODUCT_ID: " + req.params.productid);
