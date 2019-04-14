@@ -1071,8 +1071,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         parentProductsArray.push($scope.products[i]);
         $scope.parentProductsIndex[$scope.products[i].CUSTOMER_PRODUCT_ID] = parentProductsArray;
       }
-
-      if($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID == null) {
+         
+      if($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID == null || $scope.products[i].IN_COMPOUND_PRODUCT == 'N') {
           $scope.products[i].CAN_BE_DELETED = 'true';
       }
 
@@ -1658,6 +1658,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       //If the $http.post('/insertDailyProduction', dataObj) above didn't occur in the table, we need to guarantee that a new post 
       //is not issued for the same product
       var customerProductAlreadySentForRegister = $scope.customerproductid;
+      var orderProductUniqueIdAlreadySent = orderproductuniqueid;
 
       var msgArray = {
         OrderId: $scope.orderid,
@@ -1689,7 +1690,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           for (i = 0; i < $scope.productsToClose.length; i++) {
             var orderproduct = $scope.productsToClose[i];
 
-          if(orderproduct.CUSTOMER_PRODUCT_ID != customerProductAlreadySentForRegister) {
+          if(orderproduct.CUSTOMER_PRODUCT_ID != customerProductAlreadySentForRegister || orderproduct.UNIQUE_ORDER_ID != orderProductUniqueIdAlreadySent) {
            
             var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PRODUCED;
 
@@ -1713,7 +1714,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 INTERNAL_PRODUCT_ID: $scope.internalproductid,
                 CUSTOMER_PRODUCT_ID: customer_product_id,
                 PRODUCT_NAME: orderproduct.PRODUCT_NAME,
-                ORDER_PRODUCTS_UNIQUE_ID: orderproductuniqueid,
+                ORDER_PRODUCTS_UNIQUE_ID: $scope.productsToClose[i].UNIQUE_ORDER_ID,
                 EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
                 EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
                 TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
@@ -1752,7 +1753,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                   INTERNAL_PRODUCT_ID: $scope.internalproductid,
                   CUSTOMER_PRODUCT_ID: customer_product_id,
                   PRODUCT_NAME: orderproduct.PRODUCT_NAME,
-                  ORDER_PRODUCTS_UNIQUE_ID: orderproductuniqueid,
+                  ORDER_PRODUCTS_UNIQUE_ID: $scope.productsToClose[i].UNIQUE_ORDER_ID,
                   EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
                   EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
                   TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
