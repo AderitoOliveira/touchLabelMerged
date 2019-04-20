@@ -1214,13 +1214,22 @@ button.button {
     }
 }
 
+.order-table-header>.inner-wrap>div.header-order-remove {
+    display: block;
+    float: right;
+    text-align: right;
+}
+
 button.btn.btn-sm.btn-delete.btn-remove-order {
     background-color: #c32625;
     color: #fff;
     font-size: 16px;
     margin-left: -15px;
-    margin-right: 15px;
     padding: 7px 0px;
+    max-width:174px;
+    width: 100%;
+    margin-right: 10px;
+    margin-top: 2px;
 }
 
 .order-labels-content{
