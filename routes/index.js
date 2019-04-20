@@ -194,6 +194,20 @@ router.get('/orderproductshistoric/:id', function (req, res) {
   fetchAllProductsForAnOrderHistoric(req, res);
 });
 
+//Get PARENT UNIQUE ORDER ID FOR COMPOUND PRODUCTS
+router.get('/getParentUniqueOrderId/:orderid/:parentproductid', function (req, res) {
+  console.log("Get PARENT UNIQUE ORDER ID");
+  console.log(req.body);
+  getParentUniqueOrderId(req, res);
+});
+
+//Update the Parent Unique Order Id in the Chil Product for the Order
+router.post('/updateParentUniqueOrderId', function (req, res) {
+  console.log("Update the Parent Unique Order Id");
+  console.log(req.body);
+  updateParentUniqueOrderId(req, res);
+});
+
 //Get All the Products for an Order tthat isn't complete and the daily production needs to be updated
 router.get('/productstilltocloseinthisorder/:orderid/:productid', function (req, res) {
   console.log("List All Orders");
@@ -486,7 +500,7 @@ router.post('/deleteDailyPaintingForClosedOrder', function (req, res) {
 });
 
 //GET THE DAILY PRODUCTION RECORDS THAT HAVE BEEN SAVED FOR THIS ORDER - order_products_production_registry
-router.get('/getDailyProductionOrderProduct/:orderid/:productid', function (req, res) {
+router.get('/getDailyProductionOrderProduct/:orderid/:productid/:uniqueorderid', function (req, res) {
   console.log("GET DAILY PRODUCTION FOR AN PRODUCT IN AN ORDER 1");
   console.log("REQ.BODY: " + req.params.orderid);
   console.log("REQ.INTERNAL_PRODUCT_ID: " + req.params.productid);
@@ -500,13 +514,6 @@ router.post('/insertOverProductionStockTable', function (req, res) {
   insertOverProductionStockTable(req, res);
 });
 
-//GET ALL ORDER FOR A SPECIFIC INTERNAL PRODUCT ID AND THAT PRODUCT ISN'T CLOSED - order_products_production_registry
-router.get('/getAllOrdersForOpenInternalProductId/:orderid/:productid', function (req, res) {
-  console.log("GET DAILY PRODUCTION FOR AN PRODUCT IN AN ORDER 1");
-  console.log("REQ.BODY: " + req.params.orderid);
-  console.log("REQ.INTERNAL_PRODUCT_ID: " + req.params.productid);
-  fetchAllOrdersForOpenInternalProductId(req, res);
-});
 
 //PAINTING - GET ALL ORDER's FOR A SPECIFIC INTERNAL PRODUCT ID AND THAT PRODUCT ISN'T CLOSED - order_products_painting_registry
 router.get('/getAllOrdersForPaintingInternalProductId/:orderid/:productid', function (req, res) {

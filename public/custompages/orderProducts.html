@@ -78,11 +78,11 @@
                             <div class="col-md-2 header-order-date">Nome</div>
                             <div class="col-md-2 header-order-date-end">Data Encomenda</div>
                             <div class="col-md-2 header-order-products"><span class="light">Total Produtos</span>Total Produzidos</div>
-                            <div class="col-md-2 header-order-state">Estado</div>
-                            <div class="col-md-1 header-order-remove">
-                                <a class="btn btn-sm btn-danger btn-remove-order" ng-click="deleteOrder()" data-toggle="tooltip" title="Remover Encomenda">
-                                    <img src="assets/icons/btn-remove.svg" width="36px" height="36px" />
-                                </a>
+                            <div class="col-md-1 header-order-state">Estado</div>
+                            <div class="col-md-2 header-order-remove">
+                                <button class="btn btn-sm btn-delete btn-remove-order" ng-click="deleteOrder()" data-toggle="tooltip" title="Remover Encomenda">
+                                    <img src="assets/icons/btn-remove.svg" width="24px" height="24px" /> Eliminar
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -113,7 +113,7 @@
                                                 <img src="assets/icons/btn-success-paint.svg" width="24px" height="24px" />
                                             </a>
                                             <!--a class="btn btn-sm btn-success" ng-click="seeProductDetailInOrder(product.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="Ver Detalhes de Produção do Produto"-->
-                                            <a class="btn btn-sm btn-success detail-toggle" ng-click="dailyProductionDetails(product.CUSTOMER_PRODUCT_ID, product.ORDER_PRODUCT_STATUS_RAW)" data-toggle="tooltip" title="Ver Detalhes de Produção do Produto">
+                                            <a class="btn btn-sm btn-success detail-toggle" ng-click="dailyProductionDetails(product.CUSTOMER_PRODUCT_ID, product.ORDER_PRODUCT_STATUS_RAW, product.UNIQUE_ORDER_ID)" data-toggle="tooltip" title="Ver Detalhes de Produção do Produto">
                                                 <img src="assets/icons/btn-view.svg" width="24px" height="24px" />
                                             </a>
                                         </div>
@@ -178,7 +178,7 @@
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="add-actions-wrap">
-                                                                <button type="submit" ng-show="product.INSERT_PRODUCTION" ng-click="insertDailyProduction(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.TOTAL_PRODUCTS_COMPLETED, qtyproduzida, nameemployee, product.PRICE_EURO_1, productiondate, product.PARENT_CUSTOMER_PRODUCT_ID)" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px" />Adicionar</button>
+                                                                <button type="submit" ng-show="product.INSERT_PRODUCTION" ng-click="insertDailyProduction(product.UNIQUE_ORDER_ID, product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.TOTAL_PRODUCTS_COMPLETED, qtyproduzida, nameemployee, product.PRICE_EURO_1, productiondate, product.PARENT_CUSTOMER_PRODUCT_ID, product.IN_COMPOUND_PRODUCT)" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px" />Adicionar</button>
                                                                 <button type="submit" ng-show="product.INSERT_PAINTING" ng-click="insertDailyPainting(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.TOTAL_PRODUCTS_COMPLETED, qtyproduzida, nameemployee, product.PRICE_EURO_1, product.QTY_BY_PALLET, productiondate, product.PARENT_CUSTOMER_PRODUCT_ID)" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px" />Adicionar</button>
                                                                 <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" /></button>
                                                             </div>
