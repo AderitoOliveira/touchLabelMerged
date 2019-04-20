@@ -7,8 +7,8 @@ var mysql = require('mysql');
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'
-}); */
-
+});
+ */
 
 var con = mysql.createConnection({
     host: '172.30.184.178',
@@ -359,7 +359,7 @@ getParentUniqueOrderId = function(data, callback) {
     var orderid = data.params.orderid;
     var parentproductid = data.params.parentproductid;
     con.connect(function(err) {
-    con.query('select UNIQUE_ORDER_ID from orders_products where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [orderid,parentproductid], function(err, rows) {
+    con.query('select UNIQUE_ORDER_ID, INTERNAL_PRODUCT_ID from orders_products where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [orderid,parentproductid], function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -373,12 +373,32 @@ getParentUniqueOrderId = function(data, callback) {
 });
 }
 
+//Update the Parent Unique Order Id in the Chil Product for the Order
+updateParentUniqueOrderId = function(data, callback) {
+    console.log("data.params.PARENT_UNIQUE_ORDER_ID: " + data.body.PARENT_UNIQUE_ORDER_ID); 
+    console.log("data.params.ORDER_ID: " + data.body.ORDER_ID); 
+    console.log("data.params.PARENT_CUSTOMER_PRODUCT_ID " + data.body.PARENT_CUSTOMER_PRODUCT_ID); 
+    con.connect(function(err) {
+    con.query('update orders_products set PARENT_UNIQUE_ORDER_ID = ? where ORDER_ID = ? and PARENT_CUSTOMER_PRODUCT_ID = ?', [data.body.PARENT_UNIQUE_ORDER_ID, data.body.ORDER_ID, data.body.PARENT_CUSTOMER_PRODUCT_ID], function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        console.log("Update the Parent Unique Order Id"); 
+        //callback = rows; 
+    });
+});
+}
+
 //Get All the Products for an Order that isn't complete and the daily production needs to be updated
 fetchProductFromAnOrderThatIsntComplete = function(req, res) {
     var orderid = req.params.orderid;
     var productid = req.params.productid;
     con.connect(function(err) {
-    con.query('select UNIQUE_ORDER_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, TOTAL_PRODUCTS_PRODUCED from (select s1.UNIQUE_ORDER_ID, s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED,0) as TOTAL_PRODUCTS_PRODUCED from (select UNIQUE_ORDER_ID, ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE from orders_products where ORDER_PRODUCT_STATUS = \'em_producao\') as s1 left outer join (select ORDER_ID, ORDER_PRODUCTS_UNIQUE_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID, ORDER_PRODUCTS_UNIQUE_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s2.ORDER_PRODUCTS_UNIQUE_ID) as s3 where s3.ORDER_ID = ? and s3.INTERNAL_PRODUCT_ID = ? and s3.TOTAL_PRODUCTS_PRODUCED < s3.TOTAL_QUANTITY_ORDERED', [orderid, productid], function(err, rows) {
+    con.query('select UNIQUE_ORDER_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, TOTAL_PRODUCTS_PRODUCED, IN_COMPOUND_PRODUCT from (select s1.UNIQUE_ORDER_ID, s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.IN_COMPOUND_PRODUCT, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED,0) as TOTAL_PRODUCTS_PRODUCED from (select UNIQUE_ORDER_ID, ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, IN_COMPOUND_PRODUCT, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE from orders_products where ORDER_PRODUCT_STATUS = \'em_producao\') as s1 left outer join (select ORDER_ID, ORDER_PRODUCTS_UNIQUE_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID, ORDER_PRODUCTS_UNIQUE_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s2.ORDER_PRODUCTS_UNIQUE_ID) as s3 where s3.ORDER_ID = ? and s3.INTERNAL_PRODUCT_ID = ? and s3.TOTAL_PRODUCTS_PRODUCED < s3.TOTAL_QUANTITY_ORDERED', [orderid, productid], function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -403,7 +423,7 @@ fetchAllOrdersForOpenInternalProductId = function(req, callback) {
     console.log("ORDER_ID ON SERVERS.JS: " + orderid);
     console.log("INTERNAL_PRODUCT_ID: " + productid);
     con.connect(function(err) {
-    con.query('select UNIQUE_ORDER_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, TOTAL_QUANTITY_ORDERED, TOTAL_PRODUCTS_PRODUCED from (select s1.UNIQUE_ORDER_ID, s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED,0) as TOTAL_PRODUCTS_PRODUCED from (select UNIQUE_ORDER_ID, ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE from orders_products where ORDER_PRODUCT_STATUS = \'em_producao\') as s1 left outer join (select ORDER_ID, ORDER_PRODUCTS_UNIQUE_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry group by ORDER_ID, ORDER_PRODUCTS_UNIQUE_ID, CUSTOMER_PRODUCT_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s2.ORDER_PRODUCTS_UNIQUE_ID) as s3 where s3.ORDER_ID <> ? and s3.INTERNAL_PRODUCT_ID = ? and s3.TOTAL_PRODUCTS_PRODUCED < s3.TOTAL_QUANTITY_ORDERED', [orderid, productid], function (err, rows) {
+    con.query('select UNIQUE_ORDER_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, TOTAL_QUANTITY_ORDERED, TOTAL_PRODUCTS_PRODUCED, PARENT_UNIQUE_ORDER_ID from (select s1.UNIQUE_ORDER_ID, s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.PARENT_UNIQUE_ORDER_ID, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED,0) as TOTAL_PRODUCTS_PRODUCED from (select UNIQUE_ORDER_ID, ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, PARENT_UNIQUE_ORDER_ID, ORDER_PRODUCT_STATUS, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE from orders_products where ORDER_PRODUCT_STATUS = \'em_producao\') as s1 left outer join (select ORDER_ID, ORDER_PRODUCTS_UNIQUE_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry group by ORDER_ID, ORDER_PRODUCTS_UNIQUE_ID, CUSTOMER_PRODUCT_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s2.ORDER_PRODUCTS_UNIQUE_ID) as s3 where s3.ORDER_ID <> ? and s3.INTERNAL_PRODUCT_ID = ? and s3.TOTAL_PRODUCTS_PRODUCED < s3.TOTAL_QUANTITY_ORDERED', [orderid, productid], function (err, rows) {
         if (err) {
             throw err;
         } else
