@@ -1704,6 +1704,10 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           for (i = 0; i < $scope.productsToClose.length; i++) {
             var orderproduct = $scope.productsToClose[i];
 
+            if(!parentOrderProductUniqueId) {
+              parentOrderProductUniqueId = 999999;
+            }
+
           if((orderproduct.CUSTOMER_PRODUCT_ID != customerProductAlreadySentForRegister && parentOrderProductUniqueId != orderproduct.UNIQUE_ORDER_ID) || (orderproduct.UNIQUE_ORDER_ID != orderProductUniqueIdAlreadySent && parentOrderProductUniqueId != orderproduct.UNIQUE_ORDER_ID)) {
            
             var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PRODUCED;
