@@ -182,7 +182,7 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
 //app.run(['$rootScope', '$location', function($rootScope, $location) {
 //  $rootScope.$location = $location;
 //}]);
-app.run(['$rootScope', '$location', '$cookies', '$http', function ($rootScope, $location, $cookies, $http) {
+app.run(['$rootScope', '$location', '$cookies', '$http', '$anchorScroll', function ($rootScope, $location, $cookies, $http, $anchorScroll) {
   // keep user logged in after page refresh
   $rootScope.globals = $cookies.get('globals') || {};
   if ($rootScope.globals.currentUser) {
@@ -194,6 +194,8 @@ app.run(['$rootScope', '$location', '$cookies', '$http', function ($rootScope, $
     if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
       $location.path('/login');
     }
+    //Move the scroll back to the top when going to another page
+    $anchorScroll();
   });
 }]);
 
@@ -1701,6 +1703,10 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           ///################################################################################////
           for (i = 0; i < $scope.productsToClose.length; i++) {
             var orderproduct = $scope.productsToClose[i];
+
+            if(!parentOrderProductUniqueId) {
+              parentOrderProductUniqueId = 999999;
+            }
 
           if((orderproduct.CUSTOMER_PRODUCT_ID != customerProductAlreadySentForRegister && parentOrderProductUniqueId != orderproduct.UNIQUE_ORDER_ID) || (orderproduct.UNIQUE_ORDER_ID != orderProductUniqueIdAlreadySent && parentOrderProductUniqueId != orderproduct.UNIQUE_ORDER_ID)) {
            
