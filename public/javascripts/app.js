@@ -1242,6 +1242,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         TOTAL_QUANTITY_ORDERED: $scope.qtyencomenda,
         QUANTITY_PRODUCED: $scope.qtyproduzida,
         IN_COMPOUND_PRODUCT: 'N',
+        IS_PARENT: 'N',
         PARENT_CUSTOMER_PRODUCT_ID: null,
         ORDER_PRODUCT_STATUS: $scope.orderproductstatus
       };
@@ -1267,6 +1268,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           TOTAL_QUANTITY_ORDERED: $scope.qtyencomenda,
           QUANTITY_PRODUCED: $scope.qtyproduzida,
           IN_COMPOUND_PRODUCT: 'Y',
+          IS_PARENT: 'Y',
           ORDER_PRODUCT_STATUS: $scope.orderproductstatus
         };
   
@@ -1285,6 +1287,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             TOTAL_QUANTITY_ORDERED: quantityOrdered,
             QUANTITY_PRODUCED: $scope.qtyproduzida,
             IN_COMPOUND_PRODUCT: 'Y',
+            IS_PARENT: 'N',
             PARENT_CUSTOMER_PRODUCT_ID: $scope.productid.CUSTOMER_PRODUCT_ID,
             ORDER_PRODUCT_STATUS: $scope.orderproductstatus
           };
@@ -1704,11 +1707,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           for (i = 0; i < $scope.productsToClose.length; i++) {
             var orderproduct = $scope.productsToClose[i];
 
-            if(!parentOrderProductUniqueId) {
-              parentOrderProductUniqueId = 999999;
-            }
-
-          if((orderproduct.CUSTOMER_PRODUCT_ID != customerProductAlreadySentForRegister && parentOrderProductUniqueId != orderproduct.UNIQUE_ORDER_ID) || (orderproduct.UNIQUE_ORDER_ID != orderProductUniqueIdAlreadySent && parentOrderProductUniqueId != orderproduct.UNIQUE_ORDER_ID)) {
+          //if((orderproduct.CUSTOMER_PRODUCT_ID != customerProductAlreadySentForRegister && parentOrderProductUniqueId != orderproduct.UNIQUE_ORDER_ID) || (orderproduct.UNIQUE_ORDER_ID != orderProductUniqueIdAlreadySent && parentOrderProductUniqueId != orderproduct.UNIQUE_ORDER_ID)) {
+          if((orderproduct.CUSTOMER_PRODUCT_ID != customerProductAlreadySentForRegister && orderproduct.IS_PARENT == 'N') || (orderproduct.UNIQUE_ORDER_ID != orderProductUniqueIdAlreadySent && orderproduct.IS_PARENT == 'N')) {
            
             var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PRODUCED;
 
