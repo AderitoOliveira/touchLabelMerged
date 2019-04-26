@@ -1740,7 +1740,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 CREATED_DATE: productiondate
               };
 
-              if(parent_customer_product_id != null && (in_compound_product == 'Y' || orderproduct.IN_COMPOUND_PRODUCT == 'Y')) {
+              //if(parent_customer_product_id != null && (in_compound_product == 'Y' || orderproduct.IN_COMPOUND_PRODUCT == 'Y')) {
+              if(parent_customer_product_id != null && orderproduct.IN_COMPOUND_PRODUCT == 'Y') {
                 parentOrderProductUniqueId = $scope.parentProductsIndex[parent_customer_product_id][0].UNIQUE_ORDER_ID;
                 insertDailyProductionParentProduct.insertParentProduction(parentOrderProductUniqueId, order_id, $scope.internalproductid, parent_customer_product_id, orderproduct.PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate) ;
               }
@@ -1779,7 +1780,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                   CREATED_DATE: productiondate
                 };
   
-                if(parent_customer_product_id != null && (in_compound_product == 'Y' || orderproduct.IN_COMPOUND_PRODUCT == 'Y')) {
+                //if(parent_customer_product_id != null && (in_compound_product == 'Y' || orderproduct.IN_COMPOUND_PRODUCT == 'Y')) {
+                if(parent_customer_product_id != null && orderproduct.IN_COMPOUND_PRODUCT == 'Y') {
                   parentOrderProductUniqueId = $scope.parentProductsIndex[parent_customer_product_id][0].UNIQUE_ORDER_ID;
                   insertDailyProductionParentProduct.insertParentProduction(parentOrderProductUniqueId, order_id, $scope.internalproductid, parent_customer_product_id, orderproduct.PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate) ;
                 }
