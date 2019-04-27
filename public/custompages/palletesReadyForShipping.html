@@ -31,8 +31,8 @@
                             <div class="col-md-1 label-header-item header-label-clientref">Ref. Cliente</div>
                             <div class="col-md-1 label-header-item header-label-innerref">Ref. Interna</div>
                             <div class="col-md-2 label-header-item header-label-prodname">Nome Produto</div>
-                            <div class="col-md-2 label-header-item header-label-total-painted">Total Produtos Pintados</div>
-                            <div class="col-md-2 label-header-item header-label-quantity-pallet">Paletes Completas</div>
+                            <div class="col-md-1 label-header-item header-label-total-painted">Total Produtos Pintados</div>
+                            <div class="col-md-3 label-header-item header-label-quantity-pallet">Paletes Completas</div>
                             <div class="col-md-3 label-header-item header-label-date">Data</div>
                         </div>
                     </div>
@@ -44,12 +44,14 @@
                                         <div class="col-md-1 table-item item-label-clientref">{{product.CUSTOMER_PRODUCT_ID}}</div>
                                         <div class="col-md-1 table-item item-label-innerref">{{product.INTERNAL_PRODUCT_ID}}</div>
                                         <div class="col-md-2 table-item item-label-prodname">{{product.PRODUCT_NAME}}</div>
-                                        <div class="col-md-2 table-item item-label-total-painted">{{product.TOTAL_PRODUCTS_PAINTED}}</div>
+                                        <div class="col-md-1 table-item item-label-total-painted">{{product.TOTAL_PRODUCTS_PAINTED}}</div>
                                         <!--div class="col-md-2 table-item item-label-quantity-pallet"><strong>{{product.QUANTITY_IN_PALLETES}}</strong></div-->
-                                        <div class="col-md-2 table-item item-label-quantity-pallet">
-                                          <strong>
+                                        <div class="col-md-3 table-item item-label-quantity-pallet">
+                                          
                                             <input type="text" class="form-control" id="palletesquantity" name="palletesquantity" placeholder="Referência Produto" ng-value="{{product.QUANTITY_IN_PALLETES}}" ng-change="alert(palletesquantity)" ng-model="palletesquantity">
-                                          </strong>
+                                            <a class="btn btn-sm btn-danger update-pallet" ng-click="delete(product.ORDER_ID, product.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="Remover todas as Palletes em stock">
+                                                <img src="assets/icons/btn-success.svg" width="32px" height="32px" />
+                                            </a>
                                         </div>
                                         <div class="col-md-3 table-item item-label-date short">
                                             {{product.CREATED_DATE}}
