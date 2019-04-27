@@ -4883,6 +4883,7 @@ app.controller('PalletesController', function ($scope, $http, $rootScope, ModalS
   $rootScope.name = "Lista Paletes prontas para enviar"
 
   $scope.palletes = [];
+  $scope.valuesChanged = [];
   var request = $http.get('/getPalletesReadyForShipping');
   request.then(function successCallback(response) {
     $scope.palletes = response.data;
@@ -4891,6 +4892,15 @@ app.controller('PalletesController', function ($scope, $http, $rootScope, ModalS
     function errorCallback(data) {
       console.log('Error: ' + data);
     });
+
+  $scope.hasChangedValues = function (newValue, oldValue) {
+    var array = {
+      newValue : newValue,
+      oldValue : oldValue
+    }
+    $scope.valuesChanged.push(array)
+    alert(newValue);
+  }
 
   $scope.delete = function (order_id, customer_product_id) {
 
