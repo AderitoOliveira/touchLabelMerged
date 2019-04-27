@@ -1423,16 +1423,33 @@ $colorVariable: var(--value);
     line-height:1.4;
 }
 
-#configurations-wrap{
-    //margin-top:-72px;
+.item-label-quantity-pallet{
+    position:relative;
+    input[type="text"]{
+        margin-top:0px !important;
+    }
+    .update-pallet{
+        position: absolute;
+        top: 50%;
+        height: 32px;
+        margin-top: -16px;
+        right: 16px;
+        width: 32px;
+        border-top-left-radius: 0px;
+        background: red !important;
+        border-bottom-left-radius: 0px;
+        display:none;
+    }
+    input[type="text"]:focus ~ .update-pallet{
+        display:block;
+    }
 }
 
 .item-order-state{
     span.order-status {
         width: 50%;
         float: left;
-    }
-    
+    }    
     .item-order-actions {
         width: auto;
         float: right;
