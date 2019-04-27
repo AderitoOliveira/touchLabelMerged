@@ -1439,9 +1439,16 @@ $colorVariable: var(--value);
         background: red !important;
         border-bottom-left-radius: 0px;
         display:none;
+        &:hover{
+            display:block;
+        }
     }
-    input[type="text"]:focus ~ .update-pallet{
-        display:block;
+    input[type="text"]{
+        &:focus, &:hover{
+            & ~ .update-pallet{
+                display:block;
+            }
+        }
     }
 }
 
