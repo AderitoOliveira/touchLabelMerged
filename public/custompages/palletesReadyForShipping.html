@@ -49,7 +49,7 @@
                                         <div class="col-md-2 table-item item-label-quantity-pallet">
                                           
                                             <input type="text" class="form-control" id="palletesquantity" name="palletesquantity" placeholder="Referência Produto" ng-value="{{product.QUANTITY_IN_PALLETES}}" ng-change="hasChangedValues({{product.QUANTITY_IN_PALLETES}})" ng-model="palletesquantity">
-                                            <a class="btn btn-sm btn-danger update-pallet" ng-click="savePalleteQuantityChanges(palletesquantity)" data-toggle="tooltip" title="Gravar Alterações">
+                                            <a class="btn btn-sm btn-danger update-pallet" ng-click="savePalleteQuantityChanges(product.ORDER_ID, product.CUSTOMER_PRODUCT_ID, palletesquantity)" data-toggle="tooltip" title="Gravar Alterações">
                                                 <img src="assets/icons/btn-success.svg" width="32px" height="32px" />
                                             </a>
                                         </div>

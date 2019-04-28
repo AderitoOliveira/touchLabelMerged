@@ -4877,13 +4877,14 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
 
 
 //LIST ALL THE PALLETES READY TO BE SHIPPED - PalletesController
-app.controller('PalletesController', function ($scope, $http, $rootScope, ModalService) {
+app.controller('PalletesController', ['$scope', '$http', '$rootScope', 'ModalService', 'updatePalleteQuantity', function ($scope, $http, $rootScope, ModalService, updatePalleteQuantity) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Lista Paletes prontas para enviar"
 
   $scope.palletes = [];
   $scope.valuesChanged = [];
+  $scope.oldPalleteQuantity = 0;
   var request = $http.get('/getPalletesReadyForShipping');
   request.then(function successCallback(response) {
     $scope.palletes = response.data;
@@ -4893,13 +4894,45 @@ app.controller('PalletesController', function ($scope, $http, $rootScope, ModalS
       console.log('Error: ' + data);
     });
 
-  $scope.hasChangedValues = function (newValue, oldValue) {
-    var array = {
-      newValue : newValue,
-      oldValue : oldValue
+
+  $scope.hasChangedValues = function (oldValue) {
+    $scope.oldPalleteQuantity = oldValue;
+  }
+
+  $scope.savePalleteQuantityChanges = function (orderid, customerproductid, palletequantity) {
+    console.log("NewValue: " + palletequantity);
+    console.log("OldValue: " + $scope.oldPalleteQuantity);
+    var validatedPalletequantity  = "";
+    if(palletequantity == undefined) {
+      return false;
+    } else {
+     validatedPalletequantity = palletequantity.replace(/[^0-9]/g, '');
     }
-    $scope.valuesChanged.push(array)
-    alert(newValue);
+    if(validatedPalletequantity == palletequantity) {
+      updatePalleteQuantity.updatePallete(orderid, customerproductid, palletequantity).then(function() {
+
+        ModalService.showModal({
+          templateUrl: "../modal/genericModal.html",
+          controller: "GenericController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: "Foi actualizada a quantidade do produto " +  customerproductid + " na encomenda " +  orderid + " de " + $scope.oldPalleteQuantity  + " para " + palletequantity
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
+        });
+  
+      });
+    }
+    
+
   }
 
   $scope.delete = function (order_id, customer_product_id) {
@@ -4931,7 +4964,7 @@ app.controller('PalletesController', function ($scope, $http, $rootScope, ModalS
 
   };
 
-});
+}]);
 
 //////////////////////////////////////////////
 
@@ -7268,6 +7301,31 @@ app.factory('insertDailyPaintingParentProduct', ['$http', function ($http) {
   
   return {
     insertParentPainting: insertParentPainting
+  };
+
+}]);
+
+app.factory('updatePalleteQuantity', ['$http', '$q', function ($http, $q) {
+
+  function updatePallete(orderid, customerproductid, palletequantity) {
+  
+    var deferred = $q.defer();
+
+    var dataObj = {
+        ORDER_ID: orderid,
+        CUSTOMER_PRODUCT_ID: customerproductid,
+        QUANTITY_IN_PALLETES: palletequantity
+    };
+
+    var res = $http.post('/updatePalletesQuantity', dataObj).then(function (data, status, headers, config) {
+      deferred.resolve(true);
+    });
+
+    return deferred.promise;
+  }
+  
+  return {
+    updatePallete: updatePallete
   };
 
 }]);
