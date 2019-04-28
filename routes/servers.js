@@ -7,8 +7,8 @@ var mysql = require('mysql');
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'
-});
- */
+}); */
+
 
 var con = mysql.createConnection({
     host: '172.30.184.178',
@@ -1214,6 +1214,21 @@ deletePalletesReadyForShipping = function(req, res) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     con.connect(function(err) {
     con.query('delete from palletes_ready_for_shipping where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
+//UPDATE PALLETES QUANTITY AVAILABLE
+updatePalletesQuantity = function(req, res) {
+    var postData  = req.body;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    con.query('update palletes_ready_for_shipping set QUANTITY_IN_PALLETES = ? where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [postData.QUANTITY_IN_PALLETES, postData.ORDER_ID, postData.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });

@@ -552,6 +552,13 @@ router.post('/deletePalletesReadyForShipping', function (req, res) {
   deletePalletesReadyForShipping(req, res);
 });
 
+//UPDATE PALLETES QUANTITY AVAILABLE
+router.post('/updatePalletesQuantity', function (req, res) {
+  console.log("UPDATE PALLETES QUANTITY");
+  console.log(req.body);
+  updatePalletesQuantity(req, res);
+});
+
 //INSERT LABELS TO PRINT - order_products_labels_to_print
 router.post('/insertLabelsToPrint', function (req, res) {
   console.log("INSERT ORDER PRODUCTS DAILY PRODUCTION");

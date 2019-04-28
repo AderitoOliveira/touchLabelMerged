@@ -1423,16 +1423,52 @@ $colorVariable: var(--value);
     line-height:1.4;
 }
 
-#configurations-wrap{
-    //margin-top:-72px;
+.item-label-quantity-pallet{
+    position:relative;
+    input[type="text"]{
+        margin-top:0px !important;
+    }
+    .update-pallet{
+        position: absolute;
+        top: 50%;
+        height: 32px;
+        margin-top: -16px;
+        right: 16px;
+        width: 32px;
+        border-top-left-radius: 0px;
+        background: red !important;
+        border-bottom-left-radius: 0px;
+        display:none;
+        &:hover{
+            display:block;
+        }
+    }
+    input[type="text"]{
+        &:focus, &:hover{
+            & ~ .update-pallet{
+                display:block;
+            }
+        }
+    }
+}
+
+button.btn.btn-sm.btn-delete.btn-remove-pallet {
+    background-color: #c32625;
+    color: #fff;
+    font-size: 14px;
+    margin-left: 0px;
+    padding: 0px 5px;
+    max-width: 174px;
+    margin-right: -15px;
+    margin-top: 2px;
+    line-height: 30px;
 }
 
 .item-order-state{
     span.order-status {
         width: 50%;
         float: left;
-    }
-    
+    }    
     .item-order-actions {
         width: auto;
         float: right;
