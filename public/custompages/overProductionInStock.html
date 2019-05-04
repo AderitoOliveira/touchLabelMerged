@@ -28,10 +28,10 @@
                     <div class="label-table-header row">
                         <div class="inner-wrap">
                             <div class="col-md-2 label-header-item header-label-innerref">Ref. Interna</div>
-                            <div class="col-md-3 label-header-item header-label-prodname">Nome Produto</div>
+                            <div class="col-md-2 label-header-item header-label-prodname">Nome Produto</div>
                             <div class="col-md-2 label-header-item header-label-quantity">Total Produto Pintados</div>
                             <div class="col-md-2 label-header-item header-label-workername">Nome funcionário</div>
-                            <div class="col-md-3 label-header-item header-label-date">Data registo Produção</div>
+                            <div class="col-md-4 label-header-item header-label-date">Data registo Produção</div>
                         </div>
                     </div>
                     <div class="order-labels-content row">
@@ -39,15 +39,13 @@
                                 <div class="row">
                                     <div class="item-inner-wrap">
                                         <div class="col-md-2 table-item item-label-innerref">{{product.INTERNAL_PRODUCT_ID}}</div>
-                                        <div class="col-md-3 table-item item-label-prodname">{{product.PRODUCT_NAME}}</div>
+                                        <div class="col-md-2 table-item item-label-prodname">{{product.PRODUCT_NAME}}</div>
                                         <div class="col-md-2 table-item item-label-quantity">{{product.PRODUCTS_PRODUCED}}</div>
                                         <div class="col-md-2 table-item item-label-workername"><strong>{{product.EMPLOYEE_NAME}}</strong></div>
-                                        <div class="col-md-3 table-item item-label-date short">
+                                        <div class="col-md-4 table-item item-label-date short">
                                             {{product.CREATED_DATE}}
                                             <div class="item-order-actions">
-                                                <a class="btn btn-sm btn-danger" ng-click="delete(productsProduced.ORDER_ID, productsProduced.CUSTOMER_PRODUCT_ID, productsProduced.EMPLOYEE_NAME)" data-toggle="tooltip" title="Remover Produto">
-                                                    <img src="assets/icons/btn-success.svg" width="24px" height="24px" />
-                                                </a>
+                                                <button id="associate-order" type="submit" ng-click="save()" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px">Associar</button>
                                             </div>
                                         </div>
                                     </div>
