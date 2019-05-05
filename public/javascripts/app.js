@@ -4757,15 +4757,15 @@ app.controller('addChildProductController', ['$http', '$scope', '$rootScope', '$
 }]);
 
 //GET OVERPRODUCTION CONTROLER
-app.controller('OverProductionController', function ($http, $scope, $rootScope) {
+app.controller('OverProductionController', ['$http', '$scope', '$rootScope', 'ModalService', 'getOrdersToRegisterOverProduction', function ($http, $scope, $rootScope, ModalService, getOrdersToRegisterOverProduction) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Excesso de Produção em Stock";
 
   //GET THE PRODUCTS IN OVER PRODUTCION IN STCOK
   $scope.productInStock = [];
-  var URIClients = '/getOverProductionInStock';
-  var request = $http.get(URIClients);
+  var URIOverProductionProducts = '/getOverProductionInStock';
+  var request = $http.get(URIOverProductionProducts);
   request.then(function successCallback(response) {
     $scope.productInStock = response.data;
     return $scope.clients;
@@ -4774,8 +4774,36 @@ app.controller('OverProductionController', function ($http, $scope, $rootScope) 
       console.log('Error: ' + data);
     });
 
+  $scope.registerInOrder = function(internalproductid) {
+    
+    getOrdersToRegisterOverProduction.allOrdersForInternalProductId(internalproductid).then(function(orders) {
 
-});
+      console.log(orders);
+
+      ModalService.showModal({
+        templateUrl: "../modal/ordersToRegisterOverProductionModal.html",
+        controller: "OverProductionModalController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: "Encomendas em aberto para registar o excesso de produção",
+          ordersArray: orders
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+
+    });
+
+  };
+
+}]);
 
 //CREATE PRODUCT - Controller
 app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', function ($http, $scope, $rootScope, $state, $stateParams, $templateCache) {
@@ -5097,6 +5125,18 @@ app.controller('GenericController', function ($scope, message) {
   };
 
 });
+
+/*------------    Controller for the MODAL for registering OverProduction products -----------*/
+app.controller('OverProductionModalController', ['getOrdersToRegisterOverProduction' ,function ($scope, message, ordersArray) {
+
+  $scope.message = message;
+  $scope.orders = ordersArray;
+
+  $scope.yes = function () {
+    return true;
+  };
+
+}]);
 
 /*------------------------    Controller for the INSERTED PRODUCTION REPORT MODAL   -----------------------------*/
 app.controller('InsertedProductionReportModalController', function ($scope, $sce, message) {
@@ -7305,6 +7345,7 @@ app.factory('insertDailyPaintingParentProduct', ['$http', function ($http) {
 
 }]);
 
+//UPDATE  PALLETE QUANTITY FACTORY
 app.factory('updatePalleteQuantity', ['$http', '$q', function ($http, $q) {
 
   function updatePallete(orderid, customerproductid, palletequantity) {
@@ -7326,6 +7367,33 @@ app.factory('updatePalleteQuantity', ['$http', '$q', function ($http, $q) {
   
   return {
     updatePallete: updatePallete
+  };
+
+}]);
+
+
+//GET ALL ORDERS WITH PRODUCTS IN PRODUCTION TO REGISTER THE OVERPRODUCTION PRODUCTS
+app.factory('getOrdersToRegisterOverProduction', ['$http', '$q', function ($http, $q) {
+
+  function allOrdersForInternalProductId(internalproductid) {
+  
+    var orders = [];
+    var deferred = $q.defer();
+
+    var request = $http.get('/getAllOrdersForOverProductionRegistry/' + encodeURIComponent(internalproductid));
+      request.then(function successCallback(response) {
+        orders = response.data;
+        deferred.resolve(orders);
+      },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      });
+
+    return deferred.promise;
+  }
+  
+  return {
+    allOrdersForInternalProductId: allOrdersForInternalProductId
   };
 
 }]);
