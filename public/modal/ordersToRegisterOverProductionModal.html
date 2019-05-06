@@ -4,7 +4,7 @@
         <div class="modal-header">
           <span class="warning-text"><img src="assets/icons/warning-yellow.svg" width="28px" height="28px" /> Aviso</span>
           <button type="button" class="close" ng-click="close(false)" data-dismiss="modal" aria-hidden="true"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" /></button>
-            <h4 class="modal-title">A produção foi distribuída pelas seguintes encomendas:</h4>
+            <h4 class="modal-title">{{message}}</h4>
         </div>
         
         <div class="modal-body">
@@ -29,7 +29,7 @@
                                         <div class="col-md-2 table-item item-label-workername"><strong>{{order.TOTAL_PRODUCTS_PRODUCED}}</strong></div>
                                         <div class="col-md-3 table-item item-label-date short">
                                             <div class="item-order-actions">
-                                                <a class="btn btn-sm btn-danger" ng-click="registerInOrder(product.INTERNAL_PRODUCT_ID)" data-toggle="tooltip" title="Remover Produto">
+                                                <a class="btn btn-sm btn-danger" ng-click="raiseAlert(order.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="Remover Produto">
                                                     <img src="assets/icons/btn-success.svg" width="24px" height="24px" />
                                                 </a>
                                             </div>

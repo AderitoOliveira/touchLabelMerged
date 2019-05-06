@@ -4775,31 +4775,71 @@ app.controller('OverProductionController', ['$http', '$scope', '$rootScope', 'Mo
     });
 
   $scope.registerInOrder = function(internalproductid) {
+
+    $scope.ordersArray = [];
+    $scope.message = "";
     
-    getOrdersToRegisterOverProduction.allOrdersForInternalProductId(internalproductid).then(function(orders) {
+    //getOrdersToRegisterOverProduction.allOrdersForInternalProductId(internalproductid).then(function(orders) {
 
-      console.log(orders);
+      //$scope.orders = orders;
+      //console.log(orders);
 
-      ModalService.showModal({
-        templateUrl: "../modal/ordersToRegisterOverProductionModal.html",
-        controller: "OverProductionModalController",
-        preClose: (modal) => { modal.element.modal('hide'); },
-        inputs: {
-          message: "Encomendas em aberto para registar o excesso de produção",
-          ordersArray: orders
-        }
-      }).then(function (modal) {
-        modal.element.modal();
-        modal.close.then(function (result) {
-          if (!result) {
-            $scope.complexResult = "Modal forcibly closed..."
-          } else {
-            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
-          }
-        });
-      });
+      $scope.message = "XPTO";
+  $scope.orders = [{CUSTOMER_PRODUCT_ID: "1070454",
+  INTERNAL_PRODUCT_ID: "87/50",
+  ORDER_ID: "2021558",
+  PARENT_UNIQUE_ORDER_ID: null,
+  TOTAL_PRODUCTS_PRODUCED: 0,
+  TOTAL_QUANTITY_ORDERED: 24,
+  UNIQUE_ORDER_ID: 636}];
 
+  ModalService.showModal({
+    templateUrl: "../modal/ordersToRegisterOverProductionModal.html",
+    controller: "OverProductionModalController",
+    preClose: (modal) => { modal.element.modal('hide'); },
+    inputs: {
+      'orders': $scope.orders,
+      'message' : "Encomendas em aberto para registar o excesso de produção"
+    }
+  }).then(function (modal) {
+    modal.element.modal();
+    modal.close.then(function (result) {
+      if (!result) {
+        $scope.complexResult = "Modal forcibly closed..."
+      } else {
+        $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+      }
     });
+  });
+
+      /* var request = $http.get('/getAllOrdersForOverProductionRegistry/' + encodeURIComponent(internalproductid));
+      request.then(function successCallback(response) {
+        orders = response.data;
+        
+        ModalService.showModal({
+          templateUrl: "../modal/ordersToRegisterOverProductionModal.html",
+          controller: "OverProductionModalController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            orders: orders,
+            message: "Encomendas em aberto para registar o excesso de produção"
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
+        });
+
+      },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      }); */
+    //});
 
   };
 
@@ -5127,12 +5167,27 @@ app.controller('GenericController', function ($scope, message) {
 });
 
 /*------------    Controller for the MODAL for registering OverProduction products -----------*/
-app.controller('OverProductionModalController', ['getOrdersToRegisterOverProduction' ,function ($scope, message, ordersArray) {
+//app.controller('OverProductionModalController', ['getOrdersToRegisterOverProduction' ,function ($scope, message, ordersArray) {
+app.controller('OverProductionModalController', ['$scope', 'message', 'orders', function ($scope, message, orders) {
 
   $scope.message = message;
-  $scope.orders = ordersArray;
+  $scope.message = "XPTO";
+  $scope.orders = orders;
+  $scope.orders = [{CUSTOMER_PRODUCT_ID: "1070454",
+  INTERNAL_PRODUCT_ID: "87/50",
+  ORDER_ID: "2021558",
+  PARENT_UNIQUE_ORDER_ID: null,
+  TOTAL_PRODUCTS_PRODUCED: 0,
+  TOTAL_QUANTITY_ORDERED: 24,
+  UNIQUE_ORDER_ID: 636}];
+  
 
   $scope.yes = function () {
+    return true;
+  };
+
+  $scope.raiseAlert = function (customerproductId) {
+    alert(customerproductId);
     return true;
   };
 
@@ -7373,7 +7428,7 @@ app.factory('updatePalleteQuantity', ['$http', '$q', function ($http, $q) {
 
 
 //GET ALL ORDERS WITH PRODUCTS IN PRODUCTION TO REGISTER THE OVERPRODUCTION PRODUCTS
-app.factory('getOrdersToRegisterOverProduction', ['$http', '$q', function ($http, $q) {
+app.factory('getOrdersToRegisterOverProduction', ['$http', '$q', 'ModalService', function ($http, $q, ModalService) {
 
   function allOrdersForInternalProductId(internalproductid) {
   
