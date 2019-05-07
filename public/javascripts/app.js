@@ -4785,32 +4785,65 @@ app.controller('OverProductionController', ['$http', '$scope', '$rootScope', 'Mo
       //console.log(orders);
 
       $scope.message = "XPTO";
-  $scope.orders = [{CUSTOMER_PRODUCT_ID: "1070454",
-  INTERNAL_PRODUCT_ID: "87/50",
-  ORDER_ID: "2021558",
-  PARENT_UNIQUE_ORDER_ID: null,
-  TOTAL_PRODUCTS_PRODUCED: 0,
-  TOTAL_QUANTITY_ORDERED: 24,
-  UNIQUE_ORDER_ID: 636}];
+      $scope.orders = [{CUSTOMER_PRODUCT_ID: "1070454",
+      INTERNAL_PRODUCT_ID: "87/50",
+      ORDER_ID: "2021558",
+      PARENT_UNIQUE_ORDER_ID: null,
+      TOTAL_PRODUCTS_PRODUCED: 0,
+      TOTAL_QUANTITY_ORDERED: 24,
+      UNIQUE_ORDER_ID: 636},
+      {CUSTOMER_PRODUCT_ID: "1070454",
+      INTERNAL_PRODUCT_ID: "87/50",
+      ORDER_ID: "2021558",
+      PARENT_UNIQUE_ORDER_ID: null,
+      TOTAL_PRODUCTS_PRODUCED: 0,
+      TOTAL_QUANTITY_ORDERED: 24,
+      UNIQUE_ORDER_ID: 636}];
 
-  ModalService.showModal({
-    templateUrl: "../modal/ordersToRegisterOverProductionModal.html",
-    controller: "OverProductionModalController",
-    preClose: (modal) => { modal.element.modal('hide'); },
-    inputs: {
-      'orders': $scope.orders,
-      'message' : "Encomendas em aberto para registar o excesso de produção"
-    }
-  }).then(function (modal) {
-    modal.element.modal();
-    modal.close.then(function (result) {
-      if (!result) {
-        $scope.complexResult = "Modal forcibly closed..."
-      } else {
-        $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
-      }
-    });
-  });
+      var dataToDelete = {
+        ORDER_ID: "123456789",
+        CUSTOMER_PRODUCT_ID: "0000111222"
+      };
+
+      ModalService.showModal({
+        templateUrl: "../modal/ordersToRegisterOverProductionModal.html",
+        controller: "OverProductionModalController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          //message: "Deseja mesmo remover a pallete de stock do produto " + internalproductid + " na encomenda " + internalproductid + " ?",
+          message: "Encomendas em Produção para atribuir o produto " + internalproductid,
+          operationURL: '/deletePalletesReadyForShipping',
+          dataObj: $scope.orders
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+
+      /* ModalService.showModal({
+        templateUrl: "../modal/ordersToRegisterOverProductionModal.html",
+        controller: "OverProductionModalController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          orders: $scope.orders,
+          message : "Encomendas em aberto para registar o excesso de produção"
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      }); */
 
       /* var request = $http.get('/getAllOrdersForOverProductionRegistry/' + encodeURIComponent(internalproductid));
       request.then(function successCallback(response) {
@@ -5166,14 +5199,41 @@ app.controller('GenericController', function ($scope, message) {
 
 });
 
+//Generic Modal for deleting/confirming operation where we receive the dataObj array and the operation to execute
+app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'dataObj', 'message',
+  function ($scope, $http, $state, dataObj, message) {
+
+    $scope.message = message;
+    $scope.orders = dataObj;
+    //  This close function doesn't need to use jQuery or bootstrap, because
+    //  the button has the 'data-dismiss' attribute.
+
+    //Save Content Modal  
+    $scope.yes = function () {
+      return true;
+    };
+
+    $scope.raiseAlert = function (customerproductId) {
+      alert(customerproductId);
+      return true;
+    };
+
+  }]);
 /*------------    Controller for the MODAL for registering OverProduction products -----------*/
 //app.controller('OverProductionModalController', ['getOrdersToRegisterOverProduction' ,function ($scope, message, ordersArray) {
-app.controller('OverProductionModalController', ['$scope', 'message', 'orders', function ($scope, message, orders) {
+/* app.controller('OverProductionModalController', ['$scope', function ($scope, message, orders) {
 
   $scope.message = message;
   $scope.message = "XPTO";
   $scope.orders = orders;
   $scope.orders = [{CUSTOMER_PRODUCT_ID: "1070454",
+  INTERNAL_PRODUCT_ID: "87/50",
+  ORDER_ID: "2021558",
+  PARENT_UNIQUE_ORDER_ID: null,
+  TOTAL_PRODUCTS_PRODUCED: 0,
+  TOTAL_QUANTITY_ORDERED: 24,
+  UNIQUE_ORDER_ID: 636},
+  {CUSTOMER_PRODUCT_ID: "1070454",
   INTERNAL_PRODUCT_ID: "87/50",
   ORDER_ID: "2021558",
   PARENT_UNIQUE_ORDER_ID: null,
@@ -5191,7 +5251,7 @@ app.controller('OverProductionModalController', ['$scope', 'message', 'orders', 
     return true;
   };
 
-}]);
+}]); */
 
 /*------------------------    Controller for the INSERTED PRODUCTION REPORT MODAL   -----------------------------*/
 app.controller('InsertedProductionReportModalController', function ($scope, $sce, message) {
