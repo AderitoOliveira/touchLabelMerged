@@ -15,8 +15,9 @@
                         <div class="inner-wrap">
                             <div class="col-md-2 label-header-item header-label-innerref">Num. Enco.</div>
                             <div class="col-md-3 label-header-item header-label-prodname">Ref Cliente</div>
-                            <div class="col-md-2 label-header-item header-label-quantity">Qt. Encomenda</div>
-                            <div class="col-md-2 label-header-item header-label-workername">Qt. Produzida</div>
+                            <div class="col-md-2 label-header-item header-label-quantity-order">Qt. Encomenda</div>
+                            <div class="col-md-2 label-header-item header-label-quantity-produces">Qt. Produzida</div>
+                            <div class="col-md-2 label-header-item header-label-quantity-to-register">Qt. a associar</div>
                         </div>
                     </div>
                     <div class="order-labels-content row">
@@ -27,9 +28,10 @@
                                         <div class="col-md-3 table-item item-label-prodname">{{order.CUSTOMER_PRODUCT_ID}}</div>
                                         <div class="col-md-2 table-item item-label-quantity">{{order.TOTAL_QUANTITY_ORDERED}}</div>
                                         <div class="col-md-2 table-item item-label-workername"><strong>{{order.TOTAL_PRODUCTS_PRODUCED}}</strong></div>
+                                        <div class="col-md-2 table-item item-label-workername"><strong>{{order.QUANTITY_TO_REGISTER}}</strong></div>
                                         <div class="col-md-3 table-item item-label-date short">
                                             <div class="item-order-actions">
-                                                <a class="btn btn-sm btn-danger" ng-click="raiseAlert(order.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="Remover Produto">
+                                                <a class="btn btn-sm btn-danger" ng-click="registerOverProductionInOrder(order.ORDER_ID, order.INTERNAL_PRODUCT_ID, order.CUSTOMER_PRODUCT_ID, order.PRODUCT_NAME, order.UNIQUE_ORDER_ID, order.QUANTITY_TO_REGISTER)" data-toggle="tooltip" title="Remover Produto">
                                                     <img src="assets/icons/btn-success.svg" width="24px" height="24px" />
                                                 </a>
                                             </div>

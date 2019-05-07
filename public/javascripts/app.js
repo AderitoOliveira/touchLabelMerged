@@ -4774,88 +4774,28 @@ app.controller('OverProductionController', ['$http', '$scope', '$rootScope', 'Mo
       console.log('Error: ' + data);
     });
 
-  $scope.registerInOrder = function(internalproductid) {
+  $scope.registerInOrder = function(internal_product_id, products_to_register_in_order) {
 
     $scope.ordersArray = [];
     $scope.message = "";
     
-    //getOrdersToRegisterOverProduction.allOrdersForInternalProductId(internalproductid).then(function(orders) {
+    getOrdersToRegisterOverProduction.allOrdersForInternalProductId(internal_product_id).then(function(orders) {
 
-      //$scope.orders = orders;
-      //console.log(orders);
+      if(orders.length > 0) {
 
-      $scope.message = "XPTO";
-      $scope.orders = [{CUSTOMER_PRODUCT_ID: "1070454",
-      INTERNAL_PRODUCT_ID: "87/50",
-      ORDER_ID: "2021558",
-      PARENT_UNIQUE_ORDER_ID: null,
-      TOTAL_PRODUCTS_PRODUCED: 0,
-      TOTAL_QUANTITY_ORDERED: 24,
-      UNIQUE_ORDER_ID: 636},
-      {CUSTOMER_PRODUCT_ID: "1070454",
-      INTERNAL_PRODUCT_ID: "87/50",
-      ORDER_ID: "2021558",
-      PARENT_UNIQUE_ORDER_ID: null,
-      TOTAL_PRODUCTS_PRODUCED: 0,
-      TOTAL_QUANTITY_ORDERED: 24,
-      UNIQUE_ORDER_ID: 636}];
-
-      var dataToDelete = {
-        ORDER_ID: "123456789",
-        CUSTOMER_PRODUCT_ID: "0000111222"
-      };
-
-      ModalService.showModal({
-        templateUrl: "../modal/ordersToRegisterOverProductionModal.html",
-        controller: "OverProductionModalController",
-        preClose: (modal) => { modal.element.modal('hide'); },
-        inputs: {
-          //message: "Deseja mesmo remover a pallete de stock do produto " + internalproductid + " na encomenda " + internalproductid + " ?",
-          message: "Encomendas em Produção para atribuir o produto " + internalproductid,
-          operationURL: '/deletePalletesReadyForShipping',
-          dataObj: $scope.orders
+        for(i = 0; i < orders.length; i++) {
+          orders[i].QUANTITY_TO_REGISTER = products_to_register_in_order;
         }
-      }).then(function (modal) {
-        modal.element.modal();
-        modal.close.then(function (result) {
-          if (!result) {
-            $scope.complexResult = "Modal forcibly closed..."
-          } else {
-            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
-          }
-        });
-      });
-
-      /* ModalService.showModal({
-        templateUrl: "../modal/ordersToRegisterOverProductionModal.html",
-        controller: "OverProductionModalController",
-        preClose: (modal) => { modal.element.modal('hide'); },
-        inputs: {
-          orders: $scope.orders,
-          message : "Encomendas em aberto para registar o excesso de produção"
-        }
-      }).then(function (modal) {
-        modal.element.modal();
-        modal.close.then(function (result) {
-          if (!result) {
-            $scope.complexResult = "Modal forcibly closed..."
-          } else {
-            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
-          }
-        });
-      }); */
-
-      /* var request = $http.get('/getAllOrdersForOverProductionRegistry/' + encodeURIComponent(internalproductid));
-      request.then(function successCallback(response) {
-        orders = response.data;
         
         ModalService.showModal({
           templateUrl: "../modal/ordersToRegisterOverProductionModal.html",
           controller: "OverProductionModalController",
           preClose: (modal) => { modal.element.modal('hide'); },
           inputs: {
-            orders: orders,
-            message: "Encomendas em aberto para registar o excesso de produção"
+            //message: "Deseja mesmo remover a pallete de stock do produto " + internalproductid + " na encomenda " + internalproductid + " ?",
+            message: "Encomendas em Produção para atribuir o produto " + internal_product_id,
+            operationURL: '/deletePalletesReadyForShipping',
+            dataObj: orders
           }
         }).then(function (modal) {
           modal.element.modal();
@@ -4867,12 +4807,28 @@ app.controller('OverProductionController', ['$http', '$scope', '$rootScope', 'Mo
             }
           });
         });
+      } else {
 
-      },
-      function errorCallback(data) {
-        console.log('Error: ' + data);
-      }); */
-    //});
+        ModalService.showModal({
+          templateUrl: "../modal/genericModal.html",
+          controller: "GenericController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: "Não existem encomendas em Produção para o produto " + internal_product_id
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
+        });
+      }
+
+    });
 
   };
 
@@ -5218,40 +5174,27 @@ app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'd
       return true;
     };
 
+    $scope.registerOverProductionInOrder = function (orderid, internalproductid, customerproductid, productname, uniqueorderid, quantitytoregister) {
+      
+      var data = {
+        ORDER_ID: orderid,
+        INTERNAL_PRODUCT_ID: internalproductid,
+        CUSTOMER_PRODUCT_ID: customerproductid,
+        PRODUCT_NAME: productname,
+        ORDER_PRODUCTS_UNIQUE_ID: uniqueorderid,
+        EMPLOYEE_NAME: "PRODUTOS_EM_STOCK",
+        EMPLOYEE_ID: 0,
+        TOTAL_PRODUCTS_PRODUCED: quantitytoregister,
+        PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+        CREATED_DATE: productiondate
+      };
+
+      var res = $http.post('/insertDailyProduction', data).then(function (data, status, headers, config) {
+      });
+
+    };
+
   }]);
-/*------------    Controller for the MODAL for registering OverProduction products -----------*/
-//app.controller('OverProductionModalController', ['getOrdersToRegisterOverProduction' ,function ($scope, message, ordersArray) {
-/* app.controller('OverProductionModalController', ['$scope', function ($scope, message, orders) {
-
-  $scope.message = message;
-  $scope.message = "XPTO";
-  $scope.orders = orders;
-  $scope.orders = [{CUSTOMER_PRODUCT_ID: "1070454",
-  INTERNAL_PRODUCT_ID: "87/50",
-  ORDER_ID: "2021558",
-  PARENT_UNIQUE_ORDER_ID: null,
-  TOTAL_PRODUCTS_PRODUCED: 0,
-  TOTAL_QUANTITY_ORDERED: 24,
-  UNIQUE_ORDER_ID: 636},
-  {CUSTOMER_PRODUCT_ID: "1070454",
-  INTERNAL_PRODUCT_ID: "87/50",
-  ORDER_ID: "2021558",
-  PARENT_UNIQUE_ORDER_ID: null,
-  TOTAL_PRODUCTS_PRODUCED: 0,
-  TOTAL_QUANTITY_ORDERED: 24,
-  UNIQUE_ORDER_ID: 636}];
-  
-
-  $scope.yes = function () {
-    return true;
-  };
-
-  $scope.raiseAlert = function (customerproductId) {
-    alert(customerproductId);
-    return true;
-  };
-
-}]); */
 
 /*------------------------    Controller for the INSERTED PRODUCTION REPORT MODAL   -----------------------------*/
 app.controller('InsertedProductionReportModalController', function ($scope, $sce, message) {
