@@ -6644,7 +6644,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', '$q', 'insertD
 
         //Only record the production if it's not a Parent Product. In the validations below we are already checking it
         //the child product should save the parent production
-        if(orderproduct.IS_PARENT = "N") {
+        if(orderproduct.IS_PARENT == "N") {
           //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
           //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
           if (number_of_products_to_close_order <= products_remaining_from_daily_production) {
@@ -6684,7 +6684,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', '$q', 'insertD
                 //$scope.producedQuantityForParentProduct = number_of_products_to_close_order;
                 //parentUniqueOrderId = parentUniqueOrderIdAndInternalProductId.UNIQUE_ORDER_ID;
                 //parentInternalProductId = parentUniqueOrderIdAndInternalProductId.INTERNAL_PRODUCT_ID;
-                insertDailyProductionParentProduct.insertParentProduction(orderproduct.PARENT_UNIQUE_ORDER_ID, order_id, parentInternalProductId, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate) ;  
+                insertDailyProductionParentProduct.insertParentProduction(orderproduct.PARENT_UNIQUE_ORDER_ID, order_id, $scope.internalproductid, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate) ;  
 
             }
 
