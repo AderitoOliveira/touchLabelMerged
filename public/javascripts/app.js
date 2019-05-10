@@ -6642,6 +6642,9 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', '$q', 'insertD
           console.log("order_id: " + order_id);
           console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
 
+        //Only record the production if it's not a Parent Product. In the validations below we are already checking it
+        //the child product should save the parent production
+        if(orderproduct.IS_PARENT = "N") {
           //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
           //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
           if (number_of_products_to_close_order <= products_remaining_from_daily_production) {
@@ -6737,6 +6740,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', '$q', 'insertD
               products_remaining_from_daily_production = 0;
             }
           }
+        }
 
           //MsgSharingService.setsavedData(alertMsg);
 
