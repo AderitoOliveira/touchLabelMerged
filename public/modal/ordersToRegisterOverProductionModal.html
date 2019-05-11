@@ -1,4 +1,4 @@
-<div class="modal fade">
+<div id="modal-overprod" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content modal-w-table">
         <div class="modal-header">
@@ -14,26 +14,33 @@
                     <div class="label-table-header row">
                         <div class="inner-wrap">
                             <div class="col-md-2 label-header-item header-label-innerref">Num. Enco.</div>
-                            <div class="col-md-3 label-header-item header-label-prodname">Ref Cliente</div>
+                            <div class="col-md-2 label-header-item header-label-prodname">Ref Cliente</div>
                             <div class="col-md-2 label-header-item header-label-quantity-order">Qt. Encomenda</div>
                             <div class="col-md-2 label-header-item header-label-quantity-produces">Qt. Produzida</div>
                             <div class="col-md-2 label-header-item header-label-quantity-to-register">Qt. a associar</div>
                         </div>
                     </div>
                     <div class="order-labels-content row">
-                            <div class="col-md-12" ng-repeat="order in orders">
-                                <div class="row">
-                                    <div class="item-inner-wrap">
-                                        <div class="col-md-2 table-item item-label-innerref">{{order.ORDER_ID}}</div>
-                                        <div class="col-md-3 table-item item-label-prodname">{{order.CUSTOMER_PRODUCT_ID}}</div>
-                                        <div class="col-md-2 table-item item-label-quantity">{{order.TOTAL_QUANTITY_ORDERED}}</div>
-                                        <div class="col-md-2 table-item item-label-workername"><strong>{{order.TOTAL_PRODUCTS_PRODUCED}}</strong></div>
-                                        <div class="col-md-2 table-item item-label-workername"><strong>{{order.QUANTITY_TO_REGISTER}}</strong></div>
-                                        <div class="col-md-3 table-item item-label-date short">
-                                            <div class="item-order-actions">
-                                                <a class="btn btn-sm btn-danger" ng-click="registerOverProductionInOrder(order.ORDER_ID, order.INTERNAL_PRODUCT_ID, order.CUSTOMER_PRODUCT_ID, order.PRODUCT_NAME, order.UNIQUE_ORDER_ID, order.QUANTITY_TO_REGISTER)" data-toggle="tooltip" title="Remover Produto">
-                                                    <img src="assets/icons/btn-success.svg" width="24px" height="24px" />
-                                                </a>
+                        <div class="col-md-12">
+                            <div class="scroll-table">
+                                <div class="row">                            
+                                    <div class="col-md-12" ng-repeat="order in orders">
+                                        <div class="row">
+                                            <div class="item-inner-wrap">
+                                                <div class="col-md-2 table-item item-label-innerref">{{order.ORDER_ID}}</div>
+                                                <div class="col-md-2 table-item item-label-prodname">{{order.CUSTOMER_PRODUCT_ID}}</div>
+                                                <div class="col-md-2 table-item item-label-quantity">{{order.TOTAL_QUANTITY_ORDERED}}</div>
+                                                <div class="col-md-2 table-item item-label-workername"><strong>{{order.TOTAL_PRODUCTS_PRODUCED}}</strong></div>
+                                                <div class="col-md-1 table-item item-label-workername"><strong>{{order.QUANTITY_TO_REGISTER}}</strong></div>
+                                                <div class="col-md-3 table-item item-action">
+                                                    <div class="item-order-actions">
+                                                        <button id="associate-order" type="submit" ng-click="registerOverProductionInOrder(order.ORDER_ID, order.INTERNAL_PRODUCT_ID, order.CUSTOMER_PRODUCT_ID, order.PRODUCT_NAME, order.UNIQUE_ORDER_ID, order.QUANTITY_TO_REGISTER)" data-toggle="tooltip" title="Remover Produto" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px">Associar</button>
+
+                                                        <!-- <a class="btn btn-sm btn-danger" >
+                                                            <img src="assets/icons/btn-success.svg" width="24px" height="24px" />
+                                                        </a> -->
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -41,12 +48,12 @@
                             </div>
                         </div>
                     </div>
+                    </div>
                 </div>
-
+            </div>
+            <div class="modal-footer">
+                <button type="submit" ng-click="yes()" data-dismiss="modal" class="btn btn-default btn-save" style="background-color:darkgray;">Fechar</button>
+            </div>
         </div>
-        <div class="modal-footer">
-              <button type="submit" ng-click="yes()"  data-dismiss="modal" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Aceitar</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
