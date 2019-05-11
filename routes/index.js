@@ -521,6 +521,20 @@ router.post('/insertOverProductionStockTable', function (req, res) {
   insertOverProductionStockTable(req, res);
 });
 
+//UPDATE OVER PRODUCTION IN STOCK TABLE - overproduction_in_stock
+router.post('/updateStockInOverProductionStockTable', function (req, res) {
+  console.log("UPDATE OVER PRODUCTION STOCK TABLE");
+  console.log(req.body);
+  updateStockInOverProductionStockTable(req, res);
+});
+
+//DELETE OVER PRODUCTION IN STOCK TABLE - overproduction_in_stock
+router.post('/deleteStockInOverProductionStockTable', function (req, res) {
+  console.log("DELETE FROM OVER PRODUCTION STOCK TABLE");
+  console.log(req.body);
+  deleteStockInOverProductionStockTable(req, res);
+});
+
 //GET ALL ORDERS WITH PRODUCTS IN PRODUCTION TO REGISTER THE OVERPRODUCTION PRODUCTS
 router.get('/getAllOrdersForOverProductionRegistry/:internalproductid', function (req, res) {
   console.log("GET ALL ORDERS WITH PRODUCTS IN PRODUCTION TO REGISTER THE OVERPRODUCTION PRODUCTS");

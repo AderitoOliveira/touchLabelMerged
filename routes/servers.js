@@ -7,8 +7,8 @@ var mysql = require('mysql');
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'
-}); */
-
+});
+ */
 
 var con = mysql.createConnection({
     host: '172.30.184.178',
@@ -1262,6 +1262,36 @@ insertOverProductionStockTable = function(req, res) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     con.connect(function(err) {
     con.query('INSERT INTO overproduction_in_stock SET ?', postData, function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
+//UPDATE OVER PRODUCTION IN STOCK TABLE - overproduction_in_stock
+updateStockInOverProductionStockTable = function(req, res) {
+    var postData  = req.body;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    con.query('update overproduction_in_stock set PRODUCTS_PRODUCED = PRODUCTS_PRODUCED - ? where INTERNAL_PRODUCT_ID = ?', [req.body.QUANTITY_REGISTERD, req.body.INTERNAL_PRODUCT_ID], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
+//DELETE OVER PRODUCTION IN STOCK TABLE - overproduction_in_stock
+deleteStockInOverProductionStockTable = function(req, res) {
+    var postData  = req.body;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    con.query('delete from overproduction_in_stock where unique_id = ? and INTERNAL_PRODUCT_ID = ?', [req.body.UNIQUE_ID, req.body.INTERNAL_PRODUCT_ID], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });

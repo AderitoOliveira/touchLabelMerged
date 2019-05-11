@@ -5174,23 +5174,63 @@ app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'd
       return true;
     };
 
-    $scope.registerOverProductionInOrder = function (orderid, internalproductid, customerproductid, productname, uniqueorderid, quantitytoregister) {
+    $scope.registerOverProductionInOrder = function (unique_id, orderid, internalproductid, customerproductid, productname, uniqueorderid, totalquantityordered, totalquantityproduced, quantitytoregister) {
       
-      var data = {
-        ORDER_ID: orderid,
-        INTERNAL_PRODUCT_ID: internalproductid,
-        CUSTOMER_PRODUCT_ID: customerproductid,
-        PRODUCT_NAME: productname,
-        ORDER_PRODUCTS_UNIQUE_ID: uniqueorderid,
-        EMPLOYEE_NAME: "PRODUTOS_EM_STOCK",
-        EMPLOYEE_ID: 0,
-        TOTAL_PRODUCTS_PRODUCED: quantitytoregister,
-        PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
-        CREATED_DATE: productiondate
-      };
+      var remainingProductsToRegisterIntheOrder = totalquantityordered - totalquantityproduced;
 
-      var res = $http.post('/insertDailyProduction', data).then(function (data, status, headers, config) {
-      });
+      if(remainingProductsToRegisterIntheOrder >= quantitytoregister) {
+        var data = {
+          ORDER_ID: orderid,
+          INTERNAL_PRODUCT_ID: internalproductid,
+          CUSTOMER_PRODUCT_ID: customerproductid,
+          PRODUCT_NAME: productname,
+          ORDER_PRODUCTS_UNIQUE_ID: uniqueorderid,
+          EMPLOYEE_NAME: "PRODUTOS_EM_STOCK",
+          EMPLOYEE_ID: 0,
+          TOTAL_PRODUCTS_PRODUCED: quantitytoregister,
+          PRODUCED_VALUE_IN_EURO: 0,
+          CREATED_DATE: moment().format('YYYY-MM-DD 00:00:00')
+        };
+  
+        var res = $http.post('/insertDailyProduction', data).then(function (data, status, headers, config) {
+        });
+
+        //WE STILL HAVE TO DELETE THE OVERSTOCK
+        var registerToDelete = {
+          UNIQUE_ID: unique_id,
+          INTERNAL_PRODUCT_ID: internalproductid
+        };
+
+        var res = $http.post('/deleteStockInOverProductionStockTable', registerToDelete).then(function (data, status, headers, config) {
+        });
+
+      } else {
+        var data = {
+          ORDER_ID: orderid,
+          INTERNAL_PRODUCT_ID: internalproductid,
+          CUSTOMER_PRODUCT_ID: customerproductid,
+          PRODUCT_NAME: productname,
+          ORDER_PRODUCTS_UNIQUE_ID: uniqueorderid,
+          EMPLOYEE_NAME: "PRODUTOS_EM_STOCK",
+          EMPLOYEE_ID: 0,
+          TOTAL_PRODUCTS_PRODUCED: remainingProductsToRegisterIntheOrder,
+          PRODUCED_VALUE_IN_EURO: 0,
+          CREATED_DATE: moment().format('YYYY-MM-DD 00:00:00')
+        };
+  
+        var res = $http.post('/insertDailyProduction', data).then(function (data, status, headers, config) {
+        });
+
+        //UPDATE THE VALUES IN STOCK TO REFLECT THE REAMINING VALUES
+        var updateStockTableData = {
+            QUANTITY_REGISTERD : remainingProductsToRegisterIntheOrder,
+            INTERNAL_PRODUCT_ID: internalproductid,
+        };
+
+        var res = $http.post('/updateStockInOverProductionStockTable', updateStockTableData).then(function (data, status, headers, config) {
+        });
+
+      }
 
     };
 
