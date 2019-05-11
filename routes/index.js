@@ -559,6 +559,14 @@ router.post('/updatePalletesQuantity', function (req, res) {
   updatePalletesQuantity(req, res);
 });
 
+//GET PARENT DETAILS TO INSERT THE PALLETE QUANTITY WHEN REGISTERING DAILY PAINTING
+router.get('/getParentDetailsForPallet/:parentcustomerid', function (req, res) {
+  console.log("GET PARENT DETAILS TO INSERT THE PALLETE QUANTITY");
+  console.log(req.body);
+  getParentDetailsForPallet(req, res);
+});
+
+
 //INSERT LABELS TO PRINT - order_products_labels_to_print
 router.post('/insertLabelsToPrint', function (req, res) {
   console.log("INSERT ORDER PRODUCTS DAILY PRODUCTION");

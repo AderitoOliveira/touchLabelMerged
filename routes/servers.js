@@ -1238,6 +1238,24 @@ updatePalletesQuantity = function(req, res) {
  });
 }
 
+//GET PARENT DETAILS TO INSERT THE PALLETE QUANTITY WHEN REGISTERING DAILY PAINTING
+getParentDetailsForPallet = function(data, callback) {
+    con.connect(function(err) {
+    con.query('select prod.CUSTOMER_PRODUCT_ID, prod.INTERNAL_PRODUCT_ID, prod.PRODUCT_NAME, tech_sheet.Qty_By_Pallet from products prod, products_technical_sheet tech_sheet where prod.CUSTOMER_PRODUCT_ID = ? and prod.CUSTOMER_PRODUCT_ID = tech_sheet.CUSTOMER_PRODUCT_ID', [data.params.parentcustomerid], function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET PARENT DETAILS TO INSERT THE PALLETE QUANTITY");   
+
+    });
+});
+}
+
 //INSERT OVER PRODUCTION IN STOCK TABLE - overproduction_in_stock
 insertOverProductionStockTable = function(req, res) {
     var postData  = req.body;
