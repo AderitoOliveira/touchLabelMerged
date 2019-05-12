@@ -975,7 +975,7 @@ app.controller('labels', function ($scope, $http, $rootScope) {
 });
 
 //Controller for All the Orders
-app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams', '$state', '$q', 'ModalService', 'productInOtherOpenOrdersOrOverProduction', 'productInOtherOpenOrdersForPainting', 'insertDailyProductionParentProduct', 'insertDailyPaintingParentProduct', 'GetParentUniqueOrderId', function ($scope, $http, $rootScope, $stateParams, $state, $q, ModalService, productInOtherOpenOrdersOrOverProduction, productInOtherOpenOrdersForPainting, insertDailyProductionParentProduct, insertDailyPaintingParentProduct, GetParentUniqueOrderId) {
+app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams', '$state', '$q', 'ModalService', 'productInOtherOpenOrdersOrOverProduction', 'productInOtherOpenOrdersForPainting', 'insertDailyProductionParentProduct', 'insertDailyPaintingParentProduct', 'GetParentUniqueOrderId', 'getParentDetailsToInsertPallete', function ($scope, $http, $rootScope, $stateParams, $state, $q, ModalService, productInOtherOpenOrdersOrOverProduction, productInOtherOpenOrdersForPainting, insertDailyProductionParentProduct, insertDailyPaintingParentProduct, GetParentUniqueOrderId, getParentDetailsToInsertPallete) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Lista de Produtos da Encomenda " + $stateParams.orderId;
@@ -1884,7 +1884,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
 
   //INSERT DAILY PAINTING REGISTRY
-  $scope.insertDailyPainting = function (internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, qtyByPallet, productiondate, parent_customer_product_id) {
+  $scope.insertDailyPainting = function (internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, qtyByPallet, productiondate, parent_customer_product_id, isparent, in_compound_product) {
 
     //$scope.title = title;
     $scope.orderid = $scope.orderid;
@@ -1945,8 +1945,27 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         CREATED_DATE: productiondate
       };
 
-      if(parent_customer_product_id != null) {
-        insertDailyPaintingParentProduct.insertParentPainting($scope.orderid, parent_customer_product_id, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, $scope.totalquantityproduced, productiondate) ;
+      if(parent_customer_product_id != null && in_compound_product == 'Y') {
+        getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function(parentDetails){
+
+          var parentPalletQuantity = $scope.totalquantityproduced / parentDetails[0].Qty_By_Pallet;
+
+          var parentObjPallete = {
+            ORDER_ID: $scope.orderid,
+            CUSTOMER_PRODUCT_ID: parent_customer_product_id,
+            INTERNAL_PRODUCT_ID: parentDetails[0].INTERNAL_PRODUCT_ID,
+            PRODUCT_NAME: parentDetails[0].PRODUCT_NAME,
+            TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
+            QUANTITY_IN_PALLETES: parentPalletQuantity,
+          };
+
+          var res = $http.post('/insertPalletesQuantity', parentObjPallete).then(function (data, status, headers, config) {
+            $state.reload();
+          });
+
+          insertDailyPaintingParentProduct.insertParentPainting($scope.orderid, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, $scope.totalquantityproduced, productiondate) ;
+
+        });
       }
 
       var res = $http.post('/insertDailyPainting', dataObj).then(function (data, status, headers, config) {
@@ -1961,9 +1980,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         QUANTITY_IN_PALLETES: palletQuantity,
       };
 
-      var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
-        $state.reload();
-      });
+      if(isparent == 'N' && in_compound_product == 'N') {
+        var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
+          $state.reload();
+        });
+      }
 
     } else {
 
@@ -1983,8 +2004,26 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         CREATED_DATE: productiondate
       };
 
-      if(parent_customer_product_id != null) {
-        insertDailyPaintingParentProduct.insertParentPainting($scope.orderid, parent_customer_product_id, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_still_to_produce, productiondate) ;
+      if(parent_customer_product_id != null && in_compound_product == 'Y') {
+        getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function(parentDetails){
+
+          var parentPalletQuantity = $scope.totalquantityproduced / parentDetails[0].Qty_By_Pallet;
+
+          var parentObjPallete = {
+            ORDER_ID: $scope.orderid,
+            CUSTOMER_PRODUCT_ID: parent_customer_product_id,
+            INTERNAL_PRODUCT_ID: parentDetails[0].INTERNAL_PRODUCT_ID,
+            PRODUCT_NAME: parentDetails[0].PRODUCT_NAME,
+            TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
+            QUANTITY_IN_PALLETES: parentPalletQuantity,
+          };
+
+          var res = $http.post('/insertPalletesQuantity', parentObjPallete).then(function (data, status, headers, config) {
+            $state.reload();
+          });
+
+          insertDailyPaintingParentProduct.insertParentPainting($scope.orderid, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_still_to_produce, productiondate);
+        });
       }
 
       var res = $http.post('/insertDailyPainting', dataObj).then(function (data, status, headers, config) {
@@ -1999,8 +2038,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         QUANTITY_IN_PALLETES: palletQuantity,
       };
 
-      var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
-      });
+      if(isparent == 'N' && in_compound_product == 'N') {
+        var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
+          $state.reload();
+        });
+      }
 
       //THE NUMBER OF PRODUCTS FROM THE DAILY PRODUCTION THAT WE STILL NEED TO REGISTE IN ANOTHER ORDER
       var products_remaining_from_daily_production = $scope.totalquantityproduced - products_still_to_produce;
@@ -2052,9 +2094,29 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 CREATED_DATE: productiondate
               };
 
-              if(parent_customer_product_id != null) {
-                insertDailyPaintingParentProduct.insertParentPainting(order_id, parent_customer_product_id, parent_customer_product_id, orderproduct.PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate) ;
+              if(parent_customer_product_id != null && in_compound_product == 'Y') {
+                getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function(parentDetails){
+        
+                  var parentPalletQuantity = $scope.totalquantityproduced / parentDetails[0].Qty_By_Pallet;
+        
+                  var parentObjPallete = {
+                    ORDER_ID: $scope.orderid,
+                    CUSTOMER_PRODUCT_ID: parent_customer_product_id,
+                    INTERNAL_PRODUCT_ID: parentDetails[0].INTERNAL_PRODUCT_ID,
+                    PRODUCT_NAME: parentDetails[0].PRODUCT_NAME,
+                    TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
+                    QUANTITY_IN_PALLETES: parentPalletQuantity,
+                  };
+        
+                  var res = $http.post('/insertPalletesQuantity', parentObjPallete).then(function (data, status, headers, config) {
+                    $state.reload();
+                  });
+        
+                  insertDailyPaintingParentProduct.insertParentPainting(order_id, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate) ;
+        
+                });
               }
+        
 
               var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
               });
@@ -2068,8 +2130,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 QUANTITY_IN_PALLETES: palletQuantity,
               };
 
-              var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
-              });
+              if(isparent == 'N' && in_compound_product == 'N') {
+                var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
+                  $state.reload();
+                });
+              }
 
             } else {
 
@@ -2090,8 +2155,27 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 CREATED_DATE: productiondate
               };
 
-              if(parent_customer_product_id != null) {
-                insertDailyPaintingParentProduct.insertParentPainting(order_id, parent_customer_product_id, parent_customer_product_id, orderproduct.PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate) ;
+              if(parent_customer_product_id != null && in_compound_product == 'Y') {
+                getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function(parentDetails){
+        
+                  var parentPalletQuantity = $scope.totalquantityproduced / parentDetails[0].Qty_By_Pallet;
+        
+                  var parentObjPallete = {
+                    ORDER_ID: $scope.orderid,
+                    CUSTOMER_PRODUCT_ID: parent_customer_product_id,
+                    INTERNAL_PRODUCT_ID: parentDetails[0].INTERNAL_PRODUCT_ID,
+                    PRODUCT_NAME: parentDetails[0].PRODUCT_NAME,
+                    TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
+                    QUANTITY_IN_PALLETES: parentPalletQuantity,
+                  };
+        
+                  var res = $http.post('/insertPalletesQuantity', parentObjPallete).then(function (data, status, headers, config) {
+                    $state.reload();
+                  });
+        
+                  insertDailyPaintingParentProduct.insertParentPainting(order_id, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate) ;
+              
+                });
               }
 
               var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
@@ -2106,8 +2190,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 QUANTITY_IN_PALLETES: palletQuantity,
               };
 
-              var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
-              });
+              if(isparent == 'N' && in_compound_product == 'N') {
+                var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
+                  $state.reload();
+                });
+              }
 
               products_remaining_from_daily_production = 0;
 
@@ -2118,7 +2205,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           //ALL THE ORDERS TO CHECK IF THE SAME INTERNAL PRODUCT ID IS OPENED TO BE REGISTERED
           if (products_remaining_from_daily_production > 0) {
 
-            productInOtherOpenOrdersForPainting.insertPaiting($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro, $scope.qtybypallet, productiondate, parent_customer_product_id);
+            productInOtherOpenOrdersForPainting.insertPaiting($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro, $scope.qtybypallet, productiondate, parent_customer_product_id, isparent, in_compound_product);
 
           } //if
 
@@ -2126,7 +2213,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         else {
           //IN THIS ORDER THERE IS NOT A PRODUCT FOR THE SAME INTERNAL PRODUCT ID
           //WE NEED TO CHECK IF THERE'S ANTOHER ORDER WITH THE SAME INTERNAL PRODUCT ID
-          productInOtherOpenOrdersForPainting.insertPaiting($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro, $scope.qtybypallet, productiondate, parent_customer_product_id);
+          productInOtherOpenOrdersForPainting.insertPaiting($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro, $scope.qtybypallet, productiondate, parent_customer_product_id, isparent, in_compound_product);
         }
 
         $state.reload();
@@ -6782,6 +6869,9 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', '$q', 'insertD
           console.log("order_id: " + order_id);
           console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
 
+        //Only record the production if it's not a Parent Product. In the validations below we are already checking it
+        //the child product should save the parent production
+        if(orderproduct.IS_PARENT == "N") {
           //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
           //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
           if (number_of_products_to_close_order <= products_remaining_from_daily_production) {
@@ -6821,7 +6911,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', '$q', 'insertD
                 //$scope.producedQuantityForParentProduct = number_of_products_to_close_order;
                 //parentUniqueOrderId = parentUniqueOrderIdAndInternalProductId.UNIQUE_ORDER_ID;
                 //parentInternalProductId = parentUniqueOrderIdAndInternalProductId.INTERNAL_PRODUCT_ID;
-                insertDailyProductionParentProduct.insertParentProduction(orderproduct.PARENT_UNIQUE_ORDER_ID, order_id, parentInternalProductId, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate) ;  
+                insertDailyProductionParentProduct.insertParentProduction(orderproduct.PARENT_UNIQUE_ORDER_ID, order_id, $scope.internalproductid, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate) ;  
 
             }
 
@@ -6877,6 +6967,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', '$q', 'insertD
               products_remaining_from_daily_production = 0;
             }
           }
+        }
 
           //MsgSharingService.setsavedData(alertMsg);
 
@@ -6942,7 +7033,7 @@ app.factory('productInOtherOpenOrdersForPainting', function ($http) {
   //return {
   var alertMsg = new Array();
   //insertProduction : function ($scope, orderid, internalproductid, products_remaining_from_daily_production, alertMsg) { 
-  function insertPaiting($scope, orderid, internalproductid, products_remaining_from_daily_production, employyee_name, productPriceInEuro, qtybypallet, productiondate, parent_customer_product_id) {
+  function insertPaiting($scope, orderid, internalproductid, products_remaining_from_daily_production, employyee_name, productPriceInEuro, qtybypallet, productiondate, parent_customer_product_id, isparent, in_compound_product) {
 
     //INITIALIZE OVERPRODUCTION VARIABLE
     $scope.overProduction = products_remaining_from_daily_production;
@@ -6990,8 +7081,28 @@ app.factory('productInOtherOpenOrdersForPainting', function ($http) {
               CREATED_DATE: productiondate
             };
 
-            if(parent_customer_product_id != null) {
-              insertDailyPaintingParentProduct.insertParentPainting(order_id, parent_customer_product_id, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate) ;
+            if(parent_customer_product_id != null && in_compound_product == 'Y') {
+              var parentDetails = [];
+              getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function(parentDetails){
+      
+                var parentPalletQuantity = $scope.totalquantityproduced / parentDetails[0].Qty_By_Pallet;
+      
+                var parentObjPallete = {
+                  ORDER_ID: $scope.orderid,
+                  CUSTOMER_PRODUCT_ID: parent_customer_product_id,
+                  INTERNAL_PRODUCT_ID: parentDetails[0].INTERNAL_PRODUCT_ID,
+                  PRODUCT_NAME: parentDetails[0].PRODUCT_NAME,
+                  TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
+                  QUANTITY_IN_PALLETES: parentPalletQuantity,
+                };
+      
+                var res = $http.post('/insertPalletesQuantity', parentObjPallete).then(function (data, status, headers, config) {
+                  $state.reload();
+                });
+      
+                insertDailyPaintingParentProduct.insertParentPainting(order_id, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate);
+            
+              });
             }
 
             var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
@@ -7006,8 +7117,11 @@ app.factory('productInOtherOpenOrdersForPainting', function ($http) {
               QUANTITY_IN_PALLETES: palletQuantity,
             };
 
-            var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
-            });
+            if(isparent == 'N' && in_compound_product == 'N') {
+              var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
+                $state.reload();
+              });
+            }
           } else {
             //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
             //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
@@ -7031,8 +7145,28 @@ app.factory('productInOtherOpenOrdersForPainting', function ($http) {
                 CREATED_DATE: productiondate
               };
 
-              if(parent_customer_product_id != null) {
-                insertDailyPaintingParentProduct.insertParentPainting(order_id, parent_customer_product_id, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate) ;
+              if(parent_customer_product_id != null && in_compound_product == 'Y') {
+                var parentDetails = [];
+                getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function(parentDetails){
+        
+                  var parentPalletQuantity = $scope.totalquantityproduced / parentDetails[0].Qty_By_Pallet;
+        
+                  var parentObjPallete = {
+                    ORDER_ID: $scope.orderid,
+                    CUSTOMER_PRODUCT_ID: parent_customer_product_id,
+                    INTERNAL_PRODUCT_ID: parentDetails[0].INTERNAL_PRODUCT_ID,
+                    PRODUCT_NAME: parentDetails[0].PRODUCT_NAME,
+                    TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
+                    QUANTITY_IN_PALLETES: parentPalletQuantity,
+                  };
+        
+                  var res = $http.post('/insertPalletesQuantity', parentObjPallete).then(function (data, status, headers, config) {
+                    $state.reload();
+                  });
+        
+                  insertDailyPaintingParentProduct.insertParentPainting(order_id, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate) ;
+              
+                });
               }
 
               var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
@@ -7047,8 +7181,11 @@ app.factory('productInOtherOpenOrdersForPainting', function ($http) {
                 QUANTITY_IN_PALLETES: palletQuantity,
               };
 
-              var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
-              });
+              if(isparent == 'N' && in_compound_product == 'N') {
+                var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
+                  $state.reload();
+                });
+              }
 
               products_remaining_from_daily_production = 0;
             }
@@ -7419,6 +7556,7 @@ app.factory('insertDailyProductionParentProduct', ['$http', '$q', function ($htt
 
 }]);
 
+//INSERT DAILY PARENT PRODUCTION FOR COMPOUND PRODUCTS
 app.factory('insertDailyPaintingParentProduct', ['$http', function ($http) {
 
   function insertParentPainting(orderid, internalproductid, customerproductid, productnameinternal, employyee_name, employyee_id, totalquantityproduced, productiondate) {
@@ -7441,6 +7579,34 @@ app.factory('insertDailyPaintingParentProduct', ['$http', function ($http) {
   
   return {
     insertParentPainting: insertParentPainting
+  };
+
+}]);
+
+
+//GET PARENT DETAILS TO INSERT THE PALLETE QUANTITY WHEN REGISTERING DAILY PAINTING
+app.factory('getParentDetailsToInsertPallete', ['$http', '$q', function ($http, $q) {
+
+  var parentDetails = [];
+
+  function getParentData(parentcustomerproductid) {
+
+    var deferred = $q.defer();
+
+    var request = $http.get('/getParentDetailsForPallet/' + encodeURIComponent(parentcustomerproductid));
+      request.then(function successCallback(response) {
+        parentDetails = response.data;
+        deferred.resolve(parentDetails);
+      },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      });
+    
+    return deferred.promise;
+  }
+  
+  return {
+    getParentData: getParentData
   };
 
 }]);
