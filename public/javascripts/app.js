@@ -4774,7 +4774,7 @@ app.controller('OverProductionController', ['$http', '$scope', '$rootScope', 'Mo
       console.log('Error: ' + data);
     });
 
-  $scope.registerInOrder = function(internal_product_id, products_to_register_in_order) {
+  $scope.registerInOrder = function(unique_id, internal_product_id, products_to_register_in_order) {
 
     $scope.ordersArray = [];
     $scope.message = "";
@@ -4795,7 +4795,8 @@ app.controller('OverProductionController', ['$http', '$scope', '$rootScope', 'Mo
             //message: "Deseja mesmo remover a pallete de stock do produto " + internalproductid + " na encomenda " + internalproductid + " ?",
             message: "Encomendas em Produção para atribuir o produto " + internal_product_id,
             operationURL: '/deletePalletesReadyForShipping',
-            dataObj: orders
+            dataObj: orders,
+            unique_id: unique_id
           }
         }).then(function (modal) {
           modal.element.modal();
@@ -5156,11 +5157,12 @@ app.controller('GenericController', function ($scope, message) {
 });
 
 //Generic Modal for deleting/confirming operation where we receive the dataObj array and the operation to execute
-app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'dataObj', 'message',
-  function ($scope, $http, $state, dataObj, message) {
+app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'dataObj', 'message', 'unique_id', 
+  function ($scope, $http, $state, dataObj, message, unique_id) {
 
     $scope.message = message;
     $scope.orders = dataObj;
+    $scope.unique_id = unique_id;
     //  This close function doesn't need to use jQuery or bootstrap, because
     //  the button has the 'data-dismiss' attribute.
 
@@ -5197,7 +5199,7 @@ app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'd
 
         //WE STILL HAVE TO DELETE THE OVERSTOCK
         var registerToDelete = {
-          UNIQUE_ID: unique_id,
+          UNIQUE_ID: $scope.unique_id,
           INTERNAL_PRODUCT_ID: internalproductid
         };
 
