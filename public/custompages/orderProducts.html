@@ -103,8 +103,8 @@
                                             <a class="btn btn-sm btn-danger" ng-show="product.CAN_BE_DELETED" ng-click="deleteProductInOrder(product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.IS_PARENT)" data-toggle="tooltip" title="Remover Produto.">
                                                 <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
                                             </a>
-                                            <a class="btn btn-sm btn-warning" ng-click="showEditProductModal(product.INTERNAL_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.QUANTITY_PRODUCED)" data-toggle="tooltip" title="Editar Produto.">
-                                                <img src="assets/icons/btn-edit.svg" width="24px" height="24px" />
+                                            <a id="btn-revert" class="btn btn-sm btn-revert btn-warning" ng-click="showEditProductModal(product.INTERNAL_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.QUANTITY_PRODUCED)" data-toggle="tooltip" title="Reverter para Produção">
+                                                <img src="assets/icons/btn-revert.svg" width="24px" height="24px" />
                                             </a>
                                             <a id="btn-close-production" class="btn btn-sm btn-success" ng-click="closeProductInProduction(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME,  product.TOTAL_QUANTITY_ORDERED, product.TOTAL_PRODUCTS_PRODUCED, product.PARENT_CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="Fechar Produção">
                                                 <img src="assets/icons/btn-success.svg" width="24px" height="24px" />

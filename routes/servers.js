@@ -7,8 +7,8 @@ var mysql = require('mysql');
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'
-}); */
-
+});
+ */
 
 var con = mysql.createConnection({
     host: '172.30.184.178',
@@ -1238,11 +1238,11 @@ updatePalletesQuantity = function(req, res) {
  });
 }
 
-//GET PARENT DETAILS TO INSERT THE PALLETE QUANTITY WHEN REGISTERING DAILY PAINTING
-getParentDetailsForPallet = function(data, callback) {
+//GET OVERPRODUCTION IN STOCK - overproduction_in_stock
+getOverProductionInStock = function(data, callback) {
     con.connect(function(err) {
-    con.query('select prod.CUSTOMER_PRODUCT_ID, prod.INTERNAL_PRODUCT_ID, prod.PRODUCT_NAME, tech_sheet.Qty_By_Pallet from products prod, products_technical_sheet tech_sheet where prod.CUSTOMER_PRODUCT_ID = ? and prod.CUSTOMER_PRODUCT_ID = tech_sheet.CUSTOMER_PRODUCT_ID', [data.params.parentcustomerid], function(err, rows) {
-        if (err) {
+    con.query('SELECT * FROM overproduction_in_stock', function(err, rows) {
+       if (err) {
             throw err;
         } else
         callback.setHeader('Content-Type', 'application/json');
@@ -1250,7 +1250,7 @@ getParentDetailsForPallet = function(data, callback) {
         callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
         callback.end(JSON.stringify(rows));
         callback = rows;
-        console.log("GET PARENT DETAILS TO INSERT THE PALLETE QUANTITY");   
+        console.log("GET OVERPRODUCTION IN STOCK");   
 
     });
 });
@@ -1269,6 +1269,54 @@ insertOverProductionStockTable = function(req, res) {
     res.end(JSON.stringify(results));
   });
  });
+}
+
+//UPDATE OVER PRODUCTION IN STOCK TABLE - overproduction_in_stock
+updateStockInOverProductionStockTable = function(req, res) {
+    var postData  = req.body;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    con.query('update overproduction_in_stock set PRODUCTS_PRODUCED = PRODUCTS_PRODUCED - ? where INTERNAL_PRODUCT_ID = ?', [req.body.QUANTITY_REGISTERD, req.body.INTERNAL_PRODUCT_ID], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
+//DELETE OVER PRODUCTION IN STOCK TABLE - overproduction_in_stock
+deleteStockInOverProductionStockTable = function(req, res) {
+    var postData  = req.body;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    con.query('delete from overproduction_in_stock where unique_id = ? and INTERNAL_PRODUCT_ID = ?', [req.body.UNIQUE_ID, req.body.INTERNAL_PRODUCT_ID], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
+//GET ALL ORDERS WITH PRODUCTS IN PRODUCTION TO REGISTER THE OVERPRODUCTION PRODUCTS
+fetchAllOrdersToRegisterOverProduction = function(req, callback) {
+    con.connect(function(err) {
+    con.query('select UNIQUE_ORDER_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, INTERNAL_PRODUCT_ID, TOTAL_QUANTITY_ORDERED, TOTAL_PRODUCTS_PRODUCED, PARENT_UNIQUE_ORDER_ID from (select s1.UNIQUE_ORDER_ID, s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.PARENT_UNIQUE_ORDER_ID, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED,0) as TOTAL_PRODUCTS_PRODUCED from (select UNIQUE_ORDER_ID, ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, PARENT_UNIQUE_ORDER_ID, ORDER_PRODUCT_STATUS, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE from orders_products where ORDER_PRODUCT_STATUS = \'em_producao\') as s1 left outer join (select ORDER_ID, ORDER_PRODUCTS_UNIQUE_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry group by ORDER_ID, ORDER_PRODUCTS_UNIQUE_ID, CUSTOMER_PRODUCT_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s2.ORDER_PRODUCTS_UNIQUE_ID) as s3 where s3.INTERNAL_PRODUCT_ID = ? and s3.TOTAL_PRODUCTS_PRODUCED < s3.TOTAL_QUANTITY_ORDERED', [req.params.internalproductid], function (err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET ALL ORDERS WITH PRODUCTS IN PRODUCTION TO REGISTER THE OVERPRODUCTION PRODUCTS");   
+
+    });
+});
 }
 
 //INSERT LABELS TO PRINT - order_products_labels_to_print
@@ -1394,25 +1442,6 @@ fecthNextValueFromPDFReqIdSequence = function(data, callback) {
     });
 });
 }
-
-//GET OVERPRODUCTION IN STOCK - overproduction_in_stock
-getOverProductionInStock = function(data, callback) {
-    con.connect(function(err) {
-    con.query('SELECT * FROM overproduction_in_stock', function(err, rows) {
-        if (err) {
-            throw err;
-        } else
-        callback.setHeader('Content-Type', 'application/json');
-        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
-        callback.end(JSON.stringify(rows));
-        callback = rows;
-        console.log("GET OVERPRODUCTION IN STOCK");   
-
-    });
-});
-}
-
 
 //INSERT BOX_MEASURES FROM CONFIGURATIONS
 insertBoxMeasure = function(req, res) {

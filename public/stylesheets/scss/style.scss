@@ -2156,7 +2156,7 @@ div[ng-controller="OverProductionController"] div[ng-table="dailyProductionTable
 }
 .em_producao{
     .item-inner-wrap{
-        #btn-close-paint{
+        #btn-close-paint, #btn-revert{
             display:none;
         }
     }
@@ -2183,12 +2183,68 @@ div[ng-controller="OverProductionController"] div[ng-table="dailyProductionTable
         .table-item {
             color: rgba(0,0,0,0.5) !important;
         }
-        #btn-close-production,  #btn-close-paint{
+        #btn-close-production,  #btn-close-paint, #btn-revert{
             display:none;
         }
     }
     .ptype-toggle.paint{
         display:none;
+    }
+}
+
+#modal-overprod{
+    .modal-content{
+        width:70%;
+    }
+    .modal-body{
+        //float:left;
+        .ng-binding {
+            padding:0px 15px;
+            margin:5px 0px;
+        }
+    }
+    .modal-footer{
+        padding-top:40px;
+        > button{
+            margin-right: 15px;
+            margin-top: 20px;
+        }
+    }
+    .header-label-innerref{
+        line-height:2 !important;
+    }
+    .scroll-table {
+        max-height: 200px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+    .inner-wrap{
+        display:table;
+        > div{
+            display:table-cell !important;
+        }
+    }
+    #associate-order {
+        background: #27ae60;
+        color: #fff;
+        border-radius: 2px;
+        border: none;
+        font-size: 14px;
+        line-height: 12px;
+        height: 36px;
+    }
+}
+
+#associate-order{
+    background: #27ae60;
+    color: #fff;
+    border-radius: 2px;
+    border: none;
+    font-size: 16px;
+    line-height: 22px;
+    img{
+        margin-top: -4px;
+        margin-right: 4px;
     }
 }
 

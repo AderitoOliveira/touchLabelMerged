@@ -4844,15 +4844,15 @@ app.controller('addChildProductController', ['$http', '$scope', '$rootScope', '$
 }]);
 
 //GET OVERPRODUCTION CONTROLER
-app.controller('OverProductionController', function ($http, $scope, $rootScope) {
+app.controller('OverProductionController', ['$http', '$scope', '$rootScope', 'ModalService', 'getOrdersToRegisterOverProduction', function ($http, $scope, $rootScope, ModalService, getOrdersToRegisterOverProduction) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Excesso de Produção em Stock";
 
   //GET THE PRODUCTS IN OVER PRODUTCION IN STCOK
   $scope.productInStock = [];
-  var URIClients = '/getOverProductionInStock';
-  var request = $http.get(URIClients);
+  var URIOverProductionProducts = '/getOverProductionInStock';
+  var request = $http.get(URIOverProductionProducts);
   request.then(function successCallback(response) {
     $scope.productInStock = response.data;
     return $scope.clients;
@@ -4861,8 +4861,66 @@ app.controller('OverProductionController', function ($http, $scope, $rootScope) 
       console.log('Error: ' + data);
     });
 
+  $scope.registerInOrder = function(unique_id, internal_product_id, products_to_register_in_order) {
 
-});
+    $scope.ordersArray = [];
+    $scope.message = "";
+    
+    getOrdersToRegisterOverProduction.allOrdersForInternalProductId(internal_product_id).then(function(orders) {
+
+      if(orders.length > 0) {
+
+        for(i = 0; i < orders.length; i++) {
+          orders[i].QUANTITY_TO_REGISTER = products_to_register_in_order;
+        }
+        
+        ModalService.showModal({
+          templateUrl: "../modal/ordersToRegisterOverProductionModal.html",
+          controller: "OverProductionModalController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            //message: "Deseja mesmo remover a pallete de stock do produto " + internalproductid + " na encomenda " + internalproductid + " ?",
+            message: "Encomendas em Produção para atribuir o produto " + internal_product_id,
+            operationURL: '/deletePalletesReadyForShipping',
+            dataObj: orders,
+            unique_id: unique_id
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
+        });
+      } else {
+
+        ModalService.showModal({
+          templateUrl: "../modal/genericModal.html",
+          controller: "GenericController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: "Não existem encomendas em Produção para o produto " + internal_product_id
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
+        });
+      }
+
+    });
+
+  };
+
+}]);
 
 //CREATE PRODUCT - Controller
 app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', function ($http, $scope, $rootScope, $state, $stateParams, $templateCache) {
@@ -5184,6 +5242,88 @@ app.controller('GenericController', function ($scope, message) {
   };
 
 });
+
+//Generic Modal for deleting/confirming operation where we receive the dataObj array and the operation to execute
+app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'dataObj', 'message', 'unique_id', 
+  function ($scope, $http, $state, dataObj, message, unique_id) {
+
+    $scope.message = message;
+    $scope.orders = dataObj;
+    $scope.unique_id = unique_id;
+    //  This close function doesn't need to use jQuery or bootstrap, because
+    //  the button has the 'data-dismiss' attribute.
+
+    //Save Content Modal  
+    $scope.yes = function () {
+      return true;
+    };
+
+    $scope.raiseAlert = function (customerproductId) {
+      alert(customerproductId);
+      return true;
+    };
+
+    $scope.registerOverProductionInOrder = function (unique_id, orderid, internalproductid, customerproductid, productname, uniqueorderid, totalquantityordered, totalquantityproduced, quantitytoregister) {
+      
+      var remainingProductsToRegisterIntheOrder = totalquantityordered - totalquantityproduced;
+
+      if(remainingProductsToRegisterIntheOrder >= quantitytoregister) {
+        var data = {
+          ORDER_ID: orderid,
+          INTERNAL_PRODUCT_ID: internalproductid,
+          CUSTOMER_PRODUCT_ID: customerproductid,
+          PRODUCT_NAME: productname,
+          ORDER_PRODUCTS_UNIQUE_ID: uniqueorderid,
+          EMPLOYEE_NAME: "PRODUTOS_EM_STOCK",
+          EMPLOYEE_ID: 0,
+          TOTAL_PRODUCTS_PRODUCED: quantitytoregister,
+          PRODUCED_VALUE_IN_EURO: 0,
+          CREATED_DATE: moment().format('YYYY-MM-DD 00:00:00')
+        };
+  
+        var res = $http.post('/insertDailyProduction', data).then(function (data, status, headers, config) {
+        });
+
+        //WE STILL HAVE TO DELETE THE OVERSTOCK
+        var registerToDelete = {
+          UNIQUE_ID: $scope.unique_id,
+          INTERNAL_PRODUCT_ID: internalproductid
+        };
+
+        var res = $http.post('/deleteStockInOverProductionStockTable', registerToDelete).then(function (data, status, headers, config) {
+        });
+
+      } else {
+        var data = {
+          ORDER_ID: orderid,
+          INTERNAL_PRODUCT_ID: internalproductid,
+          CUSTOMER_PRODUCT_ID: customerproductid,
+          PRODUCT_NAME: productname,
+          ORDER_PRODUCTS_UNIQUE_ID: uniqueorderid,
+          EMPLOYEE_NAME: "PRODUTOS_EM_STOCK",
+          EMPLOYEE_ID: 0,
+          TOTAL_PRODUCTS_PRODUCED: remainingProductsToRegisterIntheOrder,
+          PRODUCED_VALUE_IN_EURO: 0,
+          CREATED_DATE: moment().format('YYYY-MM-DD 00:00:00')
+        };
+  
+        var res = $http.post('/insertDailyProduction', data).then(function (data, status, headers, config) {
+        });
+
+        //UPDATE THE VALUES IN STOCK TO REFLECT THE REAMINING VALUES
+        var updateStockTableData = {
+            QUANTITY_REGISTERD : remainingProductsToRegisterIntheOrder,
+            INTERNAL_PRODUCT_ID: internalproductid,
+        };
+
+        var res = $http.post('/updateStockInOverProductionStockTable', updateStockTableData).then(function (data, status, headers, config) {
+        });
+
+      }
+
+    };
+
+  }]);
 
 /*------------------------    Controller for the INSERTED PRODUCTION REPORT MODAL   -----------------------------*/
 app.controller('InsertedProductionReportModalController', function ($scope, $sce, message) {
@@ -7443,6 +7583,7 @@ app.factory('insertDailyPaintingParentProduct', ['$http', function ($http) {
 
 }]);
 
+
 //GET PARENT DETAILS TO INSERT THE PALLETE QUANTITY WHEN REGISTERING DAILY PAINTING
 app.factory('getParentDetailsToInsertPallete', ['$http', '$q', function ($http, $q) {
 
@@ -7470,7 +7611,7 @@ app.factory('getParentDetailsToInsertPallete', ['$http', '$q', function ($http, 
 
 }]);
 
-
+//UPDATE  PALLETE QUANTITY FACTORY
 app.factory('updatePalleteQuantity', ['$http', '$q', function ($http, $q) {
 
   function updatePallete(orderid, customerproductid, palletequantity) {
@@ -7492,6 +7633,33 @@ app.factory('updatePalleteQuantity', ['$http', '$q', function ($http, $q) {
   
   return {
     updatePallete: updatePallete
+  };
+
+}]);
+
+
+//GET ALL ORDERS WITH PRODUCTS IN PRODUCTION TO REGISTER THE OVERPRODUCTION PRODUCTS
+app.factory('getOrdersToRegisterOverProduction', ['$http', '$q', 'ModalService', function ($http, $q, ModalService) {
+
+  function allOrdersForInternalProductId(internalproductid) {
+  
+    var orders = [];
+    var deferred = $q.defer();
+
+    var request = $http.get('/getAllOrdersForOverProductionRegistry/' + encodeURIComponent(internalproductid));
+      request.then(function successCallback(response) {
+        orders = response.data;
+        deferred.resolve(orders);
+      },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      });
+
+    return deferred.promise;
+  }
+  
+  return {
+    allOrdersForInternalProductId: allOrdersForInternalProductId
   };
 
 }]);

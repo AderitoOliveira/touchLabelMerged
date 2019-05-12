@@ -507,6 +507,13 @@ router.get('/getDailyProductionOrderProduct/:orderid/:productid/:uniqueorderid',
   fetchDailyProductionOrderProduct(req, res);
 });
 
+//GET OVERPRODUCTION IN STOCK - overproduction_in_stock
+router.get('/getOverProductionInStock', function (req, res) {
+  console.log("GET OVERPRODUCTION IN STOCK");
+  console.log(req.body);
+  getOverProductionInStock(req, res);
+});
+
 //INSERT OVER PRODUCTION IN STOCK TABLE - overproduction_in_stock
 router.post('/insertOverProductionStockTable', function (req, res) {
   console.log("INSERT OVER PRODUCTION STOCK TABLE");
@@ -514,6 +521,25 @@ router.post('/insertOverProductionStockTable', function (req, res) {
   insertOverProductionStockTable(req, res);
 });
 
+//UPDATE OVER PRODUCTION IN STOCK TABLE - overproduction_in_stock
+router.post('/updateStockInOverProductionStockTable', function (req, res) {
+  console.log("UPDATE OVER PRODUCTION STOCK TABLE");
+  console.log(req.body);
+  updateStockInOverProductionStockTable(req, res);
+});
+
+//DELETE OVER PRODUCTION IN STOCK TABLE - overproduction_in_stock
+router.post('/deleteStockInOverProductionStockTable', function (req, res) {
+  console.log("DELETE FROM OVER PRODUCTION STOCK TABLE");
+  console.log(req.body);
+  deleteStockInOverProductionStockTable(req, res);
+});
+
+//GET ALL ORDERS WITH PRODUCTS IN PRODUCTION TO REGISTER THE OVERPRODUCTION PRODUCTS
+router.get('/getAllOrdersForOverProductionRegistry/:internalproductid', function (req, res) {
+  console.log("GET ALL ORDERS WITH PRODUCTS IN PRODUCTION TO REGISTER THE OVERPRODUCTION PRODUCTS");
+  fetchAllOrdersToRegisterOverProduction(req, res);
+});
 
 //PAINTING - GET ALL ORDER's FOR A SPECIFIC INTERNAL PRODUCT ID AND THAT PRODUCT ISN'T CLOSED - order_products_painting_registry
 router.get('/getAllOrdersForPaintingInternalProductId/:orderid/:productid', function (req, res) {
@@ -614,13 +640,6 @@ router.get('/getPDFRequistionIdSequence', function (req, res) {
   console.log("GET VALUE FROM THE pdf_requistion_id_sequence");
   console.log(req.body);
   fecthNextValueFromPDFReqIdSequence(req, res);
-});
-
-//GET OVERPRODUCTION IN STOCK - overproduction_in_stock
-router.get('/getOverProductionInStock', function (req, res) {
-  console.log("GET OVERPRODUCTION IN STOCK");
-  console.log(req.body);
-  getOverProductionInStock(req, res);
 });
 
 //INSERT BOX_MEASURES FROM CONFIGURATIONS
