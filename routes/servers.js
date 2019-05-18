@@ -7,8 +7,8 @@ var mysql = require('mysql');
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'
-});
- */
+}); */
+
 
 var con = mysql.createConnection({
     host: '172.30.184.178',
@@ -1236,6 +1236,24 @@ updatePalletesQuantity = function(req, res) {
     res.end(JSON.stringify(results));
   });
  });
+}
+
+//GET PARENT DETAILS TO INSERT THE PALLETE QUANTITY WHEN REGISTERING DAILY PAINTING
+getParentDetailsForPallet = function(data, callback) {
+    con.connect(function(err) {
+    con.query('select prod.INTERNAL_PRODUCT_ID, prod.PRODUCT_NAME, techsheet.Qty_By_Pallet from products prod, products_technical_sheet techsheet where prod.CUSTOMER_PRODUCT_ID = ? and prod.CUSTOMER_PRODUCT_ID = techsheet.CUSTOMER_PRODUCT_ID', [data.params.parentcustomerid], function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET PARENT DETAILS TO INSERT THE PALLETE QUANTITY");   
+
+    });
+});
 }
 
 //GET OVERPRODUCTION IN STOCK - overproduction_in_stock
