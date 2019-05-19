@@ -5244,8 +5244,8 @@ app.controller('GenericController', function ($scope, message) {
 });
 
 //Generic Modal for deleting/confirming operation where we receive the dataObj array and the operation to execute
-app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'dataObj', 'message', 'unique_id', 
-  function ($scope, $http, $state, dataObj, message, unique_id) {
+app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'dataObj', 'message', 'unique_id', 'ModalService',  
+  function ($scope, $http, $state, dataObj, message, unique_id, ModalService) {
 
     $scope.message = message;
     $scope.orders = dataObj;
@@ -5255,6 +5255,7 @@ app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'd
 
     //Save Content Modal  
     $scope.yes = function () {
+      //$state.transitionTo("overproductionstate", {});
       return true;
     };
 
@@ -5293,6 +5294,30 @@ app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'd
         var res = $http.post('/deleteStockInOverProductionStockTable', registerToDelete).then(function (data, status, headers, config) {
         });
 
+        $state.reload();
+
+        ModalService.closeModals();
+
+        ModalService.showModal({
+          templateUrl: "../modal/genericModal.html",
+          controller: "GenericController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: quantitytoregister + " unidades do produto " +  customerproductid + " em stock foram registados na encomenda " + orderid + "."
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
+        });
+
+        return true;
+
       } else {
         var data = {
           ORDER_ID: orderid,
@@ -5317,6 +5342,29 @@ app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'd
         };
 
         var res = $http.post('/updateStockInOverProductionStockTable', updateStockTableData).then(function (data, status, headers, config) {
+        });
+
+
+        $state.reload();
+
+        ModalService.closeModals();
+
+        ModalService.showModal({
+          templateUrl: "../modal/genericModal.html",
+          controller: "GenericController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: remainingProductsToRegisterIntheOrder + " unidades do produto " +  customerproductid + " em stock foram registados na encomenda " + orderid + "."
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
         });
 
       }
