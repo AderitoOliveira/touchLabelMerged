@@ -208,7 +208,21 @@ router.post('/updateParentUniqueOrderId', function (req, res) {
   updateParentUniqueOrderId(req, res);
 });
 
-//Get All the Products for an Order tthat isn't complete and the daily production needs to be updated
+//Get UNIQUE ORDER ID FOR THE PRODUCT FOR WHICH THE PAINTING REGISTRY WILL BE REVERTED
+router.get('/getUniqueOrderIdForProductToRevert/:orderid/:productid', function (req, res) {
+  console.log("Get PARENT UNIQUE ORDER ID");
+  console.log(req.body);
+  getUniqueOrderIdForProductToRevert(req, res);
+});
+
+//UPDATE ORDER_PRODUCTS_UNIQUE_ID IN ORDER_PRODUCTS_PRODUCTION_REGISTRY 
+router.post('/updateOrderProductsUniqueId', function (req, res) {
+  console.log("UPDATE ORDER_PRODUCTS_UNIQUE_ID IN ORDER_PRODUCTS_PRODUCTION_REGISTRY");
+  console.log(req.body);
+  updateOrderProductsUniqueId(req, res);
+});
+
+//Get All the Products for an Order that isn't complete and the daily production needs to be updated
 router.get('/productstilltocloseinthisorder/:orderid/:productid', function (req, res) {
   console.log("List All Orders");
   console.log(req.body);

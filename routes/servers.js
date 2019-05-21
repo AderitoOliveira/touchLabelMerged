@@ -393,6 +393,46 @@ updateParentUniqueOrderId = function(data, callback) {
 });
 }
 
+//Get UNIQUE ORDER ID FOR THE PRODUCT FOR WHICH THE PAINTING REGISTRY WILL BE REVERTED
+getUniqueOrderIdForProductToRevert = function(data, callback) {
+    var orderid = data.params.orderid;
+    var productid = data.params.productid;
+    con.connect(function(err) {
+    con.query('select UNIQUE_ORDER_ID from orders_products where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [orderid,productid], function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        console.log("Get UNIQUE ORDER ID FOR THE PRODUCT FOR WHICH THE PAINTING REGISTRY WILL BE REVERTED " + orderid + " PRODUCT " + productid); 
+        //callback = rows; 
+    });
+});
+}
+
+//UPDATE ORDER_PRODUCTS_UNIQUE_ID IN ORDER_PRODUCTS_PRODUCTION_REGISTRY 
+updateOrderProductsUniqueId = function(data, callback) {
+    console.log("data.params.PARENT_UNIQUE_ORDER_ID: " + data.body.PARENT_UNIQUE_ORDER_ID); 
+    console.log("data.params.ORDER_ID: " + data.body.ORDER_ID); 
+    console.log("data.params.PARENT_CUSTOMER_PRODUCT_ID " + data.body.PARENT_CUSTOMER_PRODUCT_ID); 
+    con.connect(function(err) {
+    con.query('update order_products_production_registry set ORDER_PRODUCTS_UNIQUE_ID = ? where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [data.body.ORDER_PRODUCTS_UNIQUE_ID, data.body.ORDER_ID, data.body.CUSTOMER_PRODUCT_ID], function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        console.log("UPDATE ORDER_PRODUCTS_UNIQUE_ID IN ORDER_PRODUCTS_PRODUCTION_REGISTRY"); 
+        //callback = rows; 
+    });
+});
+}
+
+
 //Get All the Products for an Order that isn't complete and the daily production needs to be updated
 fetchProductFromAnOrderThatIsntComplete = function(req, res) {
     var orderid = req.params.orderid;

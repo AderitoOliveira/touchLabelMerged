@@ -3127,14 +3127,16 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
   //REVERT THE PAINTING REGISTRY FROM ONE PRODUCT TO ANOTHER
-  $scope.revertPaintingRegsitry = function (internalproductid) {
+  $scope.revertPaintingRegistry = function (customerproductid, uniqueorderid) {
 
     ModalService.showModal({
       templateUrl: "../modal/revertPaintingRegistryModal.html",
       controller: "RevertPaintingModalController",
       preClose: (modal) => { modal.element.modal('hide'); },
       inputs: {
-        customerProductId: customerProductId
+        customerproductid: customerproductid,
+        orderid: $scope.orderid,
+        uniqueorderid: uniqueorderid
       }
     }).then(function (modal) {
       modal.element.modal();
@@ -5586,19 +5588,19 @@ app.controller('CloneProductModalController', ['$scope', '$http', '$state', 'cus
 
 
 //MODAL FOR REVERTING THE PAINTING REGISTRY OF A PRODUCT
-app.controller('RevertPaintingModalController', ['$scope', '$http', '$state', 'customerProductId', 'ModalService', 'RevertPaintingRegistryService', function ($scope, $http, $state, customerProductId, ModalService, RevertPaintingRegistryService) {
+app.controller('RevertPaintingModalController', ['$scope', '$http', '$state', 'ModalService', 'RevertPaintingRegistryService', 'customerproductid', 'orderid', 'uniqueorderid', function ($scope, $http, $state, ModalService, RevertPaintingRegistryService, customerproductid, orderid, uniqueorderid) {
 
   //Save Content Modal  
   $scope.yes = function () {
 
-    RevertPaintingRegistryService.revertPainting(customerProductId,  $scope.productIdRevertedTo).then(function() {
+    RevertPaintingRegistryService.revertPainting(customerproductid, uniqueorderid, $scope.productIdRevertedTo, orderid).then(function() {
 
       ModalService.showModal({
         templateUrl: "../modal/genericModal.html",
         controller: "GenericController",
         preClose: (modal) => { modal.element.modal('hide'); },
         inputs: {
-          message: "Foi criada uma cópia do produto " +  customerProductId + " com sucesso. O produto " +  $scope.cloneProductId + " foi criado."
+          message: "O registo de pintura e o estado do produto " +  customerproductid + " foi revertida e atrbuída ao produto " +  $scope.productIdRevertedTo + " ."
         }
       }).then(function (modal) {
         modal.element.modal();
@@ -7537,30 +7539,37 @@ app.factory('CloneProductService', ['$http', '$q', function ($http, $q) {
 //FACTORY FOR REVERTING THE PAINTING REGISTRY
 app.factory('RevertPaintingRegistryService', ['$http', '$q', function ($http, $q) {
 
-  function revertPainting(customerProductId, productIdRevertedTo) {
+  function revertPainting(customerproductid, uniqueorderid, productid_to_revert_to, orderid) {
     var deferred = $q.defer();
 
     var product = [];
     var productTechnicalSheet = [];
 
-    var request = $http.get('/product/' + encodeURIComponent(customerProductId));
-    request.then(function successCallback(response) {
-      product = response.data;
-      
-      //////////////////  GET TECHNICAL SHEET ////////////////////
-      var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerProductId));
-      request.then(function successCallback(response) {
-        productTechnicalSheet = response.data;
+    var productReverted = {
+      ORDER_PRODUCTS_UNIQUE_ID: -1,
+      ORDER_ID: orderid,
+      CUSTOMER_PRODUCT_ID: customerproductid
+    }
 
-      },
-      function errorCallback(data) {
-        console.log('Error: ' + data);
+    /* var request = $http.get('/getUniqueOrderIdForProductToRevert/' + encodeURIComponent(orderid) + '/' + encodeURIComponent(productid_to_revert_to));
+    request.then(function successCallback(response) {
+      product = response.data; */
+      var res = $http.post('/updateOrderProductsUniqueId', productReverted).then(function (data, status, headers, config) {
+
+        var request = $http.get('/getUniqueOrderIdForProductToRevert/' + encodeURIComponent(orderid) + '/' + encodeURIComponent(productid_to_revert_to));
+        request.then(function successCallback(response) {
+          productTechnicalSheet = response.data;
+
+        },
+        function errorCallback(data) {
+          console.log('Error: ' + data);
+        });
+
       });
-      ////////////////////////////////////////////////////////////
-    },
+    /* },
     function errorCallback(data) {
       console.log('Error: ' + data);
-    });
+    }); */
 
     deferred.resolve(true);
     return deferred.promise; 
