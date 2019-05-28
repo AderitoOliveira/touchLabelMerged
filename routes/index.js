@@ -319,6 +319,13 @@ router.post('/deleteorderproduct', function (req, res) {
   deleteOrderProduct(req, res);
 });
 
+//UPDATE ORDERS_PRODUCTS - CHANGE PRODUCT STATUS FOR THE REVERTED PRODUCT
+router.post('/updateProductStatusInOrder', function (req, res) {
+  console.log("UPDATE ORDERS_PRODUCTS - CHANGE PRODUCT STATUS");
+  console.log(req.body);
+  updateProductStatusInOrder(req, res);
+});
+
 //Delete Compound Product from Order
 router.post('/deletecompoundorderproduct', function (req, res) {
   console.log("DELETE COMPOUND PRODUCT FROM ORDER");

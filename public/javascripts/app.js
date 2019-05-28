@@ -7,7 +7,7 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
       url: '/editProduct',
       templateUrl: '../custompages/editProduct.html',
       //controller: 'editproducts',
-      params: { productName: null, customerProductId: null, productId: null, clientname: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, preco1: null, preco2: null, isparent:null}
+      params: { productName: null, customerProductId: null, productId: null, clientname: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, preco1: null, preco2: null, isparent: null }
     })
     .state('home', {
       url: '/',
@@ -33,7 +33,7 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
     .state('addChildProduct', {
       url: '/addChildProduct',
       templateUrl: '../custompages/addChildProduct.html',
-      params: { productName: null, customer_product_id: null, productId: null, clientname: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, preco1: null, preco2:null, isparent:null}
+      params: { productName: null, customer_product_id: null, productId: null, clientname: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, preco1: null, preco2: null, isparent: null }
     })
     .state('createClient', {
       url: '/createClient',
@@ -113,24 +113,24 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
     .state('listOrderProducts', {
       url: '/listOrderProducts',
       templateUrl: '../custompages/orderProducts.html',
-      params: { orderId: null, clientname: null, order_modified_date: null}
+      params: { orderId: null, clientname: null, order_modified_date: null }
     })
     .state('listOrderProductsHistoric', {
       url: '/listorderproductshistoric',
       templateUrl: '../custompages/orderProductsHistoric.html',
-      params: { orderId: null, clientname: null, order_modified_date: null}
+      params: { orderId: null, clientname: null, order_modified_date: null }
     })
     .state('createTechnicalSheet', {
       url: '/createTechnicalSheet',
       templateUrl: '../custompages/createTechnicalSheet.html',
       controller: 'createTechSheet',
-      params: { productName: null, customerProductId: null, internalProductId: null, clientName: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, isparent: null}
+      params: { productName: null, customerProductId: null, internalProductId: null, clientName: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, isparent: null }
     })
     .state('editTechnicalSheet', {
       url: '/editTechnicalSheet',
       templateUrl: '../custompages/editTechnicalSheet.html',
       controller: 'editTechSheet',
-      params: { productName: null, customerProductId: null, productId: null, clientName: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, preco1: null, preco2:null, isparent: null }
+      params: { productName: null, customerProductId: null, productId: null, clientName: null, imageName: null, barCode: null, nameInTheLabel: null, numArticleByBox: null, preco1: null, preco2: null, isparent: null }
     })
     .state('configuration', {
       url: '/configuration',
@@ -337,12 +337,12 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
   };
 
   //DELETE BOX MEASURE
-  $scope.deleteBoxMeasure = function(unique_id, id, box_measures) {
+  $scope.deleteBoxMeasure = function (unique_id, id, box_measures) {
 
     var dataToDelete = {
-      UNIQUE_ID : unique_id , 
-      ID        : id, 
-      MEASURES  : box_measures
+      UNIQUE_ID: unique_id,
+      ID: id,
+      MEASURES: box_measures
     };
 
     ModalService.showModal({
@@ -683,7 +683,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
   request.then(function successCallback(response) {
     $scope.data = response.data;
 
-    if($scope.data.length == 0) {
+    if ($scope.data.length == 0) {
       ModalService.showModal({
         templateUrl: "../modal/genericModal.html",
         controller: "GenericController",
@@ -875,7 +875,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
     var EanWithCheckDigit = BarCodeNumber + checkDigit;
     var quantityToReplace = 0;
 
-    if(labelsWith2Columns) {
+    if (labelsWith2Columns) {
       labelsWith2Columns = true;
     } else {
       labelsWith2Columns = false;
@@ -999,7 +999,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   $scope.childProducts = [];
 
   $scope.productiondate = new Date();
-   
+
   $scope.dateOptions = {
     //dateDisabled: disabled,
     formatYear: 'yy',
@@ -1008,25 +1008,25 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     startingDay: 1
   };
 
-  $scope.open1 = function() {
+  $scope.open1 = function () {
     $scope.popup1.opened = true;
   };
 
-  $scope.setDate = function(year, month, day) {
+  $scope.setDate = function (year, month, day) {
     $scope.dt = new Date(year, month, day);
   };
 
   $scope.popup1 = {
     opened: false
   };
-  
+
   //DELETE THE ORDER. THIS BUTTON WAS SET IN THIS ORDER PRODUCT PAGE AND NOT IN THE ORDER PAGE JUST TO PREVENT AN ERROR 
   //FROM THE CUSTOMER AND ACCIDENTALLY REMOVE AN ORDER WITH PRODUCTS
-  $scope.deleteOrder = function(){  
+  $scope.deleteOrder = function () {
 
-    var operationsToExecute  =  ['/deleteOrder', '/deleteAllProductsFromOrder'];
+    var operationsToExecute = ['/deleteOrder', '/deleteAllProductsFromOrder'];
 
-    var dataToDelete  = [{"ORDER_ID": $scope.orderid, "CLIENT_NAME": $scope.clientname}, {"ORDER_ID": $scope.orderid}];
+    var dataToDelete = [{ "ORDER_ID": $scope.orderid, "CLIENT_NAME": $scope.clientname }, { "ORDER_ID": $scope.orderid }];
 
     ModalService.showModal({
       templateUrl: "../modal/yesNoGeneric.html",
@@ -1059,7 +1059,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   },
     function errorCallback(data) {
       console.log('Error: ' + data);
-  });
+    });
 
   var request = $http.get('/orderproducts/' + orderId);
   request.then(function successCallback(response) {
@@ -1067,15 +1067,15 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
     var x = 0;
     for (i = 0; i < $scope.products.length; i++) {
-      
-      if($scope.products[i].IS_PARENT == 'Y') {
+
+      if ($scope.products[i].IS_PARENT == 'Y') {
         var parentProductsArray = [];
         parentProductsArray.push($scope.products[i]);
         $scope.parentProductsIndex[$scope.products[i].CUSTOMER_PRODUCT_ID] = parentProductsArray;
       }
-         
-      if($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID == null || $scope.products[i].IN_COMPOUND_PRODUCT == 'N') {
-          $scope.products[i].CAN_BE_DELETED = 'true';
+
+      if ($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID == null || $scope.products[i].IN_COMPOUND_PRODUCT == 'N') {
+        $scope.products[i].CAN_BE_DELETED = 'true';
       }
 
       //IF em_producao
@@ -1090,18 +1090,18 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
         $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PRODUCED;
 
-        if($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null && $scope.products[i].IN_COMPOUND_PRODUCT == 'Y') {
-          $scope.products[i].ITEM_FILHO       = 'item-filho';
+        if ($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null && $scope.products[i].IN_COMPOUND_PRODUCT == 'Y') {
+          $scope.products[i].ITEM_FILHO = 'item-filho';
 
-          var parentProductsArray =  $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
+          var parentProductsArray = $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
           parentProductsArray.push($scope.products[i]);
           $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID] = parentProductsArray;
-          
-            
-        }  else if ($scope.products[i].IS_PARENT == 'N') {
+
+
+        } else if ($scope.products[i].IS_PARENT == 'N') {
           $scope.singleProductsIndex.push($scope.products[i]);
         }
-        
+
       }
 
       //IF em_pintura
@@ -1125,19 +1125,19 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         $scope.products[i].INSERT_PAINTING = 'true';
 
         $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PAINTED;
-        
-        if($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null && $scope.products[i].IN_COMPOUND_PRODUCT == 'Y') {
-          $scope.products[i].ITEM_FILHO       = 'item-filho';
 
-          var parentProductsArray =  $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
+        if ($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null && $scope.products[i].IN_COMPOUND_PRODUCT == 'Y') {
+          $scope.products[i].ITEM_FILHO = 'item-filho';
+
+          var parentProductsArray = $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
           parentProductsArray.push($scope.products[i]);
           $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID] = parentProductsArray;
-          
-            
-        }  else if ($scope.products[i].IS_PARENT == 'N') {
+
+
+        } else if ($scope.products[i].IS_PARENT == 'N') {
           $scope.singleProductsIndex.push($scope.products[i]);
         }
-      
+
       }
 
       //IF fechado_na_encomenda
@@ -1147,15 +1147,15 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
         $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PRODUCED;
 
-        if($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null) {
-          $scope.products[i].ITEM_FILHO       = 'item-filho';
+        if ($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null) {
+          $scope.products[i].ITEM_FILHO = 'item-filho';
 
-          var parentProductsArray =  $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
+          var parentProductsArray = $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
           parentProductsArray.push($scope.products[i]);
           $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID] = parentProductsArray;
-          
-            
-        }  else if ($scope.products[i].IS_PARENT == 'N') {
+
+
+        } else if ($scope.products[i].IS_PARENT == 'N') {
           $scope.singleProductsIndex.push($scope.products[i]);
         }
       }
@@ -1168,12 +1168,12 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
     for (i = 0; i < allParentCustomerProductKey.length; i++) {
       var parentAndChildProductsArray = $scope.parentProductsIndex[allParentCustomerProductKey[i]];
-      for(j = 0; j < parentAndChildProductsArray.length; j++) {
+      for (j = 0; j < parentAndChildProductsArray.length; j++) {
         $scope.products.push(parentAndChildProductsArray[j]);
       }
     }
 
-    for(k = 0; k < $scope.singleProductsIndex.length; k++) {
+    for (k = 0; k < $scope.singleProductsIndex.length; k++) {
       $scope.products.push($scope.singleProductsIndex[k]);
     }
 
@@ -1197,7 +1197,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     });
 
   //SHOW THE COMPOUND PRODUCTS OF THE PARENT PRODUCT
-  $scope.showCompoundProducts = function(customer_product_id) {
+  $scope.showCompoundProducts = function (customer_product_id) {
 
     $scope.childProductsInCompountProduct = [];
     $scope.childProductsInCompountProduct = $scope.childProducts[customer_product_id];
@@ -1231,8 +1231,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   $scope.save = function () {
 
     $scope.orderproductstatus = 'em_producao';
-    
-    if($scope.productid.IS_PARENT == 'N') {
+
+    if ($scope.productid.IS_PARENT == 'N') {
 
       var dataObj = {
         ORDER_ID: $scope.orderid,
@@ -1252,12 +1252,12 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       });
     } else if ($scope.productid.IS_PARENT == 'Y') {
 
-      var quantityOfPalletesToProduce =  $scope.qtyencomenda / $scope.productid.Qty_By_Pallet;
+      var quantityOfPalletesToProduce = $scope.qtyencomenda / $scope.productid.Qty_By_Pallet;
 
       var childProducts = [];
       var request = $http.get('/childProductsOfParentProduct/' + encodeURIComponent($scope.productid.CUSTOMER_PRODUCT_ID));
       request.then(function successCallback(response) {
-        
+
         $scope.childProducts = response.data;
 
         var dataObj = {
@@ -1271,11 +1271,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           IS_PARENT: 'Y',
           ORDER_PRODUCT_STATUS: $scope.orderproductstatus
         };
-  
+
         var res = $http.post('/insertorderproduct', dataObj).then(function (data, status, headers, config) {
         });
 
-        for(i=0; i <  $scope.childProducts.length; i++) {
+        for (i = 0; i < $scope.childProducts.length; i++) {
 
           var quantityOrdered = $scope.childProducts[i].Qty_By_Pallet_Compound_Product * quantityOfPalletesToProduce;
 
@@ -1291,17 +1291,17 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             PARENT_CUSTOMER_PRODUCT_ID: $scope.productid.CUSTOMER_PRODUCT_ID,
             ORDER_PRODUCT_STATUS: $scope.orderproductstatus
           };
-    
+
           var res = $http.post('/insertorderproduct', dataObj).then(function (data, status, headers, config) {
           });
 
         }
 
 
-        GetParentUniqueOrderId.uniqueOrderId($scope.orderid, $scope.productid.CUSTOMER_PRODUCT_ID).then(function(parentUniqueOrderIdAndInternalProductId){
+        GetParentUniqueOrderId.uniqueOrderId($scope.orderid, $scope.productid.CUSTOMER_PRODUCT_ID).then(function (parentUniqueOrderIdAndInternalProductId) {
           parentUniqueOrderId = parentUniqueOrderIdAndInternalProductId.UNIQUE_ORDER_ID;
           parentInternalProductId = parentUniqueOrderIdAndInternalProductId.INTERNAL_PRODUCT_ID;
-          
+
           var updateData = {
             PARENT_UNIQUE_ORDER_ID: parentUniqueOrderId,
             ORDER_ID: $scope.orderid,
@@ -1312,19 +1312,19 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             $state.reload();
           });
 
-        }, 
-        function(error){
-            console.log('failed'+error);  
-        });
+        },
+          function (error) {
+            console.log('failed' + error);
+          });
 
         //$state.reload();
 
       },
         function errorCallback(data) {
           console.log('Error: ' + data);
-      });
+        });
 
-      
+
     }
 
   };
@@ -1355,11 +1355,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   $scope.deleteProductInOrder = function (productid, productname, is_parent) {
 
     var arrayProductsToDelete = [];
-    
-    if(is_parent == 'Y') {
+
+    if (is_parent == 'Y') {
       var productsToDelete = $scope.parentProductsIndex[productid];
 
-      for(i=0; i < productsToDelete.length; i++) {
+      for (i = 0; i < productsToDelete.length; i++) {
         arrayProductsToDelete.push(productsToDelete[i].CUSTOMER_PRODUCT_ID);
       }
 
@@ -1374,8 +1374,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         orderid: $stateParams.orderId,
         productid: productid,
         productname: productname,
-        is_parent : is_parent,
-        products_to_delete : arrayProductsToDelete
+        is_parent: is_parent,
+        products_to_delete: arrayProductsToDelete
       }
     }).then(function (modal) {
       modal.element.modal();
@@ -1406,9 +1406,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         var messageToSend = "";
         if ($scope.productTechSheet.length == 0) {
           messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem a Ficha Técnica criada. Crie a Ficha Técnica e insira os atributos necessários."
-        } 
-        else 
-        {
+        }
+        else {
           if ($scope.productTechSheet[0].CLIENT_NAME == null && messageToSend == "") {
             messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o nome do Cliente. Edite o produto e insira o nome do cliente."
           }
@@ -1457,7 +1456,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             boxmeasures: $scope.productTechSheet[0].Box_Measures,
             boxid: $scope.productTechSheet[0].Box_Id,
             qtybybox: $scope.productTechSheet[0].Qty_By_Box,
-            parentcustomerproductid : parentcustomerproductid
+            parentcustomerproductid: parentcustomerproductid
           }
         }).then(function (modal) {
           modal.element.modal();
@@ -1524,11 +1523,10 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       else {
         var qtyBoxLabelsToPrint = qtyproduced / $scope.productTechSheet[0].Qty_By_Box;
 
-        if($scope.productTechSheet[0].Qty_By_Pallet_Compound_Product || $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product > 0)
-        {
-            var isChildProduct = true;
+        if ($scope.productTechSheet[0].Qty_By_Pallet_Compound_Product || $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product > 0) {
+          var isChildProduct = true;
         } else {
-            var isChildProduct = false;
+          var isChildProduct = false;
         }
 
         ModalService.showModal({
@@ -1543,7 +1541,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             productname: productName,
             totalproductsproduced: qtyproduced,
             qtyBoxLabelsToPrint: qtyBoxLabelsToPrint,
-            isChildProduct : isChildProduct
+            isChildProduct: isChildProduct
           }
         }).then(function (modal) {
           modal.element.modal();
@@ -1564,7 +1562,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
   //INSERT DAILY PRODUCTION
-  $scope.insertDailyProduction = function (orderproductuniqueid ,internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, productiondate, parent_customer_product_id, in_compound_product) {
+  $scope.insertDailyProduction = function (orderproductuniqueid, internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, productiondate, parent_customer_product_id, in_compound_product) {
 
     //$scope.title = title;
     $scope.orderid = $scope.orderid;
@@ -1637,9 +1635,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         CREATED_DATE: productiondate
       };
 
-      if(parent_customer_product_id != null && in_compound_product == 'Y') {
+      if (parent_customer_product_id != null && in_compound_product == 'Y') {
         parentOrderProductUniqueId = $scope.parentProductsIndex[parent_customer_product_id][0].UNIQUE_ORDER_ID;
-        insertDailyProductionParentProduct.insertParentProduction(parentOrderProductUniqueId, $scope.orderid, $scope.internalproductid, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, $scope.totalquantityproduced, productiondate) ;
+        insertDailyProductionParentProduct.insertParentProduction(parentOrderProductUniqueId, $scope.orderid, $scope.internalproductid, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, $scope.totalquantityproduced, productiondate);
       }
 
       var res = $http.post('/insertDailyProduction', dataObj).then(function (data, status, headers, config) {
@@ -1664,9 +1662,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         CREATED_DATE: productiondate
       };
 
-      if(parent_customer_product_id != null && in_compound_product == 'Y') {
+      if (parent_customer_product_id != null && in_compound_product == 'Y') {
         parentOrderProductUniqueId = $scope.parentProductsIndex[parent_customer_product_id][0].UNIQUE_ORDER_ID;
-        insertDailyProductionParentProduct.insertParentProduction(parentOrderProductUniqueId, $scope.orderid, $scope.internalproductid, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_still_to_produce, productiondate) ;
+        insertDailyProductionParentProduct.insertParentProduction(parentOrderProductUniqueId, $scope.orderid, $scope.internalproductid, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_still_to_produce, productiondate);
       }
 
       var res = $http.post('/insertDailyProduction', dataObj).then(function (data, status, headers, config) {
@@ -1707,66 +1705,26 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           for (i = 0; i < $scope.productsToClose.length; i++) {
             var orderproduct = $scope.productsToClose[i];
 
-          //if((orderproduct.CUSTOMER_PRODUCT_ID != customerProductAlreadySentForRegister && parentOrderProductUniqueId != orderproduct.UNIQUE_ORDER_ID) || (orderproduct.UNIQUE_ORDER_ID != orderProductUniqueIdAlreadySent && parentOrderProductUniqueId != orderproduct.UNIQUE_ORDER_ID)) {
-          if((orderproduct.CUSTOMER_PRODUCT_ID != customerProductAlreadySentForRegister && orderproduct.IS_PARENT == 'N') || (orderproduct.UNIQUE_ORDER_ID != orderProductUniqueIdAlreadySent && orderproduct.IS_PARENT == 'N')) {
-           
-            var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PRODUCED;
+            //if((orderproduct.CUSTOMER_PRODUCT_ID != customerProductAlreadySentForRegister && parentOrderProductUniqueId != orderproduct.UNIQUE_ORDER_ID) || (orderproduct.UNIQUE_ORDER_ID != orderProductUniqueIdAlreadySent && parentOrderProductUniqueId != orderproduct.UNIQUE_ORDER_ID)) {
+            if ((orderproduct.CUSTOMER_PRODUCT_ID != customerProductAlreadySentForRegister && orderproduct.IS_PARENT == 'N') || (orderproduct.UNIQUE_ORDER_ID != orderProductUniqueIdAlreadySent && orderproduct.IS_PARENT == 'N')) {
 
-            var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
-            var order_id = orderproduct.ORDER_ID;
+              var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PRODUCED;
 
-            console.log("orderproduct: " + orderproduct);
-            console.log("customer_product_id: " + customer_product_id);
-            console.log("order_id: " + order_id);
-            console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
+              var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
+              var order_id = orderproduct.ORDER_ID;
 
-            //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
-            //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
-            if (number_of_products_to_close_order <= products_remaining_from_daily_production) {
+              console.log("orderproduct: " + orderproduct);
+              console.log("customer_product_id: " + customer_product_id);
+              console.log("order_id: " + order_id);
+              console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
 
-              var valueProducedByTheEmployee = number_of_products_to_close_order * $scope.priceEuro;
+              //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
+              //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
+              if (number_of_products_to_close_order <= products_remaining_from_daily_production) {
 
-              products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
-              var insertProductsInTheSameOrder = {
-                ORDER_ID: order_id,
-                INTERNAL_PRODUCT_ID: $scope.internalproductid,
-                CUSTOMER_PRODUCT_ID: customer_product_id,
-                PRODUCT_NAME: orderproduct.PRODUCT_NAME,
-                ORDER_PRODUCTS_UNIQUE_ID: $scope.productsToClose[i].UNIQUE_ORDER_ID,
-                EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-                EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-                TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
-                PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
-                CREATED_DATE: productiondate
-              };
+                var valueProducedByTheEmployee = number_of_products_to_close_order * $scope.priceEuro;
 
-              //if(parent_customer_product_id != null && (in_compound_product == 'Y' || orderproduct.IN_COMPOUND_PRODUCT == 'Y')) {
-              if(parent_customer_product_id != null && orderproduct.IN_COMPOUND_PRODUCT == 'Y') {
-                parentOrderProductUniqueId = $scope.parentProductsIndex[parent_customer_product_id][0].UNIQUE_ORDER_ID;
-                insertDailyProductionParentProduct.insertParentProduction(parentOrderProductUniqueId, order_id, $scope.internalproductid, parent_customer_product_id, orderproduct.PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate) ;
-              }
-
-              var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
-              });
-
-              var msgArray = {
-                OrderId: order_id,
-                CustomerProductId: customer_product_id,
-                ProductsRegistered: number_of_products_to_close_order
-              };
-        
-              insertedProductionReport.push(msgArray);
-              //insertedProductionReport.push("Foram registadas " + products_remaining_from_daily_production + " unidades do produto " + customer_product_id + " na encomenda " + order_id + "\n");
-              //insertedProductionReport.push("OrderId: " + order_id + "  CustomerProductId: " +  customer_product_id + "  ProductsRegistered: " + number_of_products_to_close_order);
-
-            } else {
-
-              if (products_remaining_from_daily_production > 0) {
-
-                var valueProducedByTheEmployee = products_remaining_from_daily_production * $scope.priceEuro;
-                //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
-                //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
-                //DAILY PRODUCTION
+                products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
                 var insertProductsInTheSameOrder = {
                   ORDER_ID: order_id,
                   INTERNAL_PRODUCT_ID: $scope.internalproductid,
@@ -1775,46 +1733,86 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                   ORDER_PRODUCTS_UNIQUE_ID: $scope.productsToClose[i].UNIQUE_ORDER_ID,
                   EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
                   EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-                  TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
+                  TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
                   PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
                   CREATED_DATE: productiondate
                 };
-  
+
                 //if(parent_customer_product_id != null && (in_compound_product == 'Y' || orderproduct.IN_COMPOUND_PRODUCT == 'Y')) {
-                if(parent_customer_product_id != null && orderproduct.IN_COMPOUND_PRODUCT == 'Y') {
+                if (parent_customer_product_id != null && orderproduct.IN_COMPOUND_PRODUCT == 'Y') {
                   parentOrderProductUniqueId = $scope.parentProductsIndex[parent_customer_product_id][0].UNIQUE_ORDER_ID;
-                  insertDailyProductionParentProduct.insertParentProduction(parentOrderProductUniqueId, order_id, $scope.internalproductid, parent_customer_product_id, orderproduct.PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate) ;
+                  insertDailyProductionParentProduct.insertParentProduction(parentOrderProductUniqueId, order_id, $scope.internalproductid, parent_customer_product_id, orderproduct.PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate);
                 }
 
                 var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
                 });
-  
+
                 var msgArray = {
                   OrderId: order_id,
                   CustomerProductId: customer_product_id,
-                  ProductsRegistered: products_remaining_from_daily_production
+                  ProductsRegistered: number_of_products_to_close_order
                 };
-          
+
                 insertedProductionReport.push(msgArray);
-                //insertedProductionReport.push("OrderId: " + order_id + "  CustomerProductId: " +  customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
                 //insertedProductionReport.push("Foram registadas " + products_remaining_from_daily_production + " unidades do produto " + customer_product_id + " na encomenda " + order_id + "\n");
-  
-                products_remaining_from_daily_production = 0;
+                //insertedProductionReport.push("OrderId: " + order_id + "  CustomerProductId: " +  customer_product_id + "  ProductsRegistered: " + number_of_products_to_close_order);
+
+              } else {
+
+                if (products_remaining_from_daily_production > 0) {
+
+                  var valueProducedByTheEmployee = products_remaining_from_daily_production * $scope.priceEuro;
+                  //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
+                  //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
+                  //DAILY PRODUCTION
+                  var insertProductsInTheSameOrder = {
+                    ORDER_ID: order_id,
+                    INTERNAL_PRODUCT_ID: $scope.internalproductid,
+                    CUSTOMER_PRODUCT_ID: customer_product_id,
+                    PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                    ORDER_PRODUCTS_UNIQUE_ID: $scope.productsToClose[i].UNIQUE_ORDER_ID,
+                    EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+                    EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+                    TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
+                    PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+                    CREATED_DATE: productiondate
+                  };
+
+                  //if(parent_customer_product_id != null && (in_compound_product == 'Y' || orderproduct.IN_COMPOUND_PRODUCT == 'Y')) {
+                  if (parent_customer_product_id != null && orderproduct.IN_COMPOUND_PRODUCT == 'Y') {
+                    parentOrderProductUniqueId = $scope.parentProductsIndex[parent_customer_product_id][0].UNIQUE_ORDER_ID;
+                    insertDailyProductionParentProduct.insertParentProduction(parentOrderProductUniqueId, order_id, $scope.internalproductid, parent_customer_product_id, orderproduct.PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate);
+                  }
+
+                  var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
+                  });
+
+                  var msgArray = {
+                    OrderId: order_id,
+                    CustomerProductId: customer_product_id,
+                    ProductsRegistered: products_remaining_from_daily_production
+                  };
+
+                  insertedProductionReport.push(msgArray);
+                  //insertedProductionReport.push("OrderId: " + order_id + "  CustomerProductId: " +  customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
+                  //insertedProductionReport.push("Foram registadas " + products_remaining_from_daily_production + " unidades do produto " + customer_product_id + " na encomenda " + order_id + "\n");
+
+                  products_remaining_from_daily_production = 0;
+                }
+
               }
 
-            }
-           
-           } //if
+            } //if
 
           }//FOR
           //IF WE STILL HAVE PRODUCTS TO REGISTER IN THE DAILY PRODUCTION AND THEY CAN'T BE ADDED INTO THIS ORDER, WE NEED TO ITERATE OVER 
           //ALL THE ORDERS TO CHECK IF THE SAME INTERNAL PRODUCT ID IS OPENED TO BE REGISTERED
           if (products_remaining_from_daily_production > 0) {
-            
+
             productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro, productiondate, parent_customer_product_id).then(function () {
-              
-            var msg = productInOtherOpenOrdersOrOverProduction.returAlertMsg();
-            insertedProductionReport.push(msg);
+
+              var msg = productInOtherOpenOrdersOrOverProduction.returAlertMsg();
+              insertedProductionReport.push(msg);
 
               ModalService.showModal({
                 templateUrl: "../modal/dailyProductionReportModal.html",
@@ -1842,9 +1840,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           //IN THIS ORDER THERE IS NOT A PRODUCT FOR THE SAME INTERNAL PRODUCT ID
           //WE NEED TO CHECK IF THERE'S ANTOHER ORDER WITH THE SAME INTERNAL PRODUCT ID
 
-          productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro, productiondate, parent_customer_product_id).then (function() {
-          var msg = productInOtherOpenOrdersOrOverProduction.returAlertMsg();
-          insertedProductionReport.push(msg);
+          productInOtherOpenOrdersOrOverProduction.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production, employyee_name, $scope.priceEuro, productiondate, parent_customer_product_id).then(function () {
+            var msg = productInOtherOpenOrdersOrOverProduction.returAlertMsg();
+            insertedProductionReport.push(msg);
 
             ModalService.showModal({
               templateUrl: "../modal/dailyProductionReportModal.html",
@@ -1945,8 +1943,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         CREATED_DATE: productiondate
       };
 
-      if(parent_customer_product_id != null && in_compound_product == 'Y') {
-        getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function(parentDetails){
+      if (parent_customer_product_id != null && in_compound_product == 'Y') {
+        getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function (parentDetails) {
 
           var parentPalletQuantity = $scope.totalquantityproduced / parentDetails[0].Qty_By_Pallet;
 
@@ -1963,7 +1961,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             $state.reload();
           });
 
-          insertDailyPaintingParentProduct.insertParentPainting($scope.orderid, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, $scope.totalquantityproduced, productiondate) ;
+          insertDailyPaintingParentProduct.insertParentPainting($scope.orderid, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, $scope.totalquantityproduced, productiondate);
 
         });
       }
@@ -1980,7 +1978,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         QUANTITY_IN_PALLETES: palletQuantity,
       };
 
-      if(isparent == 'N' && in_compound_product == 'N') {
+      if (isparent == 'N' && in_compound_product == 'N') {
         var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
           $state.reload();
         });
@@ -2004,8 +2002,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         CREATED_DATE: productiondate
       };
 
-      if(parent_customer_product_id != null && in_compound_product == 'Y') {
-        getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function(parentDetails){
+      if (parent_customer_product_id != null && in_compound_product == 'Y') {
+        getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function (parentDetails) {
 
           var parentPalletQuantity = $scope.totalquantityproduced / parentDetails[0].Qty_By_Pallet;
 
@@ -2038,7 +2036,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         QUANTITY_IN_PALLETES: palletQuantity,
       };
 
-      if(isparent == 'N' && in_compound_product == 'N') {
+      if (isparent == 'N' && in_compound_product == 'N') {
         var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
           $state.reload();
         });
@@ -2094,11 +2092,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 CREATED_DATE: productiondate
               };
 
-              if(parent_customer_product_id != null && in_compound_product == 'Y') {
-                getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function(parentDetails){
-        
+              if (parent_customer_product_id != null && in_compound_product == 'Y') {
+                getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function (parentDetails) {
+
                   var parentPalletQuantity = $scope.totalquantityproduced / parentDetails[0].Qty_By_Pallet;
-        
+
                   var parentObjPallete = {
                     ORDER_ID: $scope.orderid,
                     CUSTOMER_PRODUCT_ID: parent_customer_product_id,
@@ -2107,16 +2105,16 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                     TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
                     QUANTITY_IN_PALLETES: parentPalletQuantity,
                   };
-        
+
                   var res = $http.post('/insertPalletesQuantity', parentObjPallete).then(function (data, status, headers, config) {
                     $state.reload();
                   });
-        
-                  insertDailyPaintingParentProduct.insertParentPainting(order_id, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate) ;
-        
+
+                  insertDailyPaintingParentProduct.insertParentPainting(order_id, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate);
+
                 });
               }
-        
+
 
               var res = $http.post('/insertDailyPainting', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
               });
@@ -2130,7 +2128,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 QUANTITY_IN_PALLETES: palletQuantity,
               };
 
-              if(isparent == 'N' && in_compound_product == 'N') {
+              if (isparent == 'N' && in_compound_product == 'N') {
                 var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
                   $state.reload();
                 });
@@ -2155,11 +2153,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 CREATED_DATE: productiondate
               };
 
-              if(parent_customer_product_id != null && in_compound_product == 'Y') {
-                getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function(parentDetails){
-        
+              if (parent_customer_product_id != null && in_compound_product == 'Y') {
+                getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function (parentDetails) {
+
                   var parentPalletQuantity = $scope.totalquantityproduced / parentDetails[0].Qty_By_Pallet;
-        
+
                   var parentObjPallete = {
                     ORDER_ID: $scope.orderid,
                     CUSTOMER_PRODUCT_ID: parent_customer_product_id,
@@ -2168,13 +2166,13 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                     TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
                     QUANTITY_IN_PALLETES: parentPalletQuantity,
                   };
-        
+
                   var res = $http.post('/insertPalletesQuantity', parentObjPallete).then(function (data, status, headers, config) {
                     $state.reload();
                   });
-        
-                  insertDailyPaintingParentProduct.insertParentPainting(order_id, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate) ;
-              
+
+                  insertDailyPaintingParentProduct.insertParentPainting(order_id, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate);
+
                 });
               }
 
@@ -2190,7 +2188,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 QUANTITY_IN_PALLETES: palletQuantity,
               };
 
-              if(isparent == 'N' && in_compound_product == 'N') {
+              if (isparent == 'N' && in_compound_product == 'N') {
                 var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
                   $state.reload();
                 });
@@ -2475,7 +2473,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           {
             //alignment: 'left',
             columns: [
-          
+
               {
                 canvas: [
                   {
@@ -2590,7 +2588,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           },
           'firstLine': {
             //margin: [-190, 127.48, 0, 20],
-             margin: [0, 20, 175, 20],
+            margin: [0, 20, 175, 20],
           },
           'secondLine': {
             //margin: [20, 126.15, -120, 20],
@@ -2651,9 +2649,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         },
         pageMargins: [56.6, 42.5, 15, 15],
         pageSize: 'A4',
-        pageOrientation: 'landscape' 
+        pageOrientation: 'landscape'
       };
-  
+
       function replaceAll(str, map) {
         for (key in map) {
           str2 = str.replace(key, map[key]);
@@ -2672,8 +2670,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       var map = {
         '_CLIENT_NAME_': $scope.clientname,
         //'_CURRENT_DATE_': dateToPrint,
-        '_DELIVER_DATE_' : moment($scope.deliverydate).format('YYYY-MM-DD'),
-        '_ORDER_ID_'    : orderId
+        '_DELIVER_DATE_': moment($scope.deliverydate).format('YYYY-MM-DD'),
+        '_ORDER_ID_': orderId
       };
 
       paintingPDFTemplate.content[1] = Object.values(buildTables(arrayForAll));
@@ -2756,47 +2754,47 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     //////////////////////////////////////////////////////////////////////////////////////////////
 
     for (i = 0; i < $scope.products.length; i++) {
-  
-      var productId = $scope.products[i].INTERNAL_PRODUCT_ID;
-      
-      if($scope.products[i].IS_PARENT == 'N') { //WE WILL ONLY PRINT SINGLE AND CHILD PRODUCTS
 
-        if(arrayDistinctProductId[productId] == null) {
-          
-          var distinctOrderQuantity = [];  
+      var productId = $scope.products[i].INTERNAL_PRODUCT_ID;
+
+      if ($scope.products[i].IS_PARENT == 'N') { //WE WILL ONLY PRINT SINGLE AND CHILD PRODUCTS
+
+        if (arrayDistinctProductId[productId] == null) {
+
+          var distinctOrderQuantity = [];
           distinctOrderQuantity.push($scope.products[i].TOTAL_QUANTITY_ORDERED);
 
           var productInfo = {
-            TOTAL_QUANTITY_ORDERED : $scope.products[i].TOTAL_QUANTITY_ORDERED,
-            DISTINCT_ORDER_QUANTITY : distinctOrderQuantity
+            TOTAL_QUANTITY_ORDERED: $scope.products[i].TOTAL_QUANTITY_ORDERED,
+            DISTINCT_ORDER_QUANTITY: distinctOrderQuantity
           };
 
           arrayDistinctProductId[productId] = productInfo;
 
         } else {
-          
+
           var distinctOrderQuantity = arrayDistinctProductId[productId].DISTINCT_ORDER_QUANTITY;
           distinctOrderQuantity.push($scope.products[i].TOTAL_QUANTITY_ORDERED);
 
           var productInfo = {
-            TOTAL_QUANTITY_ORDERED  : arrayDistinctProductId[productId].TOTAL_QUANTITY_ORDERED + $scope.products[i].TOTAL_QUANTITY_ORDERED,
-            DISTINCT_ORDER_QUANTITY : distinctOrderQuantity
+            TOTAL_QUANTITY_ORDERED: arrayDistinctProductId[productId].TOTAL_QUANTITY_ORDERED + $scope.products[i].TOTAL_QUANTITY_ORDERED,
+            DISTINCT_ORDER_QUANTITY: distinctOrderQuantity
           };
 
           arrayDistinctProductId[productId] = productInfo;
           console.log("TESTE");
         };
       }
-    }    
+    }
 
     var allKeys = Object.keys(arrayDistinctProductId);
 
-    for(j = 0; j < allKeys.length; j++) {
+    for (j = 0; j < allKeys.length; j++) {
 
       var TOTAL_QUANTITY_ORDERED = arrayDistinctProductId[allKeys[j]].TOTAL_QUANTITY_ORDERED;
       totalProductsOrdered = totalProductsOrdered + TOTAL_QUANTITY_ORDERED;
 
-      if(arrayDistinctProductId[allKeys[j]].DISTINCT_ORDER_QUANTITY.length > 1) {
+      if (arrayDistinctProductId[allKeys[j]].DISTINCT_ORDER_QUANTITY.length > 1) {
 
         formattedArrForProduction.push({
           table: {
@@ -2805,7 +2803,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               [
                 { text: allKeys[j], style: "tblRows" },
                 { text: TOTAL_QUANTITY_ORDERED, style: "tblRows" },
-                { text: arrayDistinctProductId[allKeys[j]].DISTINCT_ORDER_QUANTITY.toString().replace(/,/g," + ") , style: "tblRows" }
+                { text: arrayDistinctProductId[allKeys[j]].DISTINCT_ORDER_QUANTITY.toString().replace(/,/g, " + "), style: "tblRows" }
               ]
             ]
           },
@@ -2889,7 +2887,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         {
           //alignment: 'left',
           columns: [
-        
+
             {
               canvas: [
                 {
@@ -2934,20 +2932,20 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             }
           ]
         },
-      {
-        table: {
-          headerRows: 1,
-          widths: [100, 100, 100],
-          body: [
-            [
-              { text: 'Ref Producto', style: "tblHeader" },
-              { text: 'Quantidade', style: "tblHeaderQuantidade" },
-              { text: 'Observações', style: "tblHeader" }
+        {
+          table: {
+            headerRows: 1,
+            widths: [100, 100, 100],
+            body: [
+              [
+                { text: 'Ref Producto', style: "tblHeader" },
+                { text: 'Quantidade', style: "tblHeaderQuantidade" },
+                { text: 'Observações', style: "tblHeader" }
+              ]
             ]
-          ]
 
-        }, layout: 'lightHorizontalLines'
-      },
+          }, layout: 'lightHorizontalLines'
+        },
         {}
       ],
       styles: {
@@ -3017,7 +3015,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         },
         'firstLine': {
           //margin: [-190, 127.48, 0, 20],
-           margin: [0, 20, 175, 20],
+          margin: [0, 20, 175, 20],
         },
         'secondLine': {
           //margin: [20, 126.15, -120, 20],
@@ -3099,7 +3097,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       '_CLIENT_NAME_': $scope.clientname,
       '_ORDER_ID_': $scope.orderid,
       //'_CURRENT_DATE_': dateToPrint
-      '_DELIVER_DATE_' : moment($scope.deliverydate).format('YYYY-MM-DD')
+      '_DELIVER_DATE_': moment($scope.deliverydate).format('YYYY-MM-DD')
     };
 
     function replaceAll(str, map) {
@@ -3127,7 +3125,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
   //REVERT THE PAINTING REGISTRY FROM ONE PRODUCT TO ANOTHER
-  $scope.revertPaintingRegistry = function (customerproductid, uniqueorderid) {
+  $scope.revertPaintingRegistry = function (customerproductid, uniqueorderid, productname) {
 
     ModalService.showModal({
       templateUrl: "../modal/revertPaintingRegistryModal.html",
@@ -3136,7 +3134,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       inputs: {
         customerproductid: customerproductid,
         orderid: $scope.orderid,
-        uniqueorderid: uniqueorderid
+        uniqueorderid: uniqueorderid,
+        productname: productname
       }
     }).then(function (modal) {
       modal.element.modal();
@@ -3147,8 +3146,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
         }
       });
-    }); 
-  
+    });
+
   };
 
 
@@ -3161,11 +3160,11 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
   $rootScope.name = "Lista de todas as Encomendas";
   $scope.orders = [];
 
-  $scope.today = function() {
+  $scope.today = function () {
     $scope.deliverDate = new Date();
   };
   $scope.today();
-   
+
   $scope.dateOptions = {
     //dateDisabled: disabled,
     formatYear: 'yy',
@@ -3174,11 +3173,11 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
     startingDay: 1
   };
 
-  $scope.open1 = function() {
+  $scope.open1 = function () {
     $scope.popup1.opened = true;
   };
 
-  $scope.setDate = function(year, month, day) {
+  $scope.setDate = function (year, month, day) {
     $scope.dt = new Date(year, month, day);
   };
 
@@ -3197,7 +3196,7 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
       }
       $scope.orders[i].percent = percentage;
       $scope.orders[i].width = percentage;
-      
+
       if ($scope.orders[i].STATUS == 'Fechada') {
         $scope.orders[i].ORDER_STATUS_RAW = 'fechado_na_encomenda';
       }
@@ -3245,15 +3244,15 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
   };
 
   $scope.showProductsForOrder = function (orderId, clientname, order_modified_date) {
-    $state.transitionTo("listOrderProducts", { 'orderId': orderId, 'clientname': clientname, 'order_modified_date':order_modified_date });
+    $state.transitionTo("listOrderProducts", { 'orderId': orderId, 'clientname': clientname, 'order_modified_date': order_modified_date });
   }
 
   //CLOSE THE ORDER IN PRODUCTION
-  $scope.closeProduction = function(order_id, client_name) {
+  $scope.closeProduction = function (order_id, client_name) {
 
-    var operationsToExecute  =  ['/deleteOrder', '/deleteAllProductsFromOrder', '/deleteDailyProductionForClosedOrder', '/deleteDailyPaintingForClosedOrder'];
+    var operationsToExecute = ['/deleteOrder', '/deleteAllProductsFromOrder', '/deleteDailyProductionForClosedOrder', '/deleteDailyPaintingForClosedOrder'];
 
-    var dataToDelete  = [{"ORDER_ID": order_id, "CLIENT_NAME": client_name}, {"ORDER_ID": order_id}, {"ORDER_ID": order_id}, {"ORDER_ID": order_id}];
+    var dataToDelete = [{ "ORDER_ID": order_id, "CLIENT_NAME": client_name }, { "ORDER_ID": order_id }, { "ORDER_ID": order_id }, { "ORDER_ID": order_id }];
 
     ModalService.showModal({
       templateUrl: "../modal/yesNoGeneric.html",
@@ -3392,7 +3391,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
     var res = $http.post('/insertProductTechSheet', dataObj).then(function (data, status, headers, config) {
       var currentPageTemplate = $state.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
-      $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2, 'isparent': $scope.isparent});
+      $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2, 'isparent': $scope.isparent });
 
     });
 
@@ -3711,7 +3710,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
   $scope.back = function () {
     var currentPageTemplate = $state.current.templateUrl;
     $templateCache.remove(currentPageTemplate);
-    $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2, 'isparent': $scope.isparent});
+    $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2, 'isparent': $scope.isparent });
   };
 
 });
@@ -3851,7 +3850,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
     var res = $http.post('/updateProductTechSheet', dataObj).then(function (data, status, headers, config) {
       var currentPageTemplate = $state.current.templateUrl;
       $templateCache.remove(currentPageTemplate);
-      $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2, 'isparent': $scope.isparent});
+      $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2, 'isparent': $scope.isparent });
 
     });
 
@@ -3860,7 +3859,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
   $scope.back = function () {
     var currentPageTemplate = $state.current.templateUrl;
     $templateCache.remove(currentPageTemplate);
-    $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2, 'isparent': $scope.isparent});
+    $state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2, 'isparent': $scope.isparent });
   };
 
 
@@ -4014,8 +4013,9 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
           },
           "layout": "noBorders",
           "style": "tableRowsText"
-        }, 
-           { "table": {
+        },
+        {
+          "table": {
             "headerRows": 1,
             "widths": ["*"],
             "body": [
@@ -4030,7 +4030,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
           },
           "layout": "noBorders",
           "style": "tableRowsTextLast"
-        },{
+        }, {
           "text": "",
           "margin": [20, 10]
         },
@@ -4374,7 +4374,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
         '_SPONGE_': $scope.sponge,
         '_COOKING_': $scope.cooking,
         '_COOKING_TEMPERATURE_': $scope.cookingTemperature,
-        '_PRODUCTION_OBSERVATIONS_' : $scope.productionObservations,
+        '_PRODUCTION_OBSERVATIONS_': $scope.productionObservations,
         '_PAINTED_COLD_': $scope.paintedCold,
         '_REF_PAINT_QTY_': $scope.refPaintQty,
         '_REF_PAINT_SMOKED_QTY_': $scope.refPaintSmokedQty,
@@ -4466,7 +4466,7 @@ app.controller('ProductsController', function ($scope, $http, $location, $rootSc
 
   //EDITAR Produto
   $scope.editProductPath = function (productName, customerProductId, productId, clientname, imageName, barCode, nameInTheLabel, numArticleByBox, preco1, preco2, isparent) {
-    $state.transitionTo("editProduct", { 'productName': productName, 'customerProductId': customerProductId, 'productId': productId, 'clientname': clientname, 'imageName': imageName, 'barCode': barCode, 'nameInTheLabel': nameInTheLabel, 'numArticleByBox': numArticleByBox, 'preco1': preco1, 'preco2': preco2, 'isparent': isparent});
+    $state.transitionTo("editProduct", { 'productName': productName, 'customerProductId': customerProductId, 'productId': productId, 'clientname': clientname, 'imageName': imageName, 'barCode': barCode, 'nameInTheLabel': nameInTheLabel, 'numArticleByBox': numArticleByBox, 'preco1': preco1, 'preco2': preco2, 'isparent': isparent });
   }
 
   //IMPRIMIR ETIQUETAS do Produto
@@ -4551,8 +4551,8 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
   $scope.preco1 = $stateParams.preco1;
   $scope.preco2 = $stateParams.preco2;
   $scope.isparentproduct = "";
-  
-  if($stateParams.isparent == 'Y' || $stateParams.isparent == true) {
+
+  if ($stateParams.isparent == 'Y' || $stateParams.isparent == true) {
     $scope.isparentproduct = true;
   } else if ($stateParams.isparent == 'N' || $stateParams.isparent == false) {
     $scope.isparentproduct = false;
@@ -4603,7 +4603,7 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
       $scope.clientname = $scope.clientname.CLIENT_NAME;
     }
 
-    if($scope.isparentproduct == true) {
+    if ($scope.isparentproduct == true) {
       $scope.isparentproduct = 'Y';
     } else {
       $scope.isparentproduct = 'N';
@@ -4620,7 +4620,7 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
       nameInTheLabel: $scope.nameInTheLabel,
       preco1: $scope.preco1,
       preco2: $scope.preco2,
-      isparent: $scope.isparentproduct 
+      isparent: $scope.isparentproduct
     };
 
     $("#product-edit-form").validate({
@@ -4659,67 +4659,67 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
 
   $scope.createTechnicalSheet = function () {
     //$state.go("editImage", null, { reload: true });
-    $state.transitionTo("createTechnicalSheet", { 'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'internalProductId': $scope.productId, 'clientName': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'isparent': $scope.isparentproduct});
+    $state.transitionTo("createTechnicalSheet", { 'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'internalProductId': $scope.productId, 'clientName': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'isparent': $scope.isparentproduct });
   };
 
   $scope.editTechnicalSheet = function () {
     //$state.go("editImage", null, { reload: true });
-    $state.transitionTo("editTechnicalSheet", { 'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'productId': $scope.productId, 'clientName': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2, 'isparent': $scope.isparentproduct});
+    $state.transitionTo("editTechnicalSheet", { 'productName': $scope.productName, 'customerProductId': $scope.customerProductId, 'productId': $scope.productId, 'clientName': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2, 'isparent': $scope.isparentproduct });
   };
 
   $scope.cloneProduct = function (customerProductId) {
 
-  var URI = '/checkIfProductTechSheetExists/' + encodeURIComponent(customerProductId);
-  var request = $http.get(URI);
-  //var request = $http.get('/checkIfProductTechSheetExists/' + encodeURI(productId)); 
-  request.then(function successCallback(response) {
-    $scope.existsTechSheet = response.data;
+    var URI = '/checkIfProductTechSheetExists/' + encodeURIComponent(customerProductId);
+    var request = $http.get(URI);
+    //var request = $http.get('/checkIfProductTechSheetExists/' + encodeURI(productId)); 
+    request.then(function successCallback(response) {
+      $scope.existsTechSheet = response.data;
 
-    if ($scope.existsTechSheet[0].EXISTS == 1) {
+      if ($scope.existsTechSheet[0].EXISTS == 1) {
 
-      ModalService.showModal({
-        templateUrl: "../modal/cloneProductModal.html",
-        controller: "CloneProductModalController",
-        preClose: (modal) => { modal.element.modal('hide'); },
-        inputs: {
-          customerProductId: customerProductId
-        }
-      }).then(function (modal) {
-        modal.element.modal();
-        modal.close.then(function (result) {
-          if (!result) {
-            $scope.complexResult = "Modal forcibly closed..."
-          } else {
-            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        ModalService.showModal({
+          templateUrl: "../modal/cloneProductModal.html",
+          controller: "CloneProductModalController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            customerProductId: customerProductId
           }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
         });
-      }); 
-      
-    } else {
 
-      ModalService.showModal({
-        templateUrl: "../modal/genericModal.html",
-        controller: "GenericController",
-        preClose: (modal) => { modal.element.modal('hide'); },
-        inputs: {
-          message: "O produto " + customerProductId + " não tem ficha técnica criada e não pode ser criada um cópia sem ficha técnica."
-        }
-      }).then(function (modal) {
-        modal.element.modal();
-        modal.close.then(function (result) {
-          if (!result) {
-            $scope.complexResult = "Modal forcibly closed..."
-          } else {
-            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+      } else {
+
+        ModalService.showModal({
+          templateUrl: "../modal/genericModal.html",
+          controller: "GenericController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: "O produto " + customerProductId + " não tem ficha técnica criada e não pode ser criada um cópia sem ficha técnica."
           }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
         });
+      }
+      //return  $scope.dataProducts; 
+    },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
       });
-    }
-    //return  $scope.dataProducts; 
-  },
-    function errorCallback(data) {
-      console.log('Error: ' + data);
-    });
 
   };
 
@@ -4729,9 +4729,9 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
 
   $scope.delete = function (customerProductId) {
 
-    var operationsToExecute  =  ['/deleteProduct', '/deleteProductTechSheet'];
+    var operationsToExecute = ['/deleteProduct', '/deleteProductTechSheet'];
 
-    var dataToDelete  = [{"CUSTOMER_PRODUCT_ID": customerProductId}, {"CUSTOMER_PRODUCT_ID": customerProductId}];
+    var dataToDelete = [{ "CUSTOMER_PRODUCT_ID": customerProductId }, { "CUSTOMER_PRODUCT_ID": customerProductId }];
 
     ModalService.showModal({
       templateUrl: "../modal/yesNoGeneric.html",
@@ -4756,14 +4756,14 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
     });
   };
 
-  $scope.addChildProducts = function(customerProductId) {
-     $state.transitionTo("addChildProduct", { 'productName': $scope.productName, 'customer_product_id': customerProductId, 'productId': $scope.productId , 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2':$scope.preco2, 'isparent': $scope.isparentproduct});
+  $scope.addChildProducts = function (customerProductId) {
+    $state.transitionTo("addChildProduct", { 'productName': $scope.productName, 'customer_product_id': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2, 'isparent': $scope.isparentproduct });
   };
 
 }]);
 
 app.controller('addChildProductController', ['$http', '$scope', '$rootScope', '$state', '$stateParams', '$templateCache', 'ModalService', function ($http, $scope, $rootScope, $state, $stateParams, $templateCache, ModalService) {
-  
+
   var customerProductId = $stateParams.customer_product_id;
   $scope.products = [];
   $scope.childProducts = [];
@@ -4777,7 +4777,7 @@ app.controller('addChildProductController', ['$http', '$scope', '$rootScope', '$
   },
     function errorCallback(data) {
       console.log('Error: ' + data);
-  });
+    });
 
   var URI = '/childProductsOfParentProduct/' + encodeURIComponent(customerProductId);
   var request = $http.get(URI);
@@ -4787,13 +4787,13 @@ app.controller('addChildProductController', ['$http', '$scope', '$rootScope', '$
   },
     function errorCallback(data) {
       console.log('Error: ' + data);
-  });
+    });
 
   $scope.addChild = function (customer_product_id, internal_product_id, product_name) {
     var child = {
-      CUSTOMER_PRODUCT_ID : customer_product_id,
-      INTERNAL_PRODUCT_ID : internal_product_id,
-      PRODUCT_NAME        : product_name
+      CUSTOMER_PRODUCT_ID: customer_product_id,
+      INTERNAL_PRODUCT_ID: internal_product_id,
+      PRODUCT_NAME: product_name
     }
     $scope.childProducts.push(child);
   };
@@ -4801,12 +4801,12 @@ app.controller('addChildProductController', ['$http', '$scope', '$rootScope', '$
   $scope.removeChildProduct = function (customer_product_id) {
     for (var i = $scope.childProducts.length - 1; i >= 0; --i) {
       if ($scope.childProducts[i].CUSTOMER_PRODUCT_ID == customer_product_id) {
-        $scope.childProducts.splice(i,1);
+        $scope.childProducts.splice(i, 1);
       }
     }
 
     var childProductToDelete = {
-      CHILD_CUSTOMER_PRODUCT_ID : customer_product_id
+      CHILD_CUSTOMER_PRODUCT_ID: customer_product_id
     }
 
     var res = $http.post('/deleteChildProduct', childProductToDelete).then(function (data, status, headers, config) {
@@ -4815,23 +4815,23 @@ app.controller('addChildProductController', ['$http', '$scope', '$rootScope', '$
   };
 
   $scope.save = function () {
-    
+
     var childCustomerProductIdToSave = [];
     for (var i = $scope.childProducts.length - 1; i >= 0; --i) {
       childCustomerProductIdToSave.push($scope.childProducts[i].CUSTOMER_PRODUCT_ID);
     }
 
-    if(childCustomerProductIdToSave.length > 0) {
+    if (childCustomerProductIdToSave.length > 0) {
 
       var dataToSave = {
-        PARENT_CUSTOMER_PRODUCT_ID : customerProductId,
-        CHILD_CUSTOMER_PRODUCT_ID  : childCustomerProductIdToSave
+        PARENT_CUSTOMER_PRODUCT_ID: customerProductId,
+        CHILD_CUSTOMER_PRODUCT_ID: childCustomerProductIdToSave
       }
 
       var res = $http.post('/insertUpdateChildProducts', dataToSave).then(function (data, status, headers, config) {
         $state.transitionTo("editProduct", { 'productName': $stateParams.productName, 'customerProductId': customerProductId, 'clientname': $stateParams.clientname, 'productId': $stateParams.productId, 'clientname': $stateParams.clientname, 'imageName': $stateParams.imageName, 'barCode': $stateParams.barCode, 'nameInTheLabel': $stateParams.nameInTheLabel, 'numArticleByBox': $stateParams.numArticleByBox, 'preco1': $stateParams.preco1, 'preco2': $stateParams.preco2, 'isparent': $stateParams.isparent });
       });
-  
+
     } else {
       $state.transitionTo("editProduct", { 'productName': $stateParams.productName, 'customerProductId': customerProductId, 'clientname': $stateParams.clientname, 'productId': $stateParams.productId, 'clientname': $stateParams.clientname, 'imageName': $stateParams.imageName, 'barCode': $stateParams.barCode, 'nameInTheLabel': $stateParams.nameInTheLabel, 'numArticleByBox': $stateParams.numArticleByBox, 'preco1': $stateParams.preco1, 'preco2': $stateParams.preco2, 'isparent': $stateParams.isparent });
     }
@@ -4840,7 +4840,7 @@ app.controller('addChildProductController', ['$http', '$scope', '$rootScope', '$
   }
 
   $scope.goback = function () {
-    $state.transitionTo("editProduct", { 'productName': $stateParams.productName, 'customerProductId': customerProductId, 'clientname': $stateParams.clientname, 'productId': $stateParams.productId, 'clientname': $stateParams.clientname, 'imageName': $stateParams.imageName, 'barCode': $stateParams.barCode, 'nameInTheLabel': $stateParams.nameInTheLabel, 'numArticleByBox': $stateParams.numArticleByBox, 'preco1': $stateParams.preco1, 'preco2': $stateParams.preco2, 'isparent': $stateParams.isparent});
+    $state.transitionTo("editProduct", { 'productName': $stateParams.productName, 'customerProductId': customerProductId, 'clientname': $stateParams.clientname, 'productId': $stateParams.productId, 'clientname': $stateParams.clientname, 'imageName': $stateParams.imageName, 'barCode': $stateParams.barCode, 'nameInTheLabel': $stateParams.nameInTheLabel, 'numArticleByBox': $stateParams.numArticleByBox, 'preco1': $stateParams.preco1, 'preco2': $stateParams.preco2, 'isparent': $stateParams.isparent });
   };
 
 }]);
@@ -4863,19 +4863,19 @@ app.controller('OverProductionController', ['$http', '$scope', '$rootScope', 'Mo
       console.log('Error: ' + data);
     });
 
-  $scope.registerInOrder = function(unique_id, internal_product_id, products_to_register_in_order) {
+  $scope.registerInOrder = function (unique_id, internal_product_id, products_to_register_in_order) {
 
     $scope.ordersArray = [];
     $scope.message = "";
-    
-    getOrdersToRegisterOverProduction.allOrdersForInternalProductId(internal_product_id).then(function(orders) {
 
-      if(orders.length > 0) {
+    getOrdersToRegisterOverProduction.allOrdersForInternalProductId(internal_product_id).then(function (orders) {
 
-        for(i = 0; i < orders.length; i++) {
+      if (orders.length > 0) {
+
+        for (i = 0; i < orders.length; i++) {
           orders[i].QUANTITY_TO_REGISTER = products_to_register_in_order;
         }
-        
+
         ModalService.showModal({
           templateUrl: "../modal/ordersToRegisterOverProductionModal.html",
           controller: "OverProductionModalController",
@@ -4950,11 +4950,11 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
     if (!$scope.clientname.CLIENT_NAME) {
       $scope.clientname = $scope.clientname;
     } else {
-      clientid   = $scope.clientname.CLIENT_ID;
+      clientid = $scope.clientname.CLIENT_ID;
       $scope.clientname = $scope.clientname.CLIENT_NAME;
     }
 
-    if($scope.isparentproduct == true) {
+    if ($scope.isparentproduct == true) {
       $scope.isparentproduct = 'Y';
     } else {
       $scope.isparentproduct = 'N';
@@ -4974,7 +4974,7 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
     };
 
     var insertClientProduct = {
-      CLIENT_ID : clientid,
+      CLIENT_ID: clientid,
       PRODUCT_ID: $scope.customerproductId
     }
 
@@ -5049,21 +5049,21 @@ app.controller('PalletesController', ['$scope', '$http', '$rootScope', 'ModalSer
   $scope.savePalleteQuantityChanges = function (orderid, customerproductid, palletequantity) {
     console.log("NewValue: " + palletequantity);
     console.log("OldValue: " + $scope.oldPalleteQuantity);
-    var validatedPalletequantity  = "";
-    if(palletequantity == undefined) {
+    var validatedPalletequantity = "";
+    if (palletequantity == undefined) {
       return false;
     } else {
-     validatedPalletequantity = palletequantity.replace(/[^0-9]/g, '');
+      validatedPalletequantity = palletequantity.replace(/[^0-9]/g, '');
     }
-    if(validatedPalletequantity == palletequantity) {
-      updatePalleteQuantity.updatePallete(orderid, customerproductid, palletequantity).then(function() {
+    if (validatedPalletequantity == palletequantity) {
+      updatePalleteQuantity.updatePallete(orderid, customerproductid, palletequantity).then(function () {
 
         ModalService.showModal({
           templateUrl: "../modal/genericModal.html",
           controller: "GenericController",
           preClose: (modal) => { modal.element.modal('hide'); },
           inputs: {
-            message: "Foi actualizada a quantidade do produto " +  customerproductid + " na encomenda " +  orderid + " de " + $scope.oldPalleteQuantity  + " para " + palletequantity
+            message: "Foi actualizada a quantidade do produto " + customerproductid + " na encomenda " + orderid + " de " + $scope.oldPalleteQuantity + " para " + palletequantity
           }
         }).then(function (modal) {
           modal.element.modal();
@@ -5075,10 +5075,10 @@ app.controller('PalletesController', ['$scope', '$http', '$rootScope', 'ModalSer
             }
           });
         });
-  
+
       });
     }
-    
+
 
   }
 
@@ -5156,7 +5156,7 @@ app.controller('ProductCreateModalController', [
     },
       function errorCallback(data) {
         console.log('Error: ' + data);
-    });
+      });
 
     //Save Content Modal  
     $scope.save = function () {
@@ -5246,7 +5246,7 @@ app.controller('GenericController', function ($scope, message) {
 });
 
 //Generic Modal for deleting/confirming operation where we receive the dataObj array and the operation to execute
-app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'dataObj', 'message', 'unique_id', 'ModalService',  
+app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'dataObj', 'message', 'unique_id', 'ModalService',
   function ($scope, $http, $state, dataObj, message, unique_id, ModalService) {
 
     $scope.message = message;
@@ -5267,10 +5267,10 @@ app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'd
     };
 
     $scope.registerOverProductionInOrder = function (unique_id, orderid, internalproductid, customerproductid, productname, uniqueorderid, totalquantityordered, totalquantityproduced, quantitytoregister) {
-      
+
       var remainingProductsToRegisterIntheOrder = totalquantityordered - totalquantityproduced;
 
-      if(remainingProductsToRegisterIntheOrder >= quantitytoregister) {
+      if (remainingProductsToRegisterIntheOrder >= quantitytoregister) {
         var data = {
           ORDER_ID: orderid,
           INTERNAL_PRODUCT_ID: internalproductid,
@@ -5283,7 +5283,7 @@ app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'd
           PRODUCED_VALUE_IN_EURO: 0,
           CREATED_DATE: moment().format('YYYY-MM-DD 00:00:00')
         };
-  
+
         var res = $http.post('/insertDailyProduction', data).then(function (data, status, headers, config) {
         });
 
@@ -5305,7 +5305,7 @@ app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'd
           controller: "GenericController",
           preClose: (modal) => { modal.element.modal('hide'); },
           inputs: {
-            message: quantitytoregister + " unidades do produto " +  customerproductid + " em stock foram registados na encomenda " + orderid + "."
+            message: quantitytoregister + " unidades do produto " + customerproductid + " em stock foram registados na encomenda " + orderid + "."
           }
         }).then(function (modal) {
           modal.element.modal();
@@ -5333,14 +5333,14 @@ app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'd
           PRODUCED_VALUE_IN_EURO: 0,
           CREATED_DATE: moment().format('YYYY-MM-DD 00:00:00')
         };
-  
+
         var res = $http.post('/insertDailyProduction', data).then(function (data, status, headers, config) {
         });
 
         //UPDATE THE VALUES IN STOCK TO REFLECT THE REAMINING VALUES
         var updateStockTableData = {
-            QUANTITY_REGISTERD : remainingProductsToRegisterIntheOrder,
-            INTERNAL_PRODUCT_ID: internalproductid,
+          QUANTITY_REGISTERD: remainingProductsToRegisterIntheOrder,
+          INTERNAL_PRODUCT_ID: internalproductid,
         };
 
         var res = $http.post('/updateStockInOverProductionStockTable', updateStockTableData).then(function (data, status, headers, config) {
@@ -5356,7 +5356,7 @@ app.controller('OverProductionModalController', ['$scope', '$http', '$state', 'd
           controller: "GenericController",
           preClose: (modal) => { modal.element.modal('hide'); },
           inputs: {
-            message: remainingProductsToRegisterIntheOrder + " unidades do produto " +  customerproductid + " em stock foram registados na encomenda " + orderid + "."
+            message: remainingProductsToRegisterIntheOrder + " unidades do produto " + customerproductid + " em stock foram registados na encomenda " + orderid + "."
           }
         }).then(function (modal) {
           modal.element.modal();
@@ -5388,9 +5388,9 @@ app.controller('InsertedProductionReportModalController', function ($scope, $sce
   report = report + "</thead>";
   report = report + "<tbody>";
 
-  for(i=0; i < message.length; i++) {
+  for (i = 0; i < message.length; i++) {
 
-    if(message[i].OrderId) {
+    if (message[i].OrderId) {
       report = report + "<tr>";
       report = report + "<td>" + message[i].OrderId + "</td>";
       report = report + "<td>" + message[i].CustomerProductId + "</td>";
@@ -5398,7 +5398,7 @@ app.controller('InsertedProductionReportModalController', function ($scope, $sce
       report = report + "</tr>";
     } else {
       var arrayWithMoreLements = message[i];
-      for(j=0; j < arrayWithMoreLements.length ; j++) {
+      for (j = 0; j < arrayWithMoreLements.length; j++) {
         report = report + "<tr>";
         report = report + "<td>" + arrayWithMoreLements[j].OrderId + "</td>";
         report = report + "<td>" + arrayWithMoreLements[j].CustomerProductId + "</td>";
@@ -5456,31 +5456,31 @@ app.controller('ProductDeleteModalController', [
     $scope.orderid = orderid;
     $scope.productid = productid;
     $scope.productname = productname;
-    
+
     //  This close function doesn't need to use jQuery or bootstrap, because
     //  the button has the 'data-dismiss' attribute.
 
     //Save Content Modal  
     $scope.yes = function () {
 
-      if(is_parent == 'N') {
-        
+      if (is_parent == 'N') {
+
         var dataObj = {
           ORDER_ID: $scope.orderid,
           PRODUCT_ID: $scope.productid,
         };
-  
+
         var res = $http.post('/deleteorderproduct', dataObj).then(function (data, status, headers, config) {
           $state.reload();
         });
 
       } else {
-        
+
         var dataObj = {
           ORDER_ID: $scope.orderid,
           PRODUCT_ID: products_to_delete,
         };
-  
+
         var res = $http.post('/deletecompoundorderproduct', dataObj).then(function (data, status, headers, config) {
           $state.reload();
         });
@@ -5525,7 +5525,7 @@ app.controller('genericModalController', ['$scope', '$http', '$state', 'operatio
 
 
 //Generic Modal for deleting/confirming operation where we receive several dataObj array and the several operation to execute
-app.controller('genericMultOperationsModalController', ['$scope', '$http', '$state', 'operationsObj', 'dataObjs', 'message', 'stateToGo', 'needToReload', 
+app.controller('genericMultOperationsModalController', ['$scope', '$http', '$state', 'operationsObj', 'dataObjs', 'message', 'stateToGo', 'needToReload',
   function ($scope, $http, $state, operationsObj, dataObjs, message, stateToGo, needToReload) {
 
     $scope.message = message;
@@ -5536,22 +5536,21 @@ app.controller('genericMultOperationsModalController', ['$scope', '$http', '$sta
     //Save Content Modal  
     $scope.yes = function () {
 
-      for(i=0; i < operationsObj.length; i++) {
+      for (i = 0; i < operationsObj.length; i++) {
 
         var res = $http.post(operationsObj[i], dataObjs[i]).then(function (data, status, headers, config) {
-          if(i == operationsObj.length) {
-            if(needToReload == false)
-            {
-              $state.go(stateToGo, null, {refresh:true});
+          if (i == operationsObj.length) {
+            if (needToReload == false) {
+              $state.go(stateToGo, null, { refresh: true });
             } else {
-              $state.go(stateToGo, null, {refresh:true});
+              $state.go(stateToGo, null, { refresh: true });
               $state.reload();
             }
           }
         });
 
       }
-      
+
     };
   }]);
 
@@ -5561,14 +5560,14 @@ app.controller('CloneProductModalController', ['$scope', '$http', '$state', 'cus
   //Save Content Modal  
   $scope.yes = function () {
 
-    CloneProductService.productClone(customerProductId,  $scope.cloneProductId).then(function() {
+    CloneProductService.productClone(customerProductId, $scope.cloneProductId).then(function () {
 
       ModalService.showModal({
         templateUrl: "../modal/genericModal.html",
         controller: "GenericController",
         preClose: (modal) => { modal.element.modal('hide'); },
         inputs: {
-          message: "Foi criada uma cópia do produto " +  customerProductId + " com sucesso. O produto " +  $scope.cloneProductId + " foi criado."
+          message: "Foi criada uma cópia do produto " + customerProductId + " com sucesso. O produto " + $scope.cloneProductId + " foi criado."
         }
       }).then(function (modal) {
         modal.element.modal();
@@ -5588,19 +5587,19 @@ app.controller('CloneProductModalController', ['$scope', '$http', '$state', 'cus
 
 
 //MODAL FOR REVERTING THE PAINTING REGISTRY OF A PRODUCT
-app.controller('RevertPaintingModalController', ['$scope', '$http', '$state', 'ModalService', 'RevertPaintingRegistryService', 'customerproductid', 'orderid', 'uniqueorderid', function ($scope, $http, $state, ModalService, RevertPaintingRegistryService, customerproductid, orderid, uniqueorderid) {
+app.controller('RevertPaintingModalController', ['$scope', '$http', '$state', 'ModalService', 'RevertPaintingRegistryService', 'customerproductid', 'orderid', 'uniqueorderid', 'productname', function ($scope, $http, $state, ModalService, RevertPaintingRegistryService, customerproductid, orderid, uniqueorderid, productname) {
 
   //Save Content Modal  
   $scope.yes = function () {
 
-    RevertPaintingRegistryService.revertPainting(customerproductid, uniqueorderid, $scope.productIdRevertedTo, orderid).then(function() {
+    RevertPaintingRegistryService.revertPainting(customerproductid, uniqueorderid, $scope.productIdRevertedTo, orderid, productname).then(function () {
 
       ModalService.showModal({
         templateUrl: "../modal/genericModal.html",
         controller: "GenericController",
         preClose: (modal) => { modal.element.modal('hide'); },
         inputs: {
-          message: "O registo de pintura e o estado do produto " +  customerproductid + " foi revertida e atrbuída ao produto " +  $scope.productIdRevertedTo + " ."
+          message: "O registo de pintura e o estado do produto " + customerproductid + " foi revertida e atrbuída ao produto " + $scope.productIdRevertedTo + " ."
         }
       }).then(function (modal) {
         modal.element.modal();
@@ -5803,7 +5802,7 @@ app.controller('closeProductInOrderToProduction', [
     $scope.yes = function () {
 
 
-      if(parentcustomerproductid == null) {
+      if (parentcustomerproductid == null) {
         var numBoxesToOrder = $scope.totalproductsproduced / $scope.qtybybox;
 
         var dataObj = {
@@ -5818,17 +5817,17 @@ app.controller('closeProductInOrderToProduction', [
           BOX_MEASURES: $scope.boxmeasures,
           BOX_ID: $scope.boxid
         };
-  
+
         var dataUpdateOrderProductStatus = {
           ORDER_PRODUCT_STATUS: 'em_pintura',
           ORDER_ID: $scope.orderid,
           CUSTOMER_PRODUCT_ID: $scope.customerproductid,
         };
-  
+
         var res = $http.post('/insertOrderBoxes', dataObj).then(function (data, status, headers, config) {
           //$state.reload();
         });
-  
+
         var res = $http.post('/updateorderproductstatus', dataUpdateOrderProductStatus).then(function (data, status, headers, config) {
           $state.reload();
         });
@@ -6075,7 +6074,7 @@ app.controller('closeProductInOrderForPainting', [
         CUSTOMER_PRODUCT_ID: $scope.customerproductid,
       };
 
-      if(isChildProduct == false) {
+      if (isChildProduct == false) {
         var res = $http.post('/insertLabelsToPrint', dataObj).then(function (data, status, headers, config) {
         });
       }
@@ -6197,32 +6196,32 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
     var arrayDistinctBoxes = {};
 
     for (i = 0; i < localCopyBoxesToSendInOrder.length; i++) {
-        var boxId = localCopyBoxesToSendInOrder[i][0];
-        var boxMeasures = localCopyBoxesToSendInOrder[i][2];
+      var boxId = localCopyBoxesToSendInOrder[i][0];
+      var boxMeasures = localCopyBoxesToSendInOrder[i][2];
 
-        if(arrayDistinctBoxes[boxId|boxMeasures] == null) {
+      if (arrayDistinctBoxes[boxId | boxMeasures] == null) {
 
-          var boxQtyAndDetails = [];
-          boxQtyAndDetails.push(localCopyBoxesToSendInOrder[i][0]);
-          boxQtyAndDetails.push(localCopyBoxesToSendInOrder[i][1]);
-          boxQtyAndDetails.push(localCopyBoxesToSendInOrder[i][2]);
-          boxQtyAndDetails.push(localCopyBoxesToSendInOrder[i][3]);
+        var boxQtyAndDetails = [];
+        boxQtyAndDetails.push(localCopyBoxesToSendInOrder[i][0]);
+        boxQtyAndDetails.push(localCopyBoxesToSendInOrder[i][1]);
+        boxQtyAndDetails.push(localCopyBoxesToSendInOrder[i][2]);
+        boxQtyAndDetails.push(localCopyBoxesToSendInOrder[i][3]);
 
-          arrayDistinctBoxes[boxId|boxMeasures] = boxQtyAndDetails;
-          
-        } else {
-            var previousBoxQtyToOrder = arrayDistinctBoxes[boxId|boxMeasures][1];
+        arrayDistinctBoxes[boxId | boxMeasures] = boxQtyAndDetails;
 
-            var index = localCopyBoxesToSendInOrder[i][3].indexOf("(");                     // Gets the first index where a ( occours
-            var fullProductName = localCopyBoxesToSendInOrder[i][3].substr(0, index - 1);   // Gets the full productName and remote the last space
-            var internalPorductId = localCopyBoxesToSendInOrder[i][3].substr(index);        // Gets the internal product id with the parenthesis
+      } else {
+        var previousBoxQtyToOrder = arrayDistinctBoxes[boxId | boxMeasures][1];
 
-            var lastIndexofSpace = fullProductName.lastIndexOf(" ");
-            var productNameForPDF = fullProductName.substr(0, lastIndexofSpace + 1) + internalPorductId;
+        var index = localCopyBoxesToSendInOrder[i][3].indexOf("(");                     // Gets the first index where a ( occours
+        var fullProductName = localCopyBoxesToSendInOrder[i][3].substr(0, index - 1);   // Gets the full productName and remote the last space
+        var internalPorductId = localCopyBoxesToSendInOrder[i][3].substr(index);        // Gets the internal product id with the parenthesis
 
-            arrayDistinctBoxes[boxId|boxMeasures][1] = previousBoxQtyToOrder + localCopyBoxesToSendInOrder[i][1]; //Sum the quantity of boxes to Order
-            arrayDistinctBoxes[boxId|boxMeasures][3] = productNameForPDF; //Write the Product Name without the color of the specific product
-        };
+        var lastIndexofSpace = fullProductName.lastIndexOf(" ");
+        var productNameForPDF = fullProductName.substr(0, lastIndexofSpace + 1) + internalPorductId;
+
+        arrayDistinctBoxes[boxId | boxMeasures][1] = previousBoxQtyToOrder + localCopyBoxesToSendInOrder[i][1]; //Sum the quantity of boxes to Order
+        arrayDistinctBoxes[boxId | boxMeasures][3] = productNameForPDF; //Write the Product Name without the color of the specific product
+      };
 
     };
 
@@ -6429,8 +6428,8 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
 
     var allKeys = Object.keys(arrayDistinctBoxes);
 
-    for(j = 0; j < allKeys.length; j++) {
-        docDefinition.content[1].table.body[j + 1] = arrayDistinctBoxes[allKeys[j]];
+    for (j = 0; j < allKeys.length; j++) {
+      docDefinition.content[1].table.body[j + 1] = arrayDistinctBoxes[allKeys[j]];
     }
 
     function replaceAll(str, map) {
@@ -6443,7 +6442,7 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
     }
 
 
-    GetBoxesSequence.nextValue().then(function(sequenceValue){
+    GetBoxesSequence.nextValue().then(function (sequenceValue) {
 
       var currentDate = new Date();
       var day = currentDate.getDate();
@@ -6492,14 +6491,14 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
       localCopyBoxesToSendInOrder = [];
       localCopyArrayOrderProductToDelete = [];
       boxesToSendInOrder = [];
-  
+
       $state.reload(); //FINALLY RELOAD THE STATE
 
-    }, 
-    function(error){
-      console.log('failed'+error);  
-    });
-    
+    },
+      function (error) {
+        console.log('failed' + error);
+      });
+
 
     $timeout(function () { $scope.displayErrorMsg = false; }, 2000);
 
@@ -6525,7 +6524,7 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
     });
     */
   }
-  
+
 }]);
 
 //ALL LABELS TO PRINT - Controller
@@ -6919,64 +6918,28 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', '$q', 'insertD
           console.log("order_id: " + order_id);
           console.log("products_remaining_from_daily_production:" + products_remaining_from_daily_production);
 
-        //Only record the production if it's not a Parent Product. In the validations below we are already checking it
-        //the child product should save the parent production
-        if(orderproduct.IS_PARENT == "N") {
-          //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
-          //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
-          if (number_of_products_to_close_order <= products_remaining_from_daily_production) {
+          //Only record the production if it's not a Parent Product. In the validations below we are already checking it
+          //the child product should save the parent production
+          if (orderproduct.IS_PARENT == "N") {
+            //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
+            //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
+            if (number_of_products_to_close_order <= products_remaining_from_daily_production) {
 
-            var msgArray = {
-              OrderId: order_id,
-              CustomerProductId: customer_product_id,
-              ProductsRegistered: number_of_products_to_close_order
-            };
+              var msgArray = {
+                OrderId: order_id,
+                CustomerProductId: customer_product_id,
+                ProductsRegistered: number_of_products_to_close_order
+              };
 
-            alertMsg.push(msgArray);
-            //alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + number_of_products_to_close_order);
-            //alertMsg.push("Foram registadas " + number_of_products_to_close_order + " unidades do produto " + customer_product_id  + " na encomenda " + order_id  + "\n");
+              alertMsg.push(msgArray);
+              //alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + number_of_products_to_close_order);
+              //alertMsg.push("Foram registadas " + number_of_products_to_close_order + " unidades do produto " + customer_product_id  + " na encomenda " + order_id  + "\n");
 
-            //alert(alertMsg);
+              //alert(alertMsg);
 
-            products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
-            $scope.overProduction = products_remaining_from_daily_production;
-            var valueProducedByTheEmployee = number_of_products_to_close_order * productPriceInEuro;
-
-            var insertProductsInTheSameOrder = {
-              ORDER_ID: order_id,
-              INTERNAL_PRODUCT_ID: $scope.internalproductid,
-              CUSTOMER_PRODUCT_ID: customer_product_id,
-              PRODUCT_NAME: $scope.productnameinternal,
-              ORDER_PRODUCTS_UNIQUE_ID: orderproduct.UNIQUE_ORDER_ID,
-              EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
-              EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-              TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
-              PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
-              CREATED_DATE: productiondate
-            };
-
-
-            //Only insert if the Parent Product is not null and the product to insert is not the Parent Product returned
-            if(parent_customer_product_id != null && parent_customer_product_id != orderproduct.CUSTOMER_PRODUCT_ID) {
-                //$scope.producedQuantityForParentProduct = number_of_products_to_close_order;
-                //parentUniqueOrderId = parentUniqueOrderIdAndInternalProductId.UNIQUE_ORDER_ID;
-                //parentInternalProductId = parentUniqueOrderIdAndInternalProductId.INTERNAL_PRODUCT_ID;
-                insertDailyProductionParentProduct.insertParentProduction(orderproduct.PARENT_UNIQUE_ORDER_ID, order_id, $scope.internalproductid, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate) ;  
-
-            }
-
-            if(parent_customer_product_id == null ||  parent_customer_product_id != null && parent_customer_product_id != orderproduct.CUSTOMER_PRODUCT_ID) {
-              var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
-              });
-            }
-
-          } else {
-            //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
-            //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
-            //DAILY PRODUCTION
-            if (products_remaining_from_daily_production > 0) {
-
-              var valueProducedByTheEmployee = products_remaining_from_daily_production * productPriceInEuro;
+              products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
+              $scope.overProduction = products_remaining_from_daily_production;
+              var valueProducedByTheEmployee = number_of_products_to_close_order * productPriceInEuro;
 
               var insertProductsInTheSameOrder = {
                 ORDER_ID: order_id,
@@ -6986,38 +6949,74 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', '$q', 'insertD
                 ORDER_PRODUCTS_UNIQUE_ID: orderproduct.UNIQUE_ORDER_ID,
                 EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
                 EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
-                TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
+                TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
                 PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
                 CREATED_DATE: productiondate
               };
 
+
               //Only insert if the Parent Product is not null and the product to insert is not the Parent Product returned
-              if(parent_customer_product_id != null && parent_customer_product_id != orderproduct.CUSTOMER_PRODUCT_ID) {
-                  //$scope.producedQuantityForParentProductRemain = products_remaining_from_daily_production;
-                  //parentUniqueOrderId = parentUniqueOrderIdAndInternalProductId.UNIQUE_ORDER_ID;
-                  //parentInternalProductId = parentUniqueOrderIdAndInternalProductId.INTERNAL_PRODUCT_ID;
-                  insertDailyProductionParentProduct.insertParentProduction(orderproduct.PARENT_UNIQUE_ORDER_ID, order_id, parentInternalProductId, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate); 
+              if (parent_customer_product_id != null && parent_customer_product_id != orderproduct.CUSTOMER_PRODUCT_ID) {
+                //$scope.producedQuantityForParentProduct = number_of_products_to_close_order;
+                //parentUniqueOrderId = parentUniqueOrderIdAndInternalProductId.UNIQUE_ORDER_ID;
+                //parentInternalProductId = parentUniqueOrderIdAndInternalProductId.INTERNAL_PRODUCT_ID;
+                insertDailyProductionParentProduct.insertParentProduction(orderproduct.PARENT_UNIQUE_ORDER_ID, order_id, $scope.internalproductid, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate);
+
               }
 
-              if(parent_customer_product_id == null ||  parent_customer_product_id != null && parent_customer_product_id != orderproduct.CUSTOMER_PRODUCT_ID) {
+              if (parent_customer_product_id == null || parent_customer_product_id != null && parent_customer_product_id != orderproduct.CUSTOMER_PRODUCT_ID) {
                 var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
                 });
               }
 
-              var msgArray = {
-                OrderId: order_id,
-                CustomerProductId: customer_product_id,
-                ProductsRegistered: products_remaining_from_daily_production
-              };
-  
-              alertMsg.push(msgArray);
-              //alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
-              //alertMsg.push("Foram registadas " + products_remaining_from_daily_production + " unidades do produto " + customer_product_id  + " na encomenda " + order_id  + "\n");
+            } else {
+              //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
+              //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
+              //DAILY PRODUCTION
+              if (products_remaining_from_daily_production > 0) {
 
-              products_remaining_from_daily_production = 0;
+                var valueProducedByTheEmployee = products_remaining_from_daily_production * productPriceInEuro;
+
+                var insertProductsInTheSameOrder = {
+                  ORDER_ID: order_id,
+                  INTERNAL_PRODUCT_ID: $scope.internalproductid,
+                  CUSTOMER_PRODUCT_ID: customer_product_id,
+                  PRODUCT_NAME: $scope.productnameinternal,
+                  ORDER_PRODUCTS_UNIQUE_ID: orderproduct.UNIQUE_ORDER_ID,
+                  EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+                  EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+                  TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
+                  PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+                  CREATED_DATE: productiondate
+                };
+
+                //Only insert if the Parent Product is not null and the product to insert is not the Parent Product returned
+                if (parent_customer_product_id != null && parent_customer_product_id != orderproduct.CUSTOMER_PRODUCT_ID) {
+                  //$scope.producedQuantityForParentProductRemain = products_remaining_from_daily_production;
+                  //parentUniqueOrderId = parentUniqueOrderIdAndInternalProductId.UNIQUE_ORDER_ID;
+                  //parentInternalProductId = parentUniqueOrderIdAndInternalProductId.INTERNAL_PRODUCT_ID;
+                  insertDailyProductionParentProduct.insertParentProduction(orderproduct.PARENT_UNIQUE_ORDER_ID, order_id, parentInternalProductId, parent_customer_product_id, $scope.productnameinternal, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate);
+                }
+
+                if (parent_customer_product_id == null || parent_customer_product_id != null && parent_customer_product_id != orderproduct.CUSTOMER_PRODUCT_ID) {
+                  var res = $http.post('/insertDailyProduction', insertProductsInTheSameOrder).then(function (data, status, headers, config) {
+                  });
+                }
+
+                var msgArray = {
+                  OrderId: order_id,
+                  CustomerProductId: customer_product_id,
+                  ProductsRegistered: products_remaining_from_daily_production
+                };
+
+                alertMsg.push(msgArray);
+                //alertMsg.push("OrderId: " + order_id + "  CustomerProductId: " + customer_product_id + "  ProductsRegistered: " + products_remaining_from_daily_production);
+                //alertMsg.push("Foram registadas " + products_remaining_from_daily_production + " unidades do produto " + customer_product_id  + " na encomenda " + order_id  + "\n");
+
+                products_remaining_from_daily_production = 0;
+              }
             }
           }
-        }
 
           //MsgSharingService.setsavedData(alertMsg);
 
@@ -7064,7 +7063,7 @@ app.factory('productInOtherOpenOrdersOrOverProduction', ['$http', '$q', 'insertD
       });
 
     alertMsg = [];
-    return deferred.promise;  
+    return deferred.promise;
   } //function
 
   function returAlertMsg() {
@@ -7131,12 +7130,12 @@ app.factory('productInOtherOpenOrdersForPainting', function ($http) {
               CREATED_DATE: productiondate
             };
 
-            if(parent_customer_product_id != null && in_compound_product == 'Y') {
+            if (parent_customer_product_id != null && in_compound_product == 'Y') {
               var parentDetails = [];
-              getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function(parentDetails){
-      
+              getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function (parentDetails) {
+
                 var parentPalletQuantity = $scope.totalquantityproduced / parentDetails[0].Qty_By_Pallet;
-      
+
                 var parentObjPallete = {
                   ORDER_ID: $scope.orderid,
                   CUSTOMER_PRODUCT_ID: parent_customer_product_id,
@@ -7145,13 +7144,13 @@ app.factory('productInOtherOpenOrdersForPainting', function ($http) {
                   TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
                   QUANTITY_IN_PALLETES: parentPalletQuantity,
                 };
-      
+
                 var res = $http.post('/insertPalletesQuantity', parentObjPallete).then(function (data, status, headers, config) {
                   $state.reload();
                 });
-      
+
                 insertDailyPaintingParentProduct.insertParentPainting(order_id, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate);
-            
+
               });
             }
 
@@ -7167,7 +7166,7 @@ app.factory('productInOtherOpenOrdersForPainting', function ($http) {
               QUANTITY_IN_PALLETES: palletQuantity,
             };
 
-            if(isparent == 'N' && in_compound_product == 'N') {
+            if (isparent == 'N' && in_compound_product == 'N') {
               var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
                 $state.reload();
               });
@@ -7195,12 +7194,12 @@ app.factory('productInOtherOpenOrdersForPainting', function ($http) {
                 CREATED_DATE: productiondate
               };
 
-              if(parent_customer_product_id != null && in_compound_product == 'Y') {
+              if (parent_customer_product_id != null && in_compound_product == 'Y') {
                 var parentDetails = [];
-                getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function(parentDetails){
-        
+                getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function (parentDetails) {
+
                   var parentPalletQuantity = $scope.totalquantityproduced / parentDetails[0].Qty_By_Pallet;
-        
+
                   var parentObjPallete = {
                     ORDER_ID: $scope.orderid,
                     CUSTOMER_PRODUCT_ID: parent_customer_product_id,
@@ -7209,13 +7208,13 @@ app.factory('productInOtherOpenOrdersForPainting', function ($http) {
                     TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
                     QUANTITY_IN_PALLETES: parentPalletQuantity,
                   };
-        
+
                   var res = $http.post('/insertPalletesQuantity', parentObjPallete).then(function (data, status, headers, config) {
                     $state.reload();
                   });
-        
-                  insertDailyPaintingParentProduct.insertParentPainting(order_id, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate) ;
-              
+
+                  insertDailyPaintingParentProduct.insertParentPainting(order_id, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate);
+
                 });
               }
 
@@ -7231,7 +7230,7 @@ app.factory('productInOtherOpenOrdersForPainting', function ($http) {
                 QUANTITY_IN_PALLETES: palletQuantity,
               };
 
-              if(isparent == 'N' && in_compound_product == 'N') {
+              if (isparent == 'N' && in_compound_product == 'N') {
                 var res = $http.post('/insertPalletesQuantity', dataObjPallet).then(function (data, status, headers, config) {
                   $state.reload();
                 });
@@ -7392,48 +7391,48 @@ app.service('MsgSharingService', function () {
 
 });
 
-app.factory('GetBoxesSequence', function($http, $q) {
+app.factory('GetBoxesSequence', function ($http, $q) {
   return {
     nextValue: function () {
 
       var deferred = $q.defer();
-  
+
       var request = $http.get('/getPDFRequistionIdSequence');
       request.then(function successCallback(response) {
         sequence_value = response.data[0].NEXT_VALUE;
         deferred.resolve(sequence_value);
       },
-      function errorCallback(data) {
-        console.log('Error: ' + data);
-      });
+        function errorCallback(data) {
+          console.log('Error: ' + data);
+        });
 
       return deferred.promise;
     }
   };
 });
 
-app.service('GetParentUniqueOrderId', function($http, $q) {
+app.service('GetParentUniqueOrderId', function ($http, $q) {
 
-    uniqueOrderId = function (orderid, parent_customer_product_id) {
+  uniqueOrderId = function (orderid, parent_customer_product_id) {
 
-      var deferred = $q.defer();
-  
-      var request = $http.get('/getParentUniqueOrderId/' + encodeURIComponent(orderid) + '/' + encodeURIComponent(parent_customer_product_id));
-      request.then(function successCallback(response) {
-        //parentUniqueOrderId = response.data[0].UNIQUE_ORDER_ID;
-        parentUniqueOrderIdAndInternalProductId = response.data[0];
-        deferred.resolve(parentUniqueOrderIdAndInternalProductId);
-      },
+    var deferred = $q.defer();
+
+    var request = $http.get('/getParentUniqueOrderId/' + encodeURIComponent(orderid) + '/' + encodeURIComponent(parent_customer_product_id));
+    request.then(function successCallback(response) {
+      //parentUniqueOrderId = response.data[0].UNIQUE_ORDER_ID;
+      parentUniqueOrderIdAndInternalProductId = response.data[0];
+      deferred.resolve(parentUniqueOrderIdAndInternalProductId);
+    },
       function errorCallback(data) {
         console.log('Error: ' + data);
       });
 
-      return deferred.promise;
-    };
+    return deferred.promise;
+  };
 
-    return {
-      uniqueOrderId: uniqueOrderId
-    };
+  return {
+    uniqueOrderId: uniqueOrderId
+  };
 
 });
 
@@ -7449,7 +7448,7 @@ app.factory('CloneProductService', ['$http', '$q', function ($http, $q) {
     var request = $http.get('/product/' + encodeURIComponent(customerProductId));
     request.then(function successCallback(response) {
       product = response.data;
-      
+
       //////////////////  GET TECHNICAL SHEET ////////////////////
       var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerProductId));
       request.then(function successCallback(response) {
@@ -7517,17 +7516,17 @@ app.factory('CloneProductService', ['$http', '$q', function ($http, $q) {
         });
 
       },
+        function errorCallback(data) {
+          console.log('Error: ' + data);
+        });
+      ////////////////////////////////////////////////////////////
+    },
       function errorCallback(data) {
         console.log('Error: ' + data);
       });
-      ////////////////////////////////////////////////////////////
-    },
-    function errorCallback(data) {
-      console.log('Error: ' + data);
-    });
 
     deferred.resolve(true);
-    return deferred.promise; 
+    return deferred.promise;
   }
 
   return {
@@ -7539,32 +7538,61 @@ app.factory('CloneProductService', ['$http', '$q', function ($http, $q) {
 //FACTORY FOR REVERTING THE PAINTING REGISTRY
 app.factory('RevertPaintingRegistryService', ['$http', '$q', function ($http, $q) {
 
-  function revertPainting(customerproductid, uniqueorderid, productid_to_revert_to, orderid) {
+  function revertPainting(customerproductid, uniqueorderid, productid_to_revert_to, orderid, productname) {
     var deferred = $q.defer();
 
-    var product = [];
-    var productTechnicalSheet = [];
+    var name_product_in_production = "";
+    var unique_order_id_product_in_production = "";
 
-    var productReverted = {
-      ORDER_PRODUCTS_UNIQUE_ID: -1,
-      ORDER_ID: orderid,
-      CUSTOMER_PRODUCT_ID: customerproductid
-    }
+    
 
     /* var request = $http.get('/getUniqueOrderIdForProductToRevert/' + encodeURIComponent(orderid) + '/' + encodeURIComponent(productid_to_revert_to));
     request.then(function successCallback(response) {
       product = response.data; */
-      var res = $http.post('/updateOrderProductsUniqueId', productReverted).then(function (data, status, headers, config) {
 
-        var request = $http.get('/getUniqueOrderIdForProductToRevert/' + encodeURIComponent(orderid) + '/' + encodeURIComponent(productid_to_revert_to));
-        request.then(function successCallback(response) {
-          productTechnicalSheet = response.data;
 
-        },
-        function errorCallback(data) {
-          console.log('Error: ' + data);
-        });
+    var request = $http.get('/getUniqueOrderIdForProductToRevert/' + encodeURIComponent(orderid) + '/' + encodeURIComponent(productid_to_revert_to));
+    request.then(function successCallback(response) {
+      unique_order_id_product_in_production = response.data[0].UNIQUE_ORDER_ID;
+      name_product_in_production = response.data[0].PRODUCT_NAME;
 
+      //PRODUCT IN PAINTING TO BE REVERTED TO PRODUCTION
+      var productToBeReverted = {
+        NEW_ORDER_PRODUCTS_UNIQUE_ID: unique_order_id_product_in_production,
+        ORDER_ID: orderid,
+        NEW_CUSTOMER_PRODUCT_ID: productid_to_revert_to,
+        CUSTOMER_PRODUCT_ID: customerproductid,
+        NEW_PRODUCT_NAME: name_product_in_production
+      }
+
+      var res = $http.post('/updateOrderProductsUniqueId', productToBeReverted).then(function (data, status, headers, config) {
+      });
+
+      //PRODUCT IN PRODUCTION TO RECEIVE VALUES FROM THE PRODUCT IN PAINTING
+      var productToRevertTo = {
+        NEW_ORDER_PRODUCTS_UNIQUE_ID: uniqueorderid,
+        ORDER_ID: orderid,
+        NEW_CUSTOMER_PRODUCT_ID: customerproductid,
+        CUSTOMER_PRODUCT_ID: productid_to_revert_to,
+        NEW_PRODUCT_NAME: productname
+      }
+
+      var res = $http.post('/updateOrderProductsUniqueId', productToRevertTo).then(function (data, status, headers, config) {
+      });
+
+
+      //UPDATE PRODUCT STATUS TO em_producao
+      var changeProductStatus = {
+        ORDER_PRODUCT_STATUS: 'em_producao',
+        ORDER_ID: orderid,
+        CUSTOMER_PRODUCT_ID: customerproductid
+      }
+      var res = $http.post('/updateProductStatusInOrder', changeProductStatus).then(function (data, status, headers, config) {
+      });
+
+    },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
       });
     /* },
     function errorCallback(data) {
@@ -7572,7 +7600,7 @@ app.factory('RevertPaintingRegistryService', ['$http', '$q', function ($http, $q
     }); */
 
     deferred.resolve(true);
-    return deferred.promise; 
+    return deferred.promise;
   }
 
   return {
@@ -7584,20 +7612,20 @@ app.factory('RevertPaintingRegistryService', ['$http', '$q', function ($http, $q
 app.factory('insertDailyProductionParentProduct', ['$http', '$q', function ($http, $q) {
 
   function insertParentProduction(orderproductuniqueid, orderid, internalproductid, customerproductid, productnameinternal, employyee_name, employyee_id, totalquantityproduced, productiondate) {
-  
+
     var deferred = $q.defer();
 
     var dataObj = {
-        ORDER_ID: orderid,
-        INTERNAL_PRODUCT_ID: internalproductid,
-        CUSTOMER_PRODUCT_ID: customerproductid,
-        PRODUCT_NAME: productnameinternal,
-        ORDER_PRODUCTS_UNIQUE_ID: orderproductuniqueid,
-        EMPLOYEE_NAME: employyee_name,
-        EMPLOYEE_ID: employyee_id,
-        TOTAL_PRODUCTS_PRODUCED: totalquantityproduced,
-        PRODUCED_VALUE_IN_EURO: 0,
-        CREATED_DATE: productiondate
+      ORDER_ID: orderid,
+      INTERNAL_PRODUCT_ID: internalproductid,
+      CUSTOMER_PRODUCT_ID: customerproductid,
+      PRODUCT_NAME: productnameinternal,
+      ORDER_PRODUCTS_UNIQUE_ID: orderproductuniqueid,
+      EMPLOYEE_NAME: employyee_name,
+      EMPLOYEE_ID: employyee_id,
+      TOTAL_PRODUCTS_PRODUCED: totalquantityproduced,
+      PRODUCED_VALUE_IN_EURO: 0,
+      CREATED_DATE: productiondate
     };
 
     var res = $http.post('/insertDailyProduction', dataObj).then(function (data, status, headers, config) {
@@ -7606,7 +7634,7 @@ app.factory('insertDailyProductionParentProduct', ['$http', '$q', function ($htt
 
     return deferred.promise;
   }
-  
+
   return {
     insertParentProduction: insertParentProduction
   };
@@ -7617,23 +7645,23 @@ app.factory('insertDailyProductionParentProduct', ['$http', '$q', function ($htt
 app.factory('insertDailyPaintingParentProduct', ['$http', function ($http) {
 
   function insertParentPainting(orderid, internalproductid, customerproductid, productnameinternal, employyee_name, employyee_id, totalquantityproduced, productiondate) {
-  
+
     var dataObj = {
-        ORDER_ID: orderid,
-        INTERNAL_PRODUCT_ID: internalproductid,
-        CUSTOMER_PRODUCT_ID: customerproductid,
-        PRODUCT_NAME: productnameinternal,
-        EMPLOYEE_NAME: employyee_name,
-        EMPLOYEE_ID: employyee_id,
-        TOTAL_PRODUCTS_PAINTED: totalquantityproduced,
-        PRODUCED_VALUE_IN_EURO: 0,
-        CREATED_DATE: productiondate
+      ORDER_ID: orderid,
+      INTERNAL_PRODUCT_ID: internalproductid,
+      CUSTOMER_PRODUCT_ID: customerproductid,
+      PRODUCT_NAME: productnameinternal,
+      EMPLOYEE_NAME: employyee_name,
+      EMPLOYEE_ID: employyee_id,
+      TOTAL_PRODUCTS_PAINTED: totalquantityproduced,
+      PRODUCED_VALUE_IN_EURO: 0,
+      CREATED_DATE: productiondate
     };
 
     var res = $http.post('/insertDailyPainting  ', dataObj).then(function (data, status, headers, config) {
     });
   }
-  
+
   return {
     insertParentPainting: insertParentPainting
   };
@@ -7651,17 +7679,17 @@ app.factory('getParentDetailsToInsertPallete', ['$http', '$q', function ($http, 
     var deferred = $q.defer();
 
     var request = $http.get('/getParentDetailsForPallet/' + encodeURIComponent(parentcustomerproductid));
-      request.then(function successCallback(response) {
-        parentDetails = response.data;
-        deferred.resolve(parentDetails);
-      },
+    request.then(function successCallback(response) {
+      parentDetails = response.data;
+      deferred.resolve(parentDetails);
+    },
       function errorCallback(data) {
         console.log('Error: ' + data);
       });
-    
+
     return deferred.promise;
   }
-  
+
   return {
     getParentData: getParentData
   };
@@ -7672,13 +7700,13 @@ app.factory('getParentDetailsToInsertPallete', ['$http', '$q', function ($http, 
 app.factory('updatePalleteQuantity', ['$http', '$q', function ($http, $q) {
 
   function updatePallete(orderid, customerproductid, palletequantity) {
-  
+
     var deferred = $q.defer();
 
     var dataObj = {
-        ORDER_ID: orderid,
-        CUSTOMER_PRODUCT_ID: customerproductid,
-        QUANTITY_IN_PALLETES: palletequantity
+      ORDER_ID: orderid,
+      CUSTOMER_PRODUCT_ID: customerproductid,
+      QUANTITY_IN_PALLETES: palletequantity
     };
 
     var res = $http.post('/updatePalletesQuantity', dataObj).then(function (data, status, headers, config) {
@@ -7687,7 +7715,7 @@ app.factory('updatePalleteQuantity', ['$http', '$q', function ($http, $q) {
 
     return deferred.promise;
   }
-  
+
   return {
     updatePallete: updatePallete
   };
@@ -7699,22 +7727,22 @@ app.factory('updatePalleteQuantity', ['$http', '$q', function ($http, $q) {
 app.factory('getOrdersToRegisterOverProduction', ['$http', '$q', 'ModalService', function ($http, $q, ModalService) {
 
   function allOrdersForInternalProductId(internalproductid) {
-  
+
     var orders = [];
     var deferred = $q.defer();
 
     var request = $http.get('/getAllOrdersForOverProductionRegistry/' + encodeURIComponent(internalproductid));
-      request.then(function successCallback(response) {
-        orders = response.data;
-        deferred.resolve(orders);
-      },
+    request.then(function successCallback(response) {
+      orders = response.data;
+      deferred.resolve(orders);
+    },
       function errorCallback(data) {
         console.log('Error: ' + data);
       });
 
     return deferred.promise;
   }
-  
+
   return {
     allOrdersForInternalProductId: allOrdersForInternalProductId
   };
