@@ -210,9 +210,16 @@ router.post('/updateParentUniqueOrderId', function (req, res) {
 
 //Get UNIQUE ORDER ID FOR THE PRODUCT FOR WHICH THE PAINTING REGISTRY WILL BE REVERTED
 router.get('/getUniqueOrderIdForProductToRevert/:orderid/:productid', function (req, res) {
-  console.log("Get PARENT UNIQUE ORDER ID");
+  console.log("Get ALL UNIQUE ID's FRO PRODUCT");
   console.log(req.body);
   getUniqueOrderIdForProductToRevert(req, res);
+});
+
+//Get ALL the UNIQUE ID's FOR THE PRODUCT THAT WERE REGISTERED IN THE order_products_production_registry table
+router.get('/getAllUniqueIdsForProduct/:orderid/:productid', function (req, res) {
+  console.log("Get PARENT UNIQUE ORDER ID");
+  console.log(req.body);
+  getAllUniqueIdsForProduct(req, res);
 });
 
 //UPDATE ORDER_PRODUCTS_UNIQUE_ID IN ORDER_PRODUCTS_PRODUCTION_REGISTRY 

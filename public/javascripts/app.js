@@ -7536,19 +7536,15 @@ app.factory('CloneProductService', ['$http', '$q', function ($http, $q) {
 }]);
 
 //FACTORY FOR REVERTING THE PAINTING REGISTRY
-app.factory('RevertPaintingRegistryService', ['$http', '$q', function ($http, $q) {
+app.factory('RevertPaintingRegistryService', ['$http', '$q', '$state', function ($http, $q, $state) {
 
   function revertPainting(customerproductid, uniqueorderid, productid_to_revert_to, orderid, productname) {
     var deferred = $q.defer();
 
     var name_product_in_production = "";
     var unique_order_id_product_in_production = "";
-
-    
-
-    /* var request = $http.get('/getUniqueOrderIdForProductToRevert/' + encodeURIComponent(orderid) + '/' + encodeURIComponent(productid_to_revert_to));
-    request.then(function successCallback(response) {
-      product = response.data; */
+    var allUniqueIdsForProductToBeReverted = [];
+    var allUniqueIdsForProductToRevertTo = [];
 
 
     var request = $http.get('/getUniqueOrderIdForProductToRevert/' + encodeURIComponent(orderid) + '/' + encodeURIComponent(productid_to_revert_to));
@@ -7556,39 +7552,85 @@ app.factory('RevertPaintingRegistryService', ['$http', '$q', function ($http, $q
       unique_order_id_product_in_production = response.data[0].UNIQUE_ORDER_ID;
       name_product_in_production = response.data[0].PRODUCT_NAME;
 
-      //PRODUCT IN PAINTING TO BE REVERTED TO PRODUCTION
-      var productToBeReverted = {
-        NEW_ORDER_PRODUCTS_UNIQUE_ID: unique_order_id_product_in_production,
-        ORDER_ID: orderid,
-        NEW_CUSTOMER_PRODUCT_ID: productid_to_revert_to,
-        CUSTOMER_PRODUCT_ID: customerproductid,
-        NEW_PRODUCT_NAME: name_product_in_production
-      }
 
-      var res = $http.post('/updateOrderProductsUniqueId', productToBeReverted).then(function (data, status, headers, config) {
+      //PRODUCT TO REVERT
+      //The product to revert will be update with the UNIQUE_ORDER_ID of the product to be reverted to
+      //We need the UNIQUE_ID for all the records in the order_products_production_registry table for this product
+      var request = $http.get('/getAllUniqueIdsForProduct/' + encodeURIComponent(orderid) + '/' + encodeURIComponent(customerproductid));
+      request.then(function successCallback(response) {
+        //allUniqueIdsForProductToBeReverted = response.data;
+        for(i = 0; i < response.data.length; i++) {
+          allUniqueIdsForProductToBeReverted.push(response.data[i].UNIQUE_ID);
+        }
+
+        //PRODUCT IN PAINTING TO BE REVERTED TO PRODUCTION
+        var productToBeReverted = {
+          NEW_ORDER_PRODUCTS_UNIQUE_ID: unique_order_id_product_in_production,
+          ORDER_ID: orderid,
+          CUSTOMER_PRODUCT_ID: customerproductid,
+          NEW_CUSTOMER_PRODUCT_ID: productid_to_revert_to,
+          NEW_PRODUCT_NAME: name_product_in_production,
+          UNIQUE_ID_ARRAY: allUniqueIdsForProductToBeReverted
+        }
+
+        var res = $http.post('/updateOrderProductsUniqueId', productToBeReverted).then(function (data, status, headers, config) {
+        });
+
+      },
+      function errorCallback(data) {
+      console.log('Error: ' + data);
       });
+      //////////////////
 
-      //PRODUCT IN PRODUCTION TO RECEIVE VALUES FROM THE PRODUCT IN PAINTING
-      var productToRevertTo = {
-        NEW_ORDER_PRODUCTS_UNIQUE_ID: uniqueorderid,
-        ORDER_ID: orderid,
-        NEW_CUSTOMER_PRODUCT_ID: customerproductid,
-        CUSTOMER_PRODUCT_ID: productid_to_revert_to,
-        NEW_PRODUCT_NAME: productname
-      }
+      //PRODUCT TO REVERT TO
+      var request = $http.get('/getAllUniqueIdsForProduct/' + encodeURIComponent(orderid) + '/' + encodeURIComponent(productid_to_revert_to));
+      request.then(function successCallback(response) {
+        if(response.data.length == 0) {
+          allUniqueIdsForProductToRevertTo.push("-1");
+        } else {
+          for(i = 0; i < response.data.length; i++) {
+            allUniqueIdsForProductToRevertTo.push(response.data[i].UNIQUE_ID);
+          }
+        }
 
-      var res = $http.post('/updateOrderProductsUniqueId', productToRevertTo).then(function (data, status, headers, config) {
+        //PRODUCT IN PAINTING TO BE REVERTED TO PRODUCTION
+        var productToBeReverted = {
+          NEW_ORDER_PRODUCTS_UNIQUE_ID: uniqueorderid,
+          ORDER_ID: orderid,
+          CUSTOMER_PRODUCT_ID: productid_to_revert_to,
+          NEW_CUSTOMER_PRODUCT_ID: customerproductid,
+          NEW_PRODUCT_NAME: productname,
+          UNIQUE_ID_ARRAY: allUniqueIdsForProductToRevertTo
+        }
+
+        var res = $http.post('/updateOrderProductsUniqueId', productToBeReverted).then(function (data, status, headers, config) {
+        });
+
+        //UPDATE PRODUCT STATUS TO em_producao
+        var changeProductStatus = {
+          ORDER_PRODUCT_STATUS: 'em_producao',
+          ORDER_ID: orderid,
+          CUSTOMER_PRODUCT_ID: customerproductid
+        }
+        var res = $http.post('/updateProductStatusInOrder', changeProductStatus).then(function (data, status, headers, config) {
+        });
+
+        //DELETE BOXES ALREADY CREATED FOR THE PRODUCT
+        var boxesToDelete = {
+          orderIdArray: [orderid],
+          customerProductIdArray: [customerproductid]
+        }
+
+        var res = $http.post('/deleteOrderBoxes', boxesToDelete).then(function (data, status, headers, config) {
+        });
+
+        $state.reload();
+
+      },
+      function errorCallback(data) {
+      console.log('Error: ' + data);
       });
-
-
-      //UPDATE PRODUCT STATUS TO em_producao
-      var changeProductStatus = {
-        ORDER_PRODUCT_STATUS: 'em_producao',
-        ORDER_ID: orderid,
-        CUSTOMER_PRODUCT_ID: customerproductid
-      }
-      var res = $http.post('/updateProductStatusInOrder', changeProductStatus).then(function (data, status, headers, config) {
-      });
+      /////////////////////
 
     },
       function errorCallback(data) {

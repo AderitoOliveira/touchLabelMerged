@@ -10,7 +10,7 @@ var mysql = require('mysql');
 }); */
 
 
-var con = mysql.createConnection({
+var con = mysql.createConnection({  
     host: '172.30.184.178',
     user: 'easylabeldb',
     password: 'easylabeldb',
@@ -412,14 +412,32 @@ getUniqueOrderIdForProductToRevert = function(data, callback) {
 });
 }
 
+//Get ALL the UNIQUE ID's FOR THE PRODUCT THAT WERE REGISTERED IN THE order_products_production_registry table
+getAllUniqueIdsForProduct= function(data, callback) {
+    var orderid = data.params.orderid;
+    var productid = data.params.productid;
+    con.connect(function(err) {
+    con.query('select UNIQUE_ID from order_products_production_registry where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [orderid,productid], function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        console.log("Get ALL UNIQUE ID's FRO PRODUCT");
+        //callback = rows; 
+    });
+});
+}
+
 //UPDATE ORDER_PRODUCTS_UNIQUE_ID IN ORDER_PRODUCTS_PRODUCTION_REGISTRY 
 updateOrderProductsUniqueId = function(data, callback) {
     console.log("data.params.PARENT_UNIQUE_ORDER_ID: " + data.body.PARENT_UNIQUE_ORDER_ID); 
     console.log("data.params.ORDER_ID: " + data.body.ORDER_ID); 
     console.log("data.params.PARENT_CUSTOMER_PRODUCT_ID " + data.body.PARENT_CUSTOMER_PRODUCT_ID); 
     con.connect(function(err) {
-    //var query = con.query('update order_products_production_registry set ORDER_PRODUCTS_UNIQUE_ID = ?, CUSTOMER_PRODUCT_ID = ?, PRODUCT_NAME = ? where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ? and ORDER_PRODUCTS_UNIQUE_ID = ?', [data.body.NEW_ORDER_PRODUCTS_UNIQUE_ID, data.body.NEW_CUSTOMER_PRODUCT_ID, data.body.NEW_PRODUCT_NAME, data.body.ORDER_ID, data.body.CUSTOMER_PRODUCT_ID, data.body.ORDER_PRODUCTS_UNIQUE_ID], function(err, rows) {
-    var query = con.query('update order_products_production_registry set ORDER_PRODUCTS_UNIQUE_ID = ?, CUSTOMER_PRODUCT_ID = ?, PRODUCT_NAME = ? where UNIQUE_ID in (select UNIQUE_ID from order_products_production_registry where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?)', [data.body.NEW_ORDER_PRODUCTS_UNIQUE_ID, data.body.NEW_CUSTOMER_PRODUCT_ID, data.body.NEW_PRODUCT_NAME, data.body.ORDER_ID, data.body.CUSTOMER_PRODUCT_ID], function(err, rows) {
+    var query = con.query('update order_products_production_registry set ORDER_PRODUCTS_UNIQUE_ID = ?, CUSTOMER_PRODUCT_ID = ?, PRODUCT_NAME = ? where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ? and UNIQUE_ID in (?)', [data.body.NEW_ORDER_PRODUCTS_UNIQUE_ID, data.body.NEW_CUSTOMER_PRODUCT_ID, data.body.NEW_PRODUCT_NAME, data.body.ORDER_ID, data.body.CUSTOMER_PRODUCT_ID, data.body.UNIQUE_ID_ARRAY], function(err, rows) {
         if (err) {
                 throw err;
             } else
@@ -433,7 +451,6 @@ updateOrderProductsUniqueId = function(data, callback) {
     console.log(query.sql);
 });
 }
-
 
 //Get All the Products for an Order that isn't complete and the daily production needs to be updated
 fetchProductFromAnOrderThatIsntComplete = function(req, res) {
