@@ -208,7 +208,28 @@ router.post('/updateParentUniqueOrderId', function (req, res) {
   updateParentUniqueOrderId(req, res);
 });
 
-//Get All the Products for an Order tthat isn't complete and the daily production needs to be updated
+//Get UNIQUE ORDER ID FOR THE PRODUCT FOR WHICH THE PAINTING REGISTRY WILL BE REVERTED
+router.get('/getUniqueOrderIdForProductToRevert/:orderid/:productid', function (req, res) {
+  console.log("Get ALL UNIQUE ID's FRO PRODUCT");
+  console.log(req.body);
+  getUniqueOrderIdForProductToRevert(req, res);
+});
+
+//Get ALL the UNIQUE ID's FOR THE PRODUCT THAT WERE REGISTERED IN THE order_products_production_registry table
+router.get('/getAllUniqueIdsForProduct/:orderid/:productid', function (req, res) {
+  console.log("Get PARENT UNIQUE ORDER ID");
+  console.log(req.body);
+  getAllUniqueIdsForProduct(req, res);
+});
+
+//UPDATE ORDER_PRODUCTS_UNIQUE_ID IN ORDER_PRODUCTS_PRODUCTION_REGISTRY 
+router.post('/updateOrderProductsUniqueId', function (req, res) {
+  console.log("UPDATE ORDER_PRODUCTS_UNIQUE_ID IN ORDER_PRODUCTS_PRODUCTION_REGISTRY");
+  console.log(req.body);
+  updateOrderProductsUniqueId(req, res);
+});
+
+//Get All the Products for an Order that isn't complete and the daily production needs to be updated
 router.get('/productstilltocloseinthisorder/:orderid/:productid', function (req, res) {
   console.log("List All Orders");
   console.log(req.body);
@@ -303,6 +324,13 @@ router.post('/deleteorderproduct', function (req, res) {
   console.log("DELETE PRODUCT FROM ORDER");
   console.log(req.body);
   deleteOrderProduct(req, res);
+});
+
+//UPDATE ORDERS_PRODUCTS - CHANGE PRODUCT STATUS FOR THE REVERTED PRODUCT
+router.post('/updateProductStatusInOrder', function (req, res) {
+  console.log("UPDATE ORDERS_PRODUCTS - CHANGE PRODUCT STATUS");
+  console.log(req.body);
+  updateProductStatusInOrder(req, res);
 });
 
 //Delete Compound Product from Order

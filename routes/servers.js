@@ -10,7 +10,7 @@ var mysql = require('mysql');
 }); */
 
 
-var con = mysql.createConnection({
+var con = mysql.createConnection({  
     host: '172.30.184.178',
     user: 'easylabeldb',
     password: 'easylabeldb',
@@ -393,6 +393,65 @@ updateParentUniqueOrderId = function(data, callback) {
 });
 }
 
+//Get UNIQUE ORDER ID FOR THE PRODUCT FOR WHICH THE PAINTING REGISTRY WILL BE REVERTED
+getUniqueOrderIdForProductToRevert = function(data, callback) {
+    var orderid = data.params.orderid;
+    var productid = data.params.productid;
+    con.connect(function(err) {
+    con.query('select UNIQUE_ORDER_ID, PRODUCT_NAME from orders_products where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [orderid,productid], function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        console.log("Get UNIQUE ORDER ID FOR THE PRODUCT FOR WHICH THE PAINTING REGISTRY WILL BE REVERTED " + orderid + " PRODUCT " + productid); 
+        //callback = rows; 
+    });
+});
+}
+
+//Get ALL the UNIQUE ID's FOR THE PRODUCT THAT WERE REGISTERED IN THE order_products_production_registry table
+getAllUniqueIdsForProduct= function(data, callback) {
+    var orderid = data.params.orderid;
+    var productid = data.params.productid;
+    con.connect(function(err) {
+    con.query('select UNIQUE_ID from order_products_production_registry where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [orderid,productid], function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        console.log("Get ALL UNIQUE ID's FRO PRODUCT");
+        //callback = rows; 
+    });
+});
+}
+
+//UPDATE ORDER_PRODUCTS_UNIQUE_ID IN ORDER_PRODUCTS_PRODUCTION_REGISTRY 
+updateOrderProductsUniqueId = function(data, callback) {
+    console.log("data.params.PARENT_UNIQUE_ORDER_ID: " + data.body.PARENT_UNIQUE_ORDER_ID); 
+    console.log("data.params.ORDER_ID: " + data.body.ORDER_ID); 
+    console.log("data.params.PARENT_CUSTOMER_PRODUCT_ID " + data.body.PARENT_CUSTOMER_PRODUCT_ID); 
+    con.connect(function(err) {
+    var query = con.query('update order_products_production_registry set ORDER_PRODUCTS_UNIQUE_ID = ?, CUSTOMER_PRODUCT_ID = ?, PRODUCT_NAME = ? where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ? and UNIQUE_ID in (?)', [data.body.NEW_ORDER_PRODUCTS_UNIQUE_ID, data.body.NEW_CUSTOMER_PRODUCT_ID, data.body.NEW_PRODUCT_NAME, data.body.ORDER_ID, data.body.CUSTOMER_PRODUCT_ID, data.body.UNIQUE_ID_ARRAY], function(err, rows) {
+        if (err) {
+                throw err;
+            } else
+            callback.setHeader('Content-Type', 'application/json');
+            callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+            callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+            callback.end(JSON.stringify(rows));
+            console.log("UPDATE ORDER_PRODUCTS_UNIQUE_ID IN ORDER_PRODUCTS_PRODUCTION_REGISTRY"); 
+            //callback = rows; 
+    });
+    console.log(query.sql);
+});
+}
+
 //Get All the Products for an Order that isn't complete and the daily production needs to be updated
 fetchProductFromAnOrderThatIsntComplete = function(req, res) {
     var orderid = req.params.orderid;
@@ -658,6 +717,20 @@ deleteOrderProduct = function(req, res) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     con.connect(function(err) {
     con.query('DELETE from orders_products where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [req.body.ORDER_ID, req.body.PRODUCT_ID], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
+//UPDATE ORDERS_PRODUCTS - CHANGE PRODUCT STATUS FOR THE REVERTED PRODUCT
+updateProductStatusInOrder = function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+    con.query('update orders_products set ORDER_PRODUCT_STATUS = ? where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [req.body.ORDER_PRODUCT_STATUS, req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });
