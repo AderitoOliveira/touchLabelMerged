@@ -12,6 +12,32 @@ statistics.controller('productionRegistryStatisticsController', function ($scope
   $scope.dataProduction3 = [];
   $scope.seriesTest = ['Produtos Produzidos', 'Valor em EUR'];
 
+  $scope.today = function () {
+    $scope.beginDate = new Date();
+    $scope.endDate = new Date();
+  };
+  $scope.today();
+
+  $scope.openDateBegin = function () {
+    $scope.popup1.opened = true;
+  };
+
+  $scope.openDateEnd = function () {
+    $scope.popup2.opened = true;
+  };
+
+  $scope.setDate = function (year, month, day) {
+    $scope.dt = new Date(year, month, day);
+  };
+
+  $scope.popup1 = {
+    opened: false
+  };
+
+  $scope.popup2 = {
+    opened: false
+  };
+
   $scope.options = { legend: { display: true } };
 
   var request = $http.get('/getProductionLast7Days');
