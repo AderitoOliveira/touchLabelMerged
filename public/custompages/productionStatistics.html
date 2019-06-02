@@ -1,0 +1,29 @@
+<div id="home" class="home-page row">
+    <div id="home-chart" class="col-md-12">
+        <div class="home-block" ng-controller="productionRegistryStatisticsController">
+            <div class="block-heading">
+                <div class="panel-title">
+                    <h2 class="block-heading-title">Estatísticas de Produção</h2>
+                </div>
+                <div class="panel-description">
+                    <h5 class="block-heading-subtitle">Quantidade Produzida/Valor em EUR nos últimos 7 dias de produção
+                    </h5>
+                </div>
+            </div>
+            <div class="row">
+                <!--
+        <div class="col-xs-6 col-md-6 paddingTop30Px"> 
+            <canvas id="bar" class="chart chart-bar"chart-data="data" chart-labels="labels" chart-series="series" chart-colors="colours"> 
+            </canvas>   
+        </div>
+        -->
+                <div class="col-xs-10 col-md-10 paddingTop30Px" style="padding-top: 15px; padding-left: 90px;">
+                    <!-- canvas id="bar" class="chart chart-bar"chart-data="data" chart-labels="labels" chart-series="series" -->
+                    <canvas id="bar" class="chart chart-bar" chart-data="dataProduction3" chart-labels="productionDays"
+                        chart-options="options" chart-series="seriesTest" chart-legend="true" chart-colors="colours">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

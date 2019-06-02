@@ -1,4 +1,4 @@
-var app = angular.module('easyLabel', ['ui.router', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'ngCookies', 'historicalModule', 'Authentication', 'angularMoment']);
+var app = angular.module('easyLabel', ['ui.router', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'ngCookies', 'historicalModule', 'statisticsModule', 'Authentication', 'angularMoment']);
 
 app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
 
@@ -165,6 +165,16 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
       url: '/labelstoprinthistoric',
       templateUrl: '../custompages/labelsToPrintHistoric.html',
       controller: 'LabelsBackupController'
+    })
+    .state('productionStatistics', {
+      url: '/productionstatistics',
+      templateUrl: '../custompages/productionStatistics.html'
+      //controller: 'LabelsBackupController'
+    })
+    .state('employeeStatistics', {
+      url: '/employeeStatistics',
+      templateUrl: '../custompages/employeeStatistics.html'
+      //controller: 'LabelsBackupController'
     })
     .state('login', {
       url: '/login',
