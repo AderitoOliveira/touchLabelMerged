@@ -1,7 +1,7 @@
 var statistics = angular.module('statisticsModule', []);
 
 //PRODUCTION REGISTRY - Controller
-statistics.controller('productionRegistryStatisticsController', function ($scope, $http, $rootScope, ModalService) {
+statistics.controller('productionRegistryStatisticsController', function ($scope, $http, $rootScope, executeQueryBetweenDateService) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Estatística de Produção";
@@ -13,8 +13,8 @@ statistics.controller('productionRegistryStatisticsController', function ($scope
   $scope.seriesTest = ['Produtos Produzidos', 'Valor em EUR'];
 
   $scope.today = function () {
-    $scope.beginDate = new Date();
-    $scope.endDate = new Date();
+    $scope.beginDate = new Date('2019-05-01');
+    $scope.endDate = new Date('2019-06-01');
   };
   $scope.today();
 
@@ -38,32 +38,83 @@ statistics.controller('productionRegistryStatisticsController', function ($scope
     opened: false
   };
 
+  $scope.$watch('beginDate', function(){
+    console.log(moment($scope.beginDate).format('YYYY-MM-DD'));
+  });
+  $scope.$watch('endDate', function(){
+    console.log(moment($scope.endDate).format('YYYY-MM-DD'));
+  });
+  console.log("BEGIN DATE: " + $scope.beginDate);
+  console.log("END DATE: " + $scope.endDate);
+
   $scope.options = { legend: { display: true } };
 
-  var request = $http.get('/getProductionLast7Days');
-  request.then(function successCallback(response) {
-    $scope.productionLast7Days = response.data;
+  executeQueryBetweenDateService.executeQuery($scope.beginDate, $scope.endDate).then(function (productionArray) {
+    $scope.productionDays   = productionArray.productionDays;
+    $scope.dataProduction3  = productionArray.dataProduction3;
+  });
 
-    for (i = 0; i < $scope.productionLast7Days.length; i++) {
-      //var dateToParse = $scope.productionLast7Days[i].DATE;
-      //$scope.productionDays.push(dateToParse.substring(0, dateToParse.indexOf('T')));
+  $scope.redrawSearch = function() {
 
-      $scope.productionDays.push(moment($scope.productionLast7Days[i].PRODUCTION_DAY).format('YYYY-MM-DD'));
-      $scope.dataProduction.push($scope.productionLast7Days[i].TOTAL_DAY_PRODUCTION);
-      $scope.dataProduction2.push($scope.productionLast7Days[i].TOTAL_DAY_VALUE_IN_EUR);
+    executeQueryBetweenDateService.executeQuery($scope.beginDate, $scope.endDate).then(function (productionArray) {
+      $scope.productionDays   = productionArray.productionDays;
+      $scope.dataProduction3  = productionArray.dataProduction3;
+    });
 
-      //CORRECTO EM 02/02/2019
-      //$scope.productionDays.push($scope.productionLast7Days[i].INTERNAL_PRODUCT_ID);
-      //$scope.dataProduction.push($scope.productionLast7Days[i].TOTAL_WEEK_PRODUCTION);
-      //$scope.dataProduction2.push($scope.productionLast7Days[i].TOTAL_WEEK_VALUE_IN_EUR);
+  }
+
+});
+
+statistics.factory('executeQueryBetweenDateService', ['$http', '$q', function ($http, $q) {
+
+  function executeQuery(beginDate, endDate) {
+    var deferred = $q.defer();
+	
+	var productionDays = [];
+	var dataProduction = [];
+	var dataProduction2 = [];
+	var dataProduction3 = [];
+
+    var request = $http({
+    method: 'GET',
+    url: 'getProductionBetweenBeingEndDate',
+    params: {
+				BEGIN_DATE: moment(beginDate).format('YYYY-MM-DD'),
+				END_DATE: moment(endDate).format('YYYY-MM-DD')
+            }
+	});
+
+	request.then(function successCallback(response) {
+    productionLast7Days = response.data;
+
+    for (i = 0; i < productionLast7Days.length; i++) {
+
+      productionDays.push(moment(productionLast7Days[i].PRODUCTION_DAY).format('YYYY-MM-DD'));
+      dataProduction.push(productionLast7Days[i].TOTAL_DAY_PRODUCTION);
+      dataProduction2.push(productionLast7Days[i].TOTAL_DAY_VALUE_IN_EUR);
+
     }
 
-    $scope.dataProduction3.push($scope.dataProduction);
-    $scope.dataProduction3.push($scope.dataProduction2);
+    dataProduction3.push(dataProduction);
+    dataProduction3.push(dataProduction2);
+	
+	var dataProductionArray = {
+		productionDays: productionDays,
+		dataProduction3: dataProduction3
+	};
+	
+	deferred.resolve(dataProductionArray);
 
   },
     function errorCallback(data) {
       console.log('Error: ' + data);
     });
 
-});
+    return deferred.promise;
+  }
+
+  return {
+    executeQuery: executeQuery
+  };
+
+}]);
