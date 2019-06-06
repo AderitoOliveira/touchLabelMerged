@@ -2710,6 +2710,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
     if (orderproductstatusraw == 'em_producao') {
       $scope.dailyProduction = [];
+      $scope.dailyPainting = [];
       var request = $http.get('/getDailyProductionOrderProduct/' + encodeURIComponent(orderId) + '/' + encodeURIComponent(customerproductid) + '/' + encodeURIComponent(uniqueorderid));
       request.then(function successCallback(response) {
         $scope.dailyProduction = response.data;
@@ -2724,17 +2725,16 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           console.log('Error: ' + data);
         });
     }
-    if (orderproductstatusraw == 'em_pintura') {
-      $scope.dailyProduction = [];
+    if (orderproductstatusraw == 'em_pintura' || orderproductstatusraw == 'em_producao') {
       var request = $http.get('/getDailyPaintingOrderProduct/' + encodeURIComponent(orderId) + '/' + encodeURIComponent(customerproductid));
       request.then(function successCallback(response) {
-        $scope.dailyProduction = response.data;
+        $scope.dailyPainting = response.data;
 
-        for (i = 0; i < $scope.dailyProduction.length; i++) {
-          $scope.dailyProduction[i].TOTAL_PRODUCTS_DAILY_REGISTERED = $scope.dailyProduction[i].TOTAL_PRODUCTS_PAINTED;
+        for (i = 0; i < $scope.dailyPainting.length; i++) {
+          $scope.dailyPainting[i].TOTAL_PRODUCTS_DAILY_REGISTERED = $scope.dailyPainting[i].TOTAL_PRODUCTS_PAINTED;
         }
 
-        return $scope.dailyProduction;
+        return $scope.dailyPainting;
       },
         function errorCallback(data) {
           console.log('Error: ' + data);
