@@ -1653,7 +1653,7 @@ getProductionLast7Days = function(data, callback) {
 //GET PRODUCTS PRODUCED BETWEEN bEGIN AND END DATE
 getProductionBetweenBeingEndDate = function(req, callback) {
     con.connect(function(err) {
-    con.query('select date(CREATED_DATE) as PRODUCTION_DAY, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_DAY_PRODUCTION, sum(PRODUCED_VALUE_IN_EURO) as TOTAL_DAY_VALUE_IN_EUR from order_products_production_registry where CREATED_DATE between ? and ? group by PRODUCTION_DAY order by PRODUCTION_DAY', [req.query.BEGIN_DATE, req.query.END_DATE], function(err, rows) {
+    con.query('select date(CREATED_DATE) as PRODUCTION_DAY, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_DAY_PRODUCTION, sum(PRODUCED_VALUE_IN_EURO) as TOTAL_DAY_VALUE_IN_EUR from order_products_production_registry_bck where CREATED_DATE between ? and ? group by PRODUCTION_DAY order by PRODUCTION_DAY', [req.query.BEGIN_DATE, req.query.END_DATE], function(err, rows) {
         if (err) {
             throw err;
         } else

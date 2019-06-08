@@ -1892,7 +1892,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
 
   //INSERT DAILY PAINTING REGISTRY
-  $scope.insertDailyPainting = function (internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, qtyByPallet, productiondate, parent_customer_product_id, isparent, in_compound_product) {
+  $scope.insertDailyPainting = function (internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, qtyByPallet, productiondate, parent_customer_product_id, isparent, in_compound_product, productinpainting) {
 
     //$scope.title = title;
     $scope.orderid = $scope.orderid;
@@ -1907,7 +1907,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     productiondate = moment(productiondate).format('YYYY-MM-DD 00:00:00');
 
     //PRODUCTS STILL TO PRODUCE
-    var products_still_to_produce = totalquantityordered - totalproductsproduced;
+    if(productinpainting) {
+      var products_still_to_produce = totalquantityordered - totalproductsproduced;
+    } else {
+      var products_still_to_produce = totalproductsproduced;
+    }
 
     if (products_still_to_produce == 0) {
 
