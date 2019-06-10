@@ -1,5 +1,5 @@
-<div id="home" class="home-page row">
-    <div id="home-chart" class="col-md-12">
+<div id="production-stats" class="chart-page row">
+    <div id="production-chart" class="col-md-12">
         <div class="home-block" ng-controller="productionRegistryStatisticsController">
             <div class="block-heading">
                 <div class="panel-title">
@@ -8,54 +8,76 @@
                 <div class="panel-description">
                     <h5 class="block-heading-subtitle">Quantidade Produzida/Valor em EUR nos últimos 7 dias de produção
                     </h5>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-wrap">
-                    <label class="control-label" for="deliverDate">Data Início</label>
-                    <!--md-datepicker class="delivery-date" name="deliverDate" ng-model="deliverDate" md-current-view="year" md-placeholder="Enter date" is-open="isOpen" ng-keydown="$event.preventDefault(); isOpen = true;">
-                    </md-datepicker-->
-                    <p class="input-group">
-                        <input type="text" class="form-control deliver-date" uib-datepicker-popup="{{format}}" ng-model="beginDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" show-button-bar="false" close-text="Fechar" clear-text="Limpar" current-text="Hoje" alt-input-formats="altInputFormats" />
-                        <span class="input-group-btn">
-                          <button type="button" class="btn btn-default btn-datepicker-single" ng-click="openDateBegin()"><i class="glyphicon glyphicon-calendar"></i></button>
-                        </span>
-                    </p>
+                </div>                
+            </div>
+            <div class="graph-filter">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-wrap">
+                            <label class="control-label" for="deliverDate">Data Início</label>
+                            <!--md-datepicker class="delivery-date" name="deliverDate" ng-model="deliverDate" md-current-view="year" md-placeholder="Enter date" is-open="isOpen" ng-keydown="$event.preventDefault(); isOpen = true;">
+                            </md-datepicker-->
+                            
+                                <input type="text" class="form-control deliver-date" uib-datepicker-popup="{{format}}" ng-model="beginDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" show-button-bar="false" close-text="Fechar" clear-text="Limpar" current-text="Hoje" alt-input-formats="altInputFormats" />
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker-single" ng-click="openDateBegin()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-wrap">
-                    <label class="control-label" for="deliverDate">Data Fim</label>
-                    <!--md-datepicker class="delivery-date" name="deliverDate" ng-model="deliverDate" md-current-view="year" md-placeholder="Enter date" is-open="isOpen" ng-keydown="$event.preventDefault(); isOpen = true;">
-                    </md-datepicker-->
-                    <p class="input-group">
-                        <input type="text" class="form-control deliver-date" uib-datepicker-popup="{{format}}" ng-model="endDate" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" show-button-bar="false" close-text="Fechar" clear-text="Limpar" current-text="Hoje" alt-input-formats="altInputFormats" />
-                        <span class="input-group-btn">
-                          <button type="button" class="btn btn-default btn-datepicker-single" ng-click="openDateEnd()"><i class="glyphicon glyphicon-calendar"></i></button>
-                        </span>
-                    </p>
+                    <div class="col-md-3">
+                        <div class="input-wrap">
+                            <label class="control-label" for="deliverDate">Data Fim</label>
+                            <!--md-datepicker class="delivery-date" name="deliverDate" ng-model="deliverDate" md-current-view="year" md-placeholder="Enter date" is-open="isOpen" ng-keydown="$event.preventDefault(); isOpen = true;">
+                            </md-datepicker-->
+                                <input type="text" class="form-control deliver-date" uib-datepicker-popup="{{format}}" ng-model="endDate" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" show-button-bar="false" close-text="Fechar" clear-text="Limpar" current-text="Hoje" alt-input-formats="altInputFormats" />
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker-single" ng-click="openDateEnd()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                        </div>
                     </div>
-                </div>
-                <div class="button-wrap col-md-4">
-                    <button id="add-order-toggle" class="inset-button button add" ng-click="redrawSearch()">
-                        <span class="button-inner-wrap">
-                            <img src="assets/icons/btn-add.svg" width="20px" height="20px">
-                            <span class="btn-text">Pesquisar</span>
-                        </span>
-                    </button>
+                    <div class="col-md-3"></div>
+                    <div class="button-wrap col-md-3">
+                        <button id="add-order-toggle" class="inset-button button add" ng-click="redrawSearch()">
+                            <span class="button-inner-wrap">
+                                <img src="assets/icons/btn-add.svg" width="20px" height="20px">
+                                <span class="btn-text">Pesquisar</span>
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <!--
-        <div class="col-xs-6 col-md-6 paddingTop30Px"> 
-            <canvas id="bar" class="chart chart-bar"chart-data="data" chart-labels="labels" chart-series="series" chart-colors="colours"> 
-            </canvas>   
+            <div class="graph-container">
+                <div class="row">
+                    <!--
+                    <div class="col-xs-6 col-md-6 paddingTop30Px"> 
+                        <canvas id="bar" class="chart chart-bar"chart-data="data" chart-labels="labels" chart-series="series" chart-colors="colours"> 
+                        </canvas>   
+                    </div>
+                    -->
+                    <div class="col-xs-12 col-md-12">
+                        <!-- canvas id="bar" class="chart chart-bar"chart-data="data" chart-labels="labels" chart-series="series" -->
+                        <div class="canvas-wrap">
+                            <canvas id="bar" class="chart chart-bar" chart-data="dataProduction3" chart-labels="productionDays"
+                            chart-options="options" chart-series="seriesTest" chart-legend="true" chart-colors="colours">
+                            </canvas>
+                        </div>                        
+                    </div>
+                </div>
+            </div>            
         </div>
-        -->
-                <div class="col-xs-10 col-md-10 paddingTop30Px" style="padding-top: 15px; padding-left: 90px;">
-                    <!-- canvas id="bar" class="chart chart-bar"chart-data="data" chart-labels="labels" chart-series="series" -->
-                    <canvas id="bar" class="chart chart-bar" chart-data="dataProduction3" chart-labels="productionDays"
-                        chart-options="options" chart-series="seriesTest" chart-legend="true" chart-colors="colours">
-                    </canvas>
+        <div class="row">
+            <div class="col-md-12 pdf-button-wrap">
+                <div class="row">
+                    <div class="col-md-9"></div>
+                    <div class="button-wrap col-md-3">
+                        <button id="add-order-toggle" class="inset-button button add" ng-click="redrawSearch(beginDate, endDate, nameemployee)">
+                            <span class="button-inner-wrap">
+                                <img src="assets/icons/btn-pdf.svg" width="20px" height="20px">
+                                <span class="btn-text">Gravar PDF</span>
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
