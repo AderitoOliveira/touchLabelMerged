@@ -70,12 +70,13 @@ statistics.controller('employeeRegistryStatisticsController', function ($scope, 
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Estatística de Produção";
-  $scope.productionLast7Days = [];
   $scope.dataProduction = [];
   $scope.productionDays = [];
   $scope.dataProduction2 = [];
   $scope.dataProduction3 = [];
   $scope.seriesTest = ['Produtos Produzidos', 'Valor em EUR'];
+  $scope.options = { legend: { display: true, position: 'bottom' } };
+  $scope.colours = ['#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'];
 
   $scope.totalProductsProduced  = 0;
   $scope.totalValueProduced  = 0;
@@ -130,8 +131,6 @@ statistics.controller('employeeRegistryStatisticsController', function ($scope, 
   console.log("BEGIN DATE: " + $scope.beginDate);
   console.log("END DATE: " + $scope.endDate);
 
-  $scope.options = { legend: { display: true } };
-
   executeQueryBetweenDateService.executeQuery($scope.beginDate, $scope.endDate, null).then(function (productionArray) {
     $scope.productionDays   = productionArray.productionDays;
     $scope.dataProduction3  = productionArray.dataProduction3;
@@ -147,6 +146,30 @@ statistics.controller('employeeRegistryStatisticsController', function ($scope, 
       $scope.totalValueProduced  = productionArray.value_produced;
 
     });
+
+    $scope.exportToPDF();
+
+  }
+
+  $scope.exportToPDF = function (){
+
+    var canvasToImg = document.getElementById("bar").toDataURL();
+    var chartToPrint = {
+      content: [
+          {
+              columns: [
+                {
+                  image: canvasToImg,
+                  width: 540,
+                  height: 400
+                }
+             ]
+          }
+      ] 
+      
+    }
+
+    pdfMake.createPdf(chartToPrint).download("C:/XPTO.pdf");
 
   }
 
