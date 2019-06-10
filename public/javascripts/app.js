@@ -1907,10 +1907,12 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     productiondate = moment(productiondate).format('YYYY-MM-DD 00:00:00');
 
     //PRODUCTS STILL TO PRODUCE
+    //If the productinpainting variable is undefined, then this means that we are regeistering in painting qunatity's of a product that is
+    //still in production
     if(productinpainting) {
       var products_still_to_produce = totalquantityordered - totalproductsproduced;
     } else {
-      var products_still_to_produce = totalproductsproduced;
+      var products_still_to_produce = totalquantityordered - $scope.totalquantityproduced;
     }
 
     if (products_still_to_produce == 0) {
