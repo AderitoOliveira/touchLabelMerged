@@ -1,4 +1,4 @@
-var app = angular.module('easyLabel', ['ui.router', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'ngCookies', 'historicalModule', 'Authentication', 'angularMoment']);
+var app = angular.module('easyLabel', ['ui.router', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'ngCookies', 'historicalModule', 'statisticsModule', 'Authentication', 'angularMoment']);
 
 app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
 
@@ -165,6 +165,16 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
       url: '/labelstoprinthistoric',
       templateUrl: '../custompages/labelsToPrintHistoric.html',
       controller: 'LabelsBackupController'
+    })
+    .state('productionStatistics', {
+      url: '/productionstatistics',
+      templateUrl: '../custompages/productionStatistics.html'
+      //controller: 'LabelsBackupController'
+    })
+    .state('employeeStatistics', {
+      url: '/employeeStatistics',
+      templateUrl: '../custompages/employeeStatistics.html'
+      //controller: 'LabelsBackupController'
     })
     .state('login', {
       url: '/login',
@@ -1882,7 +1892,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
 
   //INSERT DAILY PAINTING REGISTRY
-  $scope.insertDailyPainting = function (internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, qtyByPallet, productiondate, parent_customer_product_id, isparent, in_compound_product) {
+  $scope.insertDailyPainting = function (internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, qtyByPallet, productiondate, parent_customer_product_id, isparent, in_compound_product, productinpainting) {
 
     //$scope.title = title;
     $scope.orderid = $scope.orderid;
@@ -1897,7 +1907,13 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     productiondate = moment(productiondate).format('YYYY-MM-DD 00:00:00');
 
     //PRODUCTS STILL TO PRODUCE
-    var products_still_to_produce = totalquantityordered - totalproductsproduced;
+    //If the productinpainting variable is undefined, then this means that we are regeistering in painting qunatity's of a product that is
+    //still in production
+    if(productinpainting) {
+      var products_still_to_produce = totalquantityordered - totalproductsproduced;
+    } else {
+      var products_still_to_produce = totalquantityordered - $scope.totalquantityproduced;
+    }
 
     if (products_still_to_produce == 0) {
 
@@ -2700,6 +2716,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
     if (orderproductstatusraw == 'em_producao') {
       $scope.dailyProduction = [];
+      $scope.dailyPainting = [];
       var request = $http.get('/getDailyProductionOrderProduct/' + encodeURIComponent(orderId) + '/' + encodeURIComponent(customerproductid) + '/' + encodeURIComponent(uniqueorderid));
       request.then(function successCallback(response) {
         $scope.dailyProduction = response.data;
@@ -2714,17 +2731,16 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           console.log('Error: ' + data);
         });
     }
-    if (orderproductstatusraw == 'em_pintura') {
-      $scope.dailyProduction = [];
+    if (orderproductstatusraw == 'em_pintura' || orderproductstatusraw == 'em_producao') {
       var request = $http.get('/getDailyPaintingOrderProduct/' + encodeURIComponent(orderId) + '/' + encodeURIComponent(customerproductid));
       request.then(function successCallback(response) {
-        $scope.dailyProduction = response.data;
+        $scope.dailyPainting = response.data;
 
-        for (i = 0; i < $scope.dailyProduction.length; i++) {
-          $scope.dailyProduction[i].TOTAL_PRODUCTS_DAILY_REGISTERED = $scope.dailyProduction[i].TOTAL_PRODUCTS_PAINTED;
+        for (i = 0; i < $scope.dailyPainting.length; i++) {
+          $scope.dailyPainting[i].TOTAL_PRODUCTS_DAILY_REGISTERED = $scope.dailyPainting[i].TOTAL_PRODUCTS_PAINTED;
         }
 
-        return $scope.dailyProduction;
+        return $scope.dailyPainting;
       },
         function errorCallback(data) {
           console.log('Error: ' + data);

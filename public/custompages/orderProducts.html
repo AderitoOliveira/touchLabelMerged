@@ -122,16 +122,14 @@
                                     <!--div class="order-product-details item-row col-md-12" ng-if="seeProductDetailInOrder(product.CUSTOMER_PRODUCT_ID)"-->
                                     <div class="order-product-details item-row col-md-12">
                                         <div class="row">
-                                            <div class="col-md-12 order-product-details-header">
+                                            <div class="col-md-12 order-product-details-header" ng-show="product.INSERT_PRODUCTION">
                                                 <div class="header-inner">
                                                     <div class="row">
                                                         <div class="col-md-2">
-                                                            <span class="ptype-toggle prod">Produção Diária</span>
-                                                            <span class="ptype-toggle paint">Pintura Diária</span>
+                                                            <span class="">Produção Diária</span>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <span class="ptype-toggle prod">Rodista</span>
-                                                            <span class="ptype-toggle paint">Pintor</span>
+                                                            <span class="">Rodista</span>
                                                         </div>
                                                         <div class="col-md-4">
                                                             Data
@@ -143,8 +141,69 @@
                                             </div>
                                             <!-- REPEATABLE ITEM-->
                                                 <!--div class="col-md-12 order-product-details-item" ng-repeat="detail in dailyProduction" ng-if="isSelectedOrder(product.CUSTOMER_PRODUCT_ID)"-->
-                                                <div class="col-md-12 order-product-details-item" ng-repeat="detail in dailyProduction">
-
+                                                <div class="col-md-12 order-product-details-item" ng-repeat="detail in dailyProduction" ng-show="product.INSERT_PRODUCTION">
+                                        
+                                                    <div class="item-row-inner">
+                                                        <div class="row">
+                                                            <div class="col-md-2 item-amount">
+                                                                {{detail.TOTAL_PRODUCTS_DAILY_REGISTERED}}
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                {{detail.EMPLOYEE_NAME}}
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                {{detail.CREATED_DATE}}
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div> 
+                                                </div>
+                                            <!--FORM TO ADD TO PRODUCTION-->
+                                            <div class="col-md-12 order-product-details-add" ng-show="product.INSERT_PRODUCTION">
+                                                <div class="form-inner">
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <input autocomplete="off" type="text" class="form-control" id="qtyproduzidaproducao" placeholder="Número Produzido" ng-model="qtyproduzidaproducao">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" id="nameemployeepintura" placeholder="Escolha Um Funcionário" ng-model="nameemployeeproducao" uib-typeahead="employee as employee.EMPLOYEE_NAME for employee in dataEmployees | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}">
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <!-- <input type="text" class="form-control" id="productName" placeholder="Data de Produção" ng-model="productName"> -->
+                                                            <!--md-datepicker class="delivery-date" name="productName" ng-model="productName" md-current-view="year" md-placeholder="Data de Produção" is-open="isOpen" ng-keydown="$event.preventDefault(); isOpen = true;"></md-datepicker-->
+                                                                <input style="float:left;" type="text" class="form-control deliver-date" uib-datepicker-popup="{{format}}" ng-model="productiondate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" show-button-bar="false" close-text="Fechar" clear-text="Limpar" current-text="Hoje" alt-input-formats="altInputFormats" popup-placement="auto right" />
+                                                                  <button type="button" class="btn btn-default btn-datepicker" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="add-actions-wrap">
+                                                                <button type="submit" ng-show="product.INSERT_PRODUCTION" ng-click="insertDailyProduction(product.UNIQUE_ORDER_ID, product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.TOTAL_PRODUCTS_COMPLETED, qtyproduzidaproducao, nameemployeeproducao, product.PRICE_EURO_1, productiondate, product.PARENT_CUSTOMER_PRODUCT_ID, product.IN_COMPOUND_PRODUCT)" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px" />Adicionar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>                                                
+                                            </div>   
+                                        
+                                            <div class="col-md-12 order-product-details-header">
+                                                <div class="header-inner">
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <span class="">Pintura Diária</span>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <span class="">Pintor</span>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            Data
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                        </div>
+                                                    </div>
+                                                </div>                                                
+                                            </div>
+                                            <!-- REPEATABLE ITEM-->
+                                                <!--div class="col-md-12 order-product-details-item" ng-repeat="detail in dailyProduction" ng-if="isSelectedOrder(product.CUSTOMER_PRODUCT_ID)"-->
+                                                <div class="col-md-12 order-product-details-item" ng-repeat="detail in dailyPainting">
+                                        
                                                     <div class="item-row-inner">
                                                         <div class="row">
                                                             <div class="col-md-2 item-amount">
@@ -165,10 +224,10 @@
                                                 <div class="form-inner">
                                                     <div class="row">
                                                         <div class="col-md-2">
-                                                            <input autocomplete="off" type="text" class="form-control" id="qtyproduzida" placeholder="Número Produzido" ng-model="qtyproduzida">
+                                                            <input autocomplete="off" type="text" class="form-control" id="qtyproduzidapintura" placeholder="Número Produzido" ng-model="qtyproduzidapintura">
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <input type="text" class="form-control" id="nameemployee" placeholder="Escolha Um Funcionário" ng-model="nameemployee" uib-typeahead="employee as employee.EMPLOYEE_NAME for employee in dataEmployees | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}">
+                                                            <input type="text" class="form-control" id="nameemployeepintura" placeholder="Escolha Um Funcionário" ng-model="nameemployeepintura" uib-typeahead="employee as employee.EMPLOYEE_NAME for employee in dataEmployees | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}">
                                                         </div>
                                                         <div class="col-md-3">
                                                             <!-- <input type="text" class="form-control" id="productName" placeholder="Data de Produção" ng-model="productName"> -->
@@ -178,14 +237,11 @@
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="add-actions-wrap">
-                                                                <button type="submit" ng-show="product.INSERT_PRODUCTION" ng-click="insertDailyProduction(product.UNIQUE_ORDER_ID, product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.TOTAL_PRODUCTS_COMPLETED, qtyproduzida, nameemployee, product.PRICE_EURO_1, productiondate, product.PARENT_CUSTOMER_PRODUCT_ID, product.IN_COMPOUND_PRODUCT)" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px" />Adicionar</button>
-                                                                <button type="submit" ng-show="product.INSERT_PAINTING" ng-click="insertDailyPainting(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.TOTAL_PRODUCTS_COMPLETED, qtyproduzida, nameemployee, product.PRICE_EURO_1, product.QTY_BY_PALLET, productiondate, product.PARENT_CUSTOMER_PRODUCT_ID, product.IS_PARENT, product.IN_COMPOUND_PRODUCT)" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px" />Adicionar</button>
-                                                                <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" /></button>
-                                                            </div>
+                                                                <button type="submit" ng-show="product.INSERT_PAINTING || product.INSERT_PRODUCTION" ng-click="insertDailyPainting(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_QUANTITY_ORDERED, product.TOTAL_PRODUCTS_COMPLETED, qtyproduzidapintura, nameemployeepintura, product.PRICE_EURO_1, product.QTY_BY_PALLET, productiondate, product.PARENT_CUSTOMER_PRODUCT_ID, product.IS_PARENT, product.IN_COMPOUND_PRODUCT, product.INSERT_PAINTING)" class="btn btn-default btn-save"><img src="assets/icons/btn-add.svg" width="16px" height="16px" />Adicionar</button>                    </div>
                                                         </div>
                                                     </div>
                                                 </div>                                                
-                                            </div>                                                                                                   
+                                            </div>    	
                                         </div>
                                     </div>
                                     <div class="progressrow item-row col-md-12">
