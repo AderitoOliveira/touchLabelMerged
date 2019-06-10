@@ -714,10 +714,16 @@ router.get('/getProductionLast7Days', function (req, res) {
   getProductionLast7Days(req, res);
 });
 
-//GET PRODUCTS PRODUCED IN THE LAST 7 DAYS
+//GET PRODUCTS PRODUCED BETWEEN BEGIN AND END DATE
 router.get('/getProductionBetweenBeingEndDate', function (req, res) {
   console.log("GET PRODUCTS PRODUCED BETWEEN 2 DATES");
   getProductionBetweenBeingEndDate(req, res);
+});
+
+//GET PRODUCTS PRODUCED FOR A EMPLOYEE BETWEEN BEGIN AND END DATE
+router.get('/getProductionForEmployeeBetweenBeingEndDate', function (req, res) {
+  console.log("GET PRODUCTS PRODUCED BETWEEN 2 DATES");
+  getProductionForEmployeeBetweenBeingEndDate(req, res);
 });
 
 //INSERT/UPDATE CHILD PRODUCTS FOR THE PARENT PRODUCT
