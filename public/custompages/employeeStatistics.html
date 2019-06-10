@@ -1,6 +1,6 @@
-<div id="employee-stats" class="chart-page row">
+<div id="employee-stats" class="chart-page row"  ng-controller="employeeRegistryStatisticsController">
     <div id="employee-chart" class="col-md-12">
-        <div class="home-block" ng-controller="employeeRegistryStatisticsController">
+        <div class="home-block">
             <div class="block-heading">
                 <div class="panel-title">
                     <h2 class="block-heading-title">Estatísticas de Produção</h2>
@@ -76,7 +76,7 @@
                 <div class="row">
                     <div class="col-md-9"></div>
                     <div class="button-wrap col-md-3">
-                        <button id="add-order-toggle" class="inset-button button add" ng-click="redrawSearch(beginDate, endDate, nameemployee)">
+                        <button id="add-order-toggle" class="inset-button button add" ng-click="exportToPDF(nameemployee)">
                             <span class="button-inner-wrap">
                                 <img src="assets/icons/btn-pdf.svg" width="20px" height="20px">
                                 <span class="btn-text">Gravar PDF</span>
