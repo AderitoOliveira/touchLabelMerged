@@ -1,5 +1,9 @@
 var statistics = angular.module('statisticsModule', []);
 
+/* Inject SheetJSExportService */
+//statistics.factory('SheetJSExportService', SheetJSExportService);
+//SheetJSExportService.inject = ['uiGridExporterService'];
+
 //PRODUCTION Statistics - Controller
 statistics.controller('productionRegistryStatisticsController', function ($scope, $http, $rootScope, executeQueryBetweenDateService) {
 
@@ -66,7 +70,7 @@ statistics.controller('productionRegistryStatisticsController', function ($scope
 });
 
 //Employee Statistics - Controller
-statistics.controller('employeeRegistryStatisticsController', function ($scope, $http, $rootScope, executeQueryBetweenDateService) {
+statistics.controller('employeeRegistryStatisticsController', [ '$scope', '$http', '$rootScope', 'executeQueryBetweenDateService', function ($scope, $http, $rootScope, executeQueryBetweenDateService) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Estatística de Funcionários";
@@ -265,7 +269,7 @@ statistics.controller('employeeRegistryStatisticsController', function ($scope, 
 
   }
 
-});
+}]);
 
 statistics.factory('executeQueryBetweenDateService', ['$http', '$q', function ($http, $q) {
 
