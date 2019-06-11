@@ -69,11 +69,12 @@ statistics.controller('productionRegistryStatisticsController', function ($scope
 statistics.controller('employeeRegistryStatisticsController', function ($scope, $http, $rootScope, executeQueryBetweenDateService) {
 
   $rootScope.class = 'not-home';
-  $rootScope.name = "Estatística de Produção";
+  $rootScope.name = "Estatística de Funcionários";
   $scope.dataProduction = [];
   $scope.productionDays = [];
   $scope.dataProduction2 = [];
   $scope.dataProduction3 = [];
+  $scope.employeDataForTable = [];
   $scope.seriesTest = ['Produtos Produzidos', 'Valor em EUR'];
   $scope.options = { legend: { display: true, position: 'bottom' } };
   $scope.colours = ['#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'];
@@ -144,6 +145,8 @@ statistics.controller('employeeRegistryStatisticsController', function ($scope, 
 
       $scope.totalProductsProduced = productionArray.total_products;
       $scope.totalValueProduced = productionArray.value_produced;
+
+      $scope.employeDataForTable = productionArray.employee_production_data;
 
     });
 
@@ -274,6 +277,8 @@ statistics.factory('executeQueryBetweenDateService', ['$http', '$q', function ($
     var dataProduction2 = [];
     var dataProduction3 = [];
 
+    var employeeProductionData = [];
+
     var totalProductsProduced = 0;
     var valueProducedInEUR = 0;
 
@@ -312,6 +317,21 @@ statistics.factory('executeQueryBetweenDateService', ['$http', '$q', function ($
         totalProductsProduced = totalProductsProduced + production[i].TOTAL_DAY_PRODUCTION;
         valueProducedInEUR = valueProducedInEUR + production[i].TOTAL_DAY_VALUE_IN_EUR;
 
+        if (employyename != null) {
+          var auxiliaryArray = {
+            EMPLOYEE: employyename,
+            PRODUCTION_DAY: moment(production[i].PRODUCTION_DAY).format('YYYY-MM-DD'),
+            TOTAL_DAY_PRODUCTION: production[i].TOTAL_DAY_PRODUCTION,
+            TOTAL_DAY_VALUE_IN_EUR: production[i].TOTAL_DAY_VALUE_IN_EUR
+          }
+          /* auxiliaryArray.push("EMPLOYEE: " + employyename);
+          auxiliaryArray.push("PRODUCTION_DAY: " + moment(production[i].PRODUCTION_DAY).format('YYYY-MM-DD'));
+          auxiliaryArray.push("TOTAL_DAY_PRODUCTION: " + production[i].TOTAL_DAY_PRODUCTION);
+          auxiliaryArray.push("TOTAL_DAY_VALUE_IN_EUR: " + production[i].TOTAL_DAY_VALUE_IN_EUR); */
+
+          employeeProductionData.push(auxiliaryArray);
+        }
+
       }
 
       dataProduction3.push(dataProduction);
@@ -321,7 +341,8 @@ statistics.factory('executeQueryBetweenDateService', ['$http', '$q', function ($
         productionDays: productionDays,
         dataProduction3: dataProduction3,
         total_products: totalProductsProduced,
-        value_produced: valueProducedInEUR
+        value_produced: valueProducedInEUR,
+        employee_production_data: employeeProductionData
       };
 
       deferred.resolve(dataProductionArray);
