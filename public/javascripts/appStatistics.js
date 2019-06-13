@@ -276,7 +276,8 @@ statistics.controller('employeeRegistryStatisticsController', [ '$scope', '$http
     ];
     
     /* generate a worksheet */
-    var ws = XLSX.utils.json_to_sheet(data);
+    //var ws = XLSX.utils.json_to_sheet(data);
+    var ws = XLSX.utils.json_to_sheet($scope.employeDataForTable);
     
     /* add to workbook */
     var wb = XLSX.utils.book_new();
