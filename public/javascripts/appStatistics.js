@@ -1,4 +1,4 @@
-var statistics = angular.module('statisticsModule', []);
+var statistics = angular.module('statisticsModule', ['angular-js-xlsx']);
 
 /* Inject SheetJSExportService */
 //statistics.factory('SheetJSExportService', SheetJSExportService);
@@ -267,6 +267,23 @@ statistics.controller('employeeRegistryStatisticsController', [ '$scope', '$http
 
     pdfMake.createPdf(chartPDFTemplateToJSON).download(filename);
 
+  }
+
+  $scope.exportToXLS = function() {
+    var data = [
+      { name: "Barack Obama", pres: 44 },
+      { name: "Donald Trump", pres: 45 }
+    ];
+    
+    /* generate a worksheet */
+    var ws = XLSX.utils.json_to_sheet(data);
+    
+    /* add to workbook */
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Presidents");
+    
+    /* write workbook and force a download */
+    XLSX.writeFile(wb, "sheetjs.xlsx");
   }
 
 }]);
