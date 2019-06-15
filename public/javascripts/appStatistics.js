@@ -5,7 +5,7 @@ var statistics = angular.module('statisticsModule', ['angular-js-xlsx']);
 //SheetJSExportService.inject = ['uiGridExporterService'];
 
 //PRODUCTION Statistics - Controller
-statistics.controller('productionRegistryStatisticsController', function ($scope, $http, $rootScope, executeQueryBetweenDateService) {
+statistics.controller('productionRegistryStatisticsController', function ($scope, $http, $rootScope, executeQueryBetweenDateService, executeQueryBetweenDateServiceForAllEmployees) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Estatística de Produção";
@@ -14,11 +14,14 @@ statistics.controller('productionRegistryStatisticsController', function ($scope
   $scope.productionDays = [];
   $scope.dataProduction2 = [];
   $scope.dataProduction3 = [];
+  $scope.dataProductionForAllEmployees = [];
   $scope.seriesTest = ['Produtos Produzidos', 'Valor em EUR'];
+  $scope.options = { legend: { display: true, position: 'bottom' } };
+  $scope.colours = ['#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'];
 
   $scope.today = function () {
-    $scope.beginDate = new Date('2019-05-01');
-    $scope.endDate = new Date('2019-06-01');
+    $scope.beginDate = new Date(moment().startOf('month'));
+    $scope.endDate = new Date(moment());
   };
   $scope.today();
 
@@ -56,13 +59,23 @@ statistics.controller('productionRegistryStatisticsController', function ($scope
   executeQueryBetweenDateService.executeQuery($scope.beginDate, $scope.endDate, null).then(function (productionArray) {
     $scope.productionDays = productionArray.productionDays;
     $scope.dataProduction3 = productionArray.dataProduction3;
+
+    executeQueryBetweenDateServiceForAllEmployees.executeQuery($scope.beginDate, $scope.endDate, null).then(function (productionAllEmployees) {
+      $scope.dataProductionForAllEmployees = productionAllEmployees.production_data_for_all_employees;
+    });
   });
 
   $scope.redrawSearch = function () {
 
     executeQueryBetweenDateService.executeQuery($scope.beginDate, $scope.endDate, null).then(function (productionArray) {
+
       $scope.productionDays = productionArray.productionDays;
       $scope.dataProduction3 = productionArray.dataProduction3;
+
+      executeQueryBetweenDateServiceForAllEmployees.executeQuery($scope.beginDate, $scope.endDate, null).then(function (productionAllEmployees) {
+        $scope.dataProductionForAllEmployees = productionAllEmployees.production_data_for_all_employees;
+      });
+
     });
 
   }
@@ -85,10 +98,11 @@ statistics.controller('employeeRegistryStatisticsController', [ '$scope', '$http
 
   $scope.totalProductsProduced = 0;
   $scope.totalValueProduced = 0;
+  $scope.employeeSelected = null;
 
   $scope.today = function () {
-    $scope.beginDate = new Date('2019-05-01');
-    $scope.endDate = new Date('2019-06-01');
+    $scope.beginDate = new Date(moment().startOf('month'));
+    $scope.endDate = new Date(moment());
   };
   $scope.today();
 
@@ -137,11 +151,20 @@ statistics.controller('employeeRegistryStatisticsController', [ '$scope', '$http
   console.log("END DATE: " + $scope.endDate);
 
   executeQueryBetweenDateService.executeQuery($scope.beginDate, $scope.endDate, null).then(function (productionArray) {
+    $scope.employeeSelected = false;
+
     $scope.productionDays = productionArray.productionDays;
     $scope.dataProduction3 = productionArray.dataProduction3;
   });
 
   $scope.redrawSearch = function (beginDate, endDate, nameemployee) {
+
+    if(nameemployee) {
+      $scope.employeeSelected = true;
+    } else {
+      $scope.employeeSelected = false;
+    }
+
 
     executeQueryBetweenDateService.executeQuery(beginDate, endDate, nameemployee.EMPLOYEE_NAME).then(function (productionArray) {
       $scope.productionDays = productionArray.productionDays;
@@ -299,7 +322,7 @@ statistics.factory('executeQueryBetweenDateService', ['$http', '$q', function ($
     var dataProduction2 = [];
     var dataProduction3 = [];
 
-    var employeeProductionData = [];
+    var employeeProductionData    = [];
 
     var totalProductsProduced = 0;
     var valueProducedInEUR = 0;
@@ -318,12 +341,13 @@ statistics.factory('executeQueryBetweenDateService', ['$http', '$q', function ($
     } else {
       var request = $http({
         method: 'GET',
-        url: 'getProductionBetweenBeingEndDate',
+        url: 'getProductionBetweenBeginEndDate',
         params: {
           BEGIN_DATE: moment(beginDate).format('YYYY-MM-DD'),
           END_DATE: moment(endDate).format('YYYY-MM-DD')
         }
       });
+
     }
 
 
@@ -365,6 +389,46 @@ statistics.factory('executeQueryBetweenDateService', ['$http', '$q', function ($
         total_products: totalProductsProduced,
         value_produced: valueProducedInEUR,
         employee_production_data: employeeProductionData
+      };
+
+      deferred.resolve(dataProductionArray);
+
+    },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      });
+
+    return deferred.promise;
+  }
+
+  return {
+    executeQuery: executeQuery
+  };
+
+}]);
+
+statistics.factory('executeQueryBetweenDateServiceForAllEmployees', ['$http', '$q', function ($http, $q) {
+  function executeQuery(beginDate, endDate, employyename) {
+    var deferred = $q.defer();
+
+    var productionForAllEmployees = [];
+
+    var request = $http({
+      method: 'GET',
+      url: 'getProductionForAllEmployeeBetweenDates',
+      params: {
+        BEGIN_DATE: moment(beginDate).format('YYYY-MM-DD'),
+        END_DATE: moment(endDate).format('YYYY-MM-DD')
+      }
+    });
+
+
+
+    request.then(function successCallback(response) {
+      production = response.data;
+
+      var dataProductionArray = {
+        production_data_for_all_employees: production
       };
 
       deferred.resolve(dataProductionArray);

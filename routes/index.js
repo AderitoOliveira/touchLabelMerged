@@ -715,9 +715,15 @@ router.get('/getProductionLast7Days', function (req, res) {
 });
 
 //GET PRODUCTS PRODUCED BETWEEN BEGIN AND END DATE
-router.get('/getProductionBetweenBeingEndDate', function (req, res) {
+router.get('/getProductionBetweenBeginEndDate', function (req, res) {
   console.log("GET PRODUCTS PRODUCED BETWEEN 2 DATES");
-  getProductionBetweenBeingEndDate(req, res);
+  getProductionBetweenBeginEndDate(req, res);
+});
+
+//GET PRODUCTS PRODUCED BETWEEN BEGIN AND END DATE FOR AL EMPLOYEE'S
+router.get('/getProductionForAllEmployeeBetweenDates', function (req, res) {
+  console.log("GET PRODUCTS PRODUCED BETWEEN 2 DATES FOR ALL EMPLOYEES");
+  getProductionForAllEmployeeBetweenDates(req, res);
 });
 
 //GET PRODUCTS PRODUCED FOR A EMPLOYEE BETWEEN BEGIN AND END DATE
