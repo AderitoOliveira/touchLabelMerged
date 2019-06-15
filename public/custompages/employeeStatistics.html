@@ -87,7 +87,7 @@
             </div>
         </div>
     </div>
-    <div class="home-block">
+    <div class="home-block" ng-show="employeeSelected">
         <div class="graph-filter">
             <div class="row">
                 <div ng-table="dailyProductionTable" id="order-table" class="col-md-12">
@@ -117,7 +117,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" ng-show="employeeSelected">
         <div class="col-md-12 pdf-button-wrap">
             <div class="row">
                 <div class="col-md-9"></div>
