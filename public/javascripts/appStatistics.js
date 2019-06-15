@@ -15,6 +15,8 @@ statistics.controller('productionRegistryStatisticsController', function ($scope
   $scope.dataProduction2 = [];
   $scope.dataProduction3 = [];
   $scope.dataProductionForAllEmployees = [];
+  $scope.totalProductsProduced = 0;
+  $scope.totalValueProduced = 0;
   $scope.seriesTest = ['Produtos Produzidos', 'Valor em EUR'];
   $scope.options = { legend: { display: true, position: 'bottom' } };
   $scope.colours = ['#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'];
@@ -71,6 +73,9 @@ statistics.controller('productionRegistryStatisticsController', function ($scope
 
       $scope.productionDays = productionArray.productionDays;
       $scope.dataProduction3 = productionArray.dataProduction3;
+
+      $scope.totalProductsProduced = productionArray.total_products;
+      $scope.totalValueProduced = productionArray.value_produced;
 
       executeQueryBetweenDateServiceForAllEmployees.executeQuery($scope.beginDate, $scope.endDate, null).then(function (productionAllEmployees) {
         $scope.dataProductionForAllEmployees = productionAllEmployees.production_data_for_all_employees;
