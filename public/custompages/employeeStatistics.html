@@ -61,7 +61,12 @@
                     <h3 class="block-heading-subtitle"><span class="highlight">{{totalProductsProduced}}</span> Artigos produzidos no valor de <span class="highlight">{{totalValueProduced}}</span> EUR</h3>
                 </div>
             </div>
-            <div class="col-xs-12 col-md-12"> 
+            <div class="col-xs-12 col-md-12" ng-show="showEmployeeMsgSelection"> 
+                <div class="canvas-wrap">
+                    <h2 style="text-align: center; color: red">Por favor escolha um funcionário e click em Pesquisar!</h2>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-12" ng-show="employeeSelected"> 
                 <div class="canvas-wrap">
                 <!-- canvas id="bar" class="chart chart-bar"chart-data="data" chart-labels="labels" chart-series="series" -->
                     <canvas id="bar" class="chart chart-bar" chart-data="dataProduction3" chart-labels="productionDays"
@@ -71,7 +76,7 @@
             </div>
         </div>
     </div>
-        <div class="row">
+        <div class="row" ng-show="employeeSelected">
             <div class="col-md-12 pdf-button-wrap">
                 <div class="row">
                     <div class="col-md-9"></div>

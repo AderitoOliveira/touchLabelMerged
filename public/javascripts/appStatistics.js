@@ -104,6 +104,7 @@ statistics.controller('employeeRegistryStatisticsController', [ '$scope', '$http
   $scope.totalProductsProduced = 0;
   $scope.totalValueProduced = 0;
   $scope.employeeSelected = null;
+  $scope.showEmployeeMsgSelection = null;
 
   $scope.today = function () {
     $scope.beginDate = new Date(moment().startOf('month'));
@@ -157,6 +158,7 @@ statistics.controller('employeeRegistryStatisticsController', [ '$scope', '$http
 
   executeQueryBetweenDateService.executeQuery($scope.beginDate, $scope.endDate, null).then(function (productionArray) {
     $scope.employeeSelected = false;
+    $scope.showEmployeeMsgSelection = true;
 
     $scope.productionDays = productionArray.productionDays;
     $scope.dataProduction3 = productionArray.dataProduction3;
@@ -166,8 +168,11 @@ statistics.controller('employeeRegistryStatisticsController', [ '$scope', '$http
 
     if(nameemployee) {
       $scope.employeeSelected = true;
+      $scope.showEmployeeMsgSelection = false;
+
     } else {
       $scope.employeeSelected = false;
+      $scope.showEmployeeMsgSelection = true;
     }
 
 
