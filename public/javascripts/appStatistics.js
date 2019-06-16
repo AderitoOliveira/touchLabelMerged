@@ -105,6 +105,7 @@ statistics.controller('employeeRegistryStatisticsController', [ '$scope', '$http
   $scope.totalValueProduced = 0;
   $scope.employeeSelected = null;
   $scope.showEmployeeMsgSelection = null;
+  $scope.employeeSelectionMessage = "Por favor escolha um funcionário e click em Pesquisar!";
 
   $scope.today = function () {
     $scope.beginDate = new Date(moment().startOf('month'));
@@ -157,6 +158,8 @@ statistics.controller('employeeRegistryStatisticsController', [ '$scope', '$http
   console.log("END DATE: " + $scope.endDate);
 
   executeQueryBetweenDateService.executeQuery($scope.beginDate, $scope.endDate, null).then(function (productionArray) {
+    $scope.totalProductsProduced = 0;
+    $scope.totalValueProduced = 0;
     $scope.employeeSelected = false;
     $scope.showEmployeeMsgSelection = true;
 
@@ -170,22 +173,24 @@ statistics.controller('employeeRegistryStatisticsController', [ '$scope', '$http
       $scope.employeeSelected = true;
       $scope.showEmployeeMsgSelection = false;
 
+      executeQueryBetweenDateService.executeQuery(beginDate, endDate, nameemployee.EMPLOYEE_NAME).then(function (productionArray) {
+        $scope.productionDays = productionArray.productionDays;
+        $scope.dataProduction3 = productionArray.dataProduction3;
+  
+        $scope.totalProductsProduced = productionArray.total_products;
+        $scope.totalValueProduced = productionArray.value_produced;
+  
+        $scope.employeDataForTable = productionArray.employee_production_data;
+  
+      });
+
+
     } else {
       $scope.employeeSelected = false;
       $scope.showEmployeeMsgSelection = true;
+      $scope.totalProductsProduced = 0;
+      $scope.totalValueProduced = 0;
     }
-
-
-    executeQueryBetweenDateService.executeQuery(beginDate, endDate, nameemployee.EMPLOYEE_NAME).then(function (productionArray) {
-      $scope.productionDays = productionArray.productionDays;
-      $scope.dataProduction3 = productionArray.dataProduction3;
-
-      $scope.totalProductsProduced = productionArray.total_products;
-      $scope.totalValueProduced = productionArray.value_produced;
-
-      $scope.employeDataForTable = productionArray.employee_production_data;
-
-    });
 
   }
 
