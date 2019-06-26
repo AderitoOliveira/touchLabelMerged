@@ -1,23 +1,23 @@
 var mysql = require('mysql');
 
 
-/* var con = mysql.createConnection({
+var con = mysql.createConnection({
     host: '127.0.0.1',
     user: 'easylabeldb',
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'
-}); */
+});
 
 
-var con = mysql.createConnection({  
+/* var con = mysql.createConnection({  
     host: '172.30.184.178',
     user: 'easylabeldb',
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'	
 });
-
+ */
 
 
 //GET ALL CLIENTS
@@ -1689,7 +1689,7 @@ getProductionForAllEmployeeBetweenDates = function(req, callback) {
 //GET PRODUCTS PRODUCED FOR A EMPLOYEE BETWEEN BEGIN AND END DATE
 getProductionForEmployeeBetweenBeingEndDate = function(req, callback) {
     con.connect(function(err) {
-    con.query('select date(CREATED_DATE) as PRODUCTION_DAY, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_DAY_PRODUCTION, sum(PRODUCED_VALUE_IN_EURO) as TOTAL_DAY_VALUE_IN_EUR from order_products_production_registry_bck where CREATED_DATE between ? and ? and EMPLOYEE_NAME = ? group by PRODUCTION_DAY order by PRODUCTION_DAY', [req.query.BEGIN_DATE, req.query.END_DATE, req.query.EMPLOYEE_NAME], function(err, rows) {
+    con.query('select date(CREATED_DATE) as PRODUCTION_DAY, PRODUCT_NAME, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_DAY_PRODUCTION, sum(PRODUCED_VALUE_IN_EURO) as TOTAL_DAY_VALUE_IN_EUR from order_products_production_registry_bck where CREATED_DATE between ? and ? and EMPLOYEE_NAME = ? group by PRODUCTION_DAY,PRODUCT_NAME order by PRODUCTION_DAY', [req.query.BEGIN_DATE, req.query.END_DATE, req.query.EMPLOYEE_NAME], function(err, rows) {
         if (err) {
             throw err;
         } else

@@ -62,6 +62,9 @@ statistics.controller('productionRegistryStatisticsController', function ($scope
     $scope.productionDays = productionArray.productionDays;
     $scope.dataProduction3 = productionArray.dataProduction3;
 
+    $scope.totalProductsProduced = productionArray.total_products;
+    $scope.totalValueProduced = productionArray.value_produced;
+
     executeQueryBetweenDateServiceForAllEmployees.executeQuery($scope.beginDate, $scope.endDate, null).then(function (productionAllEmployees) {
       $scope.dataProductionForAllEmployees = productionAllEmployees.production_data_for_all_employees;
     });
@@ -381,6 +384,7 @@ statistics.factory('executeQueryBetweenDateService', ['$http', '$q', function ($
         if (employyename != null) {
           var auxiliaryArray = {
             EMPLOYEE: employyename,
+            PRODUCT_NAME: production[i].PRODUCT_NAME,
             PRODUCTION_DAY: moment(production[i].PRODUCTION_DAY).format('YYYY-MM-DD'),
             TOTAL_DAY_PRODUCTION: production[i].TOTAL_DAY_PRODUCTION,
             TOTAL_DAY_VALUE_IN_EUR: production[i].TOTAL_DAY_VALUE_IN_EUR
