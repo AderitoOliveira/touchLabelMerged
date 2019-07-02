@@ -4460,14 +4460,21 @@ app.controller('clients', function ($scope, $http, $rootScope, $state) {
 });
 
 //GET ALL PRODUCTS - CONTROLLER
-app.controller('ProductsController', function ($scope, $http, $location, $rootScope, $state, $stateParams, productsAPI, ModalService) {
+app.controller('ProductsController', function ($scope, $http, $location, $rootScope, $state, $stateParams, productsAPI, ModalService, $timeout) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Lista de todos os Produtos";
   $scope.products = [];
+  $scope.notReady = true;
 
   productsAPI.async().then(function (response) { //2. so you can use .then()
-    $scope.products = response.data;
+    //$scope.products = response.data;
+
+    $timeout(function () {
+          $scope.products = response.data;
+          $scope.notReady = false;
+    }, 4000);
+
   });
 
   $scope.removeRow = function (product, product2) {
