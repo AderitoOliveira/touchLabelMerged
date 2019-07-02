@@ -4468,12 +4468,12 @@ app.controller('ProductsController', function ($scope, $http, $location, $rootSc
   $scope.notReady = true;
 
   productsAPI.async().then(function (response) { //2. so you can use .then()
-    //$scope.products = response.data;
+    $scope.products = response.data;
 
-    $timeout(function () {
+    /* $timeout(function () {
           $scope.products = response.data;
           $scope.notReady = false;
-    }, 4000);
+    }, 4000); */
 
   });
 
