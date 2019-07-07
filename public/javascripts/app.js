@@ -973,7 +973,7 @@ app.controller('labels', function ($scope, $http, $rootScope) {
     // Actually sends the request to the server.
 
     console.log('sending...');
-    //request.timeout = 100;
+    request.timeout = 100;
     request.send(ZPLString);
     request.abort();
     //request.done;
@@ -7334,7 +7334,7 @@ app.factory('sendZPLCodeToPrinter', function ($http) {
     // Actually sends the request to the server.
 
     console.log('sending...');
-    //request.timeout = 100;
+    request.timeout = 100;
     request.send(Zpl);
     //request.done;
 
