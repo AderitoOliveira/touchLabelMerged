@@ -6551,7 +6551,7 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
 }]);
 
 //ALL LABELS TO PRINT - Controller
-app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sendZPLCodeToPrinter', function ($scope, $http, $rootScope, $state, sendZPLCodeToPrinter) {
+app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sendZPLCodeToPrinter', 'ModalService', function ($scope, $http, $rootScope, $state, sendZPLCodeToPrinter, ModalService) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Lista de todas as etiquetas a imprimir";
@@ -6658,20 +6658,59 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
       }
       sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
 
-      var dataToUpdate = {
-        COLUMN_TO_UPDATE: 'ARTICLE_LABEL_ALREADY_PRINTED',
-        ORDER_ID: order_id,
-        CUSTOMER_PRODUCT_ID: customer_product_id
-      };
-
       //IF THE BOX LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
       if (box_label_already_printed === 'true') {
-        var res = $http.post('/deleteLabelsToPrint', dataToUpdate).then(function (data, status, headers, config) {
-          $state.reload();
+
+        var operationsToExecute = ['/deleteLabelsToPrint'];
+
+        var dataToDelete = [{ "COLUMN_TO_UPDATE": 'ARTICLE_LABEL_ALREADY_PRINTED', "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
+
+        ModalService.showModal({
+          templateUrl: "../modal/yesNoGeneric.html",
+          controller: "genericMultOperationsModalController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: "As etiquetas do artigo foram imprimidas com sucesso ?",
+            operationsObj: operationsToExecute,
+            dataObjs: dataToDelete,
+            stateToGo: "listLabelsToPrint",
+            needToReload: true
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
         });
       } else {
-        var res = $http.post('/updateLabelAlreadyPrinted', dataToUpdate).then(function (data, status, headers, config) {
-          $state.reload();
+        var operationsToExecute = ['/updateLabelAlreadyPrinted'];
+
+        var dataToDelete = [{ "COLUMN_TO_UPDATE": 'ARTICLE_LABEL_ALREADY_PRINTED', "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
+
+        ModalService.showModal({
+          templateUrl: "../modal/yesNoGeneric.html",
+          controller: "genericMultOperationsModalController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: "As etiquetas do artigo foram imprimidas com sucesso ?",
+            operationsObj: operationsToExecute,
+            dataObjs: dataToDelete,
+            stateToGo: "listLabelsToPrint",
+            needToReload: true
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
         });
       }
 
@@ -6791,20 +6830,58 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
         console.log('Error: ' + data);
       });
 
-    var dataToUpdate = {
-      COLUMN_TO_UPDATE: 'BOX_LABEL_ALREADY_PRINTED',
-      ORDER_ID: order_id,
-      CUSTOMER_PRODUCT_ID: customer_product_id
-    };
-
     //IF THE ARTICLE LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
     if (article_label_already_printed === 'true') {
-      var res = $http.post('/deleteLabelsToPrint', dataToUpdate).then(function (data, status, headers, config) {
-        $state.reload();
+      var operationsToExecute = ['/deleteLabelsToPrint'];
+
+      var dataToDelete = [{ "COLUMN_TO_UPDATE": 'BOX_LABEL_ALREADY_PRINTED', "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
+
+      ModalService.showModal({
+        templateUrl: "../modal/yesNoGeneric.html",
+        controller: "genericMultOperationsModalController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: "As etiquetas de caixa foram imprimidas com sucesso ?",
+            operationsObj: operationsToExecute,
+            dataObjs: dataToDelete,
+            stateToGo: "listLabelsToPrint",
+            needToReload: true
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
       });
     } else {
-      var res = $http.post('/updateLabelAlreadyPrinted', dataToUpdate).then(function (data, status, headers, config) {
-        $state.reload();
+      var operationsToExecute = ['/updateLabelAlreadyPrinted'];
+
+      var dataToDelete = [{ "COLUMN_TO_UPDATE": 'BOX_LABEL_ALREADY_PRINTED', "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
+
+      ModalService.showModal({
+        templateUrl: "../modal/yesNoGeneric.html",
+        controller: "genericMultOperationsModalController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: "As etiquetas de caixa foram imprimidas com sucesso ?",
+            operationsObj: operationsToExecute,
+            dataObjs: dataToDelete,
+            stateToGo: "listLabelsToPrint",
+            needToReload: true
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
       });
     }
 
