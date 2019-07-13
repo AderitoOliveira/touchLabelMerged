@@ -2858,45 +2858,33 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       layout: 'lightHorizontalLines'
     });
 
+    ////////////////////////////////////////////////////////////////////////////////
 
-    //////////////////////////////////////////////////////////////////////////////////////////////
+    var requestPDFTemplate = $http.get('/getPDFTemplate/' +  encodeURIComponent('production_sheet'));    
+      requestPDFTemplate.then(function successCallback(response) {
+         var pdfTemplatePaiting  = response.data[0].template_definition;
 
-    /*
-    for (i = 0; i < $scope.products.length; i++) {
+         var map = {
+          '_CLIENT_NAME_': $scope.clientname,
+          '_ORDER_ID_': $scope.orderid,
+          '_DELIVER_DATE_': moment($scope.deliverydate).format('YYYY-MM-DD')
+        };
+  
+         var pdfTemplatePaitingFormatted = pdfTemplatePaiting.replace(/(\r\n|\n|\r)/gm,"").replace(/\s/g,'');
+         var paintingPDFTemplateToStringReplaced = replaceAll(pdfTemplatePaitingFormatted, map);
+         var orderProductPaintingPDFBuildJSON = JSON.parse(paintingPDFTemplateToStringReplaced);
 
-      var INTERNAL_PRODUCT_ID = $scope.products[i].INTERNAL_PRODUCT_ID;
-      var TOTAL_QUANTITY_ORDERED = $scope.products[i].TOTAL_QUANTITY_ORDERED;
-      totalProductsOrdered = totalProductsOrdered + TOTAL_QUANTITY_ORDERED;
+         orderProductPaintingPDFBuildJSON.content[2] = formattedArrForProduction;
 
-      formattedArrForProduction.push({
-        table: {
-          headerRows: 1, widths: [100, 100, '*'],
-          body: [
-            [
-              { text: INTERNAL_PRODUCT_ID, style: "tblRows" },
-              { text: TOTAL_QUANTITY_ORDERED, style: "tblRows" },
-              { text: "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _", style: "tblRows" }
-            ]
-          ]
-        },
-        layout: 'lightHorizontalLines'
+         var filename = 'Encomenda_' + orderId + '_Folha_Produção';
+         //pdfMake.createPdf(documentToPrint).download(filename);
+
+      },
+      function errorCallback(data){
+      console.log('Error: ' + data);
       });
 
-    }
-
-    formattedArrForProduction.push({
-      table: {
-        headerRows: 1, widths: [100, 100],
-        body: [
-          [
-            { text: "TOTAL: ", style: "tblSingleRowLeft" },
-            { text: totalProductsOrdered, style: "tblSingleRowLeft" }
-          ]
-        ]
-      },
-      layout: 'lightHorizontalLines'
-    });
-    */
+    /////////////////////////////////////////////////////////////////////////////////
 
     var pdfDocumentProduction = {
       content: [
