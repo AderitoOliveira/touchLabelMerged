@@ -2458,31 +2458,31 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         return;
       }
 
-      /* var requestPDFTemplate = $http.get('/getPDFTemplate/' +  encodeURIComponent('paiting_products_in_order'));    
+      var requestPDFTemplate = $http.get('/getPDFTemplate/' +  encodeURIComponent('paiting_products_in_order'));    
       requestPDFTemplate.then(function successCallback(response) {
          var pdfTemplatePaiting  = response.data[0].template_definition;
-         
-         //var orderProductPaintingPDFToJSON = JSON.parse(pdfTemplatePaiting);
-         var orderProductPaintingPDFToJSON = JSON.stringify(pdfTemplatePaiting);
-         var orderProductPaintingPDFBuildJSON = JSON.parse(orderProductPaintingPDFToJSON);
+
+         var map = {
+          '_CLIENT_NAME_': $scope.clientname,
+          '_DELIVER_DATE_': moment($scope.deliverydate).format('YYYY-MM-DD'),
+          '_ORDER_ID_': orderId
+        };
+  
+         var pdfTemplatePaitingFormatted = pdfTemplatePaiting.replace(/(\r\n|\n|\r)/gm,"").replace(/\s/g,'');
+         var paintingPDFTemplateToStringReplaced = replaceAll(pdfTemplatePaitingFormatted, map);
+         var orderProductPaintingPDFBuildJSON = JSON.parse(paintingPDFTemplateToStringReplaced);
 
          orderProductPaintingPDFBuildJSON.content[1] = Object.values(buildTables(arrayForAll));
 
-         var dataToInsert = buildTables(arrayForAll);
-         pdfTemplatePaiting.replace('DATA_TO_INJECT', dataToInsert);
-         pdfMake.createPdf(orderProductPaintingPDFBuildJSON).download(filename);
-
-        //var orderProductPaintingPDFToJSON = JSON.parse(pdfTemplatePaiting);
-
-        paintingPDFTemplate.content[1] = Object.values(buildTables(arrayForAll));
-
          var filename = 'Encomenda_' + orderId;
-         pdfMake.createPdf(paintingPDFTemplate).download(filename);
+         if ($scope.productsWhereTechSheetNotExists.length == 0) {
+          //pdfMake.createPdf(orderProductPaintingPDFBuildJSON).download(filename);
+        }
 
       },
       function errorCallback(data){
       console.log('Error: ' + data);
-      }); */
+      });
 
       var paintingPDFTemplate = {
         content: [
