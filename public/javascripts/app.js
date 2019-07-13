@@ -6728,7 +6728,7 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
     request.then(function successCallback(response) {
       $scope.productLabel = response.data;
 
-      var barCodeNumber = $scope.productLabel[0].BAR_CODE_NUMBER;
+      var barCodeNumber = $scope.productLabel[0].Bar_Code_Tech_Sheet;
       var qtyByBox = $scope.productLabel[0].Qty_By_Box;
       var productNameForLabel = $scope.productLabel[0].PRODUCT_NAME_FOR_LABEL;
       var boxBarCodeType = $scope.productLabel[0].BOX_BARCODE_TYPE;
