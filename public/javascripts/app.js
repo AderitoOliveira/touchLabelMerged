@@ -6590,7 +6590,7 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
     request.then(function successCallback(response) {
       $scope.productLabel = response.data;
 
-      var barCodeNumber = $scope.productLabel[0].BAR_CODE_NUMBER;
+      var barCodeNumber = $scope.productLabel[0].Bar_Code_Tech_Sheet;
       var ZPLString = $scope.productLabel[0].ZPL_STRING_ARTICLE;
       var ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL = $scope.productLabel[0].ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL;
       var ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL = $scope.productLabel[0].ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL;
