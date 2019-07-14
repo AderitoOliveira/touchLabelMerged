@@ -2458,31 +2458,31 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         return;
       }
 
-      /* var requestPDFTemplate = $http.get('/getPDFTemplate/' +  encodeURIComponent('paiting_products_in_order'));    
+      var requestPDFTemplate = $http.get('/getPDFTemplate/' +  encodeURIComponent('paiting_products_in_order'));    
       requestPDFTemplate.then(function successCallback(response) {
          var pdfTemplatePaiting  = response.data[0].template_definition;
-         
-         //var orderProductPaintingPDFToJSON = JSON.parse(pdfTemplatePaiting);
-         var orderProductPaintingPDFToJSON = JSON.stringify(pdfTemplatePaiting);
-         var orderProductPaintingPDFBuildJSON = JSON.parse(orderProductPaintingPDFToJSON);
+
+         var map = {
+          '_CLIENT_NAME_': $scope.clientname,
+          '_DELIVER_DATE_': moment($scope.deliverydate).format('YYYY-MM-DD'),
+          '_ORDER_ID_': orderId
+        };
+  
+         var pdfTemplatePaitingFormatted = pdfTemplatePaiting.replace(/(\r\n|\n|\r)/gm,"").replace(/\s/g,'');
+         var paintingPDFTemplateToStringReplaced = replaceAll(pdfTemplatePaitingFormatted, map);
+         var orderProductPaintingPDFBuildJSON = JSON.parse(paintingPDFTemplateToStringReplaced);
 
          orderProductPaintingPDFBuildJSON.content[1] = Object.values(buildTables(arrayForAll));
 
-         var dataToInsert = buildTables(arrayForAll);
-         pdfTemplatePaiting.replace('DATA_TO_INJECT', dataToInsert);
-         pdfMake.createPdf(orderProductPaintingPDFBuildJSON).download(filename);
-
-        //var orderProductPaintingPDFToJSON = JSON.parse(pdfTemplatePaiting);
-
-        paintingPDFTemplate.content[1] = Object.values(buildTables(arrayForAll));
-
          var filename = 'Encomenda_' + orderId;
-         pdfMake.createPdf(paintingPDFTemplate).download(filename);
+         if ($scope.productsWhereTechSheetNotExists.length == 0) {
+          //pdfMake.createPdf(orderProductPaintingPDFBuildJSON).download(filename);
+        }
 
       },
       function errorCallback(data){
       console.log('Error: ' + data);
-      }); */
+      });
 
       var paintingPDFTemplate = {
         content: [
@@ -2858,45 +2858,33 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       layout: 'lightHorizontalLines'
     });
 
+    ////////////////////////////////////////////////////////////////////////////////
 
-    //////////////////////////////////////////////////////////////////////////////////////////////
+    var requestPDFTemplate = $http.get('/getPDFTemplate/' +  encodeURIComponent('production_sheet'));    
+      requestPDFTemplate.then(function successCallback(response) {
+         var pdfTemplatePaiting  = response.data[0].template_definition;
 
-    /*
-    for (i = 0; i < $scope.products.length; i++) {
+         var map = {
+          '_CLIENT_NAME_': $scope.clientname,
+          '_ORDER_ID_': $scope.orderid,
+          '_DELIVER_DATE_': moment($scope.deliverydate).format('YYYY-MM-DD')
+        };
+  
+         var pdfTemplatePaitingFormatted = pdfTemplatePaiting.replace(/(\r\n|\n|\r)/gm,"").replace(/\s/g,'');
+         var paintingPDFTemplateToStringReplaced = replaceAll(pdfTemplatePaitingFormatted, map);
+         var orderProductPaintingPDFBuildJSON = JSON.parse(paintingPDFTemplateToStringReplaced);
 
-      var INTERNAL_PRODUCT_ID = $scope.products[i].INTERNAL_PRODUCT_ID;
-      var TOTAL_QUANTITY_ORDERED = $scope.products[i].TOTAL_QUANTITY_ORDERED;
-      totalProductsOrdered = totalProductsOrdered + TOTAL_QUANTITY_ORDERED;
+         orderProductPaintingPDFBuildJSON.content[2] = formattedArrForProduction;
 
-      formattedArrForProduction.push({
-        table: {
-          headerRows: 1, widths: [100, 100, '*'],
-          body: [
-            [
-              { text: INTERNAL_PRODUCT_ID, style: "tblRows" },
-              { text: TOTAL_QUANTITY_ORDERED, style: "tblRows" },
-              { text: "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _", style: "tblRows" }
-            ]
-          ]
-        },
-        layout: 'lightHorizontalLines'
+         var filename = 'Encomenda_' + orderId + '_Folha_Produção';
+         //pdfMake.createPdf(documentToPrint).download(filename);
+
+      },
+      function errorCallback(data){
+      console.log('Error: ' + data);
       });
 
-    }
-
-    formattedArrForProduction.push({
-      table: {
-        headerRows: 1, widths: [100, 100],
-        body: [
-          [
-            { text: "TOTAL: ", style: "tblSingleRowLeft" },
-            { text: totalProductsOrdered, style: "tblSingleRowLeft" }
-          ]
-        ]
-      },
-      layout: 'lightHorizontalLines'
-    });
-    */
+    /////////////////////////////////////////////////////////////////////////////////
 
     var pdfDocumentProduction = {
       content: [
@@ -6590,7 +6578,7 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
     request.then(function successCallback(response) {
       $scope.productLabel = response.data;
 
-      var barCodeNumber = $scope.productLabel[0].BAR_CODE_NUMBER;
+      var barCodeNumber = $scope.productLabel[0].Bar_Code_Tech_Sheet;
       var ZPLString = $scope.productLabel[0].ZPL_STRING_ARTICLE;
       var ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL = $scope.productLabel[0].ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL;
       var ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL = $scope.productLabel[0].ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL;
@@ -6728,7 +6716,7 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
     request.then(function successCallback(response) {
       $scope.productLabel = response.data;
 
-      var barCodeNumber = $scope.productLabel[0].BAR_CODE_NUMBER;
+      var barCodeNumber = $scope.productLabel[0].Bar_Code_Tech_Sheet;
       var qtyByBox = $scope.productLabel[0].Qty_By_Box;
       var productNameForLabel = $scope.productLabel[0].PRODUCT_NAME_FOR_LABEL;
       var boxBarCodeType = $scope.productLabel[0].BOX_BARCODE_TYPE;
