@@ -3706,7 +3706,7 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
       pageSize: 'A4',
     };
 
-    pdfMake.createPdf(documentDefinition).download();
+    //pdfMake.createPdf(documentDefinition).download();
 
   };
 
@@ -4365,6 +4365,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
       }
 
       var map = {
+        '_IMAGE_URL_': $scope.mainImageUrl,
         '_PRODUCT_NAME_': $scope.productName,
         '_RAW_MATERIAL_': $scope.rawMaterial,
         '_RAW_MATERIAL_EXTRA_': $scope.rawMaterialExtra,
@@ -4400,6 +4401,25 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
         '_FINAL_OBSERVATIONS_': $scope.finalObservations
       };
 
+       ////////////////////////////////////////////////////////////////////////////////
+
+    var requestPDFTemplate = $http.get('/getPDFTemplate/' +  encodeURIComponent('product_tech_sheet'));    
+    requestPDFTemplate.then(function successCallback(response) {
+       var pdfTemplatePaiting  = response.data[0].template_definition;
+
+       var pdfTemplatePaitingFormatted = pdfTemplatePaiting.replace(/(\r\n|\n|\r)/gm,"").replace(/\s/g,'');
+       var paintingPDFTemplateToStringReplaced = replaceAll(pdfTemplatePaitingFormatted, map);
+       var orderProductPaintingPDFBuildJSON = JSON.parse(paintingPDFTemplateToStringReplaced);
+
+       var filename = 'Ficha_Técnica_' + $scope.productName.replace(/\s/g, '_').replace('/', '_');
+       pdfMake.createPdf(orderProductPaintingPDFBuildJSON).download(filename);
+
+    },
+    function errorCallback(data){
+    console.log('Error: ' + data);
+    });
+
+  /////////////////////////////////////////////////////////////////////////////////
 
       var documentDefintionString = JSON.stringify(dd);
       var documentDefinitionToJSON = replaceAll(documentDefintionString, map);
@@ -4409,7 +4429,7 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
 
       var fileName = 'Ficha_Técnica_' + $scope.productName.replace(/\s/g, '_').replace('/', '_');
 
-      pdfMake.createPdf(documentToPrint).download(fileName);
+      //pdfMake.createPdf(documentToPrint).download(fileName);
 
 
     },
@@ -6437,11 +6457,11 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
     //  docDefinition.content[1].table.body[i + 1] = localCopyBoxesToSendInOrder[i];
     //}
 
-    var allKeys = Object.keys(arrayDistinctBoxes);
+    /* var allKeys = Object.keys(arrayDistinctBoxes);
 
     for (j = 0; j < allKeys.length; j++) {
       docDefinition.content[1].table.body[j + 1] = arrayDistinctBoxes[allKeys[j]];
-    }
+    } */
 
     function replaceAll(str, map) {
       for (key in map) {
@@ -6455,6 +6475,13 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
 
     GetBoxesSequence.nextValue().then(function (sequenceValue) {
 
+      
+      var map = {
+        '_CLIENT_NAME_': _clientname,
+        '_ORDER_DATE_': dateToPrint,
+        '_REQUISITION_ID_': sequenceValue
+      };
+
       var currentDate = new Date();
       var day = currentDate.getDate();
       var month = currentDate.getMonth() + 1;
@@ -6462,12 +6489,31 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
       var dateToPrint = day + "/" + month + "/" + year;
       var dateToPrintInFileName = day + "_" + month + "_" + year;
 
-      var map = {
-        '_CLIENT_NAME_': _clientname,
-        '_ORDER_DATE_': dateToPrint,
-        '_REQUISITION_ID_': sequenceValue
-      };
+    ////////////////////////////////////////////////////////////////////////////////
 
+      var requestPDFTemplate = $http.get('/getPDFTemplate/' +  encodeURIComponent('order_boxes'));    
+      requestPDFTemplate.then(function successCallback(response) {
+        var pdfTemplateOrderBoxes  = response.data[0].template_definition;
+
+      var pdfTemplateOrderBoxesFormatted = pdfTemplateOrderBoxes.replace(/(\r\n|\n|\r)/gm,"").replace(/\s/g,'');
+      var orderBoxesPDFTemplateToStringReplaced = replaceAll(pdfTemplateOrderBoxesFormatted, map);
+      var orderBoxesPDFBuildJSON = JSON.parse(orderBoxesPDFTemplateToStringReplaced);
+
+      var allKeys = Object.keys(arrayDistinctBoxes);
+
+      for (j = 0; j < allKeys.length; j++) {
+        orderBoxesPDFBuildJSON.content[1].table.body[j + 1] = arrayDistinctBoxes[allKeys[j]];
+      }
+
+      var filename = 'Encomenda_Caixas_' + _clientname.replace(/\./g, '_').replace(/\s/g, '_') + '_' + dateToPrintInFileName;
+      pdfMake.createPdf(orderBoxesPDFBuildJSON).download(filename);
+
+      },
+      function errorCallback(data){
+      console.log('Error: ' + data);
+      });
+
+  /////////////////////////////////////////////////////////////////////////////////
 
       var documentDefintionString = JSON.stringify(docDefinition);
       var documentDefinitionToJSON = replaceAll(documentDefintionString, map);
@@ -6475,7 +6521,7 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
       var documentToPrint = JSON.parse(documentDefinitionToJSON);
 
       var filename = 'Encomenda_Caixas_' + _clientname.replace(/\./g, '_').replace(/\s/g, '_') + '_' + dateToPrintInFileName;
-      pdfMake.createPdf(documentToPrint).download(filename);
+      //pdfMake.createPdf(documentToPrint).download(filename);
 
       //DELETE THE ORDER_ID - CUSTOMER_PRODUCT_ID FROM THE order_boxes_closed_production_products TABLE
       var orderIdToDeleteArray = [];
