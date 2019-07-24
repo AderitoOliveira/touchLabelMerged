@@ -857,9 +857,32 @@ router.post('/authenticate', function (req, res) {
 
 router.post('/vuePrintLabels', function (req, res) {
 
+    console.log("vuePrintLabels !!!!!")
     var labelToPrint = req.body;
 
-    console.log(res.body)
+    validate(req,res);
+    
+    /* req.params({
+      parentcustomerid: '12345'
+    }); */
+
+    req.params= {parentcustomerid: '1070482'};
+
+    getParentDetailsForPallet(req, res);
+
+    setTimeout(function () {
+      var x = res.get('ReturnedRows');
+      console.log(Object.values(JSON.parse(x)));
+
+      var y = res.data;
+      console.log(y);
+    }, 1000);
+
+    var x = res.get('ReturnedRows');
+    console.log(Object.values(JSON.parse(x)));
+
+
+    /* console.log(res.body)
     console.log("-------------------LABEL BODY TO PRINT-----------------");
     console.log(labelToPrint);
     console.log(req.params.xpto);
@@ -883,12 +906,15 @@ router.post('/vuePrintLabels', function (req, res) {
     } else if (req.body.labelTypeToPrint == 'Box') {
       console.log("BOX");
       var request = new XMLHttpRequest();
-    }
+    } */
 
-
+    //res.send("END");
 
 });
 
-
+function validate (req, res) {
+  console.log("VALIDATE CALLED!!!!!")
+  console.log(req.body);
+};
 
 module.exports = router;
