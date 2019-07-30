@@ -857,10 +857,54 @@ router.post('/authenticate', function (req, res) {
 
 router.post('/vuePrintLabels', function (req, res) {
 
+  /* {"CREATED_DATE": "2019-07-30 00:00:00",
+  "CUSTOMER_PRODUCT_ID": "1070484(1)",
+  "EMPLOYEE_ID": 5,
+  "EMPLOYEE_NAME": "João Faria",
+  "INTERNAL_PRODUCT_ID": "140/20",
+  "ORDER_ID": "2020145",
+  "PRODUCED_VALUE_IN_EURO": 170,
+  "PRODUCT_NAME": "Pot Tusca Shape White (140/20)",
+  "TOTAL_PRODUCTS_PAINTED": 100,
+  "TOTAL_QUANTITY_ORDERED": 300,
+  "PRICE_IN_EUR": 10,
+  "QTY_BY_PALLETE" : 230,
+  "PARENT_CUSTOMER_PRODUCT_ID" : 32456,
+  "IN_COMPOUND_PRODUCT" : Y
+  } */
     console.log("vuePrintLabels !!!!!")
-    var labelToPrint = req.body;
+    console.log(req.body);
+    
+    var products_still_to_produce = req.body.TOTAL_QUANTITY_ORDERED - req.body.TOTAL_PRODUCTS_PAINTED;
 
-    validate(req,res);
+    if(req.body.TOTAL_PRODUCTS_PAINTED < products_still_to_produce) {
+      var valueProducedByTheEmployee = req.body.TOTAL_PRODUCTS_PAINTED * req.body.PRICE_IN_EUR;
+      var palletQuantity = req.body.TOTAL_PRODUCTS_PAINTED / req.body.QTY_BY_PALLETE;
+      
+      var dataObj = {
+        ORDER_ID: req.body.ORDER_ID,
+        INTERNAL_PRODUCT_ID: req.body.INTERNAL_PRODUCT_ID,
+        CUSTOMER_PRODUCT_ID: req.body.CUSTOMER_PRODUCT_ID,
+        PRODUCT_NAME: req.body.PRODUCT_NAME,
+        EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
+        EMPLOYEE_ID: req.body.EMPLOYEE_ID,
+        TOTAL_PRODUCTS_PAINTED: req.body.TOTAL_PRODUCTS_PAINTED,
+        PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+        CREATED_DATE: req.body.CREATED_DATE
+      };
+
+      console.log(dataObj);
+
+      if (req.body.PARENT_CUSTOMER_PRODUCT_ID != null && req.body.IN_COMPOUND_PRODUCT == 'Y') {
+        req.params= {parentcustomerid: '1070482'};
+        getParentDetailsForPallet(req, res);
+      }
+
+    }
+
+    res.send("SUCCESS");
+
+    //validate(req,res);
     
     /* req.params({
       parentcustomerid: '12345'
@@ -868,18 +912,20 @@ router.post('/vuePrintLabels', function (req, res) {
 
     req.params= {parentcustomerid: '1070482'};
 
-    getParentDetailsForPallet(req, res);
+    /* getParentDetailsForPallet(req, res).then(function() {
+      console.log("XPTO");
+    }); */
 
-    setTimeout(function () {
+    /* setTimeout(function () {
       var x = res.get('ReturnedRows');
       console.log(Object.values(JSON.parse(x)));
 
       var y = res.data;
       console.log(y);
     }, 1000);
-
-    var x = res.get('ReturnedRows');
-    console.log(Object.values(JSON.parse(x)));
+ */
+    /* var x = res.get('ReturnedRows');
+    console.log(Object.values(JSON.parse(x))); */
 
 
     /* console.log(res.body)
@@ -909,8 +955,29 @@ router.post('/vuePrintLabels', function (req, res) {
     } */
 
     //res.send("END");
-
+    //first().then(second).then(third);
 });
+
+function first(){
+  return new Promise(function(resolve, reject){
+      console.log("First");
+      resolve();
+  });
+}
+
+function second(){
+  return new Promise(function(resolve, reject){
+      console.log("Second");
+      resolve();
+  });
+}
+
+function third(){
+  return new Promise(function(resolve, reject){
+      console.log("Third");
+      resolve();
+  });
+}
 
 function validate (req, res) {
   console.log("VALIDATE CALLED!!!!!")
