@@ -1587,6 +1587,30 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
     var insertedProductionReport = [];
 
+    if(employyee_name == null || $scope.totalquantityproduced == null) {
+      var message = 'Preencha o nome do funcionário e a quantidade a registar!';
+
+      ModalService.showModal({
+        templateUrl: "../modal/genericModal.html",
+        controller: "GenericController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: message
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+
+      return true;
+    }
+
     //PRODUCTS STILL TO PRODUCE
     var products_still_to_produce = totalquantityordered - totalproductsproduced;
 
@@ -1915,14 +1939,22 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       var products_still_to_produce = totalquantityordered - $scope.totalquantityproduced;
     }
 
-    if (products_still_to_produce == 0) {
+    if (products_still_to_produce == 0 || employyee_name == null || $scope.totalquantityproduced == null) {
+
+      if(products_still_to_produce == 0) {
+        var message = 'A quantidade de artigos a pintar para o produto ' + productName + ' na encomenda ' + $scope.orderid + ' já foi atingida!';
+      }
+
+      if(employyee_name == null || $scope.totalquantityproduced == null) {
+        var message = 'Preencha o nome do funcionário e a quantidade a registar!';
+      }
 
       ModalService.showModal({
         templateUrl: "../modal/genericModal.html",
         controller: "GenericController",
         preClose: (modal) => { modal.element.modal('hide'); },
         inputs: {
-          message: 'A quantidade de artigos a pintar para o produto ' + productName + ' na encomenda ' + $scope.orderid + ' já foi atingida!'
+          message: message
         }
       }).then(function (modal) {
         modal.element.modal();
@@ -1935,7 +1967,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         });
       });
 
-      $state.reload();
+      //$state.reload();
 
       return true;
     };
