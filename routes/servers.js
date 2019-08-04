@@ -1,22 +1,22 @@
 var mysql = require('mysql');
 
 
-/* var con = mysql.createConnection({
+var con = mysql.createConnection({
     host: '127.0.0.1',
     user: 'easylabeldb',
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'
-}); */
+});
 
 
-var con = mysql.createConnection({  
+/* var con = mysql.createConnection({  
     host: '172.30.184.178',
     user: 'easylabeldb',
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'	
-});
+}); */
 
 
 
@@ -1313,6 +1313,8 @@ updatePalletesQuantity = function(req, res) {
 
 //GET PARENT DETAILS TO INSERT THE PALLETE QUANTITY WHEN REGISTERING DAILY PAINTING
 getParentDetailsForPallet = function(data, callback) {
+    console.log("getParentDetailsForPallet");  
+    console.log(data.params);  
     con.connect(function(err) {
     con.query('select prod.INTERNAL_PRODUCT_ID, prod.PRODUCT_NAME, techsheet.Qty_By_Pallet from products prod, products_technical_sheet techsheet where prod.CUSTOMER_PRODUCT_ID = ? and prod.CUSTOMER_PRODUCT_ID = techsheet.CUSTOMER_PRODUCT_ID', [data.params.parentcustomerid], function(err, rows) {
         if (err) {
@@ -1321,8 +1323,9 @@ getParentDetailsForPallet = function(data, callback) {
         callback.setHeader('Content-Type', 'application/json');
         callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.append("ReturnedRows", JSON.stringify(rows));
         callback.end(JSON.stringify(rows));
-        callback = rows;
+        //callback = rows;
         console.log("GET PARENT DETAILS TO INSERT THE PALLETE QUANTITY");   
 
     });

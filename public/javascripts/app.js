@@ -1587,6 +1587,30 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
     var insertedProductionReport = [];
 
+    if(employyee_name == null || $scope.totalquantityproduced == null) {
+      var message = 'Preencha o nome do funcionário e a quantidade a registar!';
+
+      ModalService.showModal({
+        templateUrl: "../modal/genericModal.html",
+        controller: "GenericController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: message
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+
+      return true;
+    }
+
     //PRODUCTS STILL TO PRODUCE
     var products_still_to_produce = totalquantityordered - totalproductsproduced;
 
@@ -1915,14 +1939,22 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       var products_still_to_produce = totalquantityordered - $scope.totalquantityproduced;
     }
 
-    if (products_still_to_produce == 0) {
+    if (products_still_to_produce == 0 || employyee_name == null || $scope.totalquantityproduced == null) {
+
+      if(products_still_to_produce == 0) {
+        var message = 'A quantidade de artigos a pintar para o produto ' + productName + ' na encomenda ' + $scope.orderid + ' já foi atingida!';
+      }
+
+      if(employyee_name == null || $scope.totalquantityproduced == null) {
+        var message = 'Preencha o nome do funcionário e a quantidade a registar!';
+      }
 
       ModalService.showModal({
         templateUrl: "../modal/genericModal.html",
         controller: "GenericController",
         preClose: (modal) => { modal.element.modal('hide'); },
         inputs: {
-          message: 'A quantidade de artigos a pintar para o produto ' + productName + ' na encomenda ' + $scope.orderid + ' já foi atingida!'
+          message: message
         }
       }).then(function (modal) {
         modal.element.modal();
@@ -1935,7 +1967,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         });
       });
 
-      $state.reload();
+      //$state.reload();
 
       return true;
     };
@@ -2468,8 +2500,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           '_ORDER_ID_': orderId
         };
   
-         var pdfTemplatePaitingFormatted = pdfTemplatePaiting.replace(/(\r\n|\n|\r)/gm,"").replace(/\s/g,'');
-         var paintingPDFTemplateToStringReplaced = replaceAll(pdfTemplatePaitingFormatted, map);
+         //var pdfTemplatePaitingFormatted = pdfTemplatePaiting.replace(/(\r\n|\n|\r)/gm,"").replace(/\s/g,'');
+         var paintingPDFTemplateToStringReplaced = replaceAll(pdfTemplatePaiting, map);
          var orderProductPaintingPDFBuildJSON = JSON.parse(paintingPDFTemplateToStringReplaced);
 
          orderProductPaintingPDFBuildJSON.content[1] = Object.values(buildTables(arrayForAll));
@@ -2661,8 +2693,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           '_DELIVER_DATE_': moment($scope.deliverydate).format('YYYY-MM-DD')
         };
   
-         var pdfTemplateProductionSheetFormatted = pdfTemplateProductionSheet.replace(/(\r\n|\n|\r)/gm,"").replace(/\s/g,'');
-         var productionSheetPDFTemplateToStringReplaced = replaceAll(pdfTemplateProductionSheetFormatted, map);
+         //var pdfTemplateProductionSheetFormatted = pdfTemplateProductionSheet.replace(/(\r\n|\n|\r)/gm,"").replace(/\s/g,'');
+         var productionSheetPDFTemplateToStringReplaced = replaceAll(pdfTemplateProductionSheet, map);
          var productionSheetPDFBuildJSON = JSON.parse(productionSheetPDFTemplateToStringReplaced);
 
          productionSheetPDFBuildJSON.content[2] = formattedArrForProduction;
@@ -3050,8 +3082,8 @@ app.controller('createTechSheet', function ($scope, $http, $rootScope, $statePar
       requestPDFTemplate.then(function successCallback(response) {
        var pdfTemplateTechSheet  = response.data[0].template_definition;
 
-       var pdfTemplateTechSheetFormatted = pdfTemplateTechSheet.replace(/(\r\n|\n|\r)/gm,"").replace(/\s/g,'');
-       var techSheetPDFTemplateToStringReplaced = replaceAll(pdfTemplateTechSheetFormatted, map);
+       //var pdfTemplateTechSheetFormatted = pdfTemplateTechSheet.replace(/(\r\n|\n|\r)/gm,"").replace(/\s/g,'');
+       var techSheetPDFTemplateToStringReplaced = replaceAll(pdfTemplateTechSheet, map);
        var techSheetPDFBuildJSON = JSON.parse(techSheetPDFTemplateToStringReplaced);
 
        var filename = 'Ficha_Técnica_' + $scope.productName.replace(/\s/g, '_').replace('/', '_');
@@ -3311,8 +3343,8 @@ app.controller('editTechSheet', function ($scope, $http, $rootScope, $stateParam
       requestPDFTemplate.then(function successCallback(response) {
        var pdfTemplateTechSheet  = response.data[0].template_definition;
 
-       var pdfTemplateTechSheetFormatted = pdfTemplateTechSheet.replace(/(\r\n|\n|\r)/gm,"").replace(/\s/g,'');
-       var techSheetPDFTemplateToStringReplaced = replaceAll(pdfTemplateTechSheetFormatted, map);
+       //var pdfTemplateTechSheetFormatted = pdfTemplateTechSheet.replace(/(\r\n|\n|\r)/gm,"").replace(/\s/g,'');
+       var techSheetPDFTemplateToStringReplaced = replaceAll(pdfTemplateTechSheet, map);
        var techSheetPDFBuildJSON = JSON.parse(techSheetPDFTemplateToStringReplaced);
 
        var filename = 'Ficha_Técnica_' + $scope.productName.replace(/\s/g, '_').replace('/', '_');
@@ -5159,13 +5191,6 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
 
     GetBoxesSequence.nextValue().then(function (sequenceValue) {
 
-      
-      var map = {
-        '_CLIENT_NAME_': _clientname,
-        '_ORDER_DATE_': dateToPrint,
-        '_REQUISITION_ID_': sequenceValue
-      };
-
       var currentDate = new Date();
       var day = currentDate.getDate();
       var month = currentDate.getMonth() + 1;
@@ -5173,12 +5198,18 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
       var dateToPrint = day + "/" + month + "/" + year;
       var dateToPrintInFileName = day + "_" + month + "_" + year;
 
+      var map = {
+        '_CLIENT_NAME_': _clientname,
+        '_ORDER_DATE_': dateToPrint,
+        '_REQUISITION_ID_': sequenceValue
+      };
+
       var requestPDFTemplate = $http.get('/getPDFTemplate/' +  encodeURIComponent('order_boxes'));    
       requestPDFTemplate.then(function successCallback(response) {
         var pdfTemplateOrderBoxes  = response.data[0].template_definition;
 
-      var pdfTemplateOrderBoxesFormatted = pdfTemplateOrderBoxes.replace(/(\r\n|\n|\r)/gm,"").replace(/\s/g,'');
-      var orderBoxesPDFTemplateToStringReplaced = replaceAll(pdfTemplateOrderBoxesFormatted, map);
+      //var pdfTemplateOrderBoxesFormatted = pdfTemplateOrderBoxes.replace(/(\r\n|\n|\r)/gm,"").replace(/\s/g,'');
+      var orderBoxesPDFTemplateToStringReplaced = replaceAll(pdfTemplateOrderBoxes, map);
       var orderBoxesPDFBuildJSON = JSON.parse(orderBoxesPDFTemplateToStringReplaced);
 
       var allKeys = Object.keys(arrayDistinctBoxes);
