@@ -1816,3 +1816,26 @@ authenticateLogin = function(req, callback) {
     });
 });
 }
+
+
+//FUNCTIONS CREATED FOR THE INSERT DAIILY PAINTING APP
+getParentDetailsForPalletApp = function(parentcustomerid) {
+    return new Promise(async function(resolve, reject) {
+      //let con; // Declared here for scoping purposes.
+      console.log("INSIDE getParentDetailsForPalletApp");
+      try {
+        con.connect(function(err) {
+        let result = con.query('select prod.INTERNAL_PRODUCT_ID, prod.PRODUCT_NAME, techsheet.Qty_By_Pallet from products prod, products_technical_sheet techsheet where prod.CUSTOMER_PRODUCT_ID = ? and prod.CUSTOMER_PRODUCT_ID = techsheet.CUSTOMER_PRODUCT_ID', [parentcustomerid], function(err, rows) {
+                if (err) {
+                    throw err;
+                } else
+                console.log("GET PARENT DETAILS TO INSERT THE PALLETE QUANTITY"); 
+                resolve(JSON.stringify(rows));
+            });
+        });
+      } catch (err) {
+        console.log('Error occurred', err);
+        reject(err);
+      } 
+    });
+  } 

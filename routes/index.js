@@ -855,7 +855,7 @@ router.post('/authenticate', function (req, res) {
 });
 
 
-router.post('/vuePrintLabels', function (req, res) {
+router.post('/vuePrintLabels', async function (req, res) {
 
   /* {"CREATED_DATE": "2019-07-30 00:00:00",
   "CUSTOMER_PRODUCT_ID": "1070484(1)",
@@ -870,7 +870,7 @@ router.post('/vuePrintLabels', function (req, res) {
   "PRICE_IN_EUR": 10,
   "QTY_BY_PALLETE" : 230,
   "PARENT_CUSTOMER_PRODUCT_ID" : 32456,
-  "IN_COMPOUND_PRODUCT" : Y
+  "IN_COMPOUND_PRODUCT" : "Y"
   } */
     console.log("vuePrintLabels !!!!!")
     console.log(req.body);
@@ -896,92 +896,23 @@ router.post('/vuePrintLabels', function (req, res) {
       console.log(dataObj);
 
       if (req.body.PARENT_CUSTOMER_PRODUCT_ID != null && req.body.IN_COMPOUND_PRODUCT == 'Y') {
+        console.log("INSIDE VALIDAITON");
         req.params= {parentcustomerid: '1070482'};
-        getParentDetailsForPallet(req, res);
+        let parentDetails = await getParentDetailsForPalletApp('1070482');
+        console.log(parentDetails);
+
+        console.log("DONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
       }
 
     }
 
-    res.send("SUCCESS");
-
-    //validate(req,res);
     
-    /* req.params({
-      parentcustomerid: '12345'
-    }); */
-
-    req.params= {parentcustomerid: '1070482'};
-
-    /* getParentDetailsForPallet(req, res).then(function() {
-      console.log("XPTO");
-    }); */
-
-    /* setTimeout(function () {
-      var x = res.get('ReturnedRows');
-      console.log(Object.values(JSON.parse(x)));
-
-      var y = res.data;
-      console.log(y);
-    }, 1000);
- */
-    /* var x = res.get('ReturnedRows');
-    console.log(Object.values(JSON.parse(x))); */
-
-
-    /* console.log(res.body)
-    console.log("-------------------LABEL BODY TO PRINT-----------------");
-    console.log(labelToPrint);
-    console.log(req.params.xpto);
-    console.log(req.body.xpto);
-    console.log("-------------------------------------------------------");
-
-    
-    //label array = {
-    //  customer_product_id, 
-    //  order_id, 
-    //  quantity_article_labels, 
-    //  box_label_already_printed
-    //} 
-    //fetchSingleProductLabels(req, res);
-
-    if(req.body.labelTypeToPrint == 'Article') {
-
-      console.log("ARTICLE");
-
-
-    } else if (req.body.labelTypeToPrint == 'Box') {
-      console.log("BOX");
-      var request = new XMLHttpRequest();
-    } */
-
-    //res.send("END");
-    //first().then(second).then(third);
 });
-
-function first(){
-  return new Promise(function(resolve, reject){
-      console.log("First");
-      resolve();
-  });
-}
-
-function second(){
-  return new Promise(function(resolve, reject){
-      console.log("Second");
-      resolve();
-  });
-}
-
-function third(){
-  return new Promise(function(resolve, reject){
-      console.log("Third");
-      resolve();
-  });
-}
 
 function validate (req, res) {
   console.log("VALIDATE CALLED!!!!!")
   console.log(req.body);
 };
+
 
 module.exports = router;
