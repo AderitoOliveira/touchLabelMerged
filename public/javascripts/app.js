@@ -2093,8 +2093,6 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       //THE NUMBER OF PRODUCTS FROM THE DAILY PRODUCTION THAT WE STILL NEED TO REGISTE IN ANOTHER ORDER
       var products_remaining_from_daily_production = $scope.totalquantityproduced - products_still_to_produce;
 
-      //var xyz = productInTheSameOrder.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production);
-
       //WE NEED TO CHECK IF IN THE SAME ORDER TERE ARE PRODUCTS STILL TO ADD FOR THE SAME INTERNAL PRODUCT ID
       $scope.productsToClose = [];
       var xpto = new Array();
