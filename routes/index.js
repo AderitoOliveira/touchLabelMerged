@@ -899,7 +899,7 @@ router.post('/vuePrintLabels', async function (req, res) {
       //IF THIS IS A CHILD PRODUCT WE NEED TO VALIDATE THE PARENT INFORMATION TO INSERT
       if (req.body.PARENT_CUSTOMER_PRODUCT_ID != null && req.body.IN_COMPOUND_PRODUCT == 'Y') {
         console.log("INSIDE VALIDAITON");
-        let parentDetails = await getParentDetailsForPalletApp(req.body.PARENT_CUSTOMER_PRODUCT_ID);
+        let parentDetails = await getParentDetailsForApp(req.body.PARENT_CUSTOMER_PRODUCT_ID);
         console.log(parentDetails);
         console.log(JSON.parse(parentDetails)[0].Qty_By_Pallet);
 
@@ -916,7 +916,7 @@ router.post('/vuePrintLabels', async function (req, res) {
           QUANTITY_IN_PALLETES: parentPalletQuantity,
         };
 
-        insertPalletesQuantityForPalletApp(parentObjPallete, res);
+        insertPalletesQuantityForApp(parentObjPallete, res);
 
         var parentObjDailyPainting = {
           ORDER_ID: req.body.ORDER_ID,
@@ -930,10 +930,10 @@ router.post('/vuePrintLabels', async function (req, res) {
           CREATED_DATE: req.body.CREATED_DATE
        };
 
-        insertDailyPaintingForPalletApp(parentObjDailyPainting, res);
+        insertDailyPaintingForApp(parentObjDailyPainting, res);
       }
 
-      insertDailyPaintingForPalletApp(dataObj, res);
+      insertDailyPaintingForApp(dataObj, res);
 
       var dataObjPallet = {
         ORDER_ID: req.body.ORDER_ID,
@@ -945,7 +945,7 @@ router.post('/vuePrintLabels', async function (req, res) {
       };
 
       if (req.body.IS_PARENT == 'N' && req.body.IN_COMPOUND_PRODUCT == 'N') {
-        insertPalletesQuantityForPalletApp(dataObjPallet, res);
+        insertPalletesQuantityForApp(dataObjPallet, res);
       }
 
     } else {
@@ -969,7 +969,7 @@ router.post('/vuePrintLabels', async function (req, res) {
       if (req.body.PARENT_CUSTOMER_PRODUCT_ID != null && req.body.IN_COMPOUND_PRODUCT == 'Y') {
         console.log("INSIDE VALIDAITON");
         req.params= {parentcustomerid: '1070482'};
-        let parentDetails = await getParentDetailsForPalletApp(req.body.PARENT_CUSTOMER_PRODUCT_ID);
+        let parentDetails = await getParentDetailsForApp(req.body.PARENT_CUSTOMER_PRODUCT_ID);
         console.log(parentDetails);
         console.log(JSON.parse(parentDetails)[0].Qty_By_Pallet);
 
@@ -986,7 +986,7 @@ router.post('/vuePrintLabels', async function (req, res) {
           QUANTITY_IN_PALLETES: parentPalletQuantity,
         };
 
-        insertPalletesQuantityForPalletApp(parentObjPallete, res);
+        insertPalletesQuantityForApp(parentObjPallete, res);
 
         var parentObjDailyPainting = {
           ORDER_ID: req.body.ORDER_ID,
@@ -1000,10 +1000,10 @@ router.post('/vuePrintLabels', async function (req, res) {
           CREATED_DATE: req.body.CREATED_DATE
        };
 
-        insertDailyPaintingForPalletApp(parentObjDailyPainting, res);
+        insertDailyPaintingForApp(parentObjDailyPainting, res);
       }
 
-      insertDailyPaintingForPalletApp(dataObj, res);
+      insertDailyPaintingForApp(dataObj, res);
 
       var dataObjPallet = {
         ORDER_ID: req.body.ORDER_ID,
@@ -1015,7 +1015,7 @@ router.post('/vuePrintLabels', async function (req, res) {
       };
 
       if (req.body.IS_PARENT == 'N' && req.body.IN_COMPOUND_PRODUCT == 'N') {
-        insertPalletesQuantityForPalletApp(dataObjPallet, res);
+        insertPalletesQuantityForApp(dataObjPallet, res);
       }
 
 
@@ -1027,7 +1027,7 @@ router.post('/vuePrintLabels', async function (req, res) {
         productid : req.body.CUSTOMER_PRODUCT_ID
       };
 
-      let productsInTheSameOrder = await fetchProductFromAnOrderThatIsntCompleteForPalletApp(productsToCloseInTheSameOrder, res);
+      let productsInTheSameOrder = await fetchProductFromAnOrderThatIsntCompleteForApp(productsToCloseInTheSameOrder, res);
 
 
     } //ELSE

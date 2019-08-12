@@ -1819,7 +1819,7 @@ authenticateLogin = function(req, callback) {
 
 
 ////   -------------------------------    FUNCTIONS CREATED FOR THE INSERT DAIILY PAINTING APP
-getParentDetailsForPalletApp = function(parentcustomerid) {
+getParentDetailsForApp = function(parentcustomerid) {
     return new Promise(async function(resolve, reject) {
       console.log("INSIDE getParentDetailsForPalletApp");
       try {
@@ -1842,7 +1842,7 @@ getParentDetailsForPalletApp = function(parentcustomerid) {
 
 
 //INSERT PALLETES QUANTITY AVAILABLE - FUNCTION CALLED BY THE APP
-insertPalletesQuantityForPalletApp = function(req, res) {
+insertPalletesQuantityForApp = function(req, res) {
     var postData  = req;
     console.log("postData:");
     console.log(postData);
@@ -1860,7 +1860,7 @@ insertPalletesQuantityForPalletApp = function(req, res) {
 }
 
 //INSERT DAILY PAINTING - order_products_painting_registry - FUNCTION CALLED BY THE APP
-insertDailyPaintingForPalletApp = function(req, res) {
+insertDailyPaintingForApp = function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
@@ -1874,7 +1874,7 @@ insertDailyPaintingForPalletApp = function(req, res) {
 }
 
 //Get All the Products for an Order that isn't complete and the daily production needs to be updated - FUNCTION CALLED BY THE APP
-fetchProductFromAnOrderThatIsntCompleteForPalletApp = function(req, res) {
+fetchProductFromAnOrderThatIsntCompleteForApp = function(req, res) {
     var orderid = req.orderid;
     var productid = req.productid;
     return new Promise(async function(resolve, reject) {
