@@ -1400,7 +1400,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
   //CLOSE THE PRODUCT IN PRODUCTION - ORDER THE BOXES
-  $scope.closeProductInProduction = function (internalproductid, customerproductid, productName, qtyorder, qtyproduced, parentcustomerproductid) {
+  $scope.closeProductInProduction = function (internalproductid, customerproductid, productName, qtyorder, qtyproduced, parentcustomerproductid, uniqueorderid) {
 
     //alert($stateParams.orderId);
 
@@ -1466,7 +1466,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             boxmeasures: $scope.productTechSheet[0].Box_Measures,
             boxid: $scope.productTechSheet[0].Box_Id,
             qtybybox: $scope.productTechSheet[0].Qty_By_Box,
-            parentcustomerproductid: parentcustomerproductid
+            parentcustomerproductid: parentcustomerproductid,
+            uniqueorderid: uniqueorderid
           }
         }).then(function (modal) {
           modal.element.modal();
@@ -4733,8 +4734,8 @@ app.controller('editImageClientCtrl', ['$http', '$state', '$rootScope', '$scope'
 /*------------------ Controller for the MODAL to CLOSE the PRODUCT for PRODUCTION in the ORDER-----------------------*/
 
 app.controller('closeProductInOrderToProduction', [
-  '$scope', '$http', '$element', '$urlRouter', '$templateCache', '$state', 'ModalService', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid', 'productname', 'quantityordered', 'totalproductsproduced', 'clientname', 'boxmeasures', 'boxid', 'qtybybox', 'parentcustomerproductid',
-  function ($scope, $http, $element, $urlRouter, $templateCache, $state, ModalService, title, close, orderid, internalproductid, customerproductid, productname, quantityordered, totalproductsproduced, clientname, boxmeasures, boxid, qtybybox, parentcustomerproductid) {
+  '$scope', '$http', '$element', '$urlRouter', '$templateCache', '$state', 'ModalService', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid', 'productname', 'quantityordered', 'totalproductsproduced', 'clientname', 'boxmeasures', 'boxid', 'qtybybox', 'parentcustomerproductid', 'uniqueorderid',
+  function ($scope, $http, $element, $urlRouter, $templateCache, $state, ModalService, title, close, orderid, internalproductid, customerproductid, productname, quantityordered, totalproductsproduced, clientname, boxmeasures, boxid, qtybybox, parentcustomerproductid, uniqueorderid) {
 
     $scope.title = title;
     $scope.orderid = orderid;
@@ -4747,6 +4748,7 @@ app.controller('closeProductInOrderToProduction', [
     $scope.boxmeasures = boxmeasures;
     $scope.boxid = boxid;
     $scope.qtybybox = qtybybox;
+    $scope.uniqueorderid = uniqueorderid;
     //  This close function doesn't need to use jQuery or bootstrap, because
     //  the button has the 'data-dismiss' attribute.
 
@@ -4774,6 +4776,7 @@ app.controller('closeProductInOrderToProduction', [
           ORDER_PRODUCT_STATUS: 'em_pintura',
           ORDER_ID: $scope.orderid,
           CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+          UNIQUE_ORDER_ID: $scope.uniqueorderid
         };
 
         var res = $http.post('/insertOrderBoxes', dataObj).then(function (data, status, headers, config) {
@@ -4789,6 +4792,7 @@ app.controller('closeProductInOrderToProduction', [
           ORDER_PRODUCT_STATUS: 'em_pintura',
           ORDER_ID: $scope.orderid,
           CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+          UNIQUE_ORDER_ID: $scope.uniqueorderid
         };
 
         var res = $http.post('/updateorderproductstatus', dataUpdateOrderProductStatus).then(function (data, status, headers, config) {
