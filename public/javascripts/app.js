@@ -1917,7 +1917,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
 
   //INSERT DAILY PAINTING REGISTRY
-  $scope.insertDailyPainting = function (internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, qtyByPallet, productiondate, parent_customer_product_id, isparent, in_compound_product, productinpainting) {
+  $scope.insertDailyPainting = function (internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, qtyByPallet, productiondate, parent_customer_product_id, isparent, in_compound_product, productinpainting, unique_order_id) {
 
     //$scope.title = title;
     $scope.orderid = $scope.orderid;
@@ -1928,6 +1928,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     $scope.totalquantityproduced = totalquantityproduced;
     $scope.priceEuro = priceEuro;
     $scope.qtybypallet = qtyByPallet;
+    $scope.unique_order_id = unique_order_id;
 
     productiondate = moment(productiondate).format('YYYY-MM-DD 00:00:00');
 
@@ -1985,6 +1986,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         INTERNAL_PRODUCT_ID: $scope.internalproductid,
         CUSTOMER_PRODUCT_ID: $scope.customerproductid,
         PRODUCT_NAME: $scope.productnameinternal,
+        ORDER_PRODUCTS_UNIQUE_ID: $scope.unique_order_id,
         EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
         EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
         TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
@@ -2044,6 +2046,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         INTERNAL_PRODUCT_ID: $scope.internalproductid,
         CUSTOMER_PRODUCT_ID: $scope.customerproductid,
         PRODUCT_NAME: $scope.productnameinternal,
+        ORDER_PRODUCTS_UNIQUE_ID: $scope.unique_order_id,
         EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
         EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
         TOTAL_PRODUCTS_PAINTED: products_still_to_produce,
@@ -2132,6 +2135,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 INTERNAL_PRODUCT_ID: $scope.internalproductid,
                 CUSTOMER_PRODUCT_ID: customer_product_id,
                 PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                ORDER_PRODUCTS_UNIQUE_ID: orderproduct.unique_order_id,
                 EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
                 EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
                 TOTAL_PRODUCTS_PAINTED: number_of_products_to_close_order,
@@ -2193,6 +2197,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 INTERNAL_PRODUCT_ID: $scope.internalproductid,
                 CUSTOMER_PRODUCT_ID: customer_product_id,
                 PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                ORDER_PRODUCTS_UNIQUE_ID: orderproduct.unique_order_id,
                 EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
                 EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
                 TOTAL_PRODUCTS_PAINTED: products_remaining_from_daily_production,
