@@ -1400,7 +1400,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
   //CLOSE THE PRODUCT IN PRODUCTION - ORDER THE BOXES
-  $scope.closeProductInProduction = function (internalproductid, customerproductid, productName, qtyorder, qtyproduced, parentcustomerproductid) {
+  $scope.closeProductInProduction = function (internalproductid, customerproductid, productName, qtyorder, qtyproduced, parentcustomerproductid, uniqueorderid) {
 
     //alert($stateParams.orderId);
 
@@ -1466,7 +1466,8 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             boxmeasures: $scope.productTechSheet[0].Box_Measures,
             boxid: $scope.productTechSheet[0].Box_Id,
             qtybybox: $scope.productTechSheet[0].Qty_By_Box,
-            parentcustomerproductid: parentcustomerproductid
+            parentcustomerproductid: parentcustomerproductid,
+            uniqueorderid: uniqueorderid
           }
         }).then(function (modal) {
           modal.element.modal();
@@ -1916,7 +1917,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
 
   //INSERT DAILY PAINTING REGISTRY
-  $scope.insertDailyPainting = function (internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, qtyByPallet, productiondate, parent_customer_product_id, isparent, in_compound_product, productinpainting) {
+  $scope.insertDailyPainting = function (internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, qtyByPallet, productiondate, parent_customer_product_id, isparent, in_compound_product, productinpainting, unique_order_id) {
 
     //$scope.title = title;
     $scope.orderid = $scope.orderid;
@@ -1927,6 +1928,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     $scope.totalquantityproduced = totalquantityproduced;
     $scope.priceEuro = priceEuro;
     $scope.qtybypallet = qtyByPallet;
+    $scope.unique_order_id = unique_order_id;
 
     productiondate = moment(productiondate).format('YYYY-MM-DD 00:00:00');
 
@@ -1984,6 +1986,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         INTERNAL_PRODUCT_ID: $scope.internalproductid,
         CUSTOMER_PRODUCT_ID: $scope.customerproductid,
         PRODUCT_NAME: $scope.productnameinternal,
+        ORDER_PRODUCTS_UNIQUE_ID: $scope.unique_order_id,
         EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
         EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
         TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
@@ -2043,6 +2046,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         INTERNAL_PRODUCT_ID: $scope.internalproductid,
         CUSTOMER_PRODUCT_ID: $scope.customerproductid,
         PRODUCT_NAME: $scope.productnameinternal,
+        ORDER_PRODUCTS_UNIQUE_ID: $scope.unique_order_id,
         EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
         EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
         TOTAL_PRODUCTS_PAINTED: products_still_to_produce,
@@ -2093,8 +2097,6 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       //THE NUMBER OF PRODUCTS FROM THE DAILY PRODUCTION THAT WE STILL NEED TO REGISTE IN ANOTHER ORDER
       var products_remaining_from_daily_production = $scope.totalquantityproduced - products_still_to_produce;
 
-      //var xyz = productInTheSameOrder.insertProduction($scope, $scope.orderid, $scope.internalproductid, products_remaining_from_daily_production);
-
       //WE NEED TO CHECK IF IN THE SAME ORDER TERE ARE PRODUCTS STILL TO ADD FOR THE SAME INTERNAL PRODUCT ID
       $scope.productsToClose = [];
       var xpto = new Array();
@@ -2133,6 +2135,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 INTERNAL_PRODUCT_ID: $scope.internalproductid,
                 CUSTOMER_PRODUCT_ID: customer_product_id,
                 PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                ORDER_PRODUCTS_UNIQUE_ID: orderproduct.unique_order_id,
                 EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
                 EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
                 TOTAL_PRODUCTS_PAINTED: number_of_products_to_close_order,
@@ -2194,6 +2197,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                 INTERNAL_PRODUCT_ID: $scope.internalproductid,
                 CUSTOMER_PRODUCT_ID: customer_product_id,
                 PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                ORDER_PRODUCTS_UNIQUE_ID: orderproduct.unique_order_id,
                 EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
                 EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
                 TOTAL_PRODUCTS_PAINTED: products_remaining_from_daily_production,
@@ -4735,8 +4739,8 @@ app.controller('editImageClientCtrl', ['$http', '$state', '$rootScope', '$scope'
 /*------------------ Controller for the MODAL to CLOSE the PRODUCT for PRODUCTION in the ORDER-----------------------*/
 
 app.controller('closeProductInOrderToProduction', [
-  '$scope', '$http', '$element', '$urlRouter', '$templateCache', '$state', 'ModalService', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid', 'productname', 'quantityordered', 'totalproductsproduced', 'clientname', 'boxmeasures', 'boxid', 'qtybybox', 'parentcustomerproductid',
-  function ($scope, $http, $element, $urlRouter, $templateCache, $state, ModalService, title, close, orderid, internalproductid, customerproductid, productname, quantityordered, totalproductsproduced, clientname, boxmeasures, boxid, qtybybox, parentcustomerproductid) {
+  '$scope', '$http', '$element', '$urlRouter', '$templateCache', '$state', 'ModalService', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid', 'productname', 'quantityordered', 'totalproductsproduced', 'clientname', 'boxmeasures', 'boxid', 'qtybybox', 'parentcustomerproductid', 'uniqueorderid',
+  function ($scope, $http, $element, $urlRouter, $templateCache, $state, ModalService, title, close, orderid, internalproductid, customerproductid, productname, quantityordered, totalproductsproduced, clientname, boxmeasures, boxid, qtybybox, parentcustomerproductid, uniqueorderid) {
 
     $scope.title = title;
     $scope.orderid = orderid;
@@ -4749,6 +4753,7 @@ app.controller('closeProductInOrderToProduction', [
     $scope.boxmeasures = boxmeasures;
     $scope.boxid = boxid;
     $scope.qtybybox = qtybybox;
+    $scope.uniqueorderid = uniqueorderid;
     //  This close function doesn't need to use jQuery or bootstrap, because
     //  the button has the 'data-dismiss' attribute.
 
@@ -4776,6 +4781,7 @@ app.controller('closeProductInOrderToProduction', [
           ORDER_PRODUCT_STATUS: 'em_pintura',
           ORDER_ID: $scope.orderid,
           CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+          UNIQUE_ORDER_ID: $scope.uniqueorderid
         };
 
         var res = $http.post('/insertOrderBoxes', dataObj).then(function (data, status, headers, config) {
@@ -4791,6 +4797,7 @@ app.controller('closeProductInOrderToProduction', [
           ORDER_PRODUCT_STATUS: 'em_pintura',
           ORDER_ID: $scope.orderid,
           CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+          UNIQUE_ORDER_ID: $scope.uniqueorderid
         };
 
         var res = $http.post('/updateorderproductstatus', dataUpdateOrderProductStatus).then(function (data, status, headers, config) {

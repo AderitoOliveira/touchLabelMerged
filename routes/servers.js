@@ -322,7 +322,7 @@ fetchAllOrdersHistoric = function(data, callback) {
 fetchAllProductsForAnOrder = function(data, callback) {
     con.connect(function(err) {
     // Query Correcta --2018-08-30 con.query('SELECT s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED, 0) AS TOTAL_PRODUCTS_PRODUCED FROM (SELECT ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE, DATE_FORMAT(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") AS MODIFIED_DATE FROM orders_products WHERE ORDER_ID = ?) AS s1 LEFT OUTER JOIN (SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PRODUCED) AS TOTAL_PRODUCTS_PRODUCED FROM order_products_production_registry GROUP BY ORDER_ID, CUSTOMER_PRODUCT_ID ) AS s2 ON s1.ORDER_ID = s2.ORDER_ID AND s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID', [data.params.id], function(err, rows) {
-    con.query('select s1.UNIQUE_ORDER_ID, s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.IN_COMPOUND_PRODUCT, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED, 0) as TOTAL_PRODUCTS_PRODUCED, IFNULL(s5.TOTAL_PRODUCTS_PAINTED, 0) as TOTAL_PRODUCTS_PAINTED, s3.IMAGE_NAME, s3.IMAGE_PATH, s3.PRICE_EURO_1, s3.IS_PARENT, s3.PARENT_CUSTOMER_PRODUCT_ID, s4.QTY_BY_PALLET from (select UNIQUE_ORDER_ID, ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, IN_COMPOUND_PRODUCT, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE from orders_products where ORDER_ID = ? ) as s1 left outer join (select ORDER_PRODUCTS_UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID, ORDER_PRODUCTS_UNIQUE_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s2.ORDER_PRODUCTS_UNIQUE_ID  left outer join (select IMAGE_NAME, IMAGE_PATH, CUSTOMER_PRODUCT_ID, PRICE_EURO_1, IS_PARENT, PARENT_CUSTOMER_PRODUCT_ID from products) as s3 on s1.CUSTOMER_PRODUCT_ID = s3.CUSTOMER_PRODUCT_ID left outer join (select CUSTOMER_PRODUCT_ID, QTY_BY_PALLET from products_technical_sheet) as s4 on s1.CUSTOMER_PRODUCT_ID = s4.CUSTOMER_PRODUCT_ID left outer join (select ORDER_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PAINTED) as TOTAL_PRODUCTS_PAINTED from order_products_painting_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID) as s5 on s1.ORDER_ID = s5.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s5.CUSTOMER_PRODUCT_ID order by IS_PARENT desc', [data.params.id], function(err, rows) {
+    con.query('select s1.UNIQUE_ORDER_ID, s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.IN_COMPOUND_PRODUCT, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED,0) as TOTAL_PRODUCTS_PRODUCED, IFNULL(s5.TOTAL_PRODUCTS_PAINTED,0) as TOTAL_PRODUCTS_PAINTED, s3.IMAGE_NAME, s3.IMAGE_PATH, s3.PRICE_EURO_1, s3.IS_PARENT, s3.PARENT_CUSTOMER_PRODUCT_ID, s4.QTY_BY_PALLET from (select UNIQUE_ORDER_ID, ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, IN_COMPOUND_PRODUCT, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE from orders_products where ORDER_ID = ? ) as s1 left outer join (select ORDER_PRODUCTS_UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID, ORDER_PRODUCTS_UNIQUE_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s2.ORDER_PRODUCTS_UNIQUE_ID left outer join (select IMAGE_NAME, IMAGE_PATH, CUSTOMER_PRODUCT_ID, PRICE_EURO_1, IS_PARENT, PARENT_CUSTOMER_PRODUCT_ID from products) as s3 on s1.CUSTOMER_PRODUCT_ID = s3.CUSTOMER_PRODUCT_ID left outer join (select CUSTOMER_PRODUCT_ID, QTY_BY_PALLET from products_technical_sheet) as s4 on s1.CUSTOMER_PRODUCT_ID = s4.CUSTOMER_PRODUCT_ID left outer join (select ORDER_PRODUCTS_UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PAINTED) as TOTAL_PRODUCTS_PAINTED from order_products_painting_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID, ORDER_PRODUCTS_UNIQUE_ID) as s5 on s1.ORDER_ID = s5.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s5.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s5.ORDER_PRODUCTS_UNIQUE_ID order by IS_PARENT desc', [data.params.id], function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -775,7 +775,7 @@ updateOrderProductStatus = function(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     con.connect(function(err) {
-    con.query('UPDATE orders_products SET order_product_status = ? where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [req.body.ORDER_PRODUCT_STATUS, req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+    con.query('UPDATE orders_products SET order_product_status = ? where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ? and UNIQUE_ORDER_ID = ?', [req.body.ORDER_PRODUCT_STATUS, req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID, req.body.UNIQUE_ORDER_ID], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });
@@ -1815,4 +1815,86 @@ authenticateLogin = function(req, callback) {
         console.log("GET USER");   
     });
 });
+}
+
+
+////   -------------------------------    FUNCTIONS CREATED FOR THE INSERT DAIILY PAINTING APP
+getParentDetailsForApp = function(orderid,parentcustomerid) {
+    return new Promise(async function(resolve, reject) {
+      console.log("INSIDE getParentDetailsForPalletApp");
+      try {
+        con.connect(function(err) {
+        let result = con.query('select ord_prod.UNIQUE_ORDER_ID, prod.INTERNAL_PRODUCT_ID, prod.PRODUCT_NAME, techsheet.Qty_By_Pallet from products prod, products_technical_sheet techsheet, orders_products ord_prod where ord_prod.ORDER_ID = ? and ord_prod.CUSTOMER_PRODUCT_ID = ? and ord_prod.CUSTOMER_PRODUCT_ID  = prod.CUSTOMER_PRODUCT_ID and prod.CUSTOMER_PRODUCT_ID = techsheet.CUSTOMER_PRODUCT_ID', [orderid,parentcustomerid], function(err, rows) {
+                if (err) {
+                    throw err;
+                } else
+                console.log("GET PARENT DETAILS TO INSERT THE PALLETE QUANTITY"); 
+                resolve(JSON.stringify(rows));
+            });
+        });
+      } catch (err) {
+        console.log('Error occurred', err);
+        reject(err);
+      } 
+    });
+  } 
+
+
+
+//INSERT PALLETES QUANTITY AVAILABLE - FUNCTION CALLED BY THE APP
+insertPalletesQuantityForApp = function(req, res) {
+    var postData  = req;
+    console.log("postData:");
+    console.log(postData);
+    /* res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000'); */
+    con.connect(function(err) {
+    con.query('INSERT INTO palletes_ready_for_shipping (ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, TOTAL_PRODUCTS_PAINTED, QUANTITY_IN_PALLETES) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE TOTAL_PRODUCTS_PAINTED = TOTAL_PRODUCTS_PAINTED + VALUES(TOTAL_PRODUCTS_PAINTED), QUANTITY_IN_PALLETES = QUANTITY_IN_PALLETES + VALUES(QUANTITY_IN_PALLETES)', [postData.ORDER_ID, postData.CUSTOMER_PRODUCT_ID, postData.INTERNAL_PRODUCT_ID, postData.PRODUCT_NAME, postData.TOTAL_PRODUCTS_PAINTED, postData.QUANTITY_IN_PALLETES], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+    console.log(results);
+  });
+ });
+}
+
+//INSERT DAILY PAINTING - order_products_painting_registry - FUNCTION CALLED BY THE APP
+insertDailyPaintingForApp = function(req, res) {
+    console.log("insertDailyPaintingForApp req:");
+    console.log(req);
+    /* res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000'); */
+    con.connect(function(err) {
+    con.query('INSERT INTO order_products_painting_registry SET ?', req, function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
+//Get All the Products for an Order that isn't complete and the daily production needs to be updated - FUNCTION CALLED BY THE APP
+fetchProductFromAnOrderThatIsntCompleteForApp = function(req, res) {
+    var orderid = req.orderid;
+    var productid = req.productid;
+    return new Promise(async function(resolve, reject) {
+        console.log("INSIDE fetchProductFromAnOrderThatIsntCompleteForPalletApp");
+        try {
+        con.connect(function(err) {
+        let result = con.query('select UNIQUE_ORDER_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, TOTAL_PRODUCTS_PAINTED, IN_COMPOUND_PRODUCT, IS_PARENT, PARENT_CUSTOMER_PRODUCT_ID from ( select s1.UNIQUE_ORDER_ID, s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID,  s1.PRODUCT_NAME,  s1.TOTAL_QUANTITY_ORDERED,  s1.ORDER_PRODUCT_STATUS,  s1.IN_COMPOUND_PRODUCT,  s1.IS_PARENT, s1.PARENT_CUSTOMER_PRODUCT_ID, s1.CREATED_DATE,  s1.MODIFIED_DATE,  IFNULL(s2.TOTAL_PRODUCTS_PAINTED, 0) as TOTAL_PRODUCTS_PAINTED from  (   select UNIQUE_ORDER_ID,   ORDER_ID,   INTERNAL_PRODUCT_ID,   CUSTOMER_PRODUCT_ID,   PRODUCT_NAME,   TOTAL_QUANTITY_ORDERED,   ORDER_PRODUCT_STATUS,   IN_COMPOUND_PRODUCT,   IS_PARENT,  PARENT_CUSTOMER_PRODUCT_ID, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE,   date_format(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE  from   orders_products  where   ORDER_PRODUCT_STATUS = \'em_pintura\') as s1 left outer join ( select ORDER_ID, ORDER_PRODUCTS_UNIQUE_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PAINTED) as TOTAL_PRODUCTS_PAINTED from order_products_painting_registry  group by   ORDER_ID,   CUSTOMER_PRODUCT_ID,   ORDER_PRODUCTS_UNIQUE_ID) as s2 on  s1.ORDER_ID = s2.ORDER_ID  and s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID  and s1.UNIQUE_ORDER_ID = s2.ORDER_PRODUCTS_UNIQUE_ID) as s3 where s3.ORDER_ID = ? and s3.CUSTOMER_PRODUCT_ID = ? and s3.TOTAL_PRODUCTS_PAINTED < s3.TOTAL_QUANTITY_ORDERED', [orderid, productid], function(err, rows) {
+                if (err) {
+                    throw err;
+                } else
+                console.log("GET Products in the order that still aren't complete"); 
+                resolve(rows);
+            });
+        });
+        } catch (err) {
+        console.log('Error occurred', err);
+        reject(err);
+        } 
+    });
+
 }
