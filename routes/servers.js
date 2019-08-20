@@ -1898,3 +1898,27 @@ fetchProductFromAnOrderThatIsntCompleteForApp = function(req, res) {
     });
 
 }
+
+//Get All Order's For a specific CUSTOMER PRODUCT ID and that product isn't closed. This is the Daily Painting registry - FUNCTION CALLED BY THE APP
+fetchOrdersWhereCustomerProductidIsntCompleteForApp = function(req, res) {
+    var orderid = req.orderid;
+    var productid = req.productid;
+    return new Promise(async function(resolve, reject) {
+        console.log("INSIDE fetchProductFromAnOrderThatIsntCompleteForPalletApp");
+        try {
+        con.connect(function(err) {
+        let result = con.query('select UNIQUE_ORDER_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, TOTAL_PRODUCTS_PAINTED, IN_COMPOUND_PRODUCT, IS_PARENT, PARENT_CUSTOMER_PRODUCT_ID from ( select s1.UNIQUE_ORDER_ID, s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID,  s1.PRODUCT_NAME,  s1.TOTAL_QUANTITY_ORDERED,  s1.ORDER_PRODUCT_STATUS,  s1.IN_COMPOUND_PRODUCT,  s1.IS_PARENT, s1.PARENT_CUSTOMER_PRODUCT_ID, s1.CREATED_DATE,  s1.MODIFIED_DATE,  IFNULL(s2.TOTAL_PRODUCTS_PAINTED, 0) as TOTAL_PRODUCTS_PAINTED from  (   select UNIQUE_ORDER_ID,   ORDER_ID,   INTERNAL_PRODUCT_ID,   CUSTOMER_PRODUCT_ID,   PRODUCT_NAME,   TOTAL_QUANTITY_ORDERED,   ORDER_PRODUCT_STATUS,   IN_COMPOUND_PRODUCT,   IS_PARENT,  PARENT_CUSTOMER_PRODUCT_ID, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE,   date_format(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE  from   orders_products  where   ORDER_PRODUCT_STATUS = \'em_pintura\') as s1 left outer join ( select ORDER_ID, ORDER_PRODUCTS_UNIQUE_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PAINTED) as TOTAL_PRODUCTS_PAINTED from order_products_painting_registry  group by   ORDER_ID,   CUSTOMER_PRODUCT_ID,   ORDER_PRODUCTS_UNIQUE_ID) as s2 on  s1.ORDER_ID = s2.ORDER_ID  and s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID  and s1.UNIQUE_ORDER_ID = s2.ORDER_PRODUCTS_UNIQUE_ID) as s3 where s3.ORDER_ID <> ? and s3.CUSTOMER_PRODUCT_ID = ? and s3.TOTAL_PRODUCTS_PAINTED < s3.TOTAL_QUANTITY_ORDERED', [orderid, productid], function(err, rows) {
+                if (err) {
+                    throw err;
+                } else
+                console.log("GET Products in the order that still aren't complete"); 
+                resolve(rows);
+            });
+        });
+        } catch (err) {
+        console.log('Error occurred', err);
+        reject(err);
+        } 
+    });
+
+}
