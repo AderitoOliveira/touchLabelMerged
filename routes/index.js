@@ -884,8 +884,8 @@ router.post('/insertDailyPaintingForTheApp', async function (req, res) {
     //remainder of the painted products to other products in the same or other orders
     if(products_still_to_paint == 0 || products_still_to_paint < 0) {
       //We will only register the ordered quantity 
-      var valueProducedByTheEmployee = req.body.TOTAL_QUANTITY_ORDERED * req.body.PRICE_IN_EUR;
-      var palletQuantity = req.body.TOTAL_QUANTITY_ORDERED / req.body.QTY_BY_PALLETE;
+      var valueProducedByTheEmployee = req.body.TOTAL_PRODUCTS_PAINTED * req.body.PRICE_IN_EUR;
+      var palletQuantity = req.body.TOTAL_PRODUCTS_PAINTED / req.body.QTY_BY_PALLETE;
       
       var dataObj = {
         ORDER_ID: req.body.ORDER_ID,
@@ -895,7 +895,7 @@ router.post('/insertDailyPaintingForTheApp', async function (req, res) {
         ORDER_PRODUCTS_UNIQUE_ID: req.body.ORDER_PRODUCTS_UNIQUE_ID,
         EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
         EMPLOYEE_ID: req.body.EMPLOYEE_ID,
-        TOTAL_PRODUCTS_PAINTED: req.body.TOTAL_QUANTITY_ORDERED,
+        TOTAL_PRODUCTS_PAINTED: req.body.TOTAL_PRODUCTS_PAINTED,
         PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
         CREATED_DATE: req.body.CREATED_DATE
       };
@@ -918,7 +918,7 @@ router.post('/insertDailyPaintingForTheApp', async function (req, res) {
           CUSTOMER_PRODUCT_ID: req.body.PARENT_CUSTOMER_PRODUCT_ID,
           INTERNAL_PRODUCT_ID: parentDetailsJSON[0].INTERNAL_PRODUCT_ID,
           PRODUCT_NAME: parentDetailsJSON[0].PRODUCT_NAME,
-          TOTAL_PRODUCTS_PAINTED: req.body.TOTAL_QUANTITY_ORDERED,
+          TOTAL_PRODUCTS_PAINTED: req.body.TOTAL_PRODUCTS_PAINTED,
           QUANTITY_IN_PALLETES: parentPalletQuantity,
         };
 
@@ -932,7 +932,7 @@ router.post('/insertDailyPaintingForTheApp', async function (req, res) {
           ORDER_PRODUCTS_UNIQUE_ID: parentDetailsJSON[0].UNIQUE_ORDER_ID,
           EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
           EMPLOYEE_ID: req.body.EMPLOYEE_ID,
-          TOTAL_PRODUCTS_PAINTED: req.body.TOTAL_QUANTITY_ORDERED,
+          TOTAL_PRODUCTS_PAINTED: req.body.TOTAL_PRODUCTS_PAINTED,
           PRODUCED_VALUE_IN_EURO: 0,
           CREATED_DATE: req.body.CREATED_DATE
        };
@@ -947,7 +947,7 @@ router.post('/insertDailyPaintingForTheApp', async function (req, res) {
         CUSTOMER_PRODUCT_ID: req.body.CUSTOMER_PRODUCT_ID,
         INTERNAL_PRODUCT_ID: req.body.INTERNAL_PRODUCT_ID,
         PRODUCT_NAME: req.body.PRODUCT_NAME,
-        TOTAL_PRODUCTS_PAINTED: req.body.TOTAL_QUANTITY_ORDERED,
+        TOTAL_PRODUCTS_PAINTED: req.body.TOTAL_PRODUCTS_PAINTED,
         QUANTITY_IN_PALLETES: palletQuantity,
       };
 
