@@ -1263,7 +1263,7 @@ insertPalletesQuantity = function(req, res) {
 //GET PALLETES READY FOR SHIPPING - palletes_ready_for_shipping
 getPalletesReadyForShipping = function(data, callback) {
     con.connect(function(err) {
-    con.query('select ORDER_ID, CUSTOMER_PRODUCT_ID,  INTERNAL_PRODUCT_ID, PRODUCT_NAME, TOTAL_PRODUCTS_PAINTED, QUANTITY_IN_PALLETES, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE FROM palletes_ready_for_shipping', function(err, rows) {
+    con.query('select UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID,  INTERNAL_PRODUCT_ID, PRODUCT_NAME, TOTAL_PRODUCTS_PAINTED, QUANTITY_IN_PALLETES, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE FROM palletes_ready_for_shipping', function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -1292,6 +1292,28 @@ deletePalletesReadyForShipping = function(req, res) {
     con.query('delete from palletes_ready_for_shipping where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
+  });
+ });
+}
+
+//DELETE PALLETES READY FOR SHIPPING - palletes_ready_for_shipping - FUNCTION CALLED TO DELETE MULTI ROWS
+deletePalletesReadyForShippingBulk = function(req, res) {
+    var postData  = req.body;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    console.log("##########################################################");
+    console.log(postData.orderIdArray);
+    console.log(postData.customerProductIdArray);
+    console.log("##########################################################");
+    con.connect(function(err) {
+    var query = con.query('delete from palletes_ready_for_shipping where UNIQUE_ID in (?)', [postData.uniqueIdArray], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+    console.log("##########################################################");
+    console.log("QUERY: " + query.sql);
+    console.log("##########################################################");
   });
  });
 }

@@ -4069,6 +4069,46 @@ app.controller('PalletesController', ['$scope', '$http', '$rootScope', 'ModalSer
 
   };
 
+  $scope.showButtons = false;
+  var rowValues = [];
+  var boxesToSendInOrder = [];
+  /* var orderProductToDelete = [];
+  var arrayOrderProductToDelete = []; */
+  $scope.changeValueCheckboxPalletes = function (box, UNIQUE_ID) {
+    console.log(box);
+    if (box == true) {
+      //PUSH TO rowValues the RECORDS TO SEND IN THE PDF
+      rowValues.push(UNIQUE_ID);
+
+      boxesToSendInOrder.push(rowValues);
+
+      //PUSH TO arrayOrderProductToDelete THE COMBINATION ORDER_ID - CUSTOMER_PRODCUT_ID THAT SHOULD BE DELETED AFTER THE ORDER IS GENERATED
+      /* orderProductToDelete.push(ORDER_ID);
+      orderProductToDelete.push(CUSTOMER_PRODUCT_ID);
+      arrayOrderProductToDelete.push(orderProductToDelete); */
+
+      //_clientname = CLIENT_NAME;
+
+      rowValues = [];
+      orderProductToDelete = [];
+    } else if (box == false && boxesToSendInOrder.length > 0) {
+      //boxesToSendInOrder = $filter('filter')(boxesToSendInOrder, {'CUSTOMER_PRODUCT_ID': CUSTOMER_PRODUCT_ID});
+      boxesToSendInOrder = boxesToSendInOrder.filter(function (el) {
+        return el[0] !== UNIQUE_ID;
+      });
+
+      /* arrayOrderProductToDelete = arrayOrderProductToDelete.filter(function (el) {
+        return el[1] !== CUSTOMER_PRODUCT_ID;
+      }); */
+    }
+
+    if(boxesToSendInOrder.length > 0) {
+      $scope.showButtons = true;
+    } else {
+      $scope.showButtons = false;
+    }
+  }
+
 }]);
 
 //////////////////////////////////////////////
