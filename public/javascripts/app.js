@@ -5342,6 +5342,7 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
       var PrinterIPAddress = $scope.productLabel[0].ARTICLE_PRINTER_IP_ADDRESS;
       var PrinterPort = $scope.productLabel[0].ARTICLE_PRINTER_PORT;
       var customerProductId = $scope.productLabel[0].CUSTOMER_PRODUCT_ID;
+      var labelsWith2Columns = $scope.productLabel[0].ARTICLE_LABEL_WITH_2_COLUMNS;
 
 
       //We need to remove the first digit to calculate the checksum for the EAN-13
@@ -5358,7 +5359,6 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
       //GS1-128 BarCode
       var EanWithCheckDigit = barCodeNumber + checkDigit;
       var quantityToReplace = 0;
-      var labelsWith2Columns = false;
 
       function replaceAll(str, map) {
         for (key in map) {
@@ -5376,23 +5376,23 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
         '_PRINT_QUANTITY': quantityToReplace
       };
 
-      if (labelsWith2Columns == false) {
+      if (labelsWith2Columns == "false") {
         //The _PRINT_QUANTITY in the map can only be changed directly
         map._PRINT_QUANTITY = quantity_article_labels;
         var sendToPrinter = replaceAll(ZPLString, map);
       } else {
-        if (Quantity == 1) {
+        if (quantity_article_labels == 1) {
           //ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL  --> Only 1 label is written and the other is blank
           //ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL --> Both Labels are written
           map._PRINT_QUANTITY = 1;
           var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
           return;
         }
-        if (Quantity % 2 == 0) {
+        if (quantity_article_labels % 2 == 0) {
           map._PRINT_QUANTITY = quantity_article_labels / 2;
           var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
         }
-        if (Quantity % 2 != 0) {
+        if (quantity_article_labels % 2 != 0) {
           map._PRINT_QUANTITY = quantity_article_labels / 2;
           var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
 
