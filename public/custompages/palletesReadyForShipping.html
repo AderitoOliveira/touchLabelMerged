@@ -27,19 +27,21 @@
                 <div class="label-table-wrap">
                     <div class="label-table-header row">
                         <div class="inner-wrap">
+                            <div class="col-md-1 label-header-item header-label-checkbox" style="overflow:initial;" ><div class="checkbox-wrap"><input class="checkbox-all" type="checkbox"/><span class="checkbox-item"></span></div></div>
                             <div class="col-md-1 label-header-item header-label-order">Encomenda</div>
                             <div class="col-md-1 label-header-item header-label-clientref">Ref. Cliente</div>
                             <div class="col-md-1 label-header-item header-label-innerref">Ref. Interna</div>
                             <div class="col-md-3 label-header-item header-label-prodname">Nome Produto</div>
                             <div class="col-md-1 label-header-item header-label-total-painted">Total Produtos Pintados</div>
                             <div class="col-md-2 label-header-item header-label-quantity-pallet">Paletes Completas</div>
-                            <div class="col-md-3 label-header-item header-label-date">Data</div>
+                            <div class="col-md-2 label-header-item header-label-date">Data</div>
                         </div>
                     </div>
                     <div class="order-labels-content row">
                             <div class="col-md-12" dir-paginate="product in palletes | filter:searchChar | itemsPerPage:100">
                                 <div class="row">
                                     <div class="item-inner-wrap">
+                                        <div class="col-md-1 table-item item-label-checkbox"><div class="checkbox-wrap"><input class="special-checkbox" type="checkbox" ng-model="box" ng-change="changeValue(box, boxesForProduct.ORDER_ID,boxesForProduct.CUSTOMER_PRODUCT_ID, boxesForProduct.CLIENT_NAME, boxesForProduct.PRODUCT_NAME, boxesForProduct.BOX_MEASURES, boxesForProduct.BOX_ID, boxesForProduct.TOTAL_BOXES_TO_ORDER)"/><span class="checkbox-item"></span></div></div>
                                         <div class="col-md-1 table-item item-label-order" title="{{product.ORDER_ID}}">{{product.ORDER_ID}}</div>
                                         <div class="col-md-1 table-item item-label-clientref">{{product.CUSTOMER_PRODUCT_ID}}</div>
                                         <div class="col-md-1 table-item item-label-innerref">{{product.INTERNAL_PRODUCT_ID}}</div>
@@ -53,7 +55,7 @@
                                                 <img src="assets/icons/btn-success.svg" width="32px" height="32px" />
                                             </a>
                                         </div>
-                                        <div class="col-md-3 table-item item-label-date short">
+                                        <div class="col-md-2 table-item item-label-date short">
                                             {{product.CREATED_DATE}}
                                             <div class="item-order-actions">
                                                 <!-- <a class="btn btn-sm btn-danger" ng-show="product.CAN_BE_DELETED" ng-click="delete(product.ORDER_ID, product.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="Remover todas as Palletes em stock">
