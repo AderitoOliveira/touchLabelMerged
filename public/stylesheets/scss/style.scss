@@ -1350,13 +1350,19 @@ button.btn.btn-sm.btn-delete.btn-remove-order {
         overflow: hidden;
     }
 }
-div[ng-table="boxesToOrderTable"]{
+div[ng-table="boxesToOrderTable"], div[ng-table="dailyProductionTable"]{
     .item-inner-wrap>div:first-child {
         text-indent: 12px;
         overflow: initial;
     }
 }
 
+div[ng-table="dailyProductionTable"]{
+    .item-inner-wrap>div.header-label-checkbox:first-child {
+        text-indent: 12px;
+        overflow: initial;
+    }
+}
 
 a.btn.btn-sm {
     padding: 0px;
