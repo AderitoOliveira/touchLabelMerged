@@ -4071,7 +4071,7 @@ app.controller('PalletesController', ['$scope', '$http', '$rootScope', 'ModalSer
 
   $scope.showButtons = false;
   var rowValues = [];
-  var boxesToSendInOrder = [];
+  var palletesToDelete = [];
   /* var orderProductToDelete = [];
   var arrayOrderProductToDelete = []; */
   $scope.changeValueCheckboxPalletes = function (box, UNIQUE_ID) {
@@ -4080,34 +4080,52 @@ app.controller('PalletesController', ['$scope', '$http', '$rootScope', 'ModalSer
       //PUSH TO rowValues the RECORDS TO SEND IN THE PDF
       rowValues.push(UNIQUE_ID);
 
-      boxesToSendInOrder.push(rowValues);
-
-      //PUSH TO arrayOrderProductToDelete THE COMBINATION ORDER_ID - CUSTOMER_PRODCUT_ID THAT SHOULD BE DELETED AFTER THE ORDER IS GENERATED
-      /* orderProductToDelete.push(ORDER_ID);
-      orderProductToDelete.push(CUSTOMER_PRODUCT_ID);
-      arrayOrderProductToDelete.push(orderProductToDelete); */
-
-      //_clientname = CLIENT_NAME;
+      palletesToDelete.push(rowValues)
 
       rowValues = [];
-      orderProductToDelete = [];
-    } else if (box == false && boxesToSendInOrder.length > 0) {
-      //boxesToSendInOrder = $filter('filter')(boxesToSendInOrder, {'CUSTOMER_PRODUCT_ID': CUSTOMER_PRODUCT_ID});
-      boxesToSendInOrder = boxesToSendInOrder.filter(function (el) {
+    } else if (box == false && palletesToDelete.length > 0) {
+
+      palletesToDelete = palletesToDelete.filter(function (el) {
         return el[0] !== UNIQUE_ID;
       });
 
-      /* arrayOrderProductToDelete = arrayOrderProductToDelete.filter(function (el) {
-        return el[1] !== CUSTOMER_PRODUCT_ID;
-      }); */
     }
 
-    if(boxesToSendInOrder.length > 0) {
+    if(palletesToDelete.length > 0) {
       $scope.showButtons = true;
     } else {
       $scope.showButtons = false;
     }
   }
+
+
+  $scope.deletePalletes = function () {
+
+    dataToDelete = {
+
+    };
+
+    ModalService.showModal({
+      templateUrl: "../modal/yesNoGeneric.html",
+      controller: "genericModalController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        message: " Deseja apagar o registos seleccionados das Palletes em stock?",
+        operationURL: '/deletePalletesReadyForShippingBulk',
+        dataObj: dataToDelete
+      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
+    });
+
+  };
 
 }]);
 
