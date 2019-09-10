@@ -4072,21 +4072,37 @@ app.controller('PalletesController', ['$scope', '$http', '$rootScope', 'ModalSer
   $scope.showButtons = false;
   var rowValues = [];
   var palletesToDelete = [];
-  /* var orderProductToDelete = [];
-  var arrayOrderProductToDelete = []; */
-  $scope.changeValueCheckboxPalletes = function (box, UNIQUE_ID) {
+  var dataForManifest = [];
+  var arraydataForManifest = [];
+  $scope.changeValueCheckboxPalletes = function (box, UNIQUE_ID, ORDER_ID,  CUSTOMER_PRODUCT_ID,  INTERNAL_PRODUCT_ID,  PRODUCT_NAME,  TOTAL_PRODUCTS_PAINTED, QUANTITY_IN_PALLETES) {
     console.log(box);
     if (box == true) {
       //PUSH TO rowValues the RECORDS TO SEND IN THE PDF
       rowValues.push(UNIQUE_ID);
-
       palletesToDelete.push(rowValues)
 
+      dataForManifest = { 
+        UNIQUE_ID: UNIQUE_ID,
+        ORDER_ID: ORDER_ID,
+        CUSTOMER_PRODUCT_ID: CUSTOMER_PRODUCT_ID,
+        INTERNAL_PRODUCT_ID: INTERNAL_PRODUCT_ID,
+        PRODUCT_NAME:  PRODUCT_NAME,
+        TOTAL_PRODUCTS_PAINTED: TOTAL_PRODUCTS_PAINTED,
+        QUANTITY_IN_PALLETES: QUANTITY_IN_PALLETES
+      }
+
+      arraydataForManifest.push(dataForManifest);
+
       rowValues = [];
+      dataForManifest = [];
     } else if (box == false && palletesToDelete.length > 0) {
 
       palletesToDelete = palletesToDelete.filter(function (el) {
         return el[0] !== UNIQUE_ID;
+      });
+
+      arraydataForManifest = arraydataForManifest.filter(function (element) {
+        return element.UNIQUE_ID !== UNIQUE_ID;
       });
 
     }
@@ -4102,7 +4118,7 @@ app.controller('PalletesController', ['$scope', '$http', '$rootScope', 'ModalSer
   $scope.deletePalletes = function () {
 
     dataToDelete = {
-
+      uniqueIdArray: palletesToDelete
     };
 
     ModalService.showModal({
