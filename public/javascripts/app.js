@@ -151,6 +151,11 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
       templateUrl: '../custompages/palletesReadyForShipping.html',
       controller: 'PalletesController'
     })
+    .state('shippingmanifest', {
+      url: '/shippingmanifest',
+      templateUrl: '../custompages/shippingManifest.html',
+      params: {arraydataForManifest: null}
+    })
     .state('overproductionstate', {
       url: '/overProduction',
       templateUrl: '../custompages/overProductionInStock.html',
@@ -3982,7 +3987,7 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
 
 
 //LIST ALL THE PALLETES READY TO BE SHIPPED - PalletesController
-app.controller('PalletesController', ['$scope', '$http', '$rootScope', 'ModalService', 'updatePalleteQuantity', function ($scope, $http, $rootScope, ModalService, updatePalleteQuantity) {
+app.controller('PalletesController', ['$scope', '$http', '$state', '$rootScope', 'ModalService', 'updatePalleteQuantity', function ($scope, $http, $state, $rootScope, ModalService, updatePalleteQuantity) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Lista Paletes prontas para enviar"
@@ -4036,8 +4041,6 @@ app.controller('PalletesController', ['$scope', '$http', '$rootScope', 'ModalSer
 
       });
     }
-
-
   }
 
   $scope.delete = function (order_id, customer_product_id) {
@@ -4074,7 +4077,7 @@ app.controller('PalletesController', ['$scope', '$http', '$rootScope', 'ModalSer
   var palletesToDelete = [];
   var dataForManifest = [];
   var arraydataForManifest = [];
-  $scope.changeValueCheckboxPalletes = function (box, UNIQUE_ID, ORDER_ID,  CUSTOMER_PRODUCT_ID,  INTERNAL_PRODUCT_ID,  PRODUCT_NAME,  TOTAL_PRODUCTS_PAINTED, QUANTITY_IN_PALLETES) {
+  $scope.changeValueCheckboxPalletes = function (box, UNIQUE_ID, ORDER_ID,  CUSTOMER_PRODUCT_ID,  INTERNAL_PRODUCT_ID,  PRODUCT_NAME,  TOTAL_PRODUCTS_PAINTED, QUANTITY_IN_PALLETES, CREATED_DATE) {
     console.log(box);
     if (box == true) {
       //PUSH TO rowValues the RECORDS TO SEND IN THE PDF
@@ -4088,7 +4091,8 @@ app.controller('PalletesController', ['$scope', '$http', '$rootScope', 'ModalSer
         INTERNAL_PRODUCT_ID: INTERNAL_PRODUCT_ID,
         PRODUCT_NAME:  PRODUCT_NAME,
         TOTAL_PRODUCTS_PAINTED: TOTAL_PRODUCTS_PAINTED,
-        QUANTITY_IN_PALLETES: QUANTITY_IN_PALLETES
+        QUANTITY_IN_PALLETES: QUANTITY_IN_PALLETES,
+        CREATED_DATE: CREATED_DATE
       }
 
       arraydataForManifest.push(dataForManifest);
@@ -4142,6 +4146,56 @@ app.controller('PalletesController', ['$scope', '$http', '$rootScope', 'ModalSer
     });
 
   };
+
+  $scope.createShippingManifest = function() {
+    $state.transitionTo("shippingmanifest", { 'arraydataForManifest': arraydataForManifest});
+  }
+
+}]);
+
+
+app.controller('ShippingManifestController', ['$scope', '$http', '$state', '$stateParams', '$rootScope', 'ModalService', 'updatePalleteQuantity', function ($scope, $http, $state, $stateParams, $rootScope, ModalService, updatePalleteQuantity) {
+
+  $rootScope.name = "Gerar Manifesto de carga com as palletes seleccionadas"
+  $scope.shippingPalletes = $stateParams.arraydataForManifest;
+
+  $scope.savePalleteQuantityChanges = function (orderid, customerproductid, palletequantity) {
+    console.log("NewValue: " + palletequantity);
+    console.log("OldValue: " + $scope.oldPalleteQuantity);
+    var validatedPalletequantity = "";
+    if (palletequantity == undefined) {
+      return false;
+    } else {
+      validatedPalletequantity = palletequantity.replace(/[^0-9]/g, '');
+    }
+    if (validatedPalletequantity == palletequantity) {
+      updatePalleteQuantity.updatePallete(orderid, customerproductid, palletequantity).then(function () {
+
+        ModalService.showModal({
+          templateUrl: "../modal/genericModal.html",
+          controller: "GenericController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: "Foi actualizada a quantidade do produto " + customerproductid + " na encomenda " + orderid + " de " + $scope.oldPalleteQuantity + " para " + palletequantity
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
+        });
+
+      });
+    }
+  }
+
+  $scope.goBack= function() {
+    $state.transitionTo("palletesReadyForShipping", {});
+  }
 
 }]);
 

@@ -1,4 +1,4 @@
-<div class="wrap" ng-controller="PalletesController">
+<div class="wrap" ng-controller="ShippingManifestController">
     <div id="actions">
         <div class="row">
             <div class="col-md-12">
@@ -13,15 +13,15 @@
                                                     <span class="btn-text">Eliminar Palletes</span>
                                                 </span>
                                             </button>
-                                            <button style="width:calc(30% - 1px);margin-left:2px;float:left;background-color:rgba(39, 85, 174,0.8)" class="inset-button button print" ng-show='showButtons' ng-click="createShippingManifest()">
+                                        </div>
+                                        <div class="button-wrap col-md-12">
+                                            <button style="width:calc(50% - 1px);margin-left:2px;float:left;background-color:rgba(39, 85, 174,0.8)" class="inset-button button print" ng-show='showButtons' ng-click="createShippingManifest()">
                                                 <span class="button-inner-wrap">
                                                     <img src="assets/icons/btn-print.svg" width="20px" height="20px">
                                                     <span class="btn-text">Criar Manifesto</span>
                                                 </span>
                                             </button>
                                         </div>
-                                        <!--div class="button-wrap col-md-12"></div>
-                                        </div-->
                                 </div>
                         </div>
                         <div class="col-md-6">
@@ -45,7 +45,6 @@
                 <div class="label-table-wrap">
                     <div class="label-table-header row">
                         <div class="inner-wrap">
-                            <div class="col-md-1 label-header-item header-label-checkbox" ><div class="checkbox-wrap"><input class="checkbox-all" type="checkbox"/><span class="checkbox-item"></span></div></div>
                             <div class="col-md-1 label-header-item header-label-order">Encomenda</div>
                             <div class="col-md-1 label-header-item header-label-clientref">Ref. Cliente</div>
                             <div class="col-md-1 label-header-item header-label-innerref">Ref. Interna</div>
@@ -56,10 +55,9 @@
                         </div>
                     </div>
                     <div class="order-labels-content row">
-                            <div class="col-md-12" dir-paginate="product in palletes | filter:searchChar | itemsPerPage:100">
+                            <div class="col-md-12" dir-paginate="product in shippingPalletes | filter:searchChar | itemsPerPage:100">
                                 <div class="row">
                                     <div class="item-inner-wrap">
-                                        <div class="col-md-1 table-item item-label-checkbox"><div class="checkbox-wrap"><input class="special-checkbox" type="checkbox" ng-model="box" ng-change="changeValueCheckboxPalletes(box, product.UNIQUE_ID, product.ORDER_ID, product.CUSTOMER_PRODUCT_ID, product.INTERNAL_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_PRODUCTS_PAINTED, product.QUANTITY_IN_PALLETES, product.CREATED_DATE)"/><span class="checkbox-item"></span></div></div>
                                         <div class="col-md-1 table-item item-label-order" title="{{product.ORDER_ID}}">{{product.ORDER_ID}}</div>
                                         <div class="col-md-1 table-item item-label-clientref">{{product.CUSTOMER_PRODUCT_ID}}</div>
                                         <div class="col-md-1 table-item item-label-innerref">{{product.INTERNAL_PRODUCT_ID}}</div>
@@ -98,17 +96,11 @@
                 </div>
             </div>
         </div>
-    <div id="pagination">
-        <div class="row">
-            <div class="container">
-                <div align="center">
-                    <dir-pagination-controls
-                            max-size="100"
-                            direction-links="true"
-                            boundary-links="true" >
-                    </dir-pagination-controls>
+        <div id="action-wrap">
+            <div class="row">
+                <div class="col-md-12">
+                        <button type="submit" ng-click="goBack()" class="btn btn-default btn-save"><img src="assets/icons/send.svg" width="21px" height="16px">Cancelar</button>
                 </div>
             </div>
         </div>
-    </div>
 </div>
