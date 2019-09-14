@@ -4156,7 +4156,7 @@ app.controller('PalletesController', ['$scope', '$http', '$state', '$rootScope',
 
 app.controller('ShippingManifestController', ['$scope', '$http', '$state', '$stateParams', '$rootScope', 'ModalService', 'updatePalleteQuantity', function ($scope, $http, $state, $stateParams, $rootScope, ModalService, updatePalleteQuantity) {
 
-  $rootScope.name = "Gerar Manifesto de carga com as palletes seleccionadas"
+  $rootScope.name = "Gerar Manifesto de carga com as palletes selecionadas"
   $scope.shippingPalletes = $stateParams.arraydataForManifest;
 
   $scope.savePalleteQuantityChanges = function (orderid, customerproductid, palletequantity) {
