@@ -1,4 +1,4 @@
-var app = angular.module('easyLabel', ['ui.router', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'ngCookies', 'historicalModule', 'statisticsModule', 'Authentication', 'angularMoment']);
+var app = angular.module('easyLabel', ['ui.router', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'ngCookies', 'historicalModule', 'statisticsModule', 'Authentication', 'angularMoment', 'angular-js-xlsx']);
 
 app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
 
@@ -4195,6 +4195,24 @@ app.controller('ShippingManifestController', ['$scope', '$http', '$state', '$sta
 
   $scope.goBack= function() {
     $state.transitionTo("palletesReadyForShipping", {});
+  }
+
+  $scope.generateExcel = function() {
+    var data = [
+      { name: "Barack Obama", pres: 44 },
+      { name: "Donald Trump", pres: 45 }
+    ];
+    
+    /* generate a worksheet */
+    //var ws = XLSX.utils.json_to_sheet(data);
+    var ws = XLSX.utils.json_to_sheet(angular.copy($scope.shippingPalletes));
+    
+    /* add to workbook */
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Presidents");
+    
+    /* write workbook and force a download */
+    XLSX.writeFile(wb, "sheetjs.xlsx");
   }
 
 }]);
