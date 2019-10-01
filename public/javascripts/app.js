@@ -4005,9 +4005,12 @@ app.controller('PalletesController', ['$scope', '$http', '$state', '$rootScope',
     });
 
 
-  $scope.hasChangedValues = function (oldValue) {
-    $scope.oldPalleteQuantity = oldValue;
+  $scope.hasChangedValues = function (customerproductid, palletequantity) {
+    $scope.oldPalleteQuantity = palletequantity;
+
+    console.log(customerproductid + " -- " + palletequantity);
   }
+
 
   $scope.savePalleteQuantityChanges = function (orderid, customerproductid, palletequantity) {
     console.log("NewValue: " + palletequantity);
@@ -4029,6 +4032,11 @@ app.controller('PalletesController', ['$scope', '$http', '$state', '$rootScope',
             message: "Foi actualizada a quantidade do produto " + customerproductid + " na encomenda " + orderid + " de " + $scope.oldPalleteQuantity + " para " + palletequantity
           }
         }).then(function (modal) {
+
+          $scope.palletes.find(function(v) {
+            return v.CUSTOMER_PRODUCT_ID == customerproductid;
+          }).QUANTITY_IN_PALLETES = palletequantity;
+
           modal.element.modal();
           modal.close.then(function (result) {
             if (!result) {
@@ -4159,6 +4167,10 @@ app.controller('ShippingManifestController', ['$scope', '$http', '$state', '$sta
   $rootScope.name = "Gerar Manifesto de carga com as palletes selecionadas"
   $scope.shippingPalletes = $stateParams.arraydataForManifest;
 
+  $scope.hasChangedValues = function (oldValue) {
+    $scope.oldPalleteQuantity = oldValue;
+  }
+  
   $scope.savePalleteQuantityChanges = function (orderid, customerproductid, palletequantity) {
     console.log("NewValue: " + palletequantity);
     console.log("OldValue: " + $scope.oldPalleteQuantity);
