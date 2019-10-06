@@ -42,6 +42,7 @@
                             <div class="col-md-1 label-header-item header-label-innerref">Ref. Interna</div>
                             <div class="col-md-3 label-header-item header-label-prodname">Nome Produto</div>
                             <div class="col-md-1 label-header-item header-label-total-painted">Total Produtos Pintados</div>
+                            <div class="col-md-1 label-header-item header-label-total-painted">Total Produtos Enviados</div>
                             <div class="col-md-1 label-header-item header-label-quantity-pallet">Paletes Stock</div>
                             <div class="col-md-1 label-header-item header-label-date">Paletes Enviadas</div>
                             <div class="col-md-2 label-header-item header-label-date">Número Paletes</div>
@@ -57,6 +58,12 @@
                                         <div class="col-md-3 table-item item-label-prodname">{{product.PRODUCT_NAME}}</div>
                                         <div class="col-md-1 table-item item-label-quantity-pallet">
                                             <input type="text" class="form-control" id="totalproductspainted" name="totalproductspainted" placeholder="Referência Produto" ng-value="{{product.TOTAL_PRODUCTS_PAINTED}}" ng-change="hasChangedValues(product.CUSTOMER_PRODUCT_ID, {{product.QUANTITY_IN_PALLETES}})" ng-model="totalproductspainted">
+                                            <a class="btn btn-sm btn-danger update-pallet" ng-click="savePalleteQuantityChanges(product.ORDER_ID, product.CUSTOMER_PRODUCT_ID, palletesquantity)" data-toggle="tooltip" title="Gravar Alterações">
+                                                <img src="assets/icons/btn-success.svg" width="32px" height="32px" />
+                                            </a>
+                                        </div>
+                                        <div class="col-md-1 table-item item-label-quantity-pallet">
+                                            <input type="text" class="form-control" id="totalproductssent" name="totalproductssent" placeholder="Referência Produto" ng-value="{{product.TOTAL_PRODUCTS_PAINTED}}" ng-change="hasChangedValues(product.CUSTOMER_PRODUCT_ID, {{product.QUANTITY_IN_PALLETES}})" ng-model="totalproductssent">
                                             <a class="btn btn-sm btn-danger update-pallet" ng-click="savePalleteQuantityChanges(product.ORDER_ID, product.CUSTOMER_PRODUCT_ID, palletesquantity)" data-toggle="tooltip" title="Gravar Alterações">
                                                 <img src="assets/icons/btn-success.svg" width="32px" height="32px" />
                                             </a>
