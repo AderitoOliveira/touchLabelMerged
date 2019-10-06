@@ -4090,14 +4090,16 @@ app.controller('PalletesController', ['$scope', '$http', '$state', '$rootScope',
     if (box == true) {
       //PUSH TO rowValues the RECORDS TO SEND IN THE PDF
       rowValues.push(UNIQUE_ID);
-      palletesToDelete.push(rowValues)
+      palletesToDelete.push(rowValues);
+
+      var FINAL_PRODUCT_NAME = PRODUCT_NAME.substr(0, PRODUCT_NAME.indexOf("("));
 
       dataForManifest = { 
-        UNIQUE_ID: UNIQUE_ID,
+        //UNIQUE_ID: UNIQUE_ID,
         ORDER_ID: ORDER_ID,
         CUSTOMER_PRODUCT_ID: CUSTOMER_PRODUCT_ID,
         INTERNAL_PRODUCT_ID: INTERNAL_PRODUCT_ID,
-        PRODUCT_NAME:  PRODUCT_NAME,
+        PRODUCT_NAME:  FINAL_PRODUCT_NAME,
         TOTAL_PRODUCTS_PAINTED: TOTAL_PRODUCTS_PAINTED,
         QUANTITY_IN_PALLETES: QUANTITY_IN_PALLETES,
         CREATED_DATE: CREATED_DATE
