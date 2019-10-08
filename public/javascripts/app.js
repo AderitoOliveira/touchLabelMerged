@@ -4081,27 +4081,43 @@ app.controller('PalletesController', ['$scope', '$http', '$state', '$rootScope',
   };
 
   $scope.showButtons = false;
-  var rowValues = [];
+  var uniqueIDToDelete = [];
   var palletesToDelete = [];
+  //var palleteArray = [];
+  //var palletesToUpdate = [];
   var dataForManifest = [];
   var arraydataForManifest = [];
   $scope.changeValueCheckboxPalletes = function (box, UNIQUE_ID, ORDER_ID,  CUSTOMER_PRODUCT_ID,  INTERNAL_PRODUCT_ID,  PRODUCT_NAME,  TOTAL_PRODUCTS_PAINTED, QUANTITY_IN_PALLETES, CREATED_DATE) {
     console.log(box);
     if (box == true) {
-      //PUSH TO rowValues the RECORDS TO SEND IN THE PDF
-      rowValues.push(UNIQUE_ID);
-      palletesToDelete.push(rowValues);
+      //PUSH TO rowValues the RECORDS TO SEND IN THE EXCEL
+
+      uniqueIDToDelete.push(UNIQUE_ID);
+      palletesToDelete.push(uniqueIDToDelete);
+
+      /* palleteArray = {
+        UNIQUE_ID: UNIQUE_ID,
+        ORDER_ID: ORDER_ID,
+        CUSTOMER_PRODUCT_ID: CUSTOMER_PRODUCT_ID,
+        TOTAL_PRODUCTS_SENT: TOTAL_PRODUCTS_PAINTED,
+        TOTAL_QUANTITY_PALETES_SENT : QUANTITY_IN_PALLETES
+      }
+
+      palletesToUpdate.push(palleteArray); */
 
       var FINAL_PRODUCT_NAME = PRODUCT_NAME.substr(0, PRODUCT_NAME.indexOf("("));
 
       dataForManifest = { 
-        //UNIQUE_ID: UNIQUE_ID,
+        UNIQUE_ID: UNIQUE_ID,
         ORDER_ID: ORDER_ID,
         CUSTOMER_PRODUCT_ID: CUSTOMER_PRODUCT_ID,
         INTERNAL_PRODUCT_ID: INTERNAL_PRODUCT_ID,
         PRODUCT_NAME:  FINAL_PRODUCT_NAME,
         TOTAL_PRODUCTS_PAINTED: TOTAL_PRODUCTS_PAINTED,
+        TOTAL_PRODUCTS_SENT: TOTAL_PRODUCTS_PAINTED,
         QUANTITY_IN_PALLETES: QUANTITY_IN_PALLETES,
+        QUANTITY_IN_PALLETES_SENT: QUANTITY_IN_PALLETES,
+        PALLETES_DISPOSITION_ON_TRUCK : "",
         CREATED_DATE: CREATED_DATE
       }
 
@@ -4114,6 +4130,10 @@ app.controller('PalletesController', ['$scope', '$http', '$state', '$rootScope',
       palletesToDelete = palletesToDelete.filter(function (el) {
         return el[0] !== UNIQUE_ID;
       });
+
+      /* palletesToUpdate = palletesToUpdate.filter(function (el) {
+        return el[0] !== UNIQUE_ID;
+      }); */
 
       arraydataForManifest = arraydataForManifest.filter(function (element) {
         return element.UNIQUE_ID !== UNIQUE_ID;
@@ -4217,9 +4237,28 @@ app.controller('ShippingManifestController', ['$scope', '$http', '$state', '$sta
       { name: "Donald Trump", pres: 45 }
     ];
     
+    var dataToSendToExcel = [];
+
+    for(i=0; i < $scope.shippingPalletes.length; i++) {
+
+      var singleRow = {
+        "Order Nr." : $scope.shippingPalletes[i].ORDER_ID,
+        "N/Ref." : $scope.shippingPalletes[i].INTERNAL_PRODUCT_ID,
+        "V/Ref." : $scope.shippingPalletes[i].CUSTOMER_PRODUCT_ID,
+        "Descrição" : $scope.shippingPalletes[i].PRODUCT_NAME,
+        "Nr. Pal." : $scope.shippingPalletes[i].PALLETES_DISPOSITION_ON_TRUCK,
+        "Total Pal." : $scope.shippingPalletes[i].QUANTITY_IN_PALLETES_SENT,
+        "Quant. (pcs)" : $scope.shippingPalletes[i].TOTAL_PRODUCTS_SENT
+      }
+
+      dataToSendToExcel.push(singleRow);
+
+    }
+
+
     /* generate a worksheet */
     //var ws = XLSX.utils.json_to_sheet(data);
-    var ws = XLSX.utils.json_to_sheet(angular.copy($scope.shippingPalletes));
+    var ws = XLSX.utils.json_to_sheet(angular.copy(dataToSendToExcel));
     
     /* add to workbook */
     var wb = XLSX.utils.book_new();
