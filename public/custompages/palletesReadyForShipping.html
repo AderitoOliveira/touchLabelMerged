@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <div class="order-labels-content row">
-                            <div class="col-md-12" dir-paginate="product in palletes | filter:searchChar | itemsPerPage:100">
+                            <div class="col-md-12" dir-paginate="product in palletes | filter:searchChar | itemsPerPage:500">
                                 <div class="row">
                                     <div class="item-inner-wrap">
                                         <div class="col-md-1 table-item item-label-checkbox"><div class="checkbox-wrap"><input class="special-checkbox" type="checkbox" ng-model="box" ng-change="changeValueCheckboxPalletes(box, product.UNIQUE_ID, product.ORDER_ID, product.CUSTOMER_PRODUCT_ID, product.INTERNAL_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_PRODUCTS_PAINTED, product.QUANTITY_IN_PALLETES, product.CREATED_DATE)"/><span class="checkbox-item"></span></div></div>
