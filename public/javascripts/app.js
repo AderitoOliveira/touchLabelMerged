@@ -4193,6 +4193,16 @@ app.controller('ShippingManifestController', ['$scope', '$http', '$state', '$sta
     $scope.oldPalleteQuantity = oldValue;
   }
   
+  //Update the Nr Palletes for the row where the text was added
+  $scope.updateNrPallet = function (unique_id, value)
+  {
+    $scope.shippingPalletes.find(function(v) {
+      return v.UNIQUE_ID == unique_id;
+    }).PALLETES_DISPOSITION_ON_TRUCK = value;
+
+  }
+
+
   $scope.savePalleteQuantityChanges = function (orderid, customerproductid, palletequantity) {
     console.log("NewValue: " + palletequantity);
     console.log("OldValue: " + $scope.oldPalleteQuantity);
