@@ -63,10 +63,10 @@
                                             </a>
                                         </div>
                                         <div class="col-md-1 table-item item-label-quantity-pallet">
-                                            <input type="text" class="form-control" id="totalproductssent" name="totalproductssent" placeholder="Referência Produto" ng-value="{{product.TOTAL_PRODUCTS_PAINTED}}" ng-change="hasChangedValues(product.CUSTOMER_PRODUCT_ID, {{product.QUANTITY_IN_PALLETES}})" ng-model="totalproductssent">
-                                            <a class="btn btn-sm btn-danger update-pallet" ng-click="savePalleteQuantityChanges(product.ORDER_ID, product.CUSTOMER_PRODUCT_ID, palletesquantity)" data-toggle="tooltip" title="Gravar Alterações">
+                                            <input type="text" class="form-control" id="totalproductssent" name="totalproductssent" placeholder="Referência Produto" ng-value="{{product.TOTAL_PRODUCTS_PAINTED}}" ng-change="productsSent(product.UNIQUE_ID, totalproductssent)" ng-model="totalproductssent">
+                                            <!--a class="btn btn-sm btn-danger update-pallet" ng-click="savePalleteQuantityChanges(product.ORDER_ID, product.CUSTOMER_PRODUCT_ID, palletesquantity)" data-toggle="tooltip" title="Gravar Alterações">
                                                 <img src="assets/icons/btn-success.svg" width="32px" height="32px" />
-                                            </a>
+                                            </a-->
                                         </div>
                                         <!--div class="col-md-2 table-item item-label-quantity-pallet"><strong>{{product.QUANTITY_IN_PALLETES}}</strong></div-->
                                         <div class="col-md-1 table-item item-label-quantity-pallet">
@@ -76,16 +76,16 @@
                                             </a>
                                         </div>
                                         <div class="col-md-1 table-item item-label-quantity-pallet">
-                                            <input type="text" class="form-control" id="palletessent" name="palletessent" placeholder="" ng-value="{{product.QUANTITY_IN_PALLETES}}" ng-change="hasChangedValues({{product.QUANTITY_IN_PALLETES}})" ng-model="palletessent">
-                                            <a class="btn btn-sm btn-danger update-pallet" ng-click="savePalleteQuantityChanges(product.ORDER_ID, product.CUSTOMER_PRODUCT_ID, palletessent)" data-toggle="tooltip" title="Gravar Alterações">
+                                            <input type="text" class="form-control" id="palletessent" name="palletessent" placeholder="" ng-value="{{product.QUANTITY_IN_PALLETES}}" ng-change="palletesSent(product.UNIQUE_ID, palletessent)" ng-model="palletessent">
+                                            <!--a class="btn btn-sm btn-danger update-pallet" ng-click="savePalleteQuantityChanges(product.ORDER_ID, product.CUSTOMER_PRODUCT_ID, palletessent)" data-toggle="tooltip" title="Gravar Alterações">
                                                 <img src="assets/icons/btn-success.svg" width="32px" height="32px" />
-                                            </a>
+                                            </a-->
                                         </div>
                                         <div class="col-md-2 table-item item-label-quantity-pallet">
                                             <input type="text" class="form-control" id="numberofpalletes" name="numberofpalletes" placeholder="Nr Paletes" ng-value="" ng-change="updateNrPallet(product.UNIQUE_ID, numberofpalletes)" ng-model="numberofpalletes">
-                                            <a class="btn btn-sm btn-danger update-pallet" ng-click="savePalleteQuantityChanges(product.ORDER_ID, product.CUSTOMER_PRODUCT_ID, numberofpalletes)" data-toggle="tooltip" title="Gravar Alterações">
+                                            <!--a class="btn btn-sm btn-danger update-pallet" ng-click="savePalleteQuantityChanges(product.ORDER_ID, product.CUSTOMER_PRODUCT_ID, numberofpalletes)" data-toggle="tooltip" title="Gravar Alterações">
                                                 <img src="assets/icons/btn-success.svg" width="32px" height="32px" />
-                                            </a>
+                                            </a-->
                                         </div>
                                     </div>
                                 </div>

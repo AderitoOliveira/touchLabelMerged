@@ -4202,6 +4202,23 @@ app.controller('ShippingManifestController', ['$scope', '$http', '$state', '$sta
 
   }
 
+  //Update the Quantity of palletes sent to the customer
+  $scope.palletesSent = function (unique_id, value)
+  {
+    $scope.shippingPalletes.find(function(v) {
+      return v.UNIQUE_ID == unique_id;
+    }).QUANTITY_IN_PALLETES_SENT = value;
+
+  }
+
+  //Update the Quantity of products sent to the customer
+  $scope.productsSent = function (unique_id, value)
+  {
+    $scope.shippingPalletes.find(function(v) {
+      return v.UNIQUE_ID == unique_id;
+    }).TOTAL_PRODUCTS_SENT = value;
+
+  }
 
   $scope.savePalleteQuantityChanges = function (orderid, customerproductid, palletequantity) {
     console.log("NewValue: " + palletequantity);
