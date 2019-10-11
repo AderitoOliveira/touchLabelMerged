@@ -1162,7 +1162,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
         $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PRODUCED;
 
-        if ($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null) {
+        if ($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null && $scope.products[i].IN_COMPOUND_PRODUCT == 'Y') {
           $scope.products[i].ITEM_FILHO = 'item-filho';
 
           var parentProductsArray = $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
