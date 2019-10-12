@@ -176,7 +176,8 @@ statistics.controller('employeeRegistryStatisticsController', [ '$scope', '$http
       $scope.employeeSelected = true;
       $scope.showEmployeeMsgSelection = false;
 
-      executeQueryBetweenDateService.executeQuery(beginDate, endDate, nameemployee.EMPLOYEE_NAME).then(function (productionArray) {
+      executeQueryBetweenDateService.executeQuery(beginDate, endDate, nameemployee).then(function (productionArray) {
+
         $scope.productionDays = productionArray.productionDays;
         $scope.dataProduction3 = productionArray.dataProduction3;
   
@@ -352,7 +353,7 @@ statistics.factory('executeQueryBetweenDateService', ['$http', '$q', function ($
         params: {
           BEGIN_DATE: moment(beginDate).format('YYYY-MM-DD'),
           END_DATE: moment(endDate).format('YYYY-MM-DD'),
-          EMPLOYEE_NAME: employyename
+          EMPLOYEE: employyename
         }
       });
 
@@ -383,7 +384,7 @@ statistics.factory('executeQueryBetweenDateService', ['$http', '$q', function ($
 
         if (employyename != null) {
           var auxiliaryArray = {
-            EMPLOYEE: employyename,
+            EMPLOYEE: employyename.EMPLOYEE_NAME,
             PRODUCT_NAME: production[i].PRODUCT_NAME,
             PRODUCTION_DAY: moment(production[i].PRODUCTION_DAY).format('YYYY-MM-DD'),
             TOTAL_DAY_PRODUCTION: production[i].TOTAL_DAY_PRODUCTION,
