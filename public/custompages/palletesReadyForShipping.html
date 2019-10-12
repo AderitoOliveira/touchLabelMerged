@@ -5,6 +5,24 @@
                 <div class="header-actions">
                     <div class="row">
                         <div class="col-md-6">
+                                <div class="row">
+                                        <div class="button-wrap col-md-12">
+                                            <button style="width:calc(30% - 1px);float:left;background-color: rgb(194, 20, 20);" class="inset-button button print" ng-show='showButtons' ng-click="deletePalletes()">
+                                                <span class="button-inner-wrap">
+                                                    <img src="assets/icons/btn-remove.svg" width="20px" height="20px">
+                                                    <span class="btn-text">Eliminar Paletes</span>
+                                                </span>
+                                            </button>
+                                            <button style="width:calc(30% - 1px);margin-left:2px;float:left;background-color:rgb(39, 174, 96)" class="inset-button button print" ng-show='showButtons' ng-click="createShippingManifest()">
+                                                <span class="button-inner-wrap">
+                                                    <img src="assets/icons/newfile.svg" width="20px" height="20px">
+                                                    <span class="btn-text">Criar Manifesto</span>
+                                                </span>
+                                            </button>
+                                        </div>
+                                        <!--div class="button-wrap col-md-12"></div>
+                                        </div-->
+                                </div>
                         </div>
                         <div class="col-md-6">
                             <div class="row">
@@ -27,19 +45,21 @@
                 <div class="label-table-wrap">
                     <div class="label-table-header row">
                         <div class="inner-wrap">
+                            <div class="col-md-1 label-header-item header-label-checkbox" ><div class="checkbox-wrap"><input class="checkbox-all" type="checkbox"/><span class="checkbox-item"></span></div></div>
                             <div class="col-md-1 label-header-item header-label-order">Encomenda</div>
                             <div class="col-md-1 label-header-item header-label-clientref">Ref. Cliente</div>
                             <div class="col-md-1 label-header-item header-label-innerref">Ref. Interna</div>
                             <div class="col-md-3 label-header-item header-label-prodname">Nome Produto</div>
                             <div class="col-md-1 label-header-item header-label-total-painted">Total Produtos Pintados</div>
                             <div class="col-md-2 label-header-item header-label-quantity-pallet">Paletes Completas</div>
-                            <div class="col-md-3 label-header-item header-label-date">Data</div>
+                            <div class="col-md-2 label-header-item header-label-date">Data</div>
                         </div>
                     </div>
                     <div class="order-labels-content row">
-                            <div class="col-md-12" dir-paginate="product in palletes | filter:searchChar | itemsPerPage:100">
+                            <div class="col-md-12" dir-paginate="product in palletes | filter:searchChar | itemsPerPage:500">
                                 <div class="row">
                                     <div class="item-inner-wrap">
+                                        <div class="col-md-1 table-item item-label-checkbox"><div class="checkbox-wrap"><input class="special-checkbox" type="checkbox" ng-model="box" ng-change="changeValueCheckboxPalletes(box, product.UNIQUE_ID, product.ORDER_ID, product.CUSTOMER_PRODUCT_ID, product.INTERNAL_PRODUCT_ID, product.PRODUCT_NAME, product.TOTAL_PRODUCTS_PAINTED, product.QUANTITY_IN_PALLETES, product.CREATED_DATE)"/><span class="checkbox-item"></span></div></div>
                                         <div class="col-md-1 table-item item-label-order" title="{{product.ORDER_ID}}">{{product.ORDER_ID}}</div>
                                         <div class="col-md-1 table-item item-label-clientref">{{product.CUSTOMER_PRODUCT_ID}}</div>
                                         <div class="col-md-1 table-item item-label-innerref">{{product.INTERNAL_PRODUCT_ID}}</div>
@@ -48,12 +68,12 @@
                                         <!--div class="col-md-2 table-item item-label-quantity-pallet"><strong>{{product.QUANTITY_IN_PALLETES}}</strong></div-->
                                         <div class="col-md-2 table-item item-label-quantity-pallet">
                                           
-                                            <input type="text" class="form-control" id="palletesquantity" name="palletesquantity" placeholder="Referência Produto" ng-value="{{product.QUANTITY_IN_PALLETES}}" ng-change="hasChangedValues({{product.QUANTITY_IN_PALLETES}})" ng-model="palletesquantity">
+                                            <input type="text" class="form-control" id="palletesquantityid" name="palletesquantityname" placeholder="Referência Produto" ng-value="{{product.QUANTITY_IN_PALLETES}}" ng-change="hasChangedValues(product.CUSTOMER_PRODUCT_ID, {{product.QUANTITY_IN_PALLETES}})" ng-model="palletesquantity">
                                             <a class="btn btn-sm btn-danger update-pallet" ng-click="savePalleteQuantityChanges(product.ORDER_ID, product.CUSTOMER_PRODUCT_ID, palletesquantity)" data-toggle="tooltip" title="Gravar Alterações">
                                                 <img src="assets/icons/btn-success.svg" width="32px" height="32px" />
                                             </a>
                                         </div>
-                                        <div class="col-md-3 table-item item-label-date short">
+                                        <div class="col-md-2 table-item item-label-date short">
                                             {{product.CREATED_DATE}}
                                             <div class="item-order-actions">
                                                 <!-- <a class="btn btn-sm btn-danger" ng-show="product.CAN_BE_DELETED" ng-click="delete(product.ORDER_ID, product.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="Remover todas as Palletes em stock">
@@ -62,9 +82,9 @@
                                                 <a class="btn btn-sm btn-danger" ng-click="delete(product.ORDER_ID, product.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="Remover todas as Palletes em stock">
                                                     <img src="assets/icons/btn-success.svg" width="24px" height="24px" />
                                                 </a> -->
-                                                <button class="btn btn-sm btn-delete btn-remove-pallet" ng-click="delete(product.ORDER_ID, product.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="Remover Encomenda">
+                                                <!--button class="btn btn-sm btn-delete btn-remove-pallet" ng-click="delete(product.ORDER_ID, product.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="Remover Encomenda">
                                                     <img src="assets/icons/btn-remove.svg" width="24px" height="24px" /> Eliminar
-                                                </button>
+                                                </button-->
                                                 <!--a class="btn btn-sm btn-danger" ng-hide="editMode" ng-click="delete(product.ORDER_ID, product.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="Remover todas as Palletes em stock">
                                                         <img src="assets/icons/btn-add.svg" width="24px" height="24px" />
                                                 </a-->

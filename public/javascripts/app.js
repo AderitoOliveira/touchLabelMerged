@@ -1,4 +1,4 @@
-var app = angular.module('easyLabel', ['ui.router', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'ngCookies', 'historicalModule', 'statisticsModule', 'Authentication', 'angularMoment']);
+var app = angular.module('easyLabel', ['ui.router', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'ngCookies', 'historicalModule', 'statisticsModule', 'Authentication', 'angularMoment', 'angular-js-xlsx']);
 
 app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
 
@@ -150,6 +150,11 @@ app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
       url: '/palletesReadyForShipping',
       templateUrl: '../custompages/palletesReadyForShipping.html',
       controller: 'PalletesController'
+    })
+    .state('shippingmanifest', {
+      url: '/shippingmanifest',
+      templateUrl: '../custompages/shippingManifest.html',
+      params: {arraydataForManifest: null}
     })
     .state('overproductionstate', {
       url: '/overProduction',
@@ -1157,7 +1162,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
         $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PRODUCED;
 
-        if ($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null) {
+        if ($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null && $scope.products[i].IN_COMPOUND_PRODUCT == 'Y') {
           $scope.products[i].ITEM_FILHO = 'item-filho';
 
           var parentProductsArray = $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
@@ -3982,7 +3987,7 @@ app.controller('CreateProductController', ['$http', '$scope', '$rootScope', '$st
 
 
 //LIST ALL THE PALLETES READY TO BE SHIPPED - PalletesController
-app.controller('PalletesController', ['$scope', '$http', '$rootScope', 'ModalService', 'updatePalleteQuantity', function ($scope, $http, $rootScope, ModalService, updatePalleteQuantity) {
+app.controller('PalletesController', ['$scope', '$http', '$state', '$rootScope', 'ModalService', 'updatePalleteQuantity', function ($scope, $http, $state, $rootScope, ModalService, updatePalleteQuantity) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Lista Paletes prontas para enviar"
@@ -4000,8 +4005,219 @@ app.controller('PalletesController', ['$scope', '$http', '$rootScope', 'ModalSer
     });
 
 
+  $scope.hasChangedValues = function (customerproductid, palletequantity) {
+    $scope.oldPalleteQuantity = palletequantity;
+
+    console.log(customerproductid + " -- " + palletequantity);
+  }
+
+
+  $scope.savePalleteQuantityChanges = function (orderid, customerproductid, palletequantity) {
+    console.log("NewValue: " + palletequantity);
+    console.log("OldValue: " + $scope.oldPalleteQuantity);
+    var validatedPalletequantity = "";
+    if (palletequantity == undefined) {
+      return false;
+    } else {
+      validatedPalletequantity = palletequantity.replace(/[^0-9]/g, '');
+    }
+    if (validatedPalletequantity == palletequantity) {
+      updatePalleteQuantity.updatePallete(orderid, customerproductid, palletequantity).then(function () {
+
+        ModalService.showModal({
+          templateUrl: "../modal/genericModal.html",
+          controller: "GenericController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: "Foi actualizada a quantidade do produto " + customerproductid + " na encomenda " + orderid + " de " + $scope.oldPalleteQuantity + " para " + palletequantity
+          }
+        }).then(function (modal) {
+
+          $scope.palletes.find(function(v) {
+            return v.CUSTOMER_PRODUCT_ID == customerproductid;
+          }).QUANTITY_IN_PALLETES = palletequantity;
+
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
+        });
+
+      });
+    }
+  }
+
+  $scope.delete = function (order_id, customer_product_id) {
+
+    var dataToDelete = {
+      ORDER_ID: order_id,
+      CUSTOMER_PRODUCT_ID: customer_product_id
+    };
+
+    ModalService.showModal({
+      templateUrl: "../modal/yesNoGeneric.html",
+      controller: "genericModalController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        message: "Deseja mesmo remover a pallete de stock do produto " + customer_product_id + " na encomenda " + order_id + " ?",
+        operationURL: '/deletePalletesReadyForShipping',
+        dataObj: dataToDelete
+      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
+    });
+
+  };
+
+  $scope.showButtons = false;
+  var uniqueIDToDelete = [];
+  var palletesToDelete = [];
+  //var palleteArray = [];
+  //var palletesToUpdate = [];
+  var dataForManifest = [];
+  var arraydataForManifest = [];
+  $scope.changeValueCheckboxPalletes = function (box, UNIQUE_ID, ORDER_ID,  CUSTOMER_PRODUCT_ID,  INTERNAL_PRODUCT_ID,  PRODUCT_NAME,  TOTAL_PRODUCTS_PAINTED, QUANTITY_IN_PALLETES, CREATED_DATE) {
+    console.log(box);
+    if (box == true) {
+      //PUSH TO rowValues the RECORDS TO SEND IN THE EXCEL
+
+      uniqueIDToDelete.push(UNIQUE_ID);
+      palletesToDelete.push(uniqueIDToDelete);
+
+      /* palleteArray = {
+        UNIQUE_ID: UNIQUE_ID,
+        ORDER_ID: ORDER_ID,
+        CUSTOMER_PRODUCT_ID: CUSTOMER_PRODUCT_ID,
+        TOTAL_PRODUCTS_SENT: TOTAL_PRODUCTS_PAINTED,
+        TOTAL_QUANTITY_PALETES_SENT : QUANTITY_IN_PALLETES
+      }
+
+      palletesToUpdate.push(palleteArray); */
+
+      var FINAL_PRODUCT_NAME = PRODUCT_NAME.substr(0, PRODUCT_NAME.indexOf("("));
+
+      dataForManifest = { 
+        UNIQUE_ID: UNIQUE_ID,
+        ORDER_ID: ORDER_ID,
+        CUSTOMER_PRODUCT_ID: CUSTOMER_PRODUCT_ID,
+        INTERNAL_PRODUCT_ID: INTERNAL_PRODUCT_ID,
+        PRODUCT_NAME:  FINAL_PRODUCT_NAME,
+        TOTAL_PRODUCTS_PAINTED: TOTAL_PRODUCTS_PAINTED,
+        TOTAL_PRODUCTS_SENT: TOTAL_PRODUCTS_PAINTED,
+        QUANTITY_IN_PALLETES: QUANTITY_IN_PALLETES,
+        QUANTITY_IN_PALLETES_SENT: QUANTITY_IN_PALLETES,
+        PALLETES_DISPOSITION_ON_TRUCK : "",
+        CREATED_DATE: CREATED_DATE
+      }
+
+      arraydataForManifest.push(dataForManifest);
+
+      rowValues = [];
+      dataForManifest = [];
+    } else if (box == false && palletesToDelete.length > 0) {
+
+      palletesToDelete = palletesToDelete.filter(function (el) {
+        return el[0] !== UNIQUE_ID;
+      });
+
+      /* palletesToUpdate = palletesToUpdate.filter(function (el) {
+        return el[0] !== UNIQUE_ID;
+      }); */
+
+      arraydataForManifest = arraydataForManifest.filter(function (element) {
+        return element.UNIQUE_ID !== UNIQUE_ID;
+      });
+
+    }
+
+    if(palletesToDelete.length > 0) {
+      $scope.showButtons = true;
+    } else {
+      $scope.showButtons = false;
+    }
+  }
+
+
+  $scope.deletePalletes = function () {
+
+    dataToDelete = {
+      uniqueIdArray: palletesToDelete
+    };
+
+    ModalService.showModal({
+      templateUrl: "../modal/yesNoGeneric.html",
+      controller: "genericModalController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        message: " Deseja apagar o registos seleccionados das Palletes em stock?",
+        operationURL: '/deletePalletesReadyForShippingBulk',
+        dataObj: dataToDelete
+      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
+    });
+
+  };
+
+  $scope.createShippingManifest = function() {
+    $state.transitionTo("shippingmanifest", { 'arraydataForManifest': arraydataForManifest});
+  }
+
+}]);
+
+
+app.controller('ShippingManifestController', ['$scope', '$http', '$state', '$stateParams', '$rootScope', 'ModalService', 'updatePalleteQuantity', function ($scope, $http, $state, $stateParams, $rootScope, ModalService, updatePalleteQuantity) {
+
+  $rootScope.name = "Gerar Manifesto de carga com as palletes selecionadas"
+  $scope.shippingPalletes = $stateParams.arraydataForManifest;
+
   $scope.hasChangedValues = function (oldValue) {
     $scope.oldPalleteQuantity = oldValue;
+  }
+  
+  //Update the Nr Palletes for the row where the text was added
+  $scope.updateNrPallet = function (unique_id, value)
+  {
+    $scope.shippingPalletes.find(function(v) {
+      return v.UNIQUE_ID == unique_id;
+    }).PALLETES_DISPOSITION_ON_TRUCK = value;
+
+  }
+
+  //Update the Quantity of palletes sent to the customer
+  $scope.palletesSent = function (unique_id, value)
+  {
+    $scope.shippingPalletes.find(function(v) {
+      return v.UNIQUE_ID == unique_id;
+    }).QUANTITY_IN_PALLETES_SENT = value;
+
+  }
+
+  //Update the Quantity of products sent to the customer
+  $scope.productsSent = function (unique_id, value)
+  {
+    $scope.shippingPalletes.find(function(v) {
+      return v.UNIQUE_ID == unique_id;
+    }).TOTAL_PRODUCTS_SENT = value;
+
   }
 
   $scope.savePalleteQuantityChanges = function (orderid, customerproductid, palletequantity) {
@@ -4036,38 +4252,48 @@ app.controller('PalletesController', ['$scope', '$http', '$rootScope', 'ModalSer
 
       });
     }
-
-
   }
 
-  $scope.delete = function (order_id, customer_product_id) {
+  $scope.goBack= function() {
+    $state.transitionTo("palletesReadyForShipping", {});
+  }
 
-    var dataToDelete = {
-      ORDER_ID: order_id,
-      CUSTOMER_PRODUCT_ID: customer_product_id
-    };
+  $scope.generateExcel = function() {
+    var data = [
+      { name: "Barack Obama", pres: 44 },
+      { name: "Donald Trump", pres: 45 }
+    ];
+    
+    var dataToSendToExcel = [];
 
-    ModalService.showModal({
-      templateUrl: "../modal/yesNoGeneric.html",
-      controller: "genericModalController",
-      preClose: (modal) => { modal.element.modal('hide'); },
-      inputs: {
-        message: "Deseja mesmo remover a pallete de stock do produto " + customer_product_id + " na encomenda " + order_id + " ?",
-        operationURL: '/deletePalletesReadyForShipping',
-        dataObj: dataToDelete
+    for(i=0; i < $scope.shippingPalletes.length; i++) {
+
+      var singleRow = {
+        "Order Nr." : $scope.shippingPalletes[i].ORDER_ID,
+        "N/Ref." : $scope.shippingPalletes[i].INTERNAL_PRODUCT_ID,
+        "V/Ref." : $scope.shippingPalletes[i].CUSTOMER_PRODUCT_ID,
+        "Descrição" : $scope.shippingPalletes[i].PRODUCT_NAME,
+        "Nr. Pal." : $scope.shippingPalletes[i].PALLETES_DISPOSITION_ON_TRUCK,
+        "Total Pal." : $scope.shippingPalletes[i].QUANTITY_IN_PALLETES_SENT,
+        "Quant. (pcs)" : $scope.shippingPalletes[i].TOTAL_PRODUCTS_SENT
       }
-    }).then(function (modal) {
-      modal.element.modal();
-      modal.close.then(function (result) {
-        if (!result) {
-          $scope.complexResult = "Modal forcibly closed..."
-        } else {
-          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
-        }
-      });
-    });
 
-  };
+      dataToSendToExcel.push(singleRow);
+
+    }
+
+
+    /* generate a worksheet */
+    //var ws = XLSX.utils.json_to_sheet(data);
+    var ws = XLSX.utils.json_to_sheet(angular.copy(dataToSendToExcel));
+    
+    /* add to workbook */
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Presidents");
+    
+    /* write workbook and force a download */
+    XLSX.writeFile(wb, "sheetjs.xlsx");
+  }
 
 }]);
 

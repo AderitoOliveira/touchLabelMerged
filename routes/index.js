@@ -606,6 +606,13 @@ router.post('/deletePalletesReadyForShipping', function (req, res) {
   deletePalletesReadyForShipping(req, res);
 });
 
+//DELETE PALLETES READY FOR SHIPPING - palletes_ready_for_shipping - FUNCTION CALLED TO DELETE MULTI ROWS
+router.post('/deletePalletesReadyForShippingBulk', function (req, res) {
+  console.log("DELETE PALLETES READY FOR SHIPPING IN BULK");
+  console.log(req.body);
+  deletePalletesReadyForShippingBulk(req, res);
+});
+
 //UPDATE PALLETES QUANTITY AVAILABLE
 router.post('/updatePalletesQuantity', function (req, res) {
   console.log("UPDATE PALLETES QUANTITY");
