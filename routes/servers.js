@@ -1714,7 +1714,16 @@ getProductionForAllEmployeeBetweenDates = function(req, callback) {
 //GET PRODUCTS PRODUCED FOR A EMPLOYEE BETWEEN BEGIN AND END DATE
 getProductionForEmployeeBetweenBeingEndDate = function(req, callback) {
     con.connect(function(err) {
-    con.query('select date(CREATED_DATE) as PRODUCTION_DAY, PRODUCT_NAME, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_DAY_PRODUCTION, sum(PRODUCED_VALUE_IN_EURO) as TOTAL_DAY_VALUE_IN_EUR from order_products_production_registry_bck where CREATED_DATE between ? and ? and EMPLOYEE_NAME = ? group by PRODUCTION_DAY,PRODUCT_NAME order by PRODUCTION_DAY', [req.query.BEGIN_DATE, req.query.END_DATE, req.query.EMPLOYEE_NAME], function(err, rows) {
+
+    employee = JSON.parse(req.query.EMPLOYEE);
+
+    if(employee.EMPLOYEE_FUNCTION.includes('Rodi')) {
+        query = 'select date(CREATED_DATE) as PRODUCTION_DAY, PRODUCT_NAME, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_DAY_PRODUCTION, sum(PRODUCED_VALUE_IN_EURO) as TOTAL_DAY_VALUE_IN_EUR from order_products_production_registry_bck where CREATED_DATE between ? and ? and EMPLOYEE_NAME = ? group by PRODUCTION_DAY,PRODUCT_NAME order by PRODUCTION_DAY';
+    } else {
+        query = 'select date(CREATED_DATE) as PRODUCTION_DAY, PRODUCT_NAME, sum(TOTAL_PRODUCTS_PAINTED) as TOTAL_DAY_PRODUCTION, sum(PRODUCED_VALUE_IN_EURO) as TOTAL_DAY_VALUE_IN_EUR from order_products_painting_registry_bck where CREATED_DATE between ? and ? and EMPLOYEE_NAME = ? group by PRODUCTION_DAY, PRODUCT_NAME order by PRODUCTION_DAY';
+    }
+
+    con.query(query, [req.query.BEGIN_DATE, req.query.END_DATE, employee.EMPLOYEE_NAME], function(err, rows) {
         if (err) {
             throw err;
         } else
