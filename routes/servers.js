@@ -775,8 +775,9 @@ updateOrderProductStatus = function(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     con.connect(function(err) {
-    con.query('UPDATE orders_products SET order_product_status = ? where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ? and UNIQUE_ORDER_ID = ?', [req.body.ORDER_PRODUCT_STATUS, req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID, req.body.UNIQUE_ORDER_ID], function (error, results, fields) {
-    if (error) throw error;
+    //con.query('UPDATE orders_products SET order_product_status = ? where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ? and UNIQUE_ORDER_ID = ?', [req.body.ORDER_PRODUCT_STATUS, req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID, req.body.UNIQUE_ORDER_ID], function (error, results, fields) {
+    con.query('UPDATE orders_products SET order_product_status = ? where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [req.body.ORDER_PRODUCT_STATUS, req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+        if (error) throw error;
     res.end(JSON.stringify(results));
   });
  });
