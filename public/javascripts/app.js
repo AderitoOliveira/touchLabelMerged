@@ -2000,6 +2000,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       };
 
       if (parent_customer_product_id != null && in_compound_product == 'Y') {
+        parentOrderProductUniqueId = $scope.parentProductsIndex[parent_customer_product_id][0].UNIQUE_ORDER_ID;
         getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function (parentDetails) {
 
           var parentPalletQuantity = $scope.totalquantityproduced / parentDetails[0].Qty_By_Pallet;
@@ -2017,7 +2018,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             $state.reload();
           });
 
-          insertDailyPaintingParentProduct.insertParentPainting($scope.orderid, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, $scope.totalquantityproduced, productiondate);
+          insertDailyPaintingParentProduct.insertParentPainting(parentOrderProductUniqueId, $scope.orderid, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, $scope.totalquantityproduced, productiondate);
 
         });
       }
@@ -2060,6 +2061,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       };
 
       if (parent_customer_product_id != null && in_compound_product == 'Y') {
+        parentOrderProductUniqueId = $scope.parentProductsIndex[parent_customer_product_id][0].UNIQUE_ORDER_ID;
         getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function (parentDetails) {
 
           var parentPalletQuantity = $scope.totalquantityproduced / parentDetails[0].Qty_By_Pallet;
@@ -2077,7 +2079,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
             $state.reload();
           });
 
-          insertDailyPaintingParentProduct.insertParentPainting($scope.orderid, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_still_to_produce, productiondate);
+          insertDailyPaintingParentProduct.insertParentPainting(parentOrderProductUniqueId, $scope.orderid, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_still_to_produce, productiondate);
         });
       }
 
@@ -2149,6 +2151,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               };
 
               if (parent_customer_product_id != null && in_compound_product == 'Y') {
+                parentOrderProductUniqueId = $scope.parentProductsIndex[parent_customer_product_id][0].UNIQUE_ORDER_ID;
                 getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function (parentDetails) {
 
                   var parentPalletQuantity = $scope.totalquantityproduced / parentDetails[0].Qty_By_Pallet;
@@ -2166,7 +2169,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                     $state.reload();
                   });
 
-                  insertDailyPaintingParentProduct.insertParentPainting(order_id, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate);
+                  insertDailyPaintingParentProduct.insertParentPainting(parentOrderProductUniqueId, order_id, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, number_of_products_to_close_order, productiondate);
 
                 });
               }
@@ -2211,6 +2214,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
               };
 
               if (parent_customer_product_id != null && in_compound_product == 'Y') {
+                parentOrderProductUniqueId = $scope.parentProductsIndex[parent_customer_product_id][0].UNIQUE_ORDER_ID;
                 getParentDetailsToInsertPallete.getParentData(parent_customer_product_id).then(function (parentDetails) {
 
                   var parentPalletQuantity = $scope.totalquantityproduced / parentDetails[0].Qty_By_Pallet;
@@ -2228,7 +2232,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
                     $state.reload();
                   });
 
-                  insertDailyPaintingParentProduct.insertParentPainting(order_id, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate);
+                  insertDailyPaintingParentProduct.insertParentPainting(parentOrderProductUniqueId, order_id, parentDetails[0].INTERNAL_PRODUCT_ID, parent_customer_product_id, parentDetails[0].PRODUCT_NAME, employyee_name.EMPLOYEE_NAME, employyee_name.EMPLOYEE_ID, products_remaining_from_daily_production, productiondate);
 
                 });
               }
@@ -6757,13 +6761,14 @@ app.factory('insertDailyProductionParentProduct', ['$http', '$q', function ($htt
 //INSERT DAILY PARENT PRODUCTION FOR COMPOUND PRODUCTS
 app.factory('insertDailyPaintingParentProduct', ['$http', function ($http) {
 
-  function insertParentPainting(orderid, internalproductid, customerproductid, productnameinternal, employyee_name, employyee_id, totalquantityproduced, productiondate) {
+  function insertParentPainting(parentOrderProductUniqueId, orderid, internalproductid, customerproductid, productnameinternal, employyee_name, employyee_id, totalquantityproduced, productiondate) {
 
     var dataObj = {
       ORDER_ID: orderid,
       INTERNAL_PRODUCT_ID: internalproductid,
       CUSTOMER_PRODUCT_ID: customerproductid,
       PRODUCT_NAME: productnameinternal,
+      ORDER_PRODUCTS_UNIQUE_ID: parentOrderProductUniqueId,
       EMPLOYEE_NAME: employyee_name,
       EMPLOYEE_ID: employyee_id,
       TOTAL_PRODUCTS_PAINTED: totalquantityproduced,
