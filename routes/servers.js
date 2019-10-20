@@ -1261,6 +1261,37 @@ insertPalletesQuantity = function(req, res) {
  });
 }
 
+
+//Update and delete pallets in stock after generating the excel for shipping
+updateAndDeletePalletsInStock = function(req, res) {
+    var data  = req.body;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+
+    for(i=0; i < data.length; i++) {
+    
+        if(data[i].QUANTITY_IN_PALLETES == data[i].QUANTITY_IN_PALLETES_SENT) {
+            con.query('delete from palletes_ready_for_shipping where UNIQUE_ID = ?', [data[i].UNIQUE_ID], function (error, results, fields) {
+                if (error) throw error;
+                res.end(JSON.stringify(results));
+                });
+        }
+
+        if(data[i].QUANTITY_IN_PALLETES > data[i].QUANTITY_IN_PALLETES_SENT) {
+            con.query('update palletes_ready_for_shipping set QUANTITY_IN_PALLETES = QUANTITY_IN_PALLETES - ?, TOTAL_PRODUCTS_PAINTED = TOTAL_PRODUCTS_PAINTED - ? where UNIQUE_ID = ?', [data[i].QUANTITY_IN_PALLETES_SENT, data[i].TOTAL_PRODUCTS_SENT, data[i].UNIQUE_ID], function (error, results, fields) {
+                if (error) throw error;
+                res.end(JSON.stringify(results));
+                });
+        }
+
+    }
+
+ });
+}
+
 //GET PALLETES READY FOR SHIPPING - palletes_ready_for_shipping
 getPalletesReadyForShipping = function(data, callback) {
     con.connect(function(err) {
@@ -1869,7 +1900,7 @@ getParentDetailsForApp = function(orderid,parentcustomerid) {
         reject(err);
       } 
     });
-  } 
+} 
 
 
 
