@@ -592,6 +592,12 @@ router.post('/insertPalletesQuantity', function (req, res) {
   insertPalletesQuantity(req, res);
 });
 
+//INSERT PALLETES QUANTITY AVAILABLE
+router.post('/updateAndDeletePalletsInStock', function (req, res) {
+  console.log("UPDATE AND DELETE PALLETS IN STOCK");
+  updateAndDeletePalletsInStock(req, res);
+});
+
 //GET PALLETES READY FOR SHIPPING - palletes_ready_for_shipping
 router.get('/getPalletesReadyForShipping', function (req, res) {
   console.log("GET PALLETES READY FOR SHIPPING");

@@ -4292,8 +4292,53 @@ app.controller('ShippingManifestController', ['$scope', '$http', '$state', '$sta
     XLSX.utils.book_append_sheet(wb, ws, "Paletes Enviadas");
     
     /* write workbook and force a download */
-    XLSX.writeFile(wb, "sheetjs.xlsx");
+    XLSX.writeFile(wb, "Encomenda.xlsx");
+}
+
+
+$scope.generateExcel = function() {
+    
+  var dataToSendToExcel = [];
+
+  for(i=0; i < $scope.shippingPalletes.length; i++) {
+
+    var singleRow = {
+      "Order Nr." : $scope.shippingPalletes[i].ORDER_ID,
+      "N/Ref." : $scope.shippingPalletes[i].INTERNAL_PRODUCT_ID,
+      "V/Ref." : $scope.shippingPalletes[i].CUSTOMER_PRODUCT_ID,
+      "Descrição" : $scope.shippingPalletes[i].PRODUCT_NAME,
+      "Nr. Pal." : $scope.shippingPalletes[i].PALLETES_DISPOSITION_ON_TRUCK,
+      "Total Pal." : $scope.shippingPalletes[i].QUANTITY_IN_PALLETES_SENT,
+      "Quant. (pcs)" : $scope.shippingPalletes[i].TOTAL_PRODUCTS_SENT
+    }
+
+    dataToSendToExcel.push(singleRow);
+
   }
+
+
+  ModalService.showModal({
+          templateUrl: "../modal/yesNoGeneric.html",
+          controller: "generateExcelForShippingModalController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: "Pretende gerar o ficheiro Excel com as paletes seleccionadas? A quantidade de paletes em stock vai ser actualizada após criar o ficheiro.",
+            objToUpdateInPalletsTable: $scope.shippingPalletes,
+            objToGenerateExcelFile: dataToSendToExcel,
+            stateToGo: "palletesReadyForShipping"
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
+  });
+  
+}
 
 }]);
 
@@ -4737,6 +4782,45 @@ app.controller('genericMultOperationsModalController', ['$scope', '$http', '$sta
 
     };
   }]);
+
+
+  //Modal for generating the Excel file for shipping and update/delete the quantity of pallets in stock
+  app.controller('generateExcelForShippingModalController', ['$scope', '$http', '$state', 'objToUpdateInPalletsTable', 'objToGenerateExcelFile', 'message', 'stateToGo',
+    function ($scope, $http, $state, objToUpdateInPalletsTable, objToGenerateExcelFile, message, stateToGo) {
+  
+      $scope.message = message;
+  
+      //  This close function doesn't need to use jQuery or bootstrap, because
+      //  the button has the 'data-dismiss' attribute.
+  
+      //Save Content Modal  
+      $scope.yes = function () {
+
+        //Generate the Excel File
+        var ws = XLSX.utils.json_to_sheet(angular.copy(objToGenerateExcelFile));
+        
+        /* add to workbook */
+        var wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Paletes Enviadas");
+        
+        /* write workbook and force a download */
+        XLSX.writeFile(wb, "ProdutosEnviadosNaEncomenda.xlsx");
+      
+  
+            
+        var res = $http.post('/updateAndDeletePalletsInStock', objToUpdateInPalletsTable).then(function (data, status, headers, config) {
+          
+          //setTimeout(function () {
+              $state.go(stateToGo, null, { refresh: true });
+              //$state.reload();
+          //}, 5000);
+
+        });
+        
+
+      };
+  }]);
+
 
 //MODAL for the copy of the Product
 app.controller('CloneProductModalController', ['$scope', '$http', '$state', 'customerProductId', 'ModalService', 'CloneProductService', function ($scope, $http, $state, customerProductId, ModalService, CloneProductService) {
