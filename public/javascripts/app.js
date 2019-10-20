@@ -4262,11 +4262,7 @@ app.controller('ShippingManifestController', ['$scope', '$http', '$state', '$sta
     $state.transitionTo("palletesReadyForShipping", {});
   }
 
-  $scope.generateExcel = function() {
-    var data = [
-      { name: "Barack Obama", pres: 44 },
-      { name: "Donald Trump", pres: 45 }
-    ];
+  $scope.previewExcel = function() {
     
     var dataToSendToExcel = [];
 
@@ -4293,7 +4289,7 @@ app.controller('ShippingManifestController', ['$scope', '$http', '$state', '$sta
     
     /* add to workbook */
     var wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Presidents");
+    XLSX.utils.book_append_sheet(wb, ws, "Paletes Enviadas");
     
     /* write workbook and force a download */
     XLSX.writeFile(wb, "sheetjs.xlsx");
