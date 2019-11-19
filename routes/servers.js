@@ -919,6 +919,28 @@ insertOrderBoxProductClosed = function(req, res) {
  });
 }
 
+//INSERT INTERMEDIATE BOXES TO ORDER IN PRODUCT STILL IN PRODUCTION
+insertIntermediateBoxesToOrder = function(req, res) {
+    var postData  = req.body;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    console.log("##########################################################");
+    console.log(req.body);
+    console.log("##########################################################");
+    con.connect(function(err) {
+    con.query('INSERT INTO order_boxes_intermediate_staging set ?  ON DUPLICATE KEY UPDATE TOTAL_PRODUCTS_PRODUCED = TOTAL_PRODUCTS_PRODUCED + VALUES(TOTAL_PRODUCTS_PRODUCED), TOTAL_BOXES_TO_ORDER = TOTAL_BOXES_TO_ORDER + VALUES(TOTAL_BOXES_TO_ORDER)', [postData, postData.TOTAL_PRODUCTS_PRODUCED, postData.TOTAL_BOXES_TO_ORDER], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+    });
+    con.query('INSERT INTO order_boxes_closed_production_products SET ?', postData, function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+    });
+ });
+}
+
 //GET ORDER BOXES CLOSED PRODUCTION PRODUCT
 fetchAllOrderBoxesToOrder = function(data, callback) {
     con.connect(function(err) {

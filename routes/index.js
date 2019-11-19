@@ -415,6 +415,13 @@ router.post('/insertOrderBoxes', function (req, res) {
   insertOrderBoxProductClosed(req, res);
 });
 
+//INSERT INTERMEDIATE BOXES TO ORDER IN PRODUCT STILL IN PRODUCTION
+router.post('/insertIntermediateBoxesToOrder', function (req, res) {
+  console.log("INSERT INTERMEDIATE BOXES TO ORDER");
+  console.log(req.body);
+  insertIntermediateBoxesToOrder(req, res);
+});
+
 //GET ORDER BOXES CLOSED PRODUCTION PRODUCT
 router.get('/getAllOrderBoxes', function (req, res) {
   console.log("GET BOXES TO ORDER");
