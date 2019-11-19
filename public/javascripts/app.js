@@ -4099,16 +4099,6 @@ app.controller('PalletesController', ['$scope', '$http', '$state', '$rootScope',
       uniqueIDToDelete.push(UNIQUE_ID);
       palletesToDelete.push(uniqueIDToDelete);
 
-      /* palleteArray = {
-        UNIQUE_ID: UNIQUE_ID,
-        ORDER_ID: ORDER_ID,
-        CUSTOMER_PRODUCT_ID: CUSTOMER_PRODUCT_ID,
-        TOTAL_PRODUCTS_SENT: TOTAL_PRODUCTS_PAINTED,
-        TOTAL_QUANTITY_PALETES_SENT : QUANTITY_IN_PALLETES
-      }
-
-      palletesToUpdate.push(palleteArray); */
-
       var FINAL_PRODUCT_NAME = PRODUCT_NAME.substr(0, PRODUCT_NAME.indexOf("("));
 
       dataForManifest = { 
@@ -4129,6 +4119,7 @@ app.controller('PalletesController', ['$scope', '$http', '$state', '$rootScope',
 
       rowValues = [];
       dataForManifest = [];
+      uniqueIDToDelete = [];
     } else if (box == false && palletesToDelete.length > 0) {
 
       palletesToDelete = palletesToDelete.filter(function (el) {
