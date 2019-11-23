@@ -7,8 +7,8 @@ var mysql = require('mysql');
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'
-}); */
-
+});
+ */
 
 var con = mysql.createConnection({  
     host: '172.30.184.178',
@@ -919,26 +919,125 @@ insertOrderBoxProductClosed = function(req, res) {
  });
 }
 
+//CHECK IF THE BOXES TO ORDER INTERMEDIATE TABLE HAS RECORDS
+getIntermediateBoxesToOrder = function(orderid,customerproductid) {
+    return new Promise(async function(resolve, reject) {
+      console.log("INSIDE getParentDetailsForPalletApp");
+      try {
+        con.connect(function(err) {
+        let result = con.query('select TOTAL_BOXES_TO_ORDER, TOTAL_PRODUCTS_PRODUCED from order_boxes_intermediate_staging where ORDER_ID = ? and CUSTOMER_PRODUCT_ID= ?', [orderid,customerproductid], function(err, rows) {
+                if (err) {
+                    throw err;
+                } else
+                console.log("GET PARENT DETAILS TO INSERT THE PALLETE QUANTITY"); 
+                resolve(JSON.stringify(rows));
+            });
+        });
+      } catch (err) {
+        console.log('Error occurred', err);
+        reject(err);
+      } 
+    });
+} 
+
 //INSERT INTERMEDIATE BOXES TO ORDER IN PRODUCT STILL IN PRODUCTION
-insertIntermediateBoxesToOrder = function(req, res) {
+insertIntermediateBoxesToOrder = async function(req, res) {
     var postData  = req.body;
+
+    let boxesAlreadyOrdered = JSON.parse(await getIntermediateBoxesToOrder(req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID));
+
+    console.log("boxesAlreadyOrdered");
+    console.log(boxesAlreadyOrdered);
+
+
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
-    console.log("##########################################################");
-    console.log(req.body);
-    console.log("##########################################################");
-    con.connect(function(err) {
-    con.query('INSERT INTO order_boxes_intermediate_staging set ?  ON DUPLICATE KEY UPDATE TOTAL_PRODUCTS_PRODUCED = TOTAL_PRODUCTS_PRODUCED + VALUES(TOTAL_PRODUCTS_PRODUCED), TOTAL_BOXES_TO_ORDER = TOTAL_BOXES_TO_ORDER + VALUES(TOTAL_BOXES_TO_ORDER)', [postData, postData.TOTAL_PRODUCTS_PRODUCED, postData.TOTAL_BOXES_TO_ORDER], function (error, results, fields) {
-    if (error) throw error;
-    res.end(JSON.stringify(results));
-    });
-    con.query('INSERT INTO order_boxes_closed_production_products SET ?', postData, function (error, results, fields) {
-        if (error) throw error;
-        res.end(JSON.stringify(results));
-    });
- });
+
+    if(req.body.STATUS == 'CLOSE_PRODUCT_IN_PRODUCTION')
+    {
+     
+        delete req.body["STATUS"];
+        if(boxesAlreadyOrdered.length > 0) {
+
+            console.log("boxesAlreadyOrdered.length > 0");
+
+            productsAlreadyProduced             = boxesAlreadyOrdered[0].TOTAL_PRODUCTS_PRODUCED;
+            intermediateBoxesAlreadyOrdered     = boxesAlreadyOrdered[0].TOTAL_BOXES_TO_ORDER;
+
+            //var postDataForMainTable = req.body;
+            var postDataForMainTable = JSON.parse(JSON.stringify(req.body));
+            postDataForMainTable.TOTAL_PRODUCTS_PRODUCED  = postDataForMainTable.TOTAL_PRODUCTS_PRODUCED - productsAlreadyProduced;
+            postDataForMainTable.TOTAL_BOXES_TO_ORDER     = postDataForMainTable.TOTAL_BOXES_TO_ORDER - intermediateBoxesAlreadyOrdered;
+
+            con.connect(function(err) {
+                con.query('delete from order_boxes_intermediate_staging where ORDER_ID = ? and CUSTOMER_PRODUCT_ID= ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+                if (error) throw error;
+                res.end(JSON.stringify("Success"));
+                });
+                con.query('INSERT INTO order_boxes_closed_production_products SET ?', postDataForMainTable, function (error, results, fields) {
+                    if (error) throw error;
+                    res.end(JSON.stringify("Success"));
+                });
+            });
+        } else {
+
+            console.log("boxesAlreadyOrdered.length = 0");
+            delete req.body["STATUS"];
+
+            con.connect(function(err) {
+                con.query('INSERT INTO order_boxes_closed_production_products SET ?', req.body, function (error, results, fields) {
+                    if (error) throw error;
+                    res.end(JSON.stringify(results));
+                });
+            });
+        }
+
+    } else if (req.body.STATUS == 'INTERMEDIATE_BOXES_ORDER') {
+
+        delete req.body["STATUS"];
+        if(boxesAlreadyOrdered.length > 0) {
+
+            console.log("boxesAlreadyOrdered.length > 0");
+
+            productsAlreadyProduced             = boxesAlreadyOrdered[0].TOTAL_PRODUCTS_PRODUCED;
+            intermediateBoxesAlreadyOrdered     = boxesAlreadyOrdered[0].TOTAL_BOXES_TO_ORDER;
+
+            //var postDataForMainTable = req.body;
+            var postDataForMainTable = JSON.parse(JSON.stringify(req.body));
+            postDataForMainTable.TOTAL_PRODUCTS_PRODUCED  = postDataForMainTable.TOTAL_PRODUCTS_PRODUCED - productsAlreadyProduced;
+            postDataForMainTable.TOTAL_BOXES_TO_ORDER     = postDataForMainTable.TOTAL_BOXES_TO_ORDER - intermediateBoxesAlreadyOrdered;
+
+            con.connect(function(err) {
+                con.query('INSERT INTO order_boxes_intermediate_staging set ?  ON DUPLICATE KEY UPDATE TOTAL_PRODUCTS_PRODUCED = VALUES(TOTAL_PRODUCTS_PRODUCED), TOTAL_BOXES_TO_ORDER = VALUES(TOTAL_BOXES_TO_ORDER)', [req.body, req.body.TOTAL_PRODUCTS_PRODUCED, req.body.TOTAL_BOXES_TO_ORDER], function (error, results, fields) {
+                if (error) throw error;
+                res.end(JSON.stringify("Success"));
+                });
+                con.query('INSERT INTO order_boxes_closed_production_products SET ?', postDataForMainTable, function (error, results, fields) {
+                    if (error) throw error;
+                    res.end(JSON.stringify("Success"));
+                });
+            });
+        } else {
+
+            console.log("boxesAlreadyOrdered.length = 0");
+            delete req.body["STATUS"];
+
+            con.connect(function(err) {
+                con.query('INSERT INTO order_boxes_intermediate_staging set ?  ON DUPLICATE KEY UPDATE TOTAL_PRODUCTS_PRODUCED = VALUES(TOTAL_PRODUCTS_PRODUCED), TOTAL_BOXES_TO_ORDER = VALUES(TOTAL_BOXES_TO_ORDER)', [req.body, req.body.TOTAL_PRODUCTS_PRODUCED, req.body.TOTAL_BOXES_TO_ORDER], function (error, results, fields) {
+                if (error) throw error;
+                res.end(JSON.stringify(results));
+                });
+                con.query('INSERT INTO order_boxes_closed_production_products SET ?', req.body, function (error, results, fields) {
+                    if (error) throw error;
+                    res.end(JSON.stringify(results));
+                });
+            });
+        }
+    }
+
+    res.end();
 }
 
 //GET ORDER BOXES CLOSED PRODUCTION PRODUCT
