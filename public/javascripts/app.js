@@ -2762,6 +2762,92 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
   };
 
+  //CREATE THE INTERMEDIATE BOXES TO ORDER 
+  $scope.createIntermediateBoxesoOrder = function (internalproductid, customerproductid, productName, qtyorder, qtyproduced, parentcustomerproductid, uniqueorderid) {
+
+    $scope.productTechSheet = [];
+    var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerproductid));
+    request.then(function successCallback(response) {
+      $scope.productTechSheet = response.data;
+
+      //IF THE BOX_ID OR BOX_MEASURES ARE NOT DEFINED IN THE PRODUCT TECHNICAL SHEET OF THE PRODUCT
+      //THE PRODUCT CANNOT BE CLOSED IN THIS ORDER
+      if (($scope.productTechSheet.length == 0 || $scope.productTechSheet[0].Box_Id == null || $scope.productTechSheet[0].Box_Measures == null) && parentcustomerproductid == null) {
+
+        var messageToSend = "";
+        if ($scope.productTechSheet.length == 0) {
+          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem a Ficha Técnica criada. Crie a Ficha Técnica e insira os atributos necessários."
+        }
+        else {
+          if ($scope.productTechSheet[0].CLIENT_NAME == null && messageToSend == "") {
+            messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o nome do Cliente. Edite o produto e insira o nome do cliente."
+          }
+          if ($scope.productTechSheet[0].Qty_By_Box == null && messageToSend == "" && parentcustomerproductid == null) {
+            messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por caixa. Edite a ficha técnica do produto e adicione a Quantidade por caixa para poder fechar o produto nesta encomenda."
+          }
+          if ($scope.productTechSheet[0].Box_Id == null && messageToSend == "" && parentcustomerproductid == null) {
+            messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o número da Caixa. Edite a ficha técnica do produto e adicione o número da caixa para poder fechar o produto nesta encomenda."
+          }
+          if ($scope.productTechSheet[0].Box_Measures == null && messageToSend == "" && parentcustomerproductid == null) {
+            messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido as MEDIDAS da Caixa. Edite a ficha técnica do produto e adicione o número da caixa para poder fechar o produto nesta encomenda."
+          }
+        }
+        ModalService.showModal({
+          templateUrl: "../modal/genericModal.html",
+          controller: "GenericController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: messageToSend
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
+        });
+      } else {
+        //SHOW THE MODAL TO CLOSE THE PRODUCT IN PRODUCTION
+        ModalService.showModal({
+          templateUrl: "../modal/closeProductInProduction.html",
+          controller: "createIntermediateBoxRequest",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            title: "Apagar Produto",
+            orderid: $stateParams.orderId,
+            internalproductid: internalproductid,
+            customerproductid: customerproductid,
+            productname: productName,
+            quantityordered: qtyorder,
+            totalproductsproduced: qtyproduced,
+            clientname: $scope.clientname,
+            boxmeasures: $scope.productTechSheet[0].Box_Measures,
+            boxid: $scope.productTechSheet[0].Box_Id,
+            qtybybox: $scope.productTechSheet[0].Qty_By_Box,
+            parentcustomerproductid: parentcustomerproductid,
+            uniqueorderid: uniqueorderid
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
+        });
+      }
+      return $scope.productTechSheet;
+    },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      });
+
+  };
 
 }]);
 
