@@ -2762,6 +2762,92 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
   };
 
+  //CREATE THE INTERMEDIATE BOXES TO ORDER 
+  $scope.createIntermediateBoxesoOrder = function (internalproductid, customerproductid, productName, qtyorder, qtyproduced, parentcustomerproductid, uniqueorderid) {
+
+    $scope.productTechSheet = [];
+    var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerproductid));
+    request.then(function successCallback(response) {
+      $scope.productTechSheet = response.data;
+
+      //IF THE BOX_ID OR BOX_MEASURES ARE NOT DEFINED IN THE PRODUCT TECHNICAL SHEET OF THE PRODUCT
+      //THE PRODUCT CANNOT BE CLOSED IN THIS ORDER
+      if (($scope.productTechSheet.length == 0 || $scope.productTechSheet[0].Box_Id == null || $scope.productTechSheet[0].Box_Measures == null) && parentcustomerproductid == null) {
+
+        var messageToSend = "";
+        if ($scope.productTechSheet.length == 0) {
+          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem a Ficha Técnica criada. Crie a Ficha Técnica e insira os atributos necessários."
+        }
+        else {
+          if ($scope.productTechSheet[0].CLIENT_NAME == null && messageToSend == "") {
+            messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o nome do Cliente. Edite o produto e insira o nome do cliente."
+          }
+          if ($scope.productTechSheet[0].Qty_By_Box == null && messageToSend == "" && parentcustomerproductid == null) {
+            messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por caixa. Edite a ficha técnica do produto e adicione a Quantidade por caixa para poder fechar o produto nesta encomenda."
+          }
+          if ($scope.productTechSheet[0].Box_Id == null && messageToSend == "" && parentcustomerproductid == null) {
+            messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o número da Caixa. Edite a ficha técnica do produto e adicione o número da caixa para poder fechar o produto nesta encomenda."
+          }
+          if ($scope.productTechSheet[0].Box_Measures == null && messageToSend == "" && parentcustomerproductid == null) {
+            messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido as MEDIDAS da Caixa. Edite a ficha técnica do produto e adicione o número da caixa para poder fechar o produto nesta encomenda."
+          }
+        }
+        ModalService.showModal({
+          templateUrl: "../modal/genericModal.html",
+          controller: "GenericController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: messageToSend
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
+        });
+      } else {
+        //SHOW THE MODAL TO CLOSE THE PRODUCT IN PRODUCTION
+        ModalService.showModal({
+          templateUrl: "../modal/createIntermediateBoxsOrder.html",
+          controller: "createIntermediateBoxRequest",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            title: "Apagar Produto",
+            orderid: $stateParams.orderId,
+            internalproductid: internalproductid,
+            customerproductid: customerproductid,
+            productname: productName,
+            quantityordered: qtyorder,
+            totalproductsproduced: qtyproduced,
+            clientname: $scope.clientname,
+            boxmeasures: $scope.productTechSheet[0].Box_Measures,
+            boxid: $scope.productTechSheet[0].Box_Id,
+            qtybybox: $scope.productTechSheet[0].Qty_By_Box,
+            parentcustomerproductid: parentcustomerproductid,
+            uniqueorderid: uniqueorderid
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
+        });
+      }
+      return $scope.productTechSheet;
+    },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+      });
+
+  };
 
 }]);
 
@@ -5075,7 +5161,8 @@ app.controller('closeProductInOrderToProduction', [
           TOTAL_BOXES_TO_ORDER: numBoxesToOrder,
           CLIENT_NAME: $scope.clientname,
           BOX_MEASURES: $scope.boxmeasures,
-          BOX_ID: $scope.boxid
+          BOX_ID: $scope.boxid,
+          STATUS: "CLOSE_PRODUCT_IN_PRODUCTION"
         };
 
         var dataUpdateOrderProductStatus = {
@@ -5085,8 +5172,11 @@ app.controller('closeProductInOrderToProduction', [
           UNIQUE_ORDER_ID: $scope.uniqueorderid
         };
 
-        var res = $http.post('/insertOrderBoxes', dataObj).then(function (data, status, headers, config) {
+        /* var res = $http.post('/insertOrderBoxes', dataObj).then(function (data, status, headers, config) {
           //$state.reload();
+        }); */
+
+        var res = $http.post('/insertIntermediateBoxesToOrder', dataObj).then(function (data, status, headers, config) {
         });
 
         var res = $http.post('/updateorderproductstatus', dataUpdateOrderProductStatus).then(function (data, status, headers, config) {
@@ -5120,6 +5210,66 @@ app.controller('closeProductInOrderToProduction', [
 
   }]);
 
+/*------------------ Controller for the MODAL for making and Intermediate Request for Boxes without closing the Product in the Order -----------------------*/
+
+app.controller('createIntermediateBoxRequest', [
+  '$scope', '$http', '$element', '$urlRouter', '$templateCache', '$state', 'ModalService', 'title', 'close', 'orderid', 'internalproductid', 'customerproductid', 'productname', 'quantityordered', 'totalproductsproduced', 'clientname', 'boxmeasures', 'boxid', 'qtybybox', 'parentcustomerproductid', 'uniqueorderid',
+  function ($scope, $http, $element, $urlRouter, $templateCache, $state, ModalService, title, close, orderid, internalproductid, customerproductid, productname, quantityordered, totalproductsproduced, clientname, boxmeasures, boxid, qtybybox, parentcustomerproductid, uniqueorderid) {
+
+    $scope.title = title;
+    $scope.orderid = orderid;
+    $scope.internalproductid = internalproductid;
+    $scope.customerproductid = customerproductid;
+    $scope.productname = productname;
+    $scope.quantityordered = quantityordered;
+    $scope.totalproductsproduced = totalproductsproduced;
+    $scope.clientname = clientname;
+    $scope.boxmeasures = boxmeasures;
+    $scope.boxid = boxid;
+    $scope.qtybybox = qtybybox;
+    $scope.uniqueorderid = uniqueorderid;
+    $scope.numBoxesToOrder = $scope.totalproductsproduced / $scope.qtybybox;
+    
+    //  This close function doesn't need to use jQuery or bootstrap, because
+    //  the button has the 'data-dismiss' attribute.
+
+    //Save Content Modal  
+    $scope.yes = function () {
+
+      if (parentcustomerproductid == null) {
+        //var numBoxesToOrder = $scope.totalproductsproduced / $scope.qtybybox;
+
+        var dataObj = {
+          ORDER_ID: $scope.orderid,
+          CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+          INTERNAL_PRODUCT_ID: $scope.internalproductid,
+          PRODUCT_NAME: $scope.productname,
+          TOTAL_PRODUCTS_PRODUCED: $scope.quantityordered,
+          QTY_BY_BOX: $scope.qtybybox,
+          TOTAL_BOXES_TO_ORDER: $scope.numBoxesToOrder,
+          CLIENT_NAME: $scope.clientname,
+          BOX_MEASURES: $scope.boxmeasures,
+          BOX_ID: $scope.boxid,
+          STATUS: "INTERMEDIATE_BOXES_ORDER"
+        };
+
+        var res = $http.post('/insertIntermediateBoxesToOrder', dataObj).then(function (data, status, headers, config) {
+          //$state.reload();
+        });
+      } 
+    };
+
+    //  This cancel function must use the bootstrap, 'modal' function because
+    //  the doesn't have the 'data-dismiss' attribute.
+    $scope.no = function () {
+      //  Manually hide the modal.
+      $element.modal('hide');
+      //  Now call close, returning control to the caller.
+      close({
+      }, 500); // close, but give 500ms for bootstrap to animate
+    };
+
+  }]);
 
 /*------------------ Controller to INSERT the Daily Production for the Products in the Order-----------------------*/
 

@@ -1281,6 +1281,13 @@ button.btn.btn-sm.btn-delete.btn-remove-order {
     }
 }
 
+.btn-action{
+    img {
+        background: black;
+        padding: 3px;
+    }
+}
+
 .header-label-checkbox {
     margin-left: 4px;
     margin-right: -4px;
@@ -1485,7 +1492,10 @@ button.btn.btn-sm.btn-delete.btn-remove-pallet {
         width: auto;
         float: right;
         margin-right: 7.5px;
-        max-width: 50%;
+        max-width: calc(50% - 7.5px);
+        a{
+            margin-bottom:2px;
+        }
     }
 }
 
