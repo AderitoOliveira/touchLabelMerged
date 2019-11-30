@@ -2812,7 +2812,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       } else {
         //SHOW THE MODAL TO CLOSE THE PRODUCT IN PRODUCTION
         ModalService.showModal({
-          templateUrl: "../modal/closeProductInProduction.html",
+          templateUrl: "../modal/createIntermediateBoxsOrder.html",
           controller: "createIntermediateBoxRequest",
           preClose: (modal) => { modal.element.modal('hide'); },
           inputs: {
@@ -5161,7 +5161,8 @@ app.controller('closeProductInOrderToProduction', [
           TOTAL_BOXES_TO_ORDER: numBoxesToOrder,
           CLIENT_NAME: $scope.clientname,
           BOX_MEASURES: $scope.boxmeasures,
-          BOX_ID: $scope.boxid
+          BOX_ID: $scope.boxid,
+          STATUS: "CLOSE_PRODUCT_IN_PRODUCTION"
         };
 
         var dataUpdateOrderProductStatus = {
@@ -5171,8 +5172,11 @@ app.controller('closeProductInOrderToProduction', [
           UNIQUE_ORDER_ID: $scope.uniqueorderid
         };
 
-        var res = $http.post('/insertOrderBoxes', dataObj).then(function (data, status, headers, config) {
+        /* var res = $http.post('/insertOrderBoxes', dataObj).then(function (data, status, headers, config) {
           //$state.reload();
+        }); */
+
+        var res = $http.post('/insertIntermediateBoxesToOrder', dataObj).then(function (data, status, headers, config) {
         });
 
         var res = $http.post('/updateorderproductstatus', dataUpdateOrderProductStatus).then(function (data, status, headers, config) {
@@ -5224,6 +5228,8 @@ app.controller('createIntermediateBoxRequest', [
     $scope.boxid = boxid;
     $scope.qtybybox = qtybybox;
     $scope.uniqueorderid = uniqueorderid;
+    $scope.numBoxesToOrder = $scope.totalproductsproduced / $scope.qtybybox;
+    
     //  This close function doesn't need to use jQuery or bootstrap, because
     //  the button has the 'data-dismiss' attribute.
 
@@ -5231,7 +5237,7 @@ app.controller('createIntermediateBoxRequest', [
     $scope.yes = function () {
 
       if (parentcustomerproductid == null) {
-        var numBoxesToOrder = $scope.totalproductsproduced / $scope.qtybybox;
+        //var numBoxesToOrder = $scope.totalproductsproduced / $scope.qtybybox;
 
         var dataObj = {
           ORDER_ID: $scope.orderid,
@@ -5240,10 +5246,11 @@ app.controller('createIntermediateBoxRequest', [
           PRODUCT_NAME: $scope.productname,
           TOTAL_PRODUCTS_PRODUCED: $scope.quantityordered,
           QTY_BY_BOX: $scope.qtybybox,
-          TOTAL_BOXES_TO_ORDER: numBoxesToOrder,
+          TOTAL_BOXES_TO_ORDER: $scope.numBoxesToOrder,
           CLIENT_NAME: $scope.clientname,
           BOX_MEASURES: $scope.boxmeasures,
-          BOX_ID: $scope.boxid
+          BOX_ID: $scope.boxid,
+          STATUS: "INTERMEDIATE_BOXES_ORDER"
         };
 
         var res = $http.post('/insertIntermediateBoxesToOrder', dataObj).then(function (data, status, headers, config) {

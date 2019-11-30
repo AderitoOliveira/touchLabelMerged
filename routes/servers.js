@@ -7,8 +7,8 @@ var mysql = require('mysql');
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'
-});
- */
+}); */
+
 
 var con = mysql.createConnection({  
     host: '172.30.184.178',
@@ -971,16 +971,26 @@ insertIntermediateBoxesToOrder = async function(req, res) {
             postDataForMainTable.TOTAL_PRODUCTS_PRODUCED  = postDataForMainTable.TOTAL_PRODUCTS_PRODUCED - productsAlreadyProduced;
             postDataForMainTable.TOTAL_BOXES_TO_ORDER     = postDataForMainTable.TOTAL_BOXES_TO_ORDER - intermediateBoxesAlreadyOrdered;
 
-            con.connect(function(err) {
-                con.query('delete from order_boxes_intermediate_staging where ORDER_ID = ? and CUSTOMER_PRODUCT_ID= ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
-                if (error) throw error;
-                res.end(JSON.stringify("Success"));
-                });
-                con.query('INSERT INTO order_boxes_closed_production_products SET ?', postDataForMainTable, function (error, results, fields) {
+            if(postDataForMainTable.TOTAL_PRODUCTS_PRODUCED > 0) {
+                con.connect(function(err) {
+                    con.query('delete from order_boxes_intermediate_staging where ORDER_ID = ? and CUSTOMER_PRODUCT_ID= ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
                     if (error) throw error;
                     res.end(JSON.stringify("Success"));
+                    });
+                    con.query('INSERT INTO order_boxes_closed_production_products SET ?', postDataForMainTable, function (error, results, fields) {
+                        if (error) throw error;
+                        res.end(JSON.stringify("Success"));
+                    });
                 });
-            });
+            } else {
+                con.connect(function(err) {
+                    con.query('delete from order_boxes_intermediate_staging where ORDER_ID = ? and CUSTOMER_PRODUCT_ID= ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+                    if (error) throw error;
+                    res.end(JSON.stringify("Success"));
+                    });
+                });
+            }
+
         } else {
 
             console.log("boxesAlreadyOrdered.length = 0");
@@ -1009,16 +1019,19 @@ insertIntermediateBoxesToOrder = async function(req, res) {
             postDataForMainTable.TOTAL_PRODUCTS_PRODUCED  = postDataForMainTable.TOTAL_PRODUCTS_PRODUCED - productsAlreadyProduced;
             postDataForMainTable.TOTAL_BOXES_TO_ORDER     = postDataForMainTable.TOTAL_BOXES_TO_ORDER - intermediateBoxesAlreadyOrdered;
 
-            con.connect(function(err) {
-                con.query('INSERT INTO order_boxes_intermediate_staging set ?  ON DUPLICATE KEY UPDATE TOTAL_PRODUCTS_PRODUCED = VALUES(TOTAL_PRODUCTS_PRODUCED), TOTAL_BOXES_TO_ORDER = VALUES(TOTAL_BOXES_TO_ORDER)', [req.body, req.body.TOTAL_PRODUCTS_PRODUCED, req.body.TOTAL_BOXES_TO_ORDER], function (error, results, fields) {
-                if (error) throw error;
-                res.end(JSON.stringify("Success"));
-                });
-                con.query('INSERT INTO order_boxes_closed_production_products SET ?', postDataForMainTable, function (error, results, fields) {
+            if(postDataForMainTable.TOTAL_PRODUCTS_PRODUCED > 0) {
+                con.connect(function(err) {
+                    con.query('INSERT INTO order_boxes_intermediate_staging set ?  ON DUPLICATE KEY UPDATE TOTAL_PRODUCTS_PRODUCED = VALUES(TOTAL_PRODUCTS_PRODUCED), TOTAL_BOXES_TO_ORDER = VALUES(TOTAL_BOXES_TO_ORDER)', [req.body, req.body.TOTAL_PRODUCTS_PRODUCED, req.body.TOTAL_BOXES_TO_ORDER], function (error, results, fields) {
                     if (error) throw error;
                     res.end(JSON.stringify("Success"));
+                    });
+                    con.query('INSERT INTO order_boxes_closed_production_products SET ?', postDataForMainTable, function (error, results, fields) {
+                        if (error) throw error;
+                        res.end(JSON.stringify("Success"));
+                    });
                 });
-            });
+            }
+
         } else {
 
             console.log("boxesAlreadyOrdered.length = 0");
