@@ -5228,7 +5228,7 @@ app.controller('createIntermediateBoxRequest', [
     $scope.boxid = boxid;
     $scope.qtybybox = qtybybox;
     $scope.uniqueorderid = uniqueorderid;
-    $scope.numBoxesToOrder = $scope.totalproductsproduced / $scope.qtybybox;
+    $scope.numBoxesToOrder = Math.ceil($scope.totalproductsproduced / $scope.qtybybox);
     
     //  This close function doesn't need to use jQuery or bootstrap, because
     //  the button has the 'data-dismiss' attribute.
@@ -5244,7 +5244,7 @@ app.controller('createIntermediateBoxRequest', [
           CUSTOMER_PRODUCT_ID: $scope.customerproductid,
           INTERNAL_PRODUCT_ID: $scope.internalproductid,
           PRODUCT_NAME: $scope.productname,
-          TOTAL_PRODUCTS_PRODUCED: $scope.quantityordered,
+          TOTAL_PRODUCTS_PRODUCED: $scope.totalproductsproduced,
           QTY_BY_BOX: $scope.qtybybox,
           TOTAL_BOXES_TO_ORDER: $scope.numBoxesToOrder,
           CLIENT_NAME: $scope.clientname,
