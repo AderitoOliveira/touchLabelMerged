@@ -1491,6 +1491,446 @@ router.post('/insertDailyPaintingForTheApp', async function (req, res) {
     res.send();
 });
 
+//INSERT DAILY PRODUCTION - Server Side Function
+router.post('/insertDailyProductionServerSide', async function (req, res) {
+
+  /* {"CREATED_DATE": "2019-07-30 00:00:00",
+  "CUSTOMER_PRODUCT_ID": "1070484(1)",
+  "EMPLOYEE_ID": 5,
+  "EMPLOYEE_NAME": "João Faria",
+  "INTERNAL_PRODUCT_ID": "140/20",
+  "ORDER_ID": "2020145",
+  "ORDER_PRODUCTS_UNIQUE_ID": 1310,
+  "PRODUCED_VALUE_IN_EURO": 170,
+  "PRODUCT_NAME": "Pot Tusca Shape White (140/20)",
+  "TOTAL_PRODUCTS_PRODUCED": 100,
+  "TOTAL_QUANTITY_ORDERED": 300,
+  "PRODUCTS_ALREADY_PRODUCED": 30,
+  "PRICE_IN_EUR": 10,
+  "QTY_BY_PALLETE" : 230,
+  "PARENT_CUSTOMER_PRODUCT_ID" : "1070484",
+  "IS_PARENT" : "N",
+  "IN_COMPOUND_PRODUCT" : "Y"
+  } */
+    console.log("insertDailyProductionServerSide !!!!!")
+    console.log(req.body);
+
+    var productDistrubtionToReturn = [];
+    
+    var products_still_to_produce = req.body.TOTAL_QUANTITY_ORDERED - req.body.PRODUCTS_ALREADY_PRODUCED;
+
+    //If we register more products than the ones that were ordered, then it's necessary to register only the products ordered and pass the
+    //remainder of the painted products to other products in the same or other orders
+    if(products_still_to_produce == 0 || products_still_to_produce < 0) {
+      //We will only register the ordered quantity 
+      var valueProducedByTheEmployee = req.body.TOTAL_PRODUCTS_PRODUCED * req.body.PRICE_IN_EUR;
+      var palletQuantity = req.body.TOTAL_PRODUCTS_PRODUCED / req.body.QTY_BY_PALLETE;
+      
+      var dataObj = {
+        ORDER_ID: req.body.ORDER_ID,
+        INTERNAL_PRODUCT_ID: req.body.INTERNAL_PRODUCT_ID,
+        CUSTOMER_PRODUCT_ID: req.body.CUSTOMER_PRODUCT_ID,
+        PRODUCT_NAME: req.body.PRODUCT_NAME,
+        ORDER_PRODUCTS_UNIQUE_ID: req.body.ORDER_PRODUCTS_UNIQUE_ID,
+        EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
+        EMPLOYEE_ID: req.body.EMPLOYEE_ID,
+        TOTAL_PRODUCTS_PRODUCED: req.body.TOTAL_PRODUCTS_PRODUCED,
+        PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+        CREATED_DATE: req.body.CREATED_DATE
+      };
+
+      console.log(dataObj);
+
+      //IF THIS IS A CHILD PRODUCT WE NEED TO VALIDATE THE PARENT INFORMATION TO INSERT
+      if (req.body.PARENT_CUSTOMER_PRODUCT_ID != null && req.body.IN_COMPOUND_PRODUCT == 'Y') {
+        console.log("INSIDE VALIDAITON");
+        let parentDetails = await getParentDetailsForApp(req.body.ORDER_ID, req.body.PARENT_CUSTOMER_PRODUCT_ID);
+        console.log(parentDetails);
+        console.log(JSON.parse(parentDetails)[0].Qty_By_Pallet);
+
+        var parentDetailsJSON =  JSON.parse(parentDetails);
+
+        var parentObjDailyProduction = {
+          ORDER_ID: req.body.ORDER_ID,
+          INTERNAL_PRODUCT_ID: parentDetailsJSON[0].INTERNAL_PRODUCT_ID,
+          CUSTOMER_PRODUCT_ID: req.body.PARENT_CUSTOMER_PRODUCT_ID,
+          PRODUCT_NAME: parentDetailsJSON[0].PRODUCT_NAME,
+          ORDER_PRODUCTS_UNIQUE_ID: parentDetailsJSON[0].UNIQUE_ORDER_ID,
+          EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
+          EMPLOYEE_ID: req.body.EMPLOYEE_ID,
+          TOTAL_PRODUCTS_PRODUCED: req.body.TOTAL_PRODUCTS_PRODUCED,
+          PRODUCED_VALUE_IN_EURO: 0,
+          CREATED_DATE: req.body.CREATED_DATE
+       };
+
+        insertDailyProductionServerSide(parentObjDailyProduction, res);
+      }
+
+      insertDailyProductionServerSide(dataObj, res);
+
+      //We need to define the absolute value of the products_still_to_produce variable. If its negative it means that we have overproduction 
+      //for this product in this order
+      products_still_to_produce = Math.abs(products_still_to_produce);
+
+    }
+
+    if(req.body.TOTAL_PRODUCTS_PRODUCED < products_still_to_produce) {
+      var valueProducedByTheEmployee = req.body.TOTAL_PRODUCTS_PRODUCED * req.body.PRICE_IN_EUR;
+      var palletQuantity = req.body.TOTAL_PRODUCTS_PRODUCED / req.body.QTY_BY_PALLETE;
+      
+      var dataObj = {
+        ORDER_ID: req.body.ORDER_ID,
+        INTERNAL_PRODUCT_ID: req.body.INTERNAL_PRODUCT_ID,
+        CUSTOMER_PRODUCT_ID: req.body.CUSTOMER_PRODUCT_ID,
+        PRODUCT_NAME: req.body.PRODUCT_NAME,
+        ORDER_PRODUCTS_UNIQUE_ID: req.body.ORDER_PRODUCTS_UNIQUE_ID,
+        EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
+        EMPLOYEE_ID: req.body.EMPLOYEE_ID,
+        TOTAL_PRODUCTS_PRODUCED: req.body.TOTAL_PRODUCTS_PRODUCED,
+        PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+        CREATED_DATE: req.body.CREATED_DATE
+      };
+
+      console.log(dataObj);
+
+      //IF THIS IS A CHILD PRODUCT WE NEED TO VALIDATE THE PARENT INFORMATION TO INSERT
+      if (req.body.PARENT_CUSTOMER_PRODUCT_ID != null && req.body.IN_COMPOUND_PRODUCT == 'Y') {
+        console.log("INSIDE VALIDAITON");
+        let parentDetails = await getParentDetailsForApp(req.body.ORDER_ID, req.body.PARENT_CUSTOMER_PRODUCT_ID);
+        console.log(parentDetails);
+        console.log(JSON.parse(parentDetails)[0].Qty_By_Pallet);
+
+        var parentDetailsJSON =  JSON.parse(parentDetails);
+
+        var parentObjDailyProduction = {
+          ORDER_ID: req.body.ORDER_ID,
+          INTERNAL_PRODUCT_ID: parentDetailsJSON[0].INTERNAL_PRODUCT_ID,
+          CUSTOMER_PRODUCT_ID: req.body.PARENT_CUSTOMER_PRODUCT_ID,
+          PRODUCT_NAME: parentDetailsJSON[0].PRODUCT_NAME,
+          ORDER_PRODUCTS_UNIQUE_ID: parentDetailsJSON[0].UNIQUE_ORDER_ID,
+          EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
+          EMPLOYEE_ID: req.body.EMPLOYEE_ID,
+          TOTAL_PRODUCTS_PRODUCED: req.body.TOTAL_PRODUCTS_PRODUCED,
+          PRODUCED_VALUE_IN_EURO: 0,
+          CREATED_DATE: req.body.CREATED_DATE
+       };
+
+        insertDailyProductionServerSide(parentObjDailyProduction, res);
+      }
+
+      insertDailyProductionServerSide(dataObj, res);
+
+      productDistrubtionToReturn.push({ORDER_ID: req.body.ORDER_ID, CUSTOMER_PRODUCT_ID: req.body.CUSTOMER_PRODUCT_ID});
+      res.end(JSON.stringify(productDistrubtionToReturn));
+
+    } else {
+
+      var valueProducedByTheEmployee = products_still_to_produce * req.body.PRICE_IN_EUR;
+      var palletQuantity = products_still_to_produce / req.body.QTY_BY_PALLETE;
+
+      var dataObj = {
+        ORDER_ID: req.body.ORDER_ID,
+        INTERNAL_PRODUCT_ID: req.body.INTERNAL_PRODUCT_ID,
+        CUSTOMER_PRODUCT_ID: req.body.CUSTOMER_PRODUCT_ID,
+        PRODUCT_NAME: req.body.PRODUCT_NAME,
+        ORDER_PRODUCTS_UNIQUE_ID: req.body.ORDER_PRODUCTS_UNIQUE_ID,
+        EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
+        EMPLOYEE_ID: req.body.EMPLOYEE_ID,
+        TOTAL_PRODUCTS_PRODUCED: products_still_to_produce,
+        PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+        CREATED_DATE: req.body.CREATED_DATE
+      };
+
+      //IF THIS IS A CHILD PRODUCT WE NEED TO VALIDATE THE PARENT INFORMATION TO INSERT
+      if (req.body.PARENT_CUSTOMER_PRODUCT_ID != null && req.body.IN_COMPOUND_PRODUCT == 'Y') {
+        console.log("INSIDE VALIDAITON");
+        req.params= {parentcustomerid: '1070482'};
+        let parentDetails = await getParentDetailsForApp(req.body.ORDER_ID, req.body.PARENT_CUSTOMER_PRODUCT_ID);
+        console.log(parentDetails);
+        console.log(JSON.parse(parentDetails)[0].Qty_By_Pallet);
+
+        var parentDetailsJSON =  JSON.parse(parentDetails);
+
+        var parentObjDailyProduction = {
+          ORDER_ID: req.body.ORDER_ID,
+          INTERNAL_PRODUCT_ID: parentDetailsJSON[0].INTERNAL_PRODUCT_ID,
+          CUSTOMER_PRODUCT_ID: req.body.PARENT_CUSTOMER_PRODUCT_ID,
+          PRODUCT_NAME: parentDetailsJSON[0].PRODUCT_NAME,
+          ORDER_PRODUCTS_UNIQUE_ID: parentDetailsJSON[0].UNIQUE_ORDER_ID,
+          EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
+          EMPLOYEE_ID: req.body.EMPLOYEE_ID,
+          TOTAL_PRODUCTS_PRODUCED: products_still_to_produce,
+          PRODUCED_VALUE_IN_EURO: 0,
+          CREATED_DATE: req.body.CREATED_DATE
+       };
+
+        insertDailyProductionServerSide(parentObjDailyProduction, res);
+      }
+
+      insertDailyProductionServerSide(dataObj, res);
+
+
+      //THE NUMBER OF PRODUCTS FROM THE DAILY PRODUCTION THAT WE STILL NEED TO REGISTE IN ANOTHER ORDER
+      var products_remaining_from_daily_production = req.body.TOTAL_PRODUCTS_PRODUCED - products_still_to_produce;
+
+      var productsToCloseInTheSameOrder = {
+        orderid : req.body.ORDER_ID,
+        productid : req.body.CUSTOMER_PRODUCT_ID
+      };
+
+      let productsInTheSameOrder = await fetchProductFromAnOrderThatIsntCompleteInProduction(productsToCloseInTheSameOrder, res);
+      console.log("productsInTheSameOrder");
+      console.log(productsInTheSameOrder);
+      //var productsInTheSameOrderArray = JSON.parse(productsInTheSameOrder)[0];
+      console.log("productsInTheSameOrderArray");
+      //console.log(productsInTheSameOrderArray);
+      if (productsInTheSameOrder.length > 0) {
+        
+        for(i=0; i < productsInTheSameOrder.length; i++){
+          var orderproduct = productsInTheSameOrder[i];
+
+            var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PRODUCED;
+            var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
+            var order_id = orderproduct.ORDER_ID;
+
+            //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
+            //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
+            if (number_of_products_to_close_order <= products_remaining_from_daily_production) {
+
+              var valueProducedByTheEmployee = number_of_products_to_close_order * req.body.PRICE_IN_EUR;
+              var palletQuantity = number_of_products_to_close_order / req.body.QTY_BY_PALLETE;
+
+              products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
+
+              var dataObj = {
+                ORDER_ID: orderproduct.ORDER_ID,
+                INTERNAL_PRODUCT_ID: orderproduct.INTERNAL_PRODUCT_ID,
+                CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID,
+                PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                ORDER_PRODUCTS_UNIQUE_ID: orderproduct.UNIQUE_ORDER_ID,
+                EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
+                EMPLOYEE_ID: req.body.EMPLOYEE_ID,
+                TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
+                PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+                CREATED_DATE: req.body.CREATED_DATE
+              };
+        
+              console.log(dataObj);
+        
+              //IF THIS IS A CHILD PRODUCT WE NEED TO VALIDATE THE PARENT INFORMATION TO INSERT
+              if (orderproduct.PARENT_CUSTOMER_PRODUCT_ID != null && orderproduct.IN_COMPOUND_PRODUCT == 'Y') {
+                console.log("INSIDE VALIDAITON");
+                let parentDetails = await getParentDetailsForApp(orderproduct.ORDER_ID, orderproduct.PARENT_CUSTOMER_PRODUCT_ID);
+                console.log(parentDetails);
+                console.log(JSON.parse(parentDetails)[0].Qty_By_Pallet);
+        
+                var parentDetailsJSON =  JSON.parse(parentDetails);       
+        
+                var parentObjDailyProduction = {
+                  ORDER_ID: orderproduct.ORDER_ID,
+                  INTERNAL_PRODUCT_ID: parentDetailsJSON[0].INTERNAL_PRODUCT_ID,
+                  CUSTOMER_PRODUCT_ID: orderproduct.PARENT_CUSTOMER_PRODUCT_ID,
+                  PRODUCT_NAME: parentDetailsJSON[0].PRODUCT_NAME,
+                  ORDER_PRODUCTS_UNIQUE_ID: parentDetailsJSON[0].UNIQUE_ORDER_ID,
+                  EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
+                  EMPLOYEE_ID: req.body.EMPLOYEE_ID,
+                  TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
+                  PRODUCED_VALUE_IN_EURO: 0,
+                  CREATED_DATE: req.body.CREATED_DATE
+               };
+        
+                insertDailyProductionServerSide(parentObjDailyProduction, res);
+              }
+        
+              insertDailyProductionServerSide(dataObj, res);
+
+            } else {
+
+              var valueProducedByTheEmployee = products_remaining_from_daily_production * req.body.PRICE_IN_EUR;
+              var palletQuantity = products_remaining_from_daily_production / req.body.QTY_BY_PALLETE;
+              //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
+              //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
+              //DAILY PRODUCTION
+
+              var dataObj = {
+                ORDER_ID: orderproduct.ORDER_ID,
+                INTERNAL_PRODUCT_ID: orderproduct.INTERNAL_PRODUCT_ID,
+                CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID,
+                PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                ORDER_PRODUCTS_UNIQUE_ID: orderproduct.UNIQUE_ORDER_ID,
+                EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
+                EMPLOYEE_ID: req.body.EMPLOYEE_ID,
+                TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
+                PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+                CREATED_DATE: req.body.CREATED_DATE
+              };
+        
+              console.log(dataObj);
+        
+              //IF THIS IS A CHILD PRODUCT WE NEED TO VALIDATE THE PARENT INFORMATION TO INSERT
+              if (orderproduct.PARENT_CUSTOMER_PRODUCT_ID != null && orderproduct.IN_COMPOUND_PRODUCT == 'Y') {
+                console.log("INSIDE VALIDAITON");
+                let parentDetails = await getParentDetailsForApp(orderproduct.ORDER_ID, orderproduct.PARENT_CUSTOMER_PRODUCT_ID);
+                console.log(parentDetails);
+                console.log(JSON.parse(parentDetails)[0].Qty_By_Pallet);
+        
+                var parentDetailsJSON =  JSON.parse(parentDetails);
+        
+                var parentObjDailyProduction = {
+                  ORDER_ID: orderproduct.ORDER_ID,
+                  INTERNAL_PRODUCT_ID: parentDetailsJSON[0].INTERNAL_PRODUCT_ID,
+                  CUSTOMER_PRODUCT_ID: orderproduct.PARENT_CUSTOMER_PRODUCT_ID,
+                  PRODUCT_NAME: parentDetailsJSON[0].PRODUCT_NAME,
+                  ORDER_PRODUCTS_UNIQUE_ID: parentDetailsJSON[0].UNIQUE_ORDER_ID,
+                  EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
+                  EMPLOYEE_ID: req.body.EMPLOYEE_ID,
+                  TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
+                  PRODUCED_VALUE_IN_EURO: 0,
+                  CREATED_DATE: req.body.CREATED_DATE
+               };
+        
+                insertDailyProductionServerSide(parentObjDailyProduction, res);
+              }
+        
+              insertDailyProductionServerSide(dataObj, res);
+
+              products_remaining_from_daily_production = 0;
+            }
+
+        }
+
+      }
+
+      //IF WE STILL HAVE PRODUCTS TO REGISTER IN THE DAILY PRODUCTION AND THEY CAN'T BE ADDED INTO THIS ORDER, WE NEED TO ITERATE OVER 
+      //ALL THE ORDERS TO CHECK IF THE SAME INTERNAL PRODUCT ID IS OPENED TO BE REGISTERED
+      if(products_remaining_from_daily_production > 0) {
+          let productsInOtherOrders = await fetchOrdersWhereCustomerProductidIsntCompleteInProduction(productsToCloseInTheSameOrder, res);
+          console.log("productsInOtherOrders");
+          console.log(productsInOtherOrders);
+
+          if (productsInOtherOrders.length > 0) {
+        
+            for(i=0; i < productsInOtherOrders.length; i++){
+              var orderproduct = productsInOtherOrders[i];
+
+            var number_of_products_to_close_order = orderproduct.TOTAL_QUANTITY_ORDERED - orderproduct.TOTAL_PRODUCTS_PRODUCED;
+            var customer_product_id = orderproduct.CUSTOMER_PRODUCT_ID;
+            var order_id = orderproduct.ORDER_ID;
+
+            //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS SMALLER THAN THE NUMBER
+            //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION
+            if (number_of_products_to_close_order <= products_remaining_from_daily_production) {
+
+              var valueProducedByTheEmployee = number_of_products_to_close_order * req.body.PRICE_IN_EUR;
+              var palletQuantity = number_of_products_to_close_order / req.body.QTY_BY_PALLETE;
+
+              products_remaining_from_daily_production = products_remaining_from_daily_production - number_of_products_to_close_order;
+
+              var dataObj = {
+                ORDER_ID: orderproduct.ORDER_ID,
+                INTERNAL_PRODUCT_ID: orderproduct.INTERNAL_PRODUCT_ID,
+                CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID,
+                PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                ORDER_PRODUCTS_UNIQUE_ID: orderproduct.UNIQUE_ORDER_ID,
+                EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
+                EMPLOYEE_ID: req.body.EMPLOYEE_ID,
+                TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
+                PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+                CREATED_DATE: req.body.CREATED_DATE
+              };
+        
+              console.log(dataObj);
+        
+              //IF THIS IS A CHILD PRODUCT WE NEED TO VALIDATE THE PARENT INFORMATION TO INSERT
+              if (orderproduct.PARENT_CUSTOMER_PRODUCT_ID != null && orderproduct.IN_COMPOUND_PRODUCT == 'Y') {
+                console.log("INSIDE VALIDAITON");
+                let parentDetails = await getParentDetailsForApp(orderproduct.ORDER_ID, orderproduct.PARENT_CUSTOMER_PRODUCT_ID);
+                console.log(parentDetails);
+                console.log(JSON.parse(parentDetails)[0].Qty_By_Pallet);
+        
+                var parentDetailsJSON =  JSON.parse(parentDetails);
+        
+                var parentObjDailyProduction = {
+                  ORDER_ID: orderproduct.ORDER_ID,
+                  INTERNAL_PRODUCT_ID: parentDetailsJSON[0].INTERNAL_PRODUCT_ID,
+                  CUSTOMER_PRODUCT_ID: orderproduct.PARENT_CUSTOMER_PRODUCT_ID,
+                  PRODUCT_NAME: parentDetailsJSON[0].PRODUCT_NAME,
+                  ORDER_PRODUCTS_UNIQUE_ID: parentDetailsJSON[0].UNIQUE_ORDER_ID,
+                  EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
+                  EMPLOYEE_ID: req.body.EMPLOYEE_ID,
+                  TOTAL_PRODUCTS_PRODUCED: number_of_products_to_close_order,
+                  PRODUCED_VALUE_IN_EURO: 0,
+                  CREATED_DATE: req.body.CREATED_DATE
+               };
+        
+                insertDailyProductionServerSide(parentObjDailyProduction, res);
+              }
+        
+              insertDailyProductionServerSide(dataObj, res);
+        
+
+            } else {
+
+              var valueProducedByTheEmployee = products_remaining_from_daily_production * req.body.PRICE_IN_EUR;
+              var palletQuantity = products_remaining_from_daily_production / req.body.QTY_BY_PALLETE;
+              //THE NUMBER OF PRODUCTS STILL REMAINING TO CLOSE THE ORDER IS GREATER THAN THE NUMBER
+              //OF PRODUCTS REMAINING FROM THE DAILY PRODUCTION AND WE NEED TO UPDATE THIS ORDER WITH THE
+              //DAILY PRODUCTION
+
+              var dataObj = {
+                ORDER_ID: orderproduct.ORDER_ID,
+                INTERNAL_PRODUCT_ID: orderproduct.INTERNAL_PRODUCT_ID,
+                CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID,
+                PRODUCT_NAME: orderproduct.PRODUCT_NAME,
+                ORDER_PRODUCTS_UNIQUE_ID: orderproduct.UNIQUE_ORDER_ID,
+                EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
+                EMPLOYEE_ID: req.body.EMPLOYEE_ID,
+                TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
+                PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+                CREATED_DATE: req.body.CREATED_DATE
+              };
+        
+              console.log(dataObj);
+        
+              //IF THIS IS A CHILD PRODUCT WE NEED TO VALIDATE THE PARENT INFORMATION TO INSERT
+              if (orderproduct.PARENT_CUSTOMER_PRODUCT_ID != null && orderproduct.IN_COMPOUND_PRODUCT == 'Y') {
+                console.log("INSIDE VALIDAITON");
+                let parentDetails = await getParentDetailsForApp(orderproduct.ORDER_ID, orderproduct.PARENT_CUSTOMER_PRODUCT_ID);
+                console.log(parentDetails);
+                console.log(JSON.parse(parentDetails)[0].Qty_By_Pallet);
+        
+                var parentDetailsJSON =  JSON.parse(parentDetails);
+        
+                var parentObjDailyProduction = {
+                  ORDER_ID: orderproduct.ORDER_ID,
+                  INTERNAL_PRODUCT_ID: parentDetailsJSON[0].INTERNAL_PRODUCT_ID,
+                  CUSTOMER_PRODUCT_ID: orderproduct.PARENT_CUSTOMER_PRODUCT_ID,
+                  PRODUCT_NAME: parentDetailsJSON[0].PRODUCT_NAME,
+                  ORDER_PRODUCTS_UNIQUE_ID: parentDetailsJSON[0].UNIQUE_ORDER_ID,
+                  EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
+                  EMPLOYEE_ID: req.body.EMPLOYEE_ID,
+                  TOTAL_PRODUCTS_PRODUCED: products_remaining_from_daily_production,
+                  PRODUCED_VALUE_IN_EURO: 0,
+                  CREATED_DATE: req.body.CREATED_DATE
+               };
+        
+                insertDailyProductionServerSide(parentObjDailyProduction, res);
+              }
+        
+              insertDailyProductionServerSide(dataObj, res);
+
+              products_remaining_from_daily_production = 0;
+            }
+          }
+        }  
+      }
+
+    } //ELSE
+
+    console.log("DONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    res.send();
+});
+
 function validate (req, res) {
   console.log("VALIDATE CALLED!!!!!")
   console.log(req.body);

@@ -1921,6 +1921,54 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
 
+  //Insert Daily Production - Call Server Side Function
+  $scope.insertDailyProductionServerSide = function (orderproductuniqueid, internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, productiondate, parent_customer_product_id, in_compound_product) {
+
+    var dataObj = {
+      CREATED_DATE: moment(productiondate).format('YYYY-MM-DD 00:00:00'),
+      CUSTOMER_PRODUCT_ID: customerproductid,
+      EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+      EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+      INTERNAL_PRODUCT_ID: internalproductid,
+      ORDER_ID: $scope.orderid,
+      ORDER_PRODUCTS_UNIQUE_ID: orderproductuniqueid,
+      PRODUCT_NAME: productName,
+      TOTAL_PRODUCTS_PRODUCED: totalquantityproduced,
+      TOTAL_QUANTITY_ORDERED: totalquantityordered,
+      PRODUCTS_ALREADY_PRODUCED: totalproductsproduced,
+      PRICE_IN_EUR: priceEuro,
+      PARENT_CUSTOMER_PRODUCT_ID: parent_customer_product_id,
+      IN_COMPOUND_PRODUCT: in_compound_product
+    }
+
+    var res = $http.post('/insertDailyProductionServerSide', dataObj).then(function (data, status, headers, config) {
+      //$state.reload();
+      ModalService.showModal({
+        templateUrl: "../modal/ordersToRegisterOverProductionModal.html",
+        controller: "OverProductionModalController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          //message: "Deseja mesmo remover a pallete de stock do produto " + internalproductid + " na encomenda " + internalproductid + " ?",
+          message: "Encomendas em Produção para atribuir o produto " + internalproductid,
+          operationURL: '/deletePalletesReadyForShipping',
+          dataObj: data,
+          unique_id: unique_id
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+    });
+
+  };
+
+
   //INSERT DAILY PAINTING REGISTRY
   $scope.insertDailyPainting = function (internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, qtyByPallet, productiondate, parent_customer_product_id, isparent, in_compound_product, productinpainting, unique_order_id) {
 
