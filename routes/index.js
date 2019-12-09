@@ -1620,7 +1620,7 @@ router.post('/insertDailyProductionServerSide', async function (req, res) {
 
       insertDailyProductionServerSide(dataObj, res);
 
-      productDistrubtionToReturn.push({ORDER_ID: req.body.ORDER_ID, CUSTOMER_PRODUCT_ID: req.body.CUSTOMER_PRODUCT_ID});
+      productDistrubtionToReturn.push({ORDER_ID: req.body.ORDER_ID, CUSTOMER_PRODUCT_ID: req.body.CUSTOMER_PRODUCT_ID, QUANTITY_REGISTERED: req.body.TOTAL_PRODUCTS_PRODUCED});
       res.end(JSON.stringify(productDistrubtionToReturn));
 
     } else {

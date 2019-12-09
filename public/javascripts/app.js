@@ -1944,15 +1944,12 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     var res = $http.post('/insertDailyProductionServerSide', dataObj).then(function (data, status, headers, config) {
       //$state.reload();
       ModalService.showModal({
-        templateUrl: "../modal/ordersToRegisterOverProductionModal.html",
-        controller: "OverProductionModalController",
+        templateUrl: "../modal/dailyProductionInsertOrderDistributionReport.html",
+        controller: "dailyProductionOrderDistributionModalController",
         preClose: (modal) => { modal.element.modal('hide'); },
         inputs: {
-          //message: "Deseja mesmo remover a pallete de stock do produto " + internalproductid + " na encomenda " + internalproductid + " ?",
-          message: "Encomendas em Produção para atribuir o produto " + internalproductid,
-          operationURL: '/deletePalletesReadyForShipping',
-          dataObj: data,
-          unique_id: unique_id
+          message: "Os produtos produzidos foram distribuídos pela(s) encomenda(s): " + totalquantityproduced,
+          dataObj: data
         }
       }).then(function (modal) {
         modal.element.modal();
@@ -4977,6 +4974,23 @@ app.controller('CloneProductModalController', ['$scope', '$http', '$state', 'cus
 
   };
 }]);
+
+//Modal Controller for sohwing the distribution of the products by the Order(s) after being inserted the DailyProduction
+app.controller('dailyProductionOrderDistributionModalController', ['$scope','$state', 'dataObj', 'message',
+  function ($scope, $state, dataObj, message) {
+
+    $scope.message = message;
+    $scope.orderProducts = dataObj.data;
+    //  This close function doesn't need to use jQuery or bootstrap, because
+    //  the button has the 'data-dismiss' attribute.
+
+    //Save Content Modal  
+    $scope.yes = function () {
+      
+      $state.reload();
+
+    };
+  }]);
 
 
 //MODAL FOR REVERTING THE PAINTING REGISTRY OF A PRODUCT
