@@ -1925,6 +1925,21 @@ router.post('/insertDailyProductionServerSide', async function (req, res) {
         }  
       }
 
+      //WE NEED TO CHECK IF WE STILL HAVE PRODUCTS TO REGISTER AS OVER PRODUCTION
+      if(products_remaining_from_daily_production > 0) {
+        var dataObj = {
+          INTERNAL_PRODUCT_ID: req.body.INTERNAL_PRODUCT_ID,
+          PRODUCT_NAME: req.body.PRODUCT_NAME,
+          EMPLOYEE_NAME: req.body.EMPLOYEE_NAME,
+          EMPLOYEE_ID: req.body.EMPLOYEE_ID,
+          PRODUCTS_PRODUCED: products_remaining_from_daily_production,
+          CREATED_DATE: req.body.CREATED_DATE
+        };
+
+        let insertOverProduction = await insertOverProductionStockTableServerSide(dataObj);
+
+      }
+
     } //ELSE
 
     console.log("DONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");

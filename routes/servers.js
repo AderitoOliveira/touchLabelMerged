@@ -1554,6 +1554,27 @@ insertOverProductionStockTable = function(req, res) {
  });
 }
 
+//INSERT OVER PRODUCTION IN STOCK TABLE - Async function for Server Side
+insertOverProductionStockTableServerSide = function(dataObj) {
+    return new Promise(async function(resolve, reject) {
+      console.log("INSIDE insertOverProductionStockTable");
+      try {
+        con.connect(function(err) {
+        let result = con.query('INSERT INTO overproduction_in_stock SET ?', dataObj, function(err, rows) {
+                if (err) {
+                    throw err;
+                } else
+                console.log("Inserted OverProduciton with success"); 
+                resolve(JSON.stringify(rows));
+            });
+        });
+      } catch (err) {
+        console.log('Error occurred', err);
+        reject(err);
+      } 
+    });
+} 
+
 //UPDATE OVER PRODUCTION IN STOCK TABLE - overproduction_in_stock
 updateStockInOverProductionStockTable = function(req, res) {
     var postData  = req.body;
