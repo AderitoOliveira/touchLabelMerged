@@ -990,7 +990,7 @@ app.controller('labels', function ($scope, $http, $rootScope) {
 });
 
 //Controller for All the Orders
-app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams', '$state', '$q', 'ModalService', 'productInOtherOpenOrdersOrOverProduction', 'productInOtherOpenOrdersForPainting', 'insertDailyProductionParentProduct', 'insertDailyPaintingParentProduct', 'GetParentUniqueOrderId', 'getParentDetailsToInsertPallete', function ($scope, $http, $rootScope, $stateParams, $state, $q, ModalService, productInOtherOpenOrdersOrOverProduction, productInOtherOpenOrdersForPainting, insertDailyProductionParentProduct, insertDailyPaintingParentProduct, GetParentUniqueOrderId, getParentDetailsToInsertPallete) {
+app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams', '$state', '$q', 'ModalService', 'productInOtherOpenOrdersOrOverProduction', 'productInOtherOpenOrdersForPainting', 'insertDailyProductionParentProduct', 'insertDailyPaintingParentProduct', 'GetParentUniqueOrderId', 'getParentDetailsToInsertPallete', 'InsertDailyProductionService', function ($scope, $http, $rootScope, $stateParams, $state, $q, ModalService, productInOtherOpenOrdersOrOverProduction, productInOtherOpenOrdersForPainting, insertDailyProductionParentProduct, insertDailyPaintingParentProduct, GetParentUniqueOrderId, getParentDetailsToInsertPallete, InsertDailyProductionService) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Lista de Produtos da Encomenda " + $stateParams.orderId;
@@ -1941,7 +1941,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       IN_COMPOUND_PRODUCT: in_compound_product
     }
 
-    var res = $http.post('/insertDailyProductionServerSide', dataObj).then(function (data, status, headers, config) {
+    /* var res = $http.post('/insertDailyProductionServerSide', dataObj).then(function (data, status, headers, config) {
       //$state.reload();
       ModalService.showModal({
         templateUrl: "../modal/dailyProductionInsertOrderDistributionReport.html",
@@ -1961,9 +1961,31 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           }
         });
       });
-    });
+    }); */
 
-  };
+    InsertDailyProductionService.insert(dataObj).then(function (orderproductdistribution) {
+      ModalService.showModal({
+        templateUrl: "../modal/dailyProductionInsertOrderDistributionReport.html",
+        controller: "dailyProductionOrderDistributionModalController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: "Os produtos produzidos foram distribuídos pela(s) encomenda(s): " + totalquantityproduced,
+          dataObj: orderproductdistribution
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+
+    });
+    
+};
 
 
   //INSERT DAILY PAINTING REGISTRY
@@ -6791,6 +6813,30 @@ app.service('GetParentUniqueOrderId', function ($http, $q) {
   return {
     uniqueOrderId: uniqueOrderId
   };
+
+});
+
+app.service('InsertDailyProductionService', function ($http, $q) {
+
+	insert = function (dataObj) {
+
+		var deferred = $q.defer();
+
+		var request = $http.post('/insertDailyProductionServerSide', dataObj);
+      request.then(function (response) {
+      orderproductdistribution = response;
+      deferred.resolve(orderproductdistribution);
+      },
+      function errorCallback(data) {
+      console.log('Error: ' + data);
+      });
+
+      return deferred.promise;
+  };
+
+	return {
+		insert: insert
+	};
 
 });
 
