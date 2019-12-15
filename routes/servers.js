@@ -2092,15 +2092,6 @@ insertDailyPaintingForApp = function(req, res) {
 
 //INSERT DAILY PRODUCTION - order_products_production_registry -Server Side 
 insertDailyProductionServerSide = function(req, res) {
-    /* console.log("insertDailyPaintingForApp req:");
-    console.log(req);
-    con.connect(function(err) {
-        con.query('INSERT INTO order_products_production_registry SET ?', req, function (error, results, fields) {
-        if (error) throw error;
-        res.end(JSON.stringify(results));
-        });
-    }); */
-
  return new Promise(async function(resolve, reject) {
     console.log("INSIDE insertDailyPaintingForApp");
     try {
@@ -2112,7 +2103,6 @@ insertDailyProductionServerSide = function(req, res) {
             console.log("INSIDE insertDailyPaintingForApp"); 
             resolve(results);
         });
-    //});
     } catch (err) {
     console.log('Error occurred', err);
     reject(err);
@@ -2293,10 +2283,10 @@ insertDailyProductionServersJs = async function(req, res) {
             CREATED_DATE: req.body.CREATED_DATE
          };
   
-          insertDailyProductionServerSide(parentObjDailyProduction, res);
+          let x = await insertDailyProductionServerSide(parentObjDailyProduction, res);
         }
   
-        insertDailyProductionServerSide(dataObj, res);
+        let x = await  insertDailyProductionServerSide(dataObj, res);
   
         //We need to define the absolute value of the products_still_to_produce variable. If its negative it means that we have overproduction 
         //for this product in this order
@@ -2345,10 +2335,10 @@ insertDailyProductionServersJs = async function(req, res) {
             CREATED_DATE: req.body.CREATED_DATE
          };
   
-          insertDailyProductionServerSide(parentObjDailyProduction, res);
+         let x = await insertDailyProductionServerSide(parentObjDailyProduction, res);
         }
   
-        insertDailyProductionServerSide(dataObj, res);
+        let x = await insertDailyProductionServerSide(dataObj, res);
   
         productDistributionToReturn.push({ORDER_ID: req.body.ORDER_ID, CUSTOMER_PRODUCT_ID: req.body.CUSTOMER_PRODUCT_ID, QUANTITY_REGISTERED: req.body.TOTAL_PRODUCTS_PRODUCED});
         res.end(JSON.stringify(productDistributionToReturn));
@@ -2393,10 +2383,10 @@ insertDailyProductionServersJs = async function(req, res) {
             CREATED_DATE: req.body.CREATED_DATE
          };
   
-          insertDailyProductionServerSide(parentObjDailyProduction, res);
+         let x = await insertDailyProductionServerSide(parentObjDailyProduction, res);
         }
   
-        insertDailyProductionServerSide(dataObj, res);
+        let x = await insertDailyProductionServerSide(dataObj, res);
   
         productDistributionToReturn.push({ORDER_ID: req.body.ORDER_ID, CUSTOMER_PRODUCT_ID: req.body.CUSTOMER_PRODUCT_ID, QUANTITY_REGISTERED: products_still_to_produce});
   
@@ -2470,10 +2460,10 @@ insertDailyProductionServersJs = async function(req, res) {
                     CREATED_DATE: req.body.CREATED_DATE
                  };
           
-                  insertDailyProductionServerSide(parentObjDailyProduction, res);
+                 let x = await insertDailyProductionServerSide(parentObjDailyProduction, res);
                 }
           
-                insertDailyProductionServerSide(dataObj, res);
+                let x = await insertDailyProductionServerSide(dataObj, res);
                 productDistributionToReturn.push({ORDER_ID: orderproduct.ORDER_ID, CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID, QUANTITY_REGISTERED: number_of_products_to_close_order});
   
                 
@@ -2523,10 +2513,10 @@ insertDailyProductionServersJs = async function(req, res) {
                     CREATED_DATE: req.body.CREATED_DATE
                  };
           
-                  insertDailyProductionServerSide(parentObjDailyProduction, res);
+                 let x = await insertDailyProductionServerSide(parentObjDailyProduction, res);
                 }
           
-                insertDailyProductionServerSide(dataObj, res);
+                let x = await insertDailyProductionServerSide(dataObj, res);
                 productDistributionToReturn.push({ORDER_ID: orderproduct.ORDER_ID, CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID, QUANTITY_REGISTERED: products_remaining_from_daily_production});
   
                 products_remaining_from_daily_production = 0;
@@ -2598,10 +2588,10 @@ insertDailyProductionServersJs = async function(req, res) {
                     CREATED_DATE: req.body.CREATED_DATE
                  };
           
-                  insertDailyProductionServerSide(parentObjDailyProduction, res);
+                 let x = await insertDailyProductionServerSide(parentObjDailyProduction, res);
                 }
           
-                insertDailyProductionServerSide(dataObj, res);
+                let x = await insertDailyProductionServerSide(dataObj, res);
   
                 productDistributionToReturn.push({ORDER_ID: orderproduct.ORDER_ID, CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID, QUANTITY_REGISTERED: number_of_products_to_close_order});
   
@@ -2650,10 +2640,10 @@ insertDailyProductionServersJs = async function(req, res) {
                     CREATED_DATE: req.body.CREATED_DATE
                  };
           
-                  insertDailyProductionServerSide(parentObjDailyProduction, res);
+                 let x = await insertDailyProductionServerSide(parentObjDailyProduction, res);
                 }
           
-                insertDailyProductionServerSide(dataObj, res);
+                let x = await insertDailyProductionServerSide(dataObj, res);
                 productDistributionToReturn.push({ORDER_ID: orderproduct.ORDER_ID, CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID, QUANTITY_REGISTERED: products_remaining_from_daily_production});
   
   
