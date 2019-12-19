@@ -2513,12 +2513,17 @@ insertDailyProductionServersJs = async function(req, res) {
                     CREATED_DATE: req.body.CREATED_DATE
                  };
           
-                 let x = await insertDailyProductionServerSide(parentObjDailyProduction, res);
+                 if(products_remaining_from_daily_production > 0) {
+                    let x = await insertDailyProductionServerSide(parentObjDailyProduction, res);
+                 }
+
                 }
           
-                let x = await insertDailyProductionServerSide(dataObj, res);
-                productDistributionToReturn.push({ORDER_ID: orderproduct.ORDER_ID, CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID, QUANTITY_REGISTERED: products_remaining_from_daily_production});
-  
+                if(products_remaining_from_daily_production > 0) {
+                    let x = await insertDailyProductionServerSide(dataObj, res);
+                    productDistributionToReturn.push({ORDER_ID: orderproduct.ORDER_ID, CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID, QUANTITY_REGISTERED: products_remaining_from_daily_production});
+                }
+                
                 products_remaining_from_daily_production = 0;
               }
   
@@ -2640,12 +2645,16 @@ insertDailyProductionServersJs = async function(req, res) {
                     CREATED_DATE: req.body.CREATED_DATE
                  };
           
-                 let x = await insertDailyProductionServerSide(parentObjDailyProduction, res);
+                 if(products_remaining_from_daily_production > 0) {
+                    let x = await insertDailyProductionServerSide(parentObjDailyProduction, res);
+                 }
+
                 }
           
-                let x = await insertDailyProductionServerSide(dataObj, res);
-                productDistributionToReturn.push({ORDER_ID: orderproduct.ORDER_ID, CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID, QUANTITY_REGISTERED: products_remaining_from_daily_production});
-  
+                if(products_remaining_from_daily_production > 0) {
+                    let x = await insertDailyProductionServerSide(dataObj, res);
+                    productDistributionToReturn.push({ORDER_ID: orderproduct.ORDER_ID, CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID, QUANTITY_REGISTERED: products_remaining_from_daily_production});
+                }
   
                 products_remaining_from_daily_production = 0;
               }
