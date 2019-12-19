@@ -1491,6 +1491,14 @@ router.post('/insertDailyPaintingForTheApp', async function (req, res) {
     res.send();
 });
 
+
+router.post('/insertDailyProductionServerSide', async function (req, res) {
+  console.log("Exeucting the insertDailyProductionServerSide");
+  console.log(req.body);
+  insertDailyProductionServersJs(req, res);
+});
+
+
 function validate (req, res) {
   console.log("VALIDATE CALLED!!!!!")
   console.log(req.body);

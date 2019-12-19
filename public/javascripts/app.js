@@ -990,7 +990,7 @@ app.controller('labels', function ($scope, $http, $rootScope) {
 });
 
 //Controller for All the Orders
-app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams', '$state', '$q', 'ModalService', 'productInOtherOpenOrdersOrOverProduction', 'productInOtherOpenOrdersForPainting', 'insertDailyProductionParentProduct', 'insertDailyPaintingParentProduct', 'GetParentUniqueOrderId', 'getParentDetailsToInsertPallete', function ($scope, $http, $rootScope, $stateParams, $state, $q, ModalService, productInOtherOpenOrdersOrOverProduction, productInOtherOpenOrdersForPainting, insertDailyProductionParentProduct, insertDailyPaintingParentProduct, GetParentUniqueOrderId, getParentDetailsToInsertPallete) {
+app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams', '$state', '$q', 'ModalService', 'productInOtherOpenOrdersOrOverProduction', 'productInOtherOpenOrdersForPainting', 'insertDailyProductionParentProduct', 'insertDailyPaintingParentProduct', 'GetParentUniqueOrderId', 'getParentDetailsToInsertPallete', 'InsertDailyProductionService', function ($scope, $http, $rootScope, $stateParams, $state, $q, ModalService, productInOtherOpenOrdersOrOverProduction, productInOtherOpenOrdersForPainting, insertDailyProductionParentProduct, insertDailyPaintingParentProduct, GetParentUniqueOrderId, getParentDetailsToInsertPallete, InsertDailyProductionService) {
 
   $rootScope.class = 'not-home';
   $rootScope.name = "Lista de Produtos da Encomenda " + $stateParams.orderId;
@@ -1919,6 +1919,73 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     }//ELSE
 
   };
+
+
+  //Insert Daily Production - Call Server Side Function
+  $scope.insertDailyProductionServerSide = function (orderproductuniqueid, internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, productiondate, parent_customer_product_id, in_compound_product) {
+
+    var dataObj = {
+      CREATED_DATE: moment(productiondate).format('YYYY-MM-DD 00:00:00'),
+      CUSTOMER_PRODUCT_ID: customerproductid,
+      EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+      EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+      INTERNAL_PRODUCT_ID: internalproductid,
+      ORDER_ID: $scope.orderid,
+      ORDER_PRODUCTS_UNIQUE_ID: orderproductuniqueid,
+      PRODUCT_NAME: productName,
+      TOTAL_PRODUCTS_PRODUCED: totalquantityproduced,
+      TOTAL_QUANTITY_ORDERED: totalquantityordered,
+      PRODUCTS_ALREADY_PRODUCED: totalproductsproduced,
+      PRICE_IN_EUR: priceEuro,
+      PARENT_CUSTOMER_PRODUCT_ID: parent_customer_product_id,
+      IN_COMPOUND_PRODUCT: in_compound_product
+    }
+
+    /* var res = $http.post('/insertDailyProductionServerSide', dataObj).then(function (data, status, headers, config) {
+      //$state.reload();
+      ModalService.showModal({
+        templateUrl: "../modal/dailyProductionInsertOrderDistributionReport.html",
+        controller: "dailyProductionOrderDistributionModalController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: "Os produtos produzidos foram distribuídos pela(s) encomenda(s): " + totalquantityproduced,
+          dataObj: data
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+    }); */
+
+    InsertDailyProductionService.insert(dataObj).then(function (orderproductdistribution) {
+      ModalService.showModal({
+        templateUrl: "../modal/dailyProductionInsertOrderDistributionReport.html",
+        controller: "dailyProductionOrderDistributionModalController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: "Os produtos produzidos foram distribuídos pela(s) encomenda(s): " + totalquantityproduced,
+          dataObj: orderproductdistribution
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+
+    });
+    
+};
 
 
   //INSERT DAILY PAINTING REGISTRY
@@ -4930,6 +4997,23 @@ app.controller('CloneProductModalController', ['$scope', '$http', '$state', 'cus
   };
 }]);
 
+//Modal Controller for sohwing the distribution of the products by the Order(s) after being inserted the DailyProduction
+app.controller('dailyProductionOrderDistributionModalController', ['$scope','$state', 'dataObj', 'message',
+  function ($scope, $state, dataObj, message) {
+
+    $scope.message = message;
+    $scope.orderProducts = dataObj.data;
+    //  This close function doesn't need to use jQuery or bootstrap, because
+    //  the button has the 'data-dismiss' attribute.
+
+    //Save Content Modal  
+    $scope.yes = function () {
+      
+      $state.reload();
+
+    };
+  }]);
+
 
 //MODAL FOR REVERTING THE PAINTING REGISTRY OF A PRODUCT
 app.controller('RevertPaintingModalController', ['$scope', '$http', '$state', 'ModalService', 'RevertPaintingRegistryService', 'customerproductid', 'orderid', 'uniqueorderid', 'productname', function ($scope, $http, $state, ModalService, RevertPaintingRegistryService, customerproductid, orderid, uniqueorderid, productname) {
@@ -6729,6 +6813,30 @@ app.service('GetParentUniqueOrderId', function ($http, $q) {
   return {
     uniqueOrderId: uniqueOrderId
   };
+
+});
+
+app.service('InsertDailyProductionService', function ($http, $q) {
+
+	insert = function (dataObj) {
+
+		var deferred = $q.defer();
+
+		var request = $http.post('/insertDailyProductionServerSide', dataObj);
+      request.then(function (response) {
+      orderproductdistribution = response;
+      deferred.resolve(orderproductdistribution);
+      },
+      function errorCallback(data) {
+      console.log('Error: ' + data);
+      });
+
+      return deferred.promise;
+  };
+
+	return {
+		insert: insert
+	};
 
 });
 
