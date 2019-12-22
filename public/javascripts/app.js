@@ -1407,7 +1407,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   //CLOSE THE PRODUCT IN PRODUCTION - ORDER THE BOXES
   $scope.closeProductInProduction = function (internalproductid, customerproductid, productName, qtyorder, qtyproduced, parentcustomerproductid, uniqueorderid) {
 
-    //alert($stateParams.orderId);
+    function containsOnlyNumbers(input) {
+          return /^\d+$/.test(input);
+    }
 
     $scope.productTechSheet = [];
     var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerproductid));
@@ -1429,7 +1431,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           if ($scope.productTechSheet[0].Qty_By_Box == null && messageToSend == "" && parentcustomerproductid == null) {
             messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por caixa. Edite a ficha técnica do produto e adicione a Quantidade por caixa para poder fechar o produto nesta encomenda."
           }
-          if ($scope.productTechSheet[0].Box_Id == null && messageToSend == "" && parentcustomerproductid == null) {
+          if (($scope.productTechSheet[0].Box_Id == null || !containsOnlyNumbers($scope.productTechSheet[0].Box_Id)) && messageToSend == "" && parentcustomerproductid == null) {
             messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o número da Caixa. Edite a ficha técnica do produto e adicione o número da caixa para poder fechar o produto nesta encomenda."
           }
           if ($scope.productTechSheet[0].Box_Measures == null && messageToSend == "" && parentcustomerproductid == null) {
