@@ -1117,6 +1117,14 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           $scope.singleProductsIndex.push($scope.products[i]);
         }
 
+        if ($scope.products[i].TOTAL_BOXES_TO_ORDER != null) {
+          $scope.products[i].BOXES_ICON_CLASS = 'btn-intermediate-boxes';
+          $scope.products[i].BOXES_ICON_TOOLTIP = 'Já foram encomendadas ' + $scope.products[i].TOTAL_BOXES_TO_ORDER + ' caixas nesta encomenda';
+        } else {
+          $scope.products[i].BOXES_ICON_CLASS = 'btn-action';
+          $scope.products[i].BOXES_ICON_TOOLTIP = 'Encomenda Parcial de Caixas';
+        }
+
       }
 
       //IF em_pintura
@@ -1966,24 +1974,31 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     }); */
 
     InsertDailyProductionService.insert(dataObj).then(function (orderproductdistribution) {
-      ModalService.showModal({
-        templateUrl: "../modal/dailyProductionInsertOrderDistributionReport.html",
-        controller: "dailyProductionOrderDistributionModalController",
-        preClose: (modal) => { modal.element.modal('hide'); },
-        inputs: {
-          message: "Os produtos produzidos foram distribuídos pela(s) encomenda(s): " + totalquantityproduced,
-          dataObj: orderproductdistribution
-        }
-      }).then(function (modal) {
-        modal.element.modal();
-        modal.close.then(function (result) {
-          if (!result) {
-            $scope.complexResult = "Modal forcibly closed..."
-          } else {
-            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+
+      if(orderproductdistribution.data.length > 1) {
+
+        ModalService.showModal({
+          templateUrl: "../modal/dailyProductionInsertOrderDistributionReport.html",
+          controller: "dailyProductionOrderDistributionModalController",
+          preClose: (modal) => { modal.element.modal('hide'); },
+          inputs: {
+            message: "Os produtos produzidos foram distribuídos pela(s) encomenda(s): " + totalquantityproduced,
+            dataObj: orderproductdistribution
           }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if (!result) {
+              $scope.complexResult = "Modal forcibly closed..."
+            } else {
+              $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+            }
+          });
         });
-      });
+
+      } else {
+        $state.reload();
+      }
 
     });
     
@@ -2832,7 +2847,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
   //CREATE THE INTERMEDIATE BOXES TO ORDER 
-  $scope.createIntermediateBoxesoOrder = function (internalproductid, customerproductid, productName, qtyorder, qtyproduced, parentcustomerproductid, uniqueorderid) {
+  $scope.createIntermediateBoxesOrder = function (internalproductid, customerproductid, productName, qtyorder, qtyproduced, parentcustomerproductid, uniqueorderid) {
 
     $scope.productTechSheet = [];
     var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerproductid));
@@ -5340,7 +5355,7 @@ app.controller('createIntermediateBoxRequest', [
         };
 
         var res = $http.post('/insertIntermediateBoxesToOrder', dataObj).then(function (data, status, headers, config) {
-          //$state.reload();
+          $state.reload();
         });
       } 
     };
