@@ -1,4 +1,4 @@
-var app = angular.module('easyLabel', ['ui.router', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'ngCookies', 'historicalModule', 'statisticsModule', 'Authentication', 'angularMoment', 'angular-js-xlsx']);
+var app = angular.module('easyLabel', ['ui.router', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularModalService', 'angularFileUpload', 'ngFileUpload', 'chart.js', 'ngCookies', 'historicalModule', 'statisticsModule', 'labelsModule', 'Authentication', 'angularMoment', 'angular-js-xlsx']);
 
 app.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
 
@@ -5847,7 +5847,7 @@ app.controller('boxesToOrder', ['$scope', '$http', '$rootScope', '$timeout', '$s
 
 }]);
 
-//ALL LABELS TO PRINT - Controller
+/* //ALL LABELS TO PRINT - Controller
 app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sendZPLCodeToPrinter', 'ModalService', function ($scope, $http, $rootScope, $state, sendZPLCodeToPrinter, ModalService) {
 
   $rootScope.class = 'not-home';
@@ -6183,7 +6183,7 @@ app.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', 'sen
     }
 
   }
-}]);
+}]); */
 
 
 //DAILY ORDER PRODUCTION - Controller
