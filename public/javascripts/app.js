@@ -1119,7 +1119,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
         if ($scope.products[i].TOTAL_BOXES_TO_ORDER != null) {
           $scope.products[i].BOXES_ICON_CLASS = 'btn-intermediate-boxes';
-          $scope.products[i].BOXES_ICON_TOOLTIP = 'Já foram encomendadas ' + $scope.products[i].TOTAL_BOXES_TO_ORDER + ' caixas nesta encomenda';
+          $scope.products[i].BOXES_ICON_TOOLTIP = 'Já foram encomendadas ' + $scope.products[i].TOTAL_BOXES_TO_ORDER + ' caixas para este produto, nesta encomenda';
         } else {
           $scope.products[i].BOXES_ICON_CLASS = 'btn-action';
           $scope.products[i].BOXES_ICON_TOOLTIP = 'Encomenda Parcial de Caixas';
