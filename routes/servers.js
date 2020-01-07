@@ -2340,7 +2340,7 @@ insertDailyProductionServersJs = async function(req, res) {
   
         let x = await insertDailyProductionServerSide(dataObj, res);
   
-        productDistributionToReturn.push({ORDER_ID: req.body.ORDER_ID, CUSTOMER_PRODUCT_ID: req.body.CUSTOMER_PRODUCT_ID, QUANTITY_REGISTERED: req.body.TOTAL_PRODUCTS_PRODUCED});
+        productDistributionToReturn.push({ORDER_ID: req.body.ORDER_ID, CUSTOMER_PRODUCT_ID: req.body.CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID: req.body.INTERNAL_PRODUCT_ID, QUANTITY_REGISTERED: req.body.TOTAL_PRODUCTS_PRODUCED});
         res.end(JSON.stringify(productDistributionToReturn));
   
       } else {
@@ -2388,7 +2388,7 @@ insertDailyProductionServersJs = async function(req, res) {
   
         let x = await insertDailyProductionServerSide(dataObj, res);
   
-        productDistributionToReturn.push({ORDER_ID: req.body.ORDER_ID, CUSTOMER_PRODUCT_ID: req.body.CUSTOMER_PRODUCT_ID, QUANTITY_REGISTERED: products_still_to_produce});
+        productDistributionToReturn.push({ORDER_ID: req.body.ORDER_ID, CUSTOMER_PRODUCT_ID: req.body.CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID: req.body.INTERNAL_PRODUCT_ID, QUANTITY_REGISTERED: products_still_to_produce});
   
   
         //THE NUMBER OF PRODUCTS FROM THE DAILY PRODUCTION THAT WE STILL NEED TO REGISTE IN ANOTHER ORDER
@@ -2464,7 +2464,7 @@ insertDailyProductionServersJs = async function(req, res) {
                 }
           
                 let x = await insertDailyProductionServerSide(dataObj, res);
-                productDistributionToReturn.push({ORDER_ID: orderproduct.ORDER_ID, CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID, QUANTITY_REGISTERED: number_of_products_to_close_order});
+                productDistributionToReturn.push({ORDER_ID: orderproduct.ORDER_ID, CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID: req.body.INTERNAL_PRODUCT_ID, QUANTITY_REGISTERED: number_of_products_to_close_order});
   
                 
   
@@ -2521,7 +2521,7 @@ insertDailyProductionServersJs = async function(req, res) {
           
                 if(products_remaining_from_daily_production > 0) {
                     let x = await insertDailyProductionServerSide(dataObj, res);
-                    productDistributionToReturn.push({ORDER_ID: orderproduct.ORDER_ID, CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID, QUANTITY_REGISTERED: products_remaining_from_daily_production});
+                    productDistributionToReturn.push({ORDER_ID: orderproduct.ORDER_ID, CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID: req.body.INTERNAL_PRODUCT_ID, QUANTITY_REGISTERED: products_remaining_from_daily_production});
                 }
                 
                 products_remaining_from_daily_production = 0;
@@ -2598,7 +2598,7 @@ insertDailyProductionServersJs = async function(req, res) {
           
                 let x = await insertDailyProductionServerSide(dataObj, res);
   
-                productDistributionToReturn.push({ORDER_ID: orderproduct.ORDER_ID, CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID, QUANTITY_REGISTERED: number_of_products_to_close_order});
+                productDistributionToReturn.push({ORDER_ID: orderproduct.ORDER_ID, CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID: req.body.INTERNAL_PRODUCT_ID, QUANTITY_REGISTERED: number_of_products_to_close_order});
   
               } else {
   
@@ -2653,7 +2653,7 @@ insertDailyProductionServersJs = async function(req, res) {
           
                 if(products_remaining_from_daily_production > 0) {
                     let x = await insertDailyProductionServerSide(dataObj, res);
-                    productDistributionToReturn.push({ORDER_ID: orderproduct.ORDER_ID, CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID, QUANTITY_REGISTERED: products_remaining_from_daily_production});
+                    productDistributionToReturn.push({ORDER_ID: orderproduct.ORDER_ID, CUSTOMER_PRODUCT_ID: orderproduct.CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID: req.body.INTERNAL_PRODUCT_ID, QUANTITY_REGISTERED: products_remaining_from_daily_production});
                 }
   
                 products_remaining_from_daily_production = 0;
@@ -2674,7 +2674,7 @@ insertDailyProductionServersJs = async function(req, res) {
           };
   
           let insertOverProduction = await insertOverProductionStockTableServerSide(dataObj);
-          productDistributionToReturn.push({ORDER_ID: 'EXCESSO_PRODUÇÃO', CUSTOMER_PRODUCT_ID: req.body.INTERNAL_PRODUCT_ID, QUANTITY_REGISTERED: products_remaining_from_daily_production});
+          productDistributionToReturn.push({ORDER_ID: 'EXCESSO_PRODUÇÃO', CUSTOMER_PRODUCT_ID: req.body.INTERNAL_PRODUCT_ID, INTERNAL_PRODUCT_ID: req.body.INTERNAL_PRODUCT_ID, QUANTITY_REGISTERED: products_remaining_from_daily_production});
   
         }
   

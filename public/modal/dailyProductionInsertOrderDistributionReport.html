@@ -16,9 +16,10 @@
                 <div class="label-table-wrap">
                     <div class="label-table-header row">
                         <div class="inner-wrap">
-                            <div class="col-md-4 label-header-item header-label-innerref">Num. Enco.</div>
-                            <div class="col-md-4 label-header-item header-label-prodname">Ref Cliente</div>
-                            <div class="col-md-4 label-header-item header-label-prodname">Quantidade associada</div>
+                            <div class="col-md-3 label-header-item header-label-innerref">Num. Enco.</div>
+                            <div class="col-md-3 label-header-item header-label-prodname">Ref Cliente</div>
+                            <div class="col-md-3 label-header-item header-label-prodname">Ref Interna</div>
+                            <div class="col-md-3 label-header-item header-label-prodname">Quantidade associada</div>
                         </div>
                     </div>
                     <div class="order-labels-content row">
@@ -28,9 +29,10 @@
                                     <div class="col-md-12" ng-repeat="orderProduct in orderProducts">
                                         <div class="row">
                                             <div class="item-inner-wrap">
-                                                <div class="col-md-4 table-item item-label-innerref">{{orderProduct.ORDER_ID}}</div>
-                                                <div class="col-md-4 table-item item-label-prodname">{{orderProduct.CUSTOMER_PRODUCT_ID}}</div>
-                                                <div class="col-md-4 table-item item-label-workername"><strong>{{orderProduct.QUANTITY_REGISTERED}}</strong></div>
+                                                <div class="col-md-3 table-item item-label-innerref">{{orderProduct.ORDER_ID}}</div>
+                                                <div class="col-md-3 table-item item-label-prodname">{{orderProduct.CUSTOMER_PRODUCT_ID}}</div>
+                                                <div class="col-md-3 table-item item-label-prodname">{{orderProduct.INTERNAL_PRODUCT_ID}}</div>
+                                                <div class="col-md-3 table-item item-label-workername"><strong>{{orderProduct.QUANTITY_REGISTERED}}</strong></div>
                                             </div>
                                         </div>
                                     </div>
