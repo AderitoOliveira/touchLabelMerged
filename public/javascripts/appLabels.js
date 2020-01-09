@@ -138,7 +138,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
           controller: "printAllLabelsModalController",
             preClose: (modal) => { modal.element.modal('hide'); },
             inputs: {
-              message: "A etiqueta de teste de caixa foi impressa com sucesso ?" + "Pretende imprimir as " + quantity_box_labels + " etiquetas de caixa?",
+              message: "A etiqueta de teste foi impressa com sucesso ?" + "\n Pretende imprimir as " + quantity_article_labels + " etiquetas do produto?",
               dataObj: dataForModal
             }
           }).then(function (modal) {
@@ -363,7 +363,7 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
           controller: "genericMultOperationsModalController",
             preClose: (modal) => { modal.element.modal('hide'); },
             inputs: {
-              message: "As etiquetas de caixa foram imprimidas com sucesso ?",
+              message: "As etiquetas de caixa foram impressas com sucesso ?",
               operationsObj: operationsToExecute,
               dataObjs: dataToDelete,
               stateToGo: "listLabelsToPrint",
@@ -389,7 +389,7 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
           controller: "genericMultOperationsModalController",
             preClose: (modal) => { modal.element.modal('hide'); },
             inputs: {
-              message: "As etiquetas de caixa foram imprimidas com sucesso ?",
+              message: "As etiquetas de caixa foram impressas com sucesso ?",
               operationsObj: operationsToExecute,
               dataObjs: dataToDelete,
               stateToGo: "listLabelsToPrint",
@@ -421,7 +421,7 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
             controller: "genericMultOperationsModalController",
             preClose: (modal) => { modal.element.modal('hide'); },
             inputs: {
-              message: "As etiquetas do artigo foram imprimidas com sucesso ?",
+              message: "As etiquetas do artigo foram impressas com sucesso ?",
               operationsObj: operationsToExecute,
               dataObjs: dataToDelete,
               stateToGo: "listLabelsToPrint",
@@ -447,7 +447,7 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
             controller: "genericMultOperationsModalController",
             preClose: (modal) => { modal.element.modal('hide'); },
             inputs: {
-              message: "As etiquetas do artigo foram imprimidas com sucesso ?",
+              message: "As etiquetas do artigo foram impressas com sucesso ?",
               operationsObj: operationsToExecute,
               dataObjs: dataToDelete,
               stateToGo: "listLabelsToPrint",
