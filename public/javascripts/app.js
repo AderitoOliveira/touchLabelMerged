@@ -781,25 +781,24 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
 
     if (BoxBarCodeType == 'GS1-128') {
 
-      //alert("ZPL: " + ZPLString);
-      //var cd = eanCheckDigit("0871886150940");
-      //alert("Bar Code Number: " + BarCodeNumber);
-      var checkDigit = eanCheckDigit('' + BarCodeNumber);
-      //alert("CheckDigit: " + checkDigit);
-
-
       function padDigits(number, digits) {
         return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
       }
 
       var Quantity_full = padDigits(Quantity, 4);
 
-      //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
-      //GS1-128 BarCode
-      var EanWithCheckDigit = BarCodeNumber + checkDigit;
-      var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
-
-      //alert("fullEan: " + FullEan);
+      if (BarCodeNumber.charAt(0) != '0') {
+        BarCodeNumber = '0' + BarCodeNumber;
+        var EanWithCheckDigit = BarCodeNumber;
+        var FullEan = "802" + BarCodeNumber + "37" + Quantity_full;
+      } else {
+        var checkDigit = eanCheckDigit('' + BarCodeNumber);
+        var EanWithCheckDigit = BarCodeNumber + checkDigit;
+        //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
+        //GS1-128 BarCode
+        var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
+      }
+      
 
       function replaceAll(str, map) {
         for (key in map) {
@@ -826,25 +825,20 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
     }
 
     if (BoxBarCodeType == 'EAN13') {
-      //alert("ZPL: " + ZPLString);
-      //var cd = eanCheckDigit("0871886150940");
-      //alert("Bar Code Number: " + BarCodeNumber);
-      var checkDigit = eanCheckDigit('' + BarCodeNumber);
-      //alert("CheckDigit: " + checkDigit);
-
-
+      
       function padDigits(number, digits) {
         return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
       }
 
       var Quantity_full = padDigits(Quantity, 4);
 
-      //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
-      //GS1-128 BarCode
-      var EanWithCheckDigit = BarCodeNumber + checkDigit;
-      //var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
+      if (BarCodeNumber.charAt(0) != '0') {
+        var EanWithCheckDigit = BarCodeNumber;
+      } else {
+        var checkDigit = eanCheckDigit('' + BarCodeNumber);
+        var EanWithCheckDigit = BarCodeNumber + checkDigit;
+      }
 
-      //alert("fullEan: " + FullEan);
 
       function replaceAll(str, map) {
         for (key in map) {
@@ -877,18 +871,16 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
 
     if (BarCodeNumber.charAt(0) === '0') {
       BarCodeNumber = BarCodeNumber.slice(1);
+      var checkDigit = eanCheckDigit('' + BarCodeNumber);
+      //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
+      //GS1-128 BarCode
+      var EanWithCheckDigit = BarCodeNumber + checkDigit;
+      var quantityToReplace = 0;
+    } else {
+      var EanWithCheckDigit = BarCodeNumber;
+      var quantityToReplace = 0;
     }
 
-    //alert("ZPL: " + ZPLString);
-    //var cd = eanCheckDigit("0871886150940");
-    //alert("Bar Code Number: " + BarCodeNumber);
-    var checkDigit = eanCheckDigit('' + BarCodeNumber);
-    //alert("CheckDigit: " + checkDigit);
-
-    //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
-    //GS1-128 BarCode
-    var EanWithCheckDigit = BarCodeNumber + checkDigit;
-    var quantityToReplace = 0;
 
     if (labelsWith2Columns) {
       labelsWith2Columns = true;
