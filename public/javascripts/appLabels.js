@@ -56,17 +56,15 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
         //We need to remove the first digit to calculate the checksum for the EAN-13
         if (barCodeNumber.charAt(0) === '0') {
           barCodeNumber = barCodeNumber.slice(1);
+          var checkDigit = eanCheckDigit('' + barCodeNumber);
+          var EanWithCheckDigit = barCodeNumber + checkDigit;
+          var quantityToReplace = 0;
+        } else {
+          var EanWithCheckDigit = barCodeNumber;
+          var quantityToReplace = 0;
         }
   
-        //var cd = eanCheckDigit("0871886150940");
-        //alert("Bar Code Number: " + barCodeNumber);
-        var checkDigit = eanCheckDigit('' + barCodeNumber);
-        //alert("CheckDigit: " + checkDigit);
-  
-        //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
-        //GS1-128 BarCode
-        var EanWithCheckDigit = barCodeNumber + checkDigit;
-        var quantityToReplace = 0;
+        
   
         function replaceAll(str, map) {
           for (key in map) {
@@ -176,26 +174,25 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
         var PrinterPort             = $scope.productLabel[0].BOX_PRINTER_PORT;
   
         if (boxBarCodeType == 'GS1-128') {
-  
-          //alert("ZPL: " + ZPLString);
-          //var cd = eanCheckDigit("0871886150940");
-          //alert("Bar Code Number: " + barCodeNumber);
-          var checkDigit = eanCheckDigit('' + barCodeNumber);
-          //alert("CheckDigit: " + checkDigit);
-  
-  
+
           function padDigits(number, digits) {
             return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
           }
   
           var Quantity_full = padDigits(qtyByBox, 4);
-  
-          //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
-          //GS1-128 BarCode
-          var EanWithCheckDigit = barCodeNumber + checkDigit;
-          var FullEan = "802" + barCodeNumber + checkDigit + "37" + Quantity_full;
-  
-          //alert("fullEan: " + FullEan);
+
+          if (barCodeNumber.charAt(0) != '0') {
+            barCodeNumber = '0' + barCodeNumber;
+            var EanWithCheckDigit = barCodeNumber;
+            var FullEan = "802" + barCodeNumber + "37" + Quantity_full;
+          } else {
+            var checkDigit = eanCheckDigit('' + barCodeNumber);
+            var EanWithCheckDigit = barCodeNumber + checkDigit;
+            //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
+            //GS1-128 BarCode
+            var FullEan = "802" + barCodeNumber + checkDigit + "37" + Quantity_full;
+          }
+
   
           function replaceAll(str, map) {
             for (key in map) {
@@ -235,25 +232,20 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
         }
   
         if (boxBarCodeType == 'EAN13') {
-          //alert("ZPL: " + ZPLString);
-          //var cd = eanCheckDigit("0871886150940");
-          //alert("Bar Code Number: " + barCodeNumber);
-          var checkDigit = eanCheckDigit('' + barCodeNumber);
-          //alert("CheckDigit: " + checkDigit);
-  
-  
+
           function padDigits(number, digits) {
             return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
           }
   
           var Quantity_full = padDigits(qtyByBox, 4);
-  
-          //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
-          //GS1-128 BarCode
-          var EanWithCheckDigit = barCodeNumber + checkDigit;
-          //var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
-  
-          //alert("fullEan: " + FullEan);
+
+          if (barCodeNumber.charAt(0) != '0') {
+            var EanWithCheckDigit = barCodeNumber;
+          } else {
+            var checkDigit = eanCheckDigit('' + barCodeNumber);
+            var EanWithCheckDigit = barCodeNumber + checkDigit;
+          }
+
   
           function replaceAll(str, map) {
             for (key in map) {
