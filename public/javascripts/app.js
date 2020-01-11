@@ -918,19 +918,19 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
       if (Quantity == 1) {
         //ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL  --> Only 1 label is written and the other is blank
         //ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL --> Both Labels are written
-        quantityToReplace = 1;
+        map._PRINT_QUANTITY = 1;
         var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
         return;
       }
       if (Quantity % 2 == 0) {
-        quantityToReplace = Quantity / 2;
+        map._PRINT_QUANTITY = Quantity / 2;
         var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
       }
       if (Quantity % 2 != 0) {
-        quantityToReplace = Quantity / 2;
+        map._PRINT_QUANTITY = Quantity / 2;
         var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
 
-        quantityToReplace = 1;
+        map._PRINT_QUANTITY = 1;
         var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
       }
 
