@@ -172,8 +172,8 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
         var boxBarCodeType          = $scope.productLabel[0].BOX_BARCODE_TYPE;
         var ZPLStringTestLabel      = $scope.productLabel[0].ZPL_STRING_BOX;
         var ZPLStringAllLabels      = $scope.productLabel[0].ZPL_STRING_BOX;
-        var PrinterIPAddress        = $scope.productLabel[0].ARTICLE_PRINTER_IP_ADDRESS;
-        var PrinterPort             = $scope.productLabel[0].ARTICLE_PRINTER_PORT;
+        var PrinterIPAddress        = $scope.productLabel[0].BOX_PRINTER_IP_ADDRESS;
+        var PrinterPort             = $scope.productLabel[0].BOX_PRINTER_PORT;
   
         if (boxBarCodeType == 'GS1-128') {
   
