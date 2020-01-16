@@ -1093,9 +1093,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         $scope.products[i].width = percentage;
         $scope.products[i].ORDER_PRODUCT_STATUS_RAW = $scope.products[i].ORDER_PRODUCT_STATUS;
         $scope.products[i].ORDER_PRODUCT_STATUS = 'Em Produção';
-        $scope.products[i].INSERT_PRODUCTION = 'true';
 
         $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PRODUCED;
+        if ($scope.products[i].IN_COMPOUND_PRODUCT != 'Y' || $scope.products[i].IS_PARENT == 'Y') {
+          $scope.products[i].INSERT_PRODUCTION = 'true';
+        }
 
         if ($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null && $scope.products[i].IN_COMPOUND_PRODUCT == 'Y') {
           $scope.products[i].ITEM_FILHO = 'item-filho';
