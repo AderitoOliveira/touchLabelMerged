@@ -4071,6 +4071,33 @@ app.controller('OverProductionController', ['$http', '$scope', '$rootScope', 'Mo
 
   };
 
+  $scope.deleteProductInStock = function (unique_id, internal_product_id, products_produced, product_name) {
+    var dataToDelete = {
+      UNIQUE_ID: unique_id,
+      INTERNAL_PRODUCT_ID : internal_product_id
+    };
+  
+    ModalService.showModal({
+      templateUrl: "../modal/yesNoGeneric.html",
+      controller: "genericModalController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+      message: "Deseja mesmo remover o produto " + product_name + " com  " + products_produced + " artigos do stock em excesso de produção ?",
+      operationURL: '/deleteStockInOverProductionStockTable',
+      dataObj: dataToDelete
+      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+      if (!result) {
+        $scope.complexResult = "Modal forcibly closed..."
+      } else {
+        $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+      }
+      });
+    });
+  }
+
 }]);
 
 //CREATE PRODUCT - Controller

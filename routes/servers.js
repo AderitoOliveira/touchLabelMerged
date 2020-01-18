@@ -1524,7 +1524,7 @@ getParentDetailsForPallet = function(data, callback) {
 //GET OVERPRODUCTION IN STOCK - overproduction_in_stock
 getOverProductionInStock = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT * FROM overproduction_in_stock', function(err, rows) {
+    con.query('SELECT UNIQUE_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_ID, EMPLOYEE_NAME, PRODUCTS_PRODUCED, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE FROM overproduction_in_stock', function(err, rows) {
        if (err) {
             throw err;
         } else
