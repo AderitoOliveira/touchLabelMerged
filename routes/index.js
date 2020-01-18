@@ -662,6 +662,13 @@ router.get('/getLabelsToPrint', function (req, res) {
   fetchAllLabelsToPrint(req, res);
 });
 
+//INSERT INTERMEDIATE LABELS FOR THE ORDER WHERE THE PRODUCT IS STILL IN PAINTING
+router.post('/insertIntermediateLabelsToPrint', function (req, res) {
+  console.log("INSERT INTERMEDIATE BOXES TO ORDER");
+  console.log(req.body);
+  insertIntermediateLabelsToPrint(req, res);
+});
+
 //GET LABELS TO PRINT FROM BACKUP HISTORICAL TABLE - order_products_labels_to_print_bck
 router.get('/getLabelsToPrintHistoric', function (req, res) {
   console.log("GET LABELS TO PRINT - HISTORIC");
