@@ -98,7 +98,7 @@ fetchAllClientProduct = function(data, callback) {
 //INSERT THE CIENT PRODUCT RELATION WHEN THE PRODUCT IS CREATED
 insertClientProduct = function(data, callback) {
     con.connect(function(err) {
-    con.query('INSERT INTO client_product SET ?', data.body, function(err, rows) {
+    con.query('INSERT INTO client_product (CLIENT_ID, PRODUCT_ID) VALUES (?, ?) ON DUPLICATE KEY UPDATE CLIENT_ID = VALUES(CLIENT_ID)', [data.body.CLIENT_ID, data.body.PRODUCT_ID], function(err, rows) {
         if (err) {
             throw err;
         } else

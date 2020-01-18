@@ -3682,6 +3682,8 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
   $scope.preco1 = $stateParams.preco1;
   $scope.preco2 = $stateParams.preco2;
   $scope.isparentproduct = "";
+  var clientid = null;
+  var clientNameChanged = 'false';
 
   if ($stateParams.isparent == 'Y' || $stateParams.isparent == true) {
     $scope.isparentproduct = true;
@@ -3731,13 +3733,20 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
     if (!$scope.clientname.CLIENT_NAME) {
       $scope.clientname = $scope.clientname;
     } else {
+      clientid = $scope.clientname.CLIENT_ID;
       $scope.clientname = $scope.clientname.CLIENT_NAME;
+      clientNameChanged  = 'true';
     }
 
     if ($scope.isparentproduct == true) {
       $scope.isparentproduct = 'Y';
     } else {
       $scope.isparentproduct = 'N';
+    }
+
+    var insertClientProduct = {
+      CLIENT_ID: clientid,
+      PRODUCT_ID: $scope.customerProductId
     }
 
     var dataObj = {
@@ -3779,6 +3788,15 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
         $templateCache.remove(currentPageTemplate);
         $state.go("listProducts", null, { reload: true });
       });
+
+      if(clientNameChanged == 'true') {
+        var res = $http.post('/insertclientproduct', insertClientProduct).then(function (data, status, headers, config) {
+          var currentPageTemplate = $state.current.templateUrl;
+          $templateCache.remove(currentPageTemplate);
+          $state.go("listProducts", null, { reload: true });
+        });
+      }
+
     };
 
   };
