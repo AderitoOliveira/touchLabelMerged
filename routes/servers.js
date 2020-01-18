@@ -1645,7 +1645,7 @@ deleteLabelsToPrint = function(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     con.connect(function(err) {
-    con.query('DELETE from order_products_labels_to_print where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+    con.query('DELETE from order_products_labels_to_print where UNIQUE_ID = ? and ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [req.body.UNIQUE_ID, req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });

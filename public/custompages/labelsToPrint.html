@@ -46,10 +46,13 @@
                                     <div class="col-md-2 table-item item-label-qty">{{productLabel.QTY_LABELS_TO_PRINT_ARTICLE}} <strong>/ {{productLabel.QTY_LABELS_TO_PRINT_BOX}}</strong></div>
                                     <div class="col-md-4 table-item item-actions">
                                         <a class="btn btn-black" ng-show="{{productLabel.ARTICLE_LABEL_ALREADY_PRINTED}} == false" ng-click="printLabelArticle(productLabel.CUSTOMER_PRODUCT_ID, productLabel.ORDER_ID, productLabel.QTY_LABELS_TO_PRINT_ARTICLE, productLabel.BOX_LABEL_ALREADY_PRINTED)" data-toggle="tooltip" title="Imprimir Etiquetas Artigo">
-                                            <img src="assets/icons/vase-btn.svg" width="12px" height="20px" />Imprimir Artigo
+                                            <img src="assets/icons/vase-btn.svg" width="20px" height="18px" />Imprimir Artigo
                                         </a>
                                         <a class="btn btn-black btn-outline" ng-show="{{productLabel.BOX_LABEL_ALREADY_PRINTED}} == false"   ng-click="printProductBoxLabels(productLabel.CUSTOMER_PRODUCT_ID, productLabel.ORDER_ID, productLabel.QTY_LABELS_TO_PRINT_BOX, productLabel.ARTICLE_LABEL_ALREADY_PRINTED)" data-toggle="tooltip" title="Imprimir Etiquetas Caixa">
-                                            <img src="assets/icons/box-btn.svg" width="26px" height="18px" />Imprimir Caixa
+                                            <img src="assets/icons/box-btn.svg" width="20px" height="18px" />Imprimir Caixa
+                                        </a>
+                                        <a class="btn btn-sm btn-danger" ng-click="deleteLabelToPrint(productLabel.UNIQUE_ID, productLabel.ORDER_ID, productLabel.CUSTOMER_PRODUCT_ID)" data-toggle="tooltip" title="Remover Etiquetas">
+                                            <img src="assets/icons/btn-remove.svg" width="20px" height="24px" />
                                         </a>
                                     </div>
                                 </div>
