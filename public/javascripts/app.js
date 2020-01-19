@@ -3682,6 +3682,8 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
   $scope.preco1 = $stateParams.preco1;
   $scope.preco2 = $stateParams.preco2;
   $scope.isparentproduct = "";
+  var clientid = null;
+  var clientNameChanged = 'false';
 
   if ($stateParams.isparent == 'Y' || $stateParams.isparent == true) {
     $scope.isparentproduct = true;
@@ -3731,13 +3733,20 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
     if (!$scope.clientname.CLIENT_NAME) {
       $scope.clientname = $scope.clientname;
     } else {
+      clientid = $scope.clientname.CLIENT_ID;
       $scope.clientname = $scope.clientname.CLIENT_NAME;
+      clientNameChanged  = 'true';
     }
 
     if ($scope.isparentproduct == true) {
       $scope.isparentproduct = 'Y';
     } else {
       $scope.isparentproduct = 'N';
+    }
+
+    var insertClientProduct = {
+      CLIENT_ID: clientid,
+      PRODUCT_ID: $scope.customerProductId
     }
 
     var dataObj = {
@@ -3779,6 +3788,15 @@ app.controller('editproducts', ['$http', '$scope', '$rootScope', '$state', '$sta
         $templateCache.remove(currentPageTemplate);
         $state.go("listProducts", null, { reload: true });
       });
+
+      if(clientNameChanged == 'true') {
+        var res = $http.post('/insertclientproduct', insertClientProduct).then(function (data, status, headers, config) {
+          var currentPageTemplate = $state.current.templateUrl;
+          $templateCache.remove(currentPageTemplate);
+          $state.go("listProducts", null, { reload: true });
+        });
+      }
+
     };
 
   };
@@ -4052,6 +4070,33 @@ app.controller('OverProductionController', ['$http', '$scope', '$rootScope', 'Mo
     });
 
   };
+
+  $scope.deleteProductInStock = function (unique_id, internal_product_id, products_produced, product_name) {
+    var dataToDelete = {
+      UNIQUE_ID: unique_id,
+      INTERNAL_PRODUCT_ID : internal_product_id
+    };
+  
+    ModalService.showModal({
+      templateUrl: "../modal/yesNoGeneric.html",
+      controller: "genericModalController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+      message: "Deseja mesmo remover o produto " + product_name + " com  " + products_produced + " artigos do stock em excesso de produção ?",
+      operationURL: '/deleteStockInOverProductionStockTable',
+      dataObj: dataToDelete
+      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+      if (!result) {
+        $scope.complexResult = "Modal forcibly closed..."
+      } else {
+        $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+      }
+      });
+    });
+  }
 
 }]);
 

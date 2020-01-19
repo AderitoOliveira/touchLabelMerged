@@ -98,7 +98,7 @@ fetchAllClientProduct = function(data, callback) {
 //INSERT THE CIENT PRODUCT RELATION WHEN THE PRODUCT IS CREATED
 insertClientProduct = function(data, callback) {
     con.connect(function(err) {
-    con.query('INSERT INTO client_product SET ?', data.body, function(err, rows) {
+    con.query('INSERT INTO client_product (CLIENT_ID, PRODUCT_ID) VALUES (?, ?) ON DUPLICATE KEY UPDATE CLIENT_ID = VALUES(CLIENT_ID)', [data.body.CLIENT_ID, data.body.PRODUCT_ID], function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -1524,7 +1524,7 @@ getParentDetailsForPallet = function(data, callback) {
 //GET OVERPRODUCTION IN STOCK - overproduction_in_stock
 getOverProductionInStock = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT * FROM overproduction_in_stock', function(err, rows) {
+    con.query('SELECT UNIQUE_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_ID, EMPLOYEE_NAME, PRODUCTS_PRODUCED, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE FROM overproduction_in_stock', function(err, rows) {
        if (err) {
             throw err;
         } else
@@ -1645,7 +1645,7 @@ deleteLabelsToPrint = function(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     con.connect(function(err) {
-    con.query('DELETE from order_products_labels_to_print where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+    con.query('DELETE from order_products_labels_to_print where UNIQUE_ID = ? and ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?', [req.body.UNIQUE_ID, req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });
@@ -1668,6 +1668,140 @@ fetchAllLabelsToPrint = function(data, callback) {
 
     });
 });
+}
+
+//CHECK IF THE LABELS TO PRINT INTERMEDIATE TABLE HAS RECORDS
+getIntermediateLabelsToPrint = function(orderid,customerproductid) {
+    return new Promise(async function(resolve, reject) {
+      console.log("INSIDE getIntermediateLabelsToPrint");
+      try {
+        con.connect(function(err) {
+        let result = con.query('select QTY_LABELS_TO_PRINT_ARTICLE, QTY_LABELS_TO_PRINT_BOX from order_products_labels_to_print_intermediate_staging where ORDER_ID = ? and CUSTOMER_PRODUCT_ID= ?', [orderid,customerproductid], function(err, rows) {
+                if (err) {
+                    throw err;
+                } else
+                console.log("GET LABELS TO PRINT INTERMEDIATE TABLE"); 
+                resolve(JSON.stringify(rows));
+            });
+        });
+      } catch (err) {
+        console.log('Error occurred', err);
+        reject(err);
+      } 
+    });
+}
+
+//INSERT INTERMEDIATE LABELS FOR THE ORDER WHERE THE PRODUCT IS STILL IN PAINTING
+insertIntermediateLabelsToPrint = async function(req, res) {
+    var postData  = req.body;
+
+    let labelsAlreayPrinted = JSON.parse(await getIntermediateLabelsToPrint(req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID));
+
+    console.log("labelsAlreayPrinted");
+    console.log(labelsAlreayPrinted);
+
+
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+
+    if(req.body.STATUS == 'CLOSE_PRODUCT_IN_PAINTING')
+    {
+     
+        delete req.body["STATUS"];
+        if(labelsAlreayPrinted.length > 0) {
+
+            console.log("labelsAlreayPrinted.length > 0");
+
+            articleLabelsAlreadyPrinted     = labelsAlreayPrinted[0].QTY_LABELS_TO_PRINT_ARTICLE;
+            boxLabelsAlreadyPrinted    		= labelsAlreayPrinted[0].QTY_LABELS_TO_PRINT_BOX;
+
+            //var postDataForMainTable = req.body;
+            var postDataForMainTable = JSON.parse(JSON.stringify(req.body));
+            postDataForMainTable.QTY_LABELS_TO_PRINT_ARTICLE  = postDataForMainTable.QTY_LABELS_TO_PRINT_ARTICLE - articleLabelsAlreadyPrinted;
+            postDataForMainTable.QTY_LABELS_TO_PRINT_BOX     = postDataForMainTable.QTY_LABELS_TO_PRINT_BOX - boxLabelsAlreadyPrinted;
+
+            if(postDataForMainTable.QTY_LABELS_TO_PRINT_BOX > 0) {
+                con.connect(function(err) {
+                    con.query('delete from order_products_labels_to_print_intermediate_staging where ORDER_ID = ? and CUSTOMER_PRODUCT_ID= ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+                    if (error) throw error;
+                    res.end(JSON.stringify("Success"));
+                    });
+                    con.query('INSERT INTO order_products_labels_to_print SET ?', postDataForMainTable, function (error, results, fields) {
+                        if (error) throw error;
+                        res.end(JSON.stringify("Success"));
+                    });
+                });
+            } else {
+                con.connect(function(err) {
+                    con.query('delete from order_products_labels_to_print_intermediate_staging where ORDER_ID = ? and CUSTOMER_PRODUCT_ID= ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+                    if (error) throw error;
+                    res.end(JSON.stringify("Success"));
+                    });
+                });
+            }
+
+        } else {
+
+            console.log("labelsAlreayPrinted.length = 0");
+            delete req.body["STATUS"];
+
+            con.connect(function(err) {
+                con.query('INSERT INTO order_products_labels_to_print SET ?', req.body, function (error, results, fields) {
+                    if (error) throw error;
+                    res.end(JSON.stringify(results));
+                });
+            });
+        }
+
+    } else if (req.body.STATUS == 'INTERMEDIATE_LABELS_ORDER') {
+
+        delete req.body["STATUS"];
+        if(labelsAlreayPrinted.length > 0) {
+
+            console.log("labelsAlreayPrinted.length > 0");
+
+            articleLabelsAlreadyPrinted     = labelsAlreayPrinted[0].QTY_LABELS_TO_PRINT_ARTICLE;
+            boxLabelsAlreadyPrinted    		= labelsAlreayPrinted[0].QTY_LABELS_TO_PRINT_BOX;
+
+            //var postDataForMainTable = req.body;
+            var postDataForMainTable = JSON.parse(JSON.stringify(req.body));
+            postDataForMainTable.QTY_LABELS_TO_PRINT_ARTICLE  = postDataForMainTable.QTY_LABELS_TO_PRINT_ARTICLE - articleLabelsAlreadyPrinted;
+            postDataForMainTable.QTY_LABELS_TO_PRINT_BOX     = postDataForMainTable.QTY_LABELS_TO_PRINT_BOX - boxLabelsAlreadyPrinted;
+
+            if(postDataForMainTable.QTY_LABELS_TO_PRINT_BOX > 0) {
+                con.connect(function(err) {
+                    con.query('INSERT INTO order_products_labels_to_print_intermediate_staging set ?  ON DUPLICATE KEY UPDATE QTY_LABELS_TO_PRINT_ARTICLE = VALUES(QTY_LABELS_TO_PRINT_ARTICLE), QTY_LABELS_TO_PRINT_BOX = VALUES(QTY_LABELS_TO_PRINT_BOX)', [req.body, req.body.QTY_LABELS_TO_PRINT_ARTICLE, req.body.QTY_LABELS_TO_PRINT_BOX], function (error, results, fields) {
+                    if (error) throw error;
+                    res.end(JSON.stringify("Success"));
+                    });
+                    con.query('INSERT INTO order_products_labels_to_print SET ?', postDataForMainTable, function (error, results, fields) {
+                        if (error) throw error;
+                        res.end(JSON.stringify("Success"));
+                    });
+                });
+            }
+
+        } else {
+
+            console.log("labelsAlreayPrinted.length = 0");
+            delete req.body["STATUS"];
+
+            con.connect(function(err) {
+                con.query('INSERT INTO order_products_labels_to_print_intermediate_staging set ?  ON DUPLICATE KEY UPDATE QTY_LABELS_TO_PRINT_ARTICLE = VALUES(QTY_LABELS_TO_PRINT_ARTICLE), QTY_LABELS_TO_PRINT_BOX = VALUES(QTY_LABELS_TO_PRINT_BOX)', [req.body, req.body.QTY_LABELS_TO_PRINT_ARTICLE, req.body.QTY_LABELS_TO_PRINT_BOX], function (error, results, fields) {
+                if (error) throw error;
+                res.end(JSON.stringify(results));
+                });
+                con.query('INSERT INTO order_products_labels_to_print SET ?', req.body, function (error, results, fields) {
+                    if (error) throw error;
+                    res.end(JSON.stringify(results));
+                });
+            });
+        }
+    }
+
+    res.end();
 }
 
 //GET LABELS TO PRINT FROM BACKUP HISTORICAL TABLE - order_products_labels_to_print_bck

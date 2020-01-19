@@ -318,6 +318,36 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
       });
   
     }
+
+    $scope.deleteLabelToPrint = function(unique_id, order_id, customer_product_id) {
+
+      var dataToDelete = {
+        UNIQUE_ID: unique_id,
+        ORDER_ID: order_id,
+        CUSTOMER_PRODUCT_ID: customer_product_id
+      };
+    
+      ModalService.showModal({
+        templateUrl: "../modal/yesNoGeneric.html",
+        controller: "genericModalController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+        message: "Deseja mesmo apagar as etiquetas a imprimir para o produto " + customer_product_id + " na encomenda " + order_id + " ?",
+        operationURL: '/deleteLabelsToPrint',
+        dataObj: dataToDelete
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        }
+        });
+      });
+    }
+
   }]);
 
 
