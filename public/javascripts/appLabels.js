@@ -33,7 +33,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
     }
   
     //PRINT LABEL ARTICLE
-    $scope.printLabelArticle = function (customer_product_id, order_id, quantity_article_labels, box_label_already_printed) {
+    $scope.printLabelArticle = function (unique_id, customer_product_id, order_id, quantity_article_labels, box_label_already_printed) {
   
       $scope.productLabel = [];
       var request = $http.get('/labelToPrintForProduct/' + encodeURIComponent(customer_product_id));
@@ -125,6 +125,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
           'PrinterIPAddress' : PrinterIPAddress,
           'PrinterPort' : PrinterPort,
           'label_being_printed' : 'article',
+          'unique_id' : unique_id,
           'order_id' : order_id,
           'customer_product_id' : customer_product_id,
           'article_label_already_printed' : 'false',
@@ -157,7 +158,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
     }
   
     //PRINT LABEL BOX
-    $scope.printProductBoxLabels = function (customer_product_id, order_id, quantity_box_labels, article_label_already_printed) {
+    $scope.printProductBoxLabels = function (unique_id, customer_product_id, order_id, quantity_box_labels, article_label_already_printed) {
   
       $scope.productLabel = [];
       var request = $http.get('/labelToPrintForProduct/' + encodeURIComponent(customer_product_id));
@@ -287,6 +288,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
           'PrinterIPAddress' : PrinterIPAddress,
           'PrinterPort' : PrinterPort,
           'label_being_printed' : 'box',
+          'unique_id': unique_id,
           'order_id' : order_id,
           'customer_product_id' : customer_product_id,
           'article_label_already_printed' : article_label_already_printed,
@@ -359,6 +361,7 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
     var PrinterIPAddress 				      = dataObj.PrinterIPAddress;
     var PrinterPort 	 				        = dataObj.PrinterPort;
     var label_being_printed 			    = dataObj.label_being_printed;
+    var unique_id                     = dataObj.unique_id;
     var order_id						          = dataObj.order_id;
     var customer_product_id 			    = dataObj.customer_product_id;
     var article_label_already_printed = dataObj.article_label_already_printed;
@@ -378,7 +381,7 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
       if (article_label_already_printed === 'true') {
         var operationsToExecute = ['/deleteLabelsToPrint'];
   
-        var dataToDelete = [{ "COLUMN_TO_UPDATE": 'BOX_LABEL_ALREADY_PRINTED', "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
+        var dataToDelete = [{ "UNIQUE_ID": unique_id, "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
   
         ModalService.showModal({
           templateUrl: "../modal/labelsPrintingModal.html",
@@ -436,7 +439,7 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
   
           var operationsToExecute = ['/deleteLabelsToPrint'];
   
-          var dataToDelete = [{ "COLUMN_TO_UPDATE": 'ARTICLE_LABEL_ALREADY_PRINTED', "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
+          var dataToDelete = [{ "UNIQUE_ID": unique_id, "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
   
           ModalService.showModal({
             templateUrl: "../modal/labelsPrintingModal.html",

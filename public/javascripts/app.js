@@ -2927,6 +2927,91 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
   };
 
+
+ //CREATE THE INTERMEDIATE REQUEST FOR THE LABELS TO PRINT IN THE ORDER
+ $scope.createIntermediateRequestForLabels = function (internalproductid, customerproductid, productName, qtyproduced) {
+
+  $scope.productTechSheet = [];
+  var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerproductid));
+  request.then(function successCallback(response) {
+    $scope.productTechSheet = response.data;
+
+    //IF the Qty_By_Box value is not defined in the TechSheet we cannot close the Product in Painting
+    //IF THE Qty_By_Box OR Qty_By_Pallet OR Bar_Code_Tech_Sheet ARE NOT DEFINED IN THE PRODUCT TECHNICAL SHEET OF THE PRODUCT
+    //THE PRODUCT CANNOT BE CLOSED FOR PAINTING IN THIS ORDER
+    //IF the Qty_By_Pallet_Compound_Product is defined then it's a child product
+    if (($scope.productTechSheet[0].Qty_By_Box == null || $scope.productTechSheet[0].Qty_By_Pallet == null || $scope.productTechSheet[0].Bar_Code_Tech_Sheet == null) && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null) {
+
+      var messageToSend = "";
+      if ($scope.productTechSheet[0].Qty_By_Box == null && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null) {
+        messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por caixa. Edite a ficha técnica do produto e adicione a Quantidade por caixa para poder fechar o produto nesta encomenda."
+      }
+      if ($scope.productTechSheet[0].Qty_By_Pallet == null && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null && messageToSend == "") {
+        messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definida a Quantidade por Palete. Edite a ficha técnica do produto e adicione a Quantidade por Palete para poder fechar o produto nesta encomenda."
+      }
+      if ($scope.productTechSheet[0].Bar_Code_Tech_Sheet == null && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null && messageToSend == "") {
+        messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o Código de Barras. Edite a ficha técnica do produto e adicione o Código de Barras para poder fechar o produto nesta encomenda."
+      }
+
+      ModalService.showModal({
+        templateUrl: "../modal/genericModal.html",
+        controller: "GenericController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: messageToSend
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+    }
+    else {
+      var qtyBoxLabelsToPrint = qtyproduced / $scope.productTechSheet[0].Qty_By_Box;
+
+      if ($scope.productTechSheet[0].Qty_By_Pallet_Compound_Product || $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product > 0) {
+        var isChildProduct = true;
+      } else {
+        var isChildProduct = false;
+      }
+
+      ModalService.showModal({
+        templateUrl: "../modal/createIntermediateLabelsRequest.html",
+        controller: "createIntermediateLabelsRequestModalController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          title: "Fechar Producto em Pintura",
+          orderid: $stateParams.orderId,
+          internalproductid: internalproductid,
+          customerproductid: customerproductid,
+          productname: productName,
+          totalproductsproduced: qtyproduced,
+          qtyBoxLabelsToPrint: qtyBoxLabelsToPrint,
+          isChildProduct: isChildProduct
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+    }
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+    });
+
+};
+
 }]);
 
 //CONTROLLER FOR ALL THE ORDERS
@@ -5618,6 +5703,7 @@ app.controller('closeProductInOrderForPainting', [
         PRODUCT_NAME: $scope.productname,
         QTY_LABELS_TO_PRINT_ARTICLE: $scope.totalproductsproduced,
         QTY_LABELS_TO_PRINT_BOX: qtyBoxLabelsToPrint,
+        //STATUS: 'CLOSE_PRODUCT_IN_PAINTING'
       };
 
       var dataUpdateOrderProductStatus = {
@@ -5629,6 +5715,8 @@ app.controller('closeProductInOrderForPainting', [
       if (isChildProduct == false) {
         var res = $http.post('/insertLabelsToPrint', dataObj).then(function (data, status, headers, config) {
         });
+        /* var res = $http.post('/insertIntermediateLabelsToPrint', dataObj).then(function (data, status, headers, config) {
+        }); */
       }
 
       var res = $http.post('/updateorderproductstatus', dataUpdateOrderProductStatus).then(function (data, status, headers, config) {
@@ -5637,7 +5725,49 @@ app.controller('closeProductInOrderForPainting', [
 
     };
 
-  }]);
+}]);
+
+//Controller for the Modal of the Intermediate Labels Request
+app.controller('createIntermediateLabelsRequestModalController', [
+  '$scope', '$http', '$state', 'title', 'orderid', 'internalproductid', 'customerproductid', 'productname', 'totalproductsproduced', 'qtyBoxLabelsToPrint', 'isChildProduct',
+  function ($scope, $http, $state, title, orderid, internalproductid, customerproductid, productname, totalproductsproduced, qtyBoxLabelsToPrint, isChildProduct) {
+
+    $scope.title = title;
+    $scope.orderid = orderid;
+    $scope.internalproductid = internalproductid;
+    $scope.customerproductid = customerproductid;
+    $scope.productname = productname;
+    $scope.totalproductsproduced = totalproductsproduced;
+    //  This close function doesn't need to use jQuery or bootstrap, because
+    //  the button has the 'data-dismiss' attribute.
+
+    //Save Content Modal  
+    $scope.yes = function () {
+
+      var dataObj = {
+        ORDER_ID: $scope.orderid,
+        CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+        INTERNAL_PRODUCT_ID: $scope.internalproductid,
+        PRODUCT_NAME: $scope.productname,
+        QTY_LABELS_TO_PRINT_ARTICLE: $scope.totalproductsproduced,
+        QTY_LABELS_TO_PRINT_BOX: qtyBoxLabelsToPrint,
+        STATUS: 'INTERMEDIATE_LABELS_ORDER'
+      };
+
+      var dataUpdateOrderProductStatus = {
+        ORDER_PRODUCT_STATUS: 'fechado_na_encomenda',
+        ORDER_ID: $scope.orderid,
+        CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+      };
+
+      if (isChildProduct == false) {
+        var res = $http.post('/insertIntermediateLabelsToPrint', dataObj).then(function (data, status, headers, config) {
+        });
+      }
+
+    };
+
+}]);
 
 
 //ALL BOXES TO ORDER - Controller
