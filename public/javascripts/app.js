@@ -1096,11 +1096,12 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
         $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PRODUCED;
         if ($scope.products[i].IN_COMPOUND_PRODUCT != 'Y' || $scope.products[i].IS_PARENT == 'Y') {
-          $scope.products[i].INSERT_PRODUCTION = 'true';
-        }
+          $scope.products[i].ORDER_BOXES = 'true';
+        } 
 
         if ($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null && $scope.products[i].IN_COMPOUND_PRODUCT == 'Y') {
           $scope.products[i].ITEM_FILHO = 'item-filho';
+          $scope.products[i].INSERT_PRODUCTION = 'true';
 
           var parentProductsArray = $scope.parentProductsIndex[$scope.products[i].PARENT_CUSTOMER_PRODUCT_ID];
           parentProductsArray.push($scope.products[i]);
@@ -1109,6 +1110,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
         } else if ($scope.products[i].IS_PARENT == 'N') {
           $scope.singleProductsIndex.push($scope.products[i]);
+          $scope.products[i].INSERT_PRODUCTION = 'true';
         }
 
         if ($scope.products[i].TOTAL_BOXES_TO_ORDER != null) {
