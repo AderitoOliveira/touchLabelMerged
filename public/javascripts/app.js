@@ -1500,7 +1500,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
   //CLOSE THE PRODUCT FOR PAITING - CREATE THE LABELS RECORD TO PRINT
-  $scope.closeProductPainting = function (internalproductid, customerproductid, productName, qtyproduced) {
+  $scope.closeProductPainting = function (internalproductid, customerproductid, productName, qtyproduced, in_compound_product) {
 
     $scope.productTechSheet = [];
     var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerproductid));
@@ -1545,7 +1545,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       else {
         var qtyBoxLabelsToPrint = qtyproduced / $scope.productTechSheet[0].Qty_By_Box;
 
-        if ($scope.productTechSheet[0].Qty_By_Pallet_Compound_Product || $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product > 0) {
+        
+        //if ($scope.productTechSheet[0].Qty_By_Pallet_Compound_Product || $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product > 0) {
+        if(in_compound_product == 'Y') {
           var isChildProduct = true;
         } else {
           var isChildProduct = false;
