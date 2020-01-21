@@ -100,8 +100,11 @@
                                     <div class="col-md-3 table-item item-order-state">
                                         <span class="order-status">{{product.ORDER_PRODUCT_STATUS}}</span>
                                         <div class="item-order-actions">
-                                            <a class="btn btn-sm btn-danger" ng-show="product.CAN_BE_DELETED" ng-click="deleteProductInOrder(product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.IS_PARENT)" data-toggle="tooltip" title="Remover Produto.">
+                                            <a class="btn btn-sm btn-danger" ng-show="product.CAN_BE_DELETED" ng-click="deleteProductInOrder(product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME, product.IS_PARENT)" data-toggle="tooltip" title="Remover Produto">
                                                 <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
+                                            </a>
+                                            <a class="btn btn-sm" title="Pedido Intermédio de Etiquetas">
+                                                <img src="assets/icons/btn-preorder.svg" width="24px" height="24px" />
                                             </a>
                                             <a class="btn btn-sm {{product.BOXES_ICON_CLASS}}" ng-show="product.ORDER_BOXES" ng-click="createIntermediateBoxesOrder(product.INTERNAL_PRODUCT_ID, product.CUSTOMER_PRODUCT_ID, product.PRODUCT_NAME,  product.TOTAL_QUANTITY_ORDERED, product.TOTAL_PRODUCTS_PRODUCED, product.PARENT_CUSTOMER_PRODUCT_ID, product.UNIQUE_ORDER_ID)" data-toggle="tooltip" title="{{product.BOXES_ICON_TOOLTIP}}">
                                                 <img src="assets/icons/menu-orders.svg" width="24px" height="24px" />

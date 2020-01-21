@@ -1307,21 +1307,22 @@ button.btn.btn-sm.btn-delete.btn-remove-order {
     background:  #222222;
     color: #fff !important;
     text-align:  center;
-    max-width:  calc(50% - 23px);
+    max-width:  calc(50% - 40px);
     width: 100%;
     img {
         margin-right: 5px;
     }
-    &:first-child{
-        margin-right:15px;
-    } 
     &:last-child{
         margin-left:15px;
+        margin-right:15px;
     }   
     &.btn-outline{
         border:2px solid #222222;
         background:#ffffff;
         color:#222222 !important;
+    }
+    & + .btn {
+        margin-left:15px;
     }
 }
 
@@ -1604,6 +1605,33 @@ button.btn.btn-sm.btn-delete.btn-remove-pallet {
 
     }
     
+}
+
+.btn-lg.btn-remove {
+    background-color: #C32625;
+    width:36px;
+    height:36px;
+    text-align:center;
+    padding:4px;
+    border-radius:4px;
+}
+
+.flex-right{
+    justify-content: flex-end;
+    display: flex;
+    padding-right:30px;
+    padding-left: 0px !important;
+}
+
+.short {
+    .btn-lg.btn-remove {
+        background-color: #C32625;
+        width:34px;
+        height:34px;
+        text-align:center;
+        padding:2px;
+        border-radius:2px;
+    }
 }
 
 #add-order .add-product-form{
