@@ -1114,7 +1114,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         }
 
         if ($scope.products[i].TOTAL_BOXES_TO_ORDER != null) {
-          $scope.products[i].BOXES_ICON_CLASS = 'btn-intermediate-boxes';
+          $scope.products[i].BOXES_ICON_CLASS = 'btn-intermediate';
           $scope.products[i].BOXES_ICON_TOOLTIP = 'Já foram encomendadas ' + $scope.products[i].TOTAL_BOXES_TO_ORDER + ' caixas para este produto, nesta encomenda';
         } else {
           $scope.products[i].BOXES_ICON_CLASS = 'btn-action';
@@ -1159,6 +1159,14 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         } else if ($scope.products[i].IS_PARENT == 'N') {
           $scope.singleProductsIndex.push($scope.products[i]);
         }
+
+        /* if ($scope.products[i].TOTAL_LABELS_TO_ORDER != null) {
+          $scope.products[i].LABELS_ICON_CLASS = 'btn-intermediate';
+          $scope.products[i].LABELS_ICON_TOOLTIP = 'Já foram impressas ' + $scope.products[i].TOTAL_BOXES_TO_ORDER + ' etiquetas deste produto, nesta encomenda';
+        } else {
+          $scope.products[i].LABELS_ICON_CLASS = 'btn-action';
+          $scope.products[i].LABELS_ICON_TOOLTIP = 'Encomenda Parcial de Etiquetas';
+        } */
 
       }
 
