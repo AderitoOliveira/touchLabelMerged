@@ -5718,7 +5718,7 @@ app.controller('closeProductInOrderForPainting', [
         PRODUCT_NAME: $scope.productname,
         QTY_LABELS_TO_PRINT_ARTICLE: $scope.totalproductsproduced,
         QTY_LABELS_TO_PRINT_BOX: qtyBoxLabelsToPrint,
-        //STATUS: 'CLOSE_PRODUCT_IN_PAINTING'
+        STATUS: 'CLOSE_PRODUCT_IN_PAINTING'
       };
 
       var dataUpdateOrderProductStatus = {
@@ -5728,10 +5728,10 @@ app.controller('closeProductInOrderForPainting', [
       };
 
       if (isChildProduct == false) {
-        var res = $http.post('/insertLabelsToPrint', dataObj).then(function (data, status, headers, config) {
-        });
-        /* var res = $http.post('/insertIntermediateLabelsToPrint', dataObj).then(function (data, status, headers, config) {
+        /* var res = $http.post('/insertLabelsToPrint', dataObj).then(function (data, status, headers, config) {
         }); */
+        var res = $http.post('/insertIntermediateLabelsToPrint', dataObj).then(function (data, status, headers, config) {
+        });
       }
 
       var res = $http.post('/updateorderproductstatus', dataUpdateOrderProductStatus).then(function (data, status, headers, config) {
