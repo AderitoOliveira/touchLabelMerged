@@ -1160,13 +1160,13 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
           $scope.singleProductsIndex.push($scope.products[i]);
         }
 
-        /* if ($scope.products[i].TOTAL_LABELS_TO_ORDER != null) {
+        if ($scope.products[i].QTY_LABELS_TO_PRINT_ARTICLE != null || $scope.products[i].QTY_LABELS_TO_PRINT_BOX) {
           $scope.products[i].LABELS_ICON_CLASS = 'btn-intermediate';
-          $scope.products[i].LABELS_ICON_TOOLTIP = 'Já foram impressas ' + $scope.products[i].TOTAL_BOXES_TO_ORDER + ' etiquetas deste produto, nesta encomenda';
+          $scope.products[i].LABELS_ICON_TOOLTIP = 'Já foram impressas ' + $scope.products[i].QTY_LABELS_TO_PRINT_ARTICLE + ' etiquetas de artigo e ' + $scope.products[i].QTY_LABELS_TO_PRINT_BOX + ' etiquetas de caixa , nesta encomenda';
         } else {
           $scope.products[i].LABELS_ICON_CLASS = 'btn-action';
           $scope.products[i].LABELS_ICON_TOOLTIP = 'Encomenda Parcial de Etiquetas';
-        } */
+        }
 
       }
 
