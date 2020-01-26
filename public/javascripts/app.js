@@ -777,7 +777,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
   console.log("SCOPEDATA: " + $scope.data);
 
   //PRINT LABEL BOX
-  $scope.printLabelBox = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductName, ProductID, ZPLString, BoxBarCodeType, Quantity, NumLabelsToPrint) {
+  $scope.printLabelBox = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductNameForLabel, ProductID, ZPLString, BoxBarCodeType, Quantity, NumLabelsToPrint) {
 
     if (BoxBarCodeType == 'GS1-128') {
 
@@ -814,10 +814,24 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
         '_QUANTIDADE_EXTENDIDA': Quantity_full,
         '_FULL_EAN': FullEan,
         '_NUM_ARTIGO': ProductID,
-        '_NOME_ARTIGO': ProductName,
         '_QUANTIDADE': Quantity,
         '_PRINT_QUANTITY': NumLabelsToPrint
       };
+
+      if(ProductNameForLabel.indexOf("\n")==-1){
+        //alert("No newline characters")
+        map._NOME_ARTIGO = ProductNameForLabel;
+      }else{
+        //alert("Contains newline characters")
+        var productNameForLabelSplit = ProductNameForLabel.split('\n');
+
+        var nomeArtigo = productNameForLabelSplit[0];
+        map._NOME_ARTIGO = nomeArtigo;
+        for(i=1; i < productNameForLabelSplit.length; i++) {
+          map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+        }
+
+      }
 
       var sendToPrinter = replaceAll(ZPLString, map);
 
@@ -832,11 +846,13 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
 
       var Quantity_full = padDigits(Quantity, 4);
 
-      if (BarCodeNumber.charAt(0) != '0') {
-        var EanWithCheckDigit = BarCodeNumber;
-      } else {
+      //We need to remove the first digit to calculate the checksum for the EAN-13
+      if (BarCodeNumber.charAt(0) === '0') {
+        BarCodeNumber = BarCodeNumber.slice(1);
         var checkDigit = eanCheckDigit('' + BarCodeNumber);
         var EanWithCheckDigit = BarCodeNumber + checkDigit;
+      } else {
+        var EanWithCheckDigit = BarCodeNumber;
       }
 
 
@@ -854,10 +870,24 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
         '_QUANTIDADE_EXTENDIDA': Quantity_full,
         '_FULL_EAN': FullEan,
         '_NUM_ARTIGO': ProductID,
-        '_NOME_ARTIGO': ProductName,
         '_QUANTIDADE': Quantity,
         '_PRINT_QUANTITY': NumLabelsToPrint
       };
+
+      if(ProductNameForLabel.indexOf("\n")==-1){
+        //alert("No newline characters")
+        map._NOME_ARTIGO = ProductNameForLabel;
+      }else{
+        //alert("Contains newline characters")
+        var productNameForLabelSplit = ProductNameForLabel.split('\n');
+
+        var nomeArtigo = productNameForLabelSplit[0];
+        map._NOME_ARTIGO = nomeArtigo;
+        for(i=1; i < productNameForLabelSplit.length; i++) {
+          map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+        }
+
+      }
 
       var sendToPrinter = replaceAll(ZPLString, map);
 
@@ -867,7 +897,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
   }
 
   //PRINT LABEL ARTICLE
-  $scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductName, ProductID, ZPLString, ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, BoxBarCodeType, Quantity, labelsWith2Columns) {
+  $scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductNameForLabel, ProductID, ZPLString, ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, BoxBarCodeType, Quantity, labelsWith2Columns) {
 
     if (BarCodeNumber.charAt(0) === '0') {
       BarCodeNumber = BarCodeNumber.slice(1);
@@ -902,6 +932,21 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
       '_NUM_ARTIGO': ProductID,
       '_PRINT_QUANTITY': quantityToReplace
     };
+
+    if(ProductNameForLabel.indexOf("\n")==-1){
+      //alert("No newline characters")
+      map._NOME_ARTIGO = ProductNameForLabel;
+    }else{
+      //alert("Contains newline characters")
+      var productNameForLabelSplit = ProductNameForLabel.split('\n');
+
+      var nomeArtigo = productNameForLabelSplit[0];
+      map._NOME_ARTIGO = nomeArtigo;
+      for(i=1; i < productNameForLabelSplit.length; i++) {
+        map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+      }
+
+    }
 
     if (labelsWith2Columns == false) {
       map._PRINT_QUANTITY = Quantity;

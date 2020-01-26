@@ -41,6 +41,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
         $scope.productLabel = response.data;
   
         var barCodeNumber                                     = $scope.productLabel[0].Bar_Code_Tech_Sheet;
+        var productNameForLabel                               = $scope.productLabel[0].PRODUCT_NAME_FOR_LABEL;
         var ZPLString                                         = $scope.productLabel[0].ZPL_STRING_ARTICLE;
         var ZPLString_TEST                                    = $scope.productLabel[0].ZPL_STRING_ARTICLE;
         var ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL              = $scope.productLabel[0].ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL;
@@ -87,6 +88,26 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
           '_NUM_ARTIGO': customerProductId,
           '_PRINT_QUANTITY': quantityToReplace
         };
+        
+        if(productNameForLabel.indexOf("\n")==-1){
+          //alert("No newline characters")
+          map._NOME_ARTIGO = productNameForLabel;
+          mapTestLabel._NOME_ARTIGO = productNameForLabel;
+
+        }else{
+          //alert("Contains newline characters")
+          var productNameForLabelSplit = productNameForLabel.split('\n');
+
+          var nomeArtigo = productNameForLabelSplit[0];
+          map._NOME_ARTIGO = nomeArtigo;
+          mapTestLabel._NOME_ARTIGO = nomeArtigo;
+
+          for(i=1; i < productNameForLabelSplit.length; i++) {
+            map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+            mapTestLabel["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+          }
+
+        }
   
         if (labelsWith2Columns == "false") {
           //The _PRINT_QUANTITY in the map can only be changed directly
@@ -240,11 +261,13 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
   
           var Quantity_full = padDigits(qtyByBox, 4);
 
-          if (barCodeNumber.charAt(0) != '0') {
-            var EanWithCheckDigit = barCodeNumber;
-          } else {
+          //We need to remove the first digit to calculate the checksum for the EAN-13
+          if (barCodeNumber.charAt(0) === '0') {
+            barCodeNumber = barCodeNumber.slice(1);
             var checkDigit = eanCheckDigit('' + barCodeNumber);
             var EanWithCheckDigit = barCodeNumber + checkDigit;
+          } else {
+            var EanWithCheckDigit = barCodeNumber;
           }
 
   
@@ -261,7 +284,6 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
             '_EAN_CHECK_DIGIT': EanWithCheckDigit,
             '_QUANTIDADE_EXTENDIDA': Quantity_full,
             '_NUM_ARTIGO': customer_product_id,
-            '_NOME_ARTIGO': productNameForLabel,
             '_QUANTIDADE': qtyByBox,
             '_PRINT_QUANTITY': quantity_box_labels
           };
@@ -271,10 +293,29 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
             '_QUANTIDADE_EXTENDIDA': Quantity_full,
             '_FULL_EAN': FullEan,
             '_NUM_ARTIGO': customer_product_id,
-            '_NOME_ARTIGO': productNameForLabel,
             '_QUANTIDADE': qtyByBox,
             '_PRINT_QUANTITY': 1
           };
+
+          if(productNameForLabel.indexOf("\n")==-1){
+            //alert("No newline characters")
+            map._NOME_ARTIGO = productNameForLabel;
+            mapTestLabel._NOME_ARTIGO = productNameForLabel;
+  
+          }else{
+            //alert("Contains newline characters")
+            var productNameForLabelSplit = productNameForLabel.split('\n');
+  
+            var nomeArtigo = productNameForLabelSplit[0];
+            map._NOME_ARTIGO = nomeArtigo;
+            mapTestLabel._NOME_ARTIGO = nomeArtigo;
+  
+            for(i=1; i < productNameForLabelSplit.length; i++) {
+              map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+              mapTestLabel["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+            }
+  
+          }
 
           var sendToPrinterTestLabel = replaceAll(ZPLStringTestLabel, mapTestLabel);
 
