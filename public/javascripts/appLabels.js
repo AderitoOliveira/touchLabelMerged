@@ -50,6 +50,9 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
         var ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL_TEST  = $scope.productLabel[0].ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL;
         var PrinterIPAddress                                  = $scope.productLabel[0].ARTICLE_PRINTER_IP_ADDRESS;
         var PrinterPort                                       = $scope.productLabel[0].ARTICLE_PRINTER_PORT;
+        var LabelHasCounter                                   = $scope.productLabel[0].LABEL_HAS_COUNTER;
+        var NumberLabelsOnArticle                             = $scope.productLabel[0].NUMBER_LABELS_ON_ARTICLE;
+        var NumberLabelsOnBox                                 = $scope.productLabel[0].NUMBER_LABELS_ON_BOX;
         var customerProductId                                 = $scope.productLabel[0].CUSTOMER_PRODUCT_ID;
         var labelsWith2Columns                                = $scope.productLabel[0].ARTICLE_LABEL_WITH_2_COLUMNS;
   
@@ -77,100 +80,105 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
           return str;
         }
 
-        var mapTestLabel = {
-          '_EAN_CHECK_DIGIT': EanWithCheckDigit,
-          '_NUM_ARTIGO': customerProductId,
-          '_PRINT_QUANTITY': 1
-        };
-  
-        var map = {
-          '_EAN_CHECK_DIGIT': EanWithCheckDigit,
-          '_NUM_ARTIGO': customerProductId,
-          '_PRINT_QUANTITY': quantityToReplace
-        };
-        
-        if(productNameForLabel.indexOf("\n")==-1){
-          //alert("No newline characters")
-          map._NOME_ARTIGO = productNameForLabel;
-          mapTestLabel._NOME_ARTIGO = productNameForLabel;
+        if(LabelHasCounter == 'false') {
 
-        }else{
-          //alert("Contains newline characters")
-          var productNameForLabelSplit = productNameForLabel.split('\n');
-
-          var nomeArtigo = productNameForLabelSplit[0];
-          map._NOME_ARTIGO = nomeArtigo;
-          mapTestLabel._NOME_ARTIGO = nomeArtigo;
-
-          for(i=1; i < productNameForLabelSplit.length; i++) {
-            map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
-            mapTestLabel["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
-          }
-
-        }
+          var mapTestLabel = {
+            '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+            '_NUM_ARTIGO': customerProductId,
+            '_PRINT_QUANTITY': 1
+          };
+    
+          var map = {
+            '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+            '_NUM_ARTIGO': customerProductId,
+            '_PRINT_QUANTITY': quantityToReplace
+          };
+          
+          if(productNameForLabel.indexOf("\n")==-1){
+            //alert("No newline characters")
+            map._NOME_ARTIGO = productNameForLabel;
+            mapTestLabel._NOME_ARTIGO = productNameForLabel;
   
-        if (labelsWith2Columns == "false") {
-          //The _PRINT_QUANTITY in the map can only be changed directly
-          map._PRINT_QUANTITY = quantity_article_labels;
-          var sendToPrinter = replaceAll(ZPLString, map);
-          var sendToPrinter_TEST = replaceAll(ZPLString_TEST, mapTestLabel);
-        } else {
-          if (quantity_article_labels == 1) {
-            //ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL  --> Only 1 label is written and the other is blank
-            //ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL --> Both Labels are written
-            map._PRINT_QUANTITY = 1;
-            var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
-            var sendToPrinter_TEST = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL_TEST, mapTestLabel);
-            return;
-          }
-          if (quantity_article_labels % 2 == 0) {
-            map._PRINT_QUANTITY = quantity_article_labels / 2;
-            var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
-            var sendToPrinter_TEST = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL_TEST, mapTestLabel);
-          }
-          if (quantity_article_labels % 2 != 0) {
-            map._PRINT_QUANTITY = quantity_article_labels / 2;
-            var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL_TEST, map);
+          }else{
+            //alert("Contains newline characters")
+            var productNameForLabelSplit = productNameForLabel.split('\n');
   
-            map._PRINT_QUANTITY = 1;
-            var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
-            var sendToPrinter_TEST = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL_TEST, mapTestLabel);
-          }
+            var nomeArtigo = productNameForLabelSplit[0];
+            map._NOME_ARTIGO = nomeArtigo;
+            mapTestLabel._NOME_ARTIGO = nomeArtigo;
   
-        }
-      
-        sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter_TEST);
-  
-        var dataForModal = {
-          'ZPLString' : sendToPrinter,
-          'PrinterIPAddress' : PrinterIPAddress,
-          'PrinterPort' : PrinterPort,
-          'label_being_printed' : 'article',
-          'unique_id' : unique_id,
-          'order_id' : order_id,
-          'customer_product_id' : customer_product_id,
-          'article_label_already_printed' : 'false',
-          'box_label_already_printed' : box_label_already_printed
-        }
-
-        ModalService.showModal({
-          templateUrl: "../modal/yesNoGeneric.html",
-          controller: "printAllLabelsModalController",
-            preClose: (modal) => { modal.element.modal('hide'); },
-            inputs: {
-              message: "A etiqueta de teste foi impressa com sucesso ?" + "\n Pretende imprimir as " + quantity_article_labels + " etiquetas do produto?",
-              dataObj: dataForModal
+            for(i=1; i < productNameForLabelSplit.length; i++) {
+              map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+              mapTestLabel["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
             }
-          }).then(function (modal) {
-            modal.element.modal();
-            modal.close.then(function (result) {
-              if (!result) {
-                $scope.complexResult = "Modal forcibly closed..."
-              } else {
-                $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+  
+          }
+    
+          if (labelsWith2Columns == "false") {
+            //The _PRINT_QUANTITY in the map can only be changed directly
+            map._PRINT_QUANTITY = quantity_article_labels;
+            var sendToPrinter = replaceAll(ZPLString, map);
+            var sendToPrinter_TEST = replaceAll(ZPLString_TEST, mapTestLabel);
+          } else {
+            if (quantity_article_labels == 1) {
+              //ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL  --> Only 1 label is written and the other is blank
+              //ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL --> Both Labels are written
+              map._PRINT_QUANTITY = 1;
+              var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
+              var sendToPrinter_TEST = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL_TEST, mapTestLabel);
+              return;
+            }
+            if (quantity_article_labels % 2 == 0) {
+              map._PRINT_QUANTITY = quantity_article_labels / 2;
+              var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
+              var sendToPrinter_TEST = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL_TEST, mapTestLabel);
+            }
+            if (quantity_article_labels % 2 != 0) {
+              map._PRINT_QUANTITY = quantity_article_labels / 2;
+              var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL_TEST, map);
+    
+              map._PRINT_QUANTITY = 1;
+              var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
+              var sendToPrinter_TEST = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL_TEST, mapTestLabel);
+            }
+    
+          }
+        
+          sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter_TEST);
+    
+          var dataForModal = {
+            'ZPLString' : sendToPrinter,
+            'PrinterIPAddress' : PrinterIPAddress,
+            'PrinterPort' : PrinterPort,
+            'label_being_printed' : 'article',
+            'unique_id' : unique_id,
+            'order_id' : order_id,
+            'customer_product_id' : customer_product_id,
+            'article_label_already_printed' : 'false',
+            'box_label_already_printed' : box_label_already_printed
+          }
+  
+          ModalService.showModal({
+            templateUrl: "../modal/yesNoGeneric.html",
+            controller: "printAllLabelsModalController",
+              preClose: (modal) => { modal.element.modal('hide'); },
+              inputs: {
+                message: "A etiqueta de teste foi impressa com sucesso ?" + "\n Pretende imprimir as " + quantity_article_labels + " etiquetas do produto?",
+                dataObj: dataForModal
               }
-            });
-        });
+            }).then(function (modal) {
+              modal.element.modal();
+              modal.close.then(function (result) {
+                if (!result) {
+                  $scope.complexResult = "Modal forcibly closed..."
+                } else {
+                  $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+                }
+              });
+          });
+        }  else { //THE LABEL HAS A COUNTER
+
+        }
   
       },
       function errorCallback(data) {
@@ -194,166 +202,176 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
         var ZPLStringAllLabels      = $scope.productLabel[0].ZPL_STRING_BOX;
         var PrinterIPAddress        = $scope.productLabel[0].BOX_PRINTER_IP_ADDRESS;
         var PrinterPort             = $scope.productLabel[0].BOX_PRINTER_PORT;
-  
-        if (boxBarCodeType == 'GS1-128') {
+        var LabelHasCounter         = $scope.productLabel[0].LABEL_HAS_COUNTER;
+        var NumberLabelsOnArticle   = $scope.productLabel[0].NUMBER_LABELS_ON_ARTICLE;
+        var NumberLabelsOnBox       = $scope.productLabel[0].NUMBER_LABELS_ON_BOX;
 
-          function padDigits(number, digits) {
-            return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
-          }
-  
-          var Quantity_full = padDigits(qtyByBox, 4);
+        if(LabelHasCounter == 'false') {
 
-          if (barCodeNumber.charAt(0) != '0') {
-            barCodeNumber = '0' + barCodeNumber;
-            var EanWithCheckDigit = barCodeNumber;
-            var FullEan = "802" + barCodeNumber + "37" + Quantity_full;
-          } else {
-            var checkDigit = eanCheckDigit('' + barCodeNumber);
-            var EanWithCheckDigit = barCodeNumber + checkDigit;
-            //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
-            //GS1-128 BarCode
-            var FullEan = "802" + barCodeNumber + checkDigit + "37" + Quantity_full;
-          }
+          if (boxBarCodeType == 'GS1-128') {
 
-  
-          function replaceAll(str, map) {
-            for (key in map) {
-              str2 = str.replace(key, map[key]);
-              str = str2;
-              str2 = null;
+            function padDigits(number, digits) {
+              return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
             }
-            return str;
-          }
+    
+            var Quantity_full = padDigits(qtyByBox, 4);
   
-          var map = {
-            '_EAN_CHECK_DIGIT': EanWithCheckDigit,
-            '_QUANTIDADE_EXTENDIDA': Quantity_full,
-            '_FULL_EAN': FullEan,
-            '_NUM_ARTIGO': customer_product_id,
-            '_NOME_ARTIGO': productNameForLabel,
-            '_QUANTIDADE': qtyByBox,
-            '_PRINT_QUANTITY': quantity_box_labels
-          };
-  
-          var mapTestLabel = {
-            '_EAN_CHECK_DIGIT': EanWithCheckDigit,
-            '_QUANTIDADE_EXTENDIDA': Quantity_full,
-            '_FULL_EAN': FullEan,
-            '_NUM_ARTIGO': customer_product_id,
-            '_NOME_ARTIGO': productNameForLabel,
-            '_QUANTIDADE': qtyByBox,
-            '_PRINT_QUANTITY': 1
-          };
-
-          var sendToPrinterTestLabel = replaceAll(ZPLStringTestLabel, mapTestLabel);
-
-          var sendToPrinterAllLabels = replaceAll(ZPLStringAllLabels, map);
-  
-          sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinterTestLabel);
-
-        }
-  
-        if (boxBarCodeType == 'EAN13') {
-
-          function padDigits(number, digits) {
-            return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
-          }
-  
-          var Quantity_full = padDigits(qtyByBox, 4);
-
-          //We need to remove the first digit to calculate the checksum for the EAN-13
-          if (barCodeNumber.charAt(0) === '0') {
-            barCodeNumber = barCodeNumber.slice(1);
-            var checkDigit = eanCheckDigit('' + barCodeNumber);
-            var EanWithCheckDigit = barCodeNumber + checkDigit;
-          } else {
-            var EanWithCheckDigit = barCodeNumber;
-          }
-
-  
-          function replaceAll(str, map) {
-            for (key in map) {
-              str2 = str.replace(key, map[key]);
-              str = str2;
-              str2 = null;
-            }
-            return str;
-          }
-  
-          var map = {
-            '_EAN_CHECK_DIGIT': EanWithCheckDigit,
-            '_QUANTIDADE_EXTENDIDA': Quantity_full,
-            '_NUM_ARTIGO': customer_product_id,
-            '_QUANTIDADE': qtyByBox,
-            '_PRINT_QUANTITY': quantity_box_labels
-          };
-  
-          var mapTestLabel = {
-            '_EAN_CHECK_DIGIT': EanWithCheckDigit,
-            '_QUANTIDADE_EXTENDIDA': Quantity_full,
-            '_FULL_EAN': FullEan,
-            '_NUM_ARTIGO': customer_product_id,
-            '_QUANTIDADE': qtyByBox,
-            '_PRINT_QUANTITY': 1
-          };
-
-          if(productNameForLabel.indexOf("\n")==-1){
-            //alert("No newline characters")
-            map._NOME_ARTIGO = productNameForLabel;
-            mapTestLabel._NOME_ARTIGO = productNameForLabel;
-  
-          }else{
-            //alert("Contains newline characters")
-            var productNameForLabelSplit = productNameForLabel.split('\n');
-  
-            var nomeArtigo = productNameForLabelSplit[0];
-            map._NOME_ARTIGO = nomeArtigo;
-            mapTestLabel._NOME_ARTIGO = nomeArtigo;
-  
-            for(i=1; i < productNameForLabelSplit.length; i++) {
-              map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
-              mapTestLabel["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+            if (barCodeNumber.charAt(0) != '0') {
+              barCodeNumber = '0' + barCodeNumber;
+              var EanWithCheckDigit = barCodeNumber;
+              var FullEan = "802" + barCodeNumber + "37" + Quantity_full;
+            } else {
+              var checkDigit = eanCheckDigit('' + barCodeNumber);
+              var EanWithCheckDigit = barCodeNumber + checkDigit;
+              //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
+              //GS1-128 BarCode
+              var FullEan = "802" + barCodeNumber + checkDigit + "37" + Quantity_full;
             }
   
-          }
-
-          var sendToPrinterTestLabel = replaceAll(ZPLStringTestLabel, mapTestLabel);
-
-          var sendToPrinterAllLabels = replaceAll(ZPLStringAllLabels, map);
-  
-          sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinterTestLabel);
-        }
-
-        var dataForModal = {
-          'ZPLString' : sendToPrinterAllLabels,
-          'PrinterIPAddress' : PrinterIPAddress,
-          'PrinterPort' : PrinterPort,
-          'label_being_printed' : 'box',
-          'unique_id': unique_id,
-          'order_id' : order_id,
-          'customer_product_id' : customer_product_id,
-          'article_label_already_printed' : article_label_already_printed,
-          'box_label_already_printed' : 'false'
-        }
-
-        ModalService.showModal({
-          templateUrl: "../modal/yesNoGeneric.html",
-          controller: "printAllLabelsModalController",
-            preClose: (modal) => { modal.element.modal('hide'); },
-            inputs: {
-              message: "A etiqueta de teste de caixa foi impressa com sucesso ?" + "Pretende imprimir as " + quantity_box_labels + " etiquetas de caixa?",
-              dataObj: dataForModal
-            }
-          }).then(function (modal) {
-            modal.element.modal();
-            modal.close.then(function (result) {
-              if (!result) {
-                $scope.complexResult = "Modal forcibly closed..."
-              } else {
-                $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+    
+            function replaceAll(str, map) {
+              for (key in map) {
+                str2 = str.replace(key, map[key]);
+                str = str2;
+                str2 = null;
               }
-            });
-        });
+              return str;
+            }
+    
+            var map = {
+              '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+              '_QUANTIDADE_EXTENDIDA': Quantity_full,
+              '_FULL_EAN': FullEan,
+              '_NUM_ARTIGO': customer_product_id,
+              '_NOME_ARTIGO': productNameForLabel,
+              '_QUANTIDADE': qtyByBox,
+              '_PRINT_QUANTITY': quantity_box_labels
+            };
+    
+            var mapTestLabel = {
+              '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+              '_QUANTIDADE_EXTENDIDA': Quantity_full,
+              '_FULL_EAN': FullEan,
+              '_NUM_ARTIGO': customer_product_id,
+              '_NOME_ARTIGO': productNameForLabel,
+              '_QUANTIDADE': qtyByBox,
+              '_PRINT_QUANTITY': 1
+            };
+  
+            var sendToPrinterTestLabel = replaceAll(ZPLStringTestLabel, mapTestLabel);
+  
+            var sendToPrinterAllLabels = replaceAll(ZPLStringAllLabels, map);
+    
+            sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinterTestLabel);
+  
+          }
+    
+          if (boxBarCodeType == 'EAN13') {
+  
+            function padDigits(number, digits) {
+              return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+            }
+    
+            var Quantity_full = padDigits(qtyByBox, 4);
+  
+            //We need to remove the first digit to calculate the checksum for the EAN-13
+            if (barCodeNumber.charAt(0) === '0') {
+              barCodeNumber = barCodeNumber.slice(1);
+              var checkDigit = eanCheckDigit('' + barCodeNumber);
+              var EanWithCheckDigit = barCodeNumber + checkDigit;
+            } else {
+              var EanWithCheckDigit = barCodeNumber;
+            }
+  
+    
+            function replaceAll(str, map) {
+              for (key in map) {
+                str2 = str.replace(key, map[key]);
+                str = str2;
+                str2 = null;
+              }
+              return str;
+            }
+    
+            var map = {
+              '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+              '_QUANTIDADE_EXTENDIDA': Quantity_full,
+              '_NUM_ARTIGO': customer_product_id,
+              '_QUANTIDADE': qtyByBox,
+              '_PRINT_QUANTITY': quantity_box_labels
+            };
+    
+            var mapTestLabel = {
+              '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+              '_QUANTIDADE_EXTENDIDA': Quantity_full,
+              '_FULL_EAN': FullEan,
+              '_NUM_ARTIGO': customer_product_id,
+              '_QUANTIDADE': qtyByBox,
+              '_PRINT_QUANTITY': 1
+            };
+  
+            if(productNameForLabel.indexOf("\n")==-1){
+              //alert("No newline characters")
+              map._NOME_ARTIGO = productNameForLabel;
+              mapTestLabel._NOME_ARTIGO = productNameForLabel;
+    
+            }else{
+              //alert("Contains newline characters")
+              var productNameForLabelSplit = productNameForLabel.split('\n');
+    
+              var nomeArtigo = productNameForLabelSplit[0];
+              map._NOME_ARTIGO = nomeArtigo;
+              mapTestLabel._NOME_ARTIGO = nomeArtigo;
+    
+              for(i=1; i < productNameForLabelSplit.length; i++) {
+                map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+                mapTestLabel["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+              }
+    
+            }
+  
+            var sendToPrinterTestLabel = replaceAll(ZPLStringTestLabel, mapTestLabel);
+  
+            var sendToPrinterAllLabels = replaceAll(ZPLStringAllLabels, map);
+    
+            sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinterTestLabel);
+          }
+  
+          var dataForModal = {
+            'ZPLString' : sendToPrinterAllLabels,
+            'PrinterIPAddress' : PrinterIPAddress,
+            'PrinterPort' : PrinterPort,
+            'label_being_printed' : 'box',
+            'unique_id': unique_id,
+            'order_id' : order_id,
+            'customer_product_id' : customer_product_id,
+            'article_label_already_printed' : article_label_already_printed,
+            'box_label_already_printed' : 'false'
+          }
+  
+          ModalService.showModal({
+            templateUrl: "../modal/yesNoGeneric.html",
+            controller: "printAllLabelsModalController",
+              preClose: (modal) => { modal.element.modal('hide'); },
+              inputs: {
+                message: "A etiqueta de teste de caixa foi impressa com sucesso ?" + "Pretende imprimir as " + quantity_box_labels + " etiquetas de caixa?",
+                dataObj: dataForModal
+              }
+            }).then(function (modal) {
+              modal.element.modal();
+              modal.close.then(function (result) {
+                if (!result) {
+                  $scope.complexResult = "Modal forcibly closed..."
+                } else {
+                  $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+                }
+              });
+          });
+
+        } else { //THE LABEL HAS A COUNTER
+
+        }
+  
 
       },
       function errorCallback(data) {
