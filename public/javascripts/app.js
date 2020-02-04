@@ -1142,6 +1142,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         $scope.products[i].TOTAL_PRODUCTS_COMPLETED = $scope.products[i].TOTAL_PRODUCTS_PRODUCED;
         if ($scope.products[i].IN_COMPOUND_PRODUCT != 'Y' || $scope.products[i].IS_PARENT == 'Y') {
           $scope.products[i].ORDER_BOXES = 'true';
+          $scope.products[i].INTERMEDIATE_LABELS = 'true';
         } 
 
         if ($scope.products[i].PARENT_CUSTOMER_PRODUCT_ID != null && $scope.products[i].IN_COMPOUND_PRODUCT == 'Y') {
@@ -1164,6 +1165,14 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         } else {
           $scope.products[i].BOXES_ICON_CLASS = 'btn-action';
           $scope.products[i].BOXES_ICON_TOOLTIP = 'Encomenda Parcial de Caixas';
+        }
+
+        if ($scope.products[i].QTY_LABELS_TO_PRINT_ARTICLE != null || $scope.products[i].QTY_LABELS_TO_PRINT_BOX) {
+          $scope.products[i].LABELS_ICON_CLASS = 'btn-intermediate';
+          $scope.products[i].LABELS_ICON_TOOLTIP = 'Já foram impressas ' + $scope.products[i].QTY_LABELS_TO_PRINT_ARTICLE + ' etiquetas de artigo e ' + $scope.products[i].QTY_LABELS_TO_PRINT_BOX + ' etiquetas de caixa , nesta encomenda';
+        } else {
+          $scope.products[i].LABELS_ICON_CLASS = 'btn-action';
+          $scope.products[i].LABELS_ICON_TOOLTIP = 'Encomenda Parcial de Etiquetas';
         }
 
       }
@@ -5822,6 +5831,7 @@ app.controller('createIntermediateLabelsRequestModalController', [
 
       if (isChildProduct == false) {
         var res = $http.post('/insertIntermediateLabelsToPrint', dataObj).then(function (data, status, headers, config) {
+          $state.reload();
         });
       }
 

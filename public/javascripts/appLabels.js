@@ -78,9 +78,11 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
             str2 = null;
           }
           return str;
-        }
+          }
 
-        if(LabelHasCounter == 'false') {
+          if(LabelHasCounter == 'true') {
+            quantity_article_labels = quantity_article_labels * NumberLabelsOnArticle;
+          }
 
           var mapTestLabel = {
             '_EAN_CHECK_DIGIT': EanWithCheckDigit,
@@ -124,12 +126,14 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
               //ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL  --> Only 1 label is written and the other is blank
               //ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL --> Both Labels are written
               map._PRINT_QUANTITY = 1;
+              mapTestLabel._PRINT_QUANTITY = 2;
               var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
               var sendToPrinter_TEST = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL_TEST, mapTestLabel);
               return;
             }
             if (quantity_article_labels % 2 == 0) {
               map._PRINT_QUANTITY = quantity_article_labels / 2;
+              mapTestLabel._PRINT_QUANTITY = 2;
               var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, map);
               var sendToPrinter_TEST = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL_TEST, mapTestLabel);
             }
@@ -138,6 +142,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
               var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL_TEST, map);
     
               map._PRINT_QUANTITY = 1;
+              mapTestLabel._PRINT_QUANTITY = 2;
               var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
               var sendToPrinter_TEST = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL_TEST, mapTestLabel);
             }
@@ -155,7 +160,9 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
             'order_id' : order_id,
             'customer_product_id' : customer_product_id,
             'article_label_already_printed' : 'false',
-            'box_label_already_printed' : box_label_already_printed
+            'box_label_already_printed' : box_label_already_printed,
+            'label_has_counter' : 'false',
+            'total_labels_to_print' : 0 
           }
   
           ModalService.showModal({
@@ -176,9 +183,6 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
                 }
               });
           });
-        }  else { //THE LABEL HAS A COUNTER
-
-        }
   
       },
       function errorCallback(data) {
@@ -190,6 +194,20 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
     $scope.printProductBoxLabels = function (unique_id, customer_product_id, order_id, quantity_box_labels, article_label_already_printed) {
   
       $scope.productLabel = [];
+
+      function padDigits(number, digits) {
+        return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+      }
+
+      function replaceAll(str, map) {
+        for (key in map) {
+          str2 = str.replace(key, map[key]);
+          str = str2;
+          str2 = null;
+        }
+        return str;
+      }
+
       var request = $http.get('/labelToPrintForProduct/' + encodeURIComponent(customer_product_id));
       request.then(function successCallback(response) {
         $scope.productLabel = response.data;
@@ -206,13 +224,10 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
         var NumberLabelsOnArticle   = $scope.productLabel[0].NUMBER_LABELS_ON_ARTICLE;
         var NumberLabelsOnBox       = $scope.productLabel[0].NUMBER_LABELS_ON_BOX;
 
+
         if(LabelHasCounter == 'false') {
 
           if (boxBarCodeType == 'GS1-128') {
-
-            function padDigits(number, digits) {
-              return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
-            }
     
             var Quantity_full = padDigits(qtyByBox, 4);
   
@@ -227,16 +242,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
               //GS1-128 BarCode
               var FullEan = "802" + barCodeNumber + checkDigit + "37" + Quantity_full;
             }
-  
-    
-            function replaceAll(str, map) {
-              for (key in map) {
-                str2 = str.replace(key, map[key]);
-                str = str2;
-                str2 = null;
-              }
-              return str;
-            }
+
     
             var map = {
               '_EAN_CHECK_DIGIT': EanWithCheckDigit,
@@ -267,11 +273,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
           }
     
           if (boxBarCodeType == 'EAN13') {
-  
-            function padDigits(number, digits) {
-              return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
-            }
-    
+   
             var Quantity_full = padDigits(qtyByBox, 4);
   
             //We need to remove the first digit to calculate the checksum for the EAN-13
@@ -281,16 +283,6 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
               var EanWithCheckDigit = barCodeNumber + checkDigit;
             } else {
               var EanWithCheckDigit = barCodeNumber;
-            }
-  
-    
-            function replaceAll(str, map) {
-              for (key in map) {
-                str2 = str.replace(key, map[key]);
-                str = str2;
-                str2 = null;
-              }
-              return str;
             }
     
             var map = {
@@ -346,7 +338,9 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
             'order_id' : order_id,
             'customer_product_id' : customer_product_id,
             'article_label_already_printed' : article_label_already_printed,
-            'box_label_already_printed' : 'false'
+            'box_label_already_printed' : 'false',
+            'label_has_counter' : 'false',
+            'total_labels_to_print' : 0 
           }
   
           ModalService.showModal({
@@ -366,12 +360,102 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
                   $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
                 }
               });
-          });
+          }); 
 
         } else { //THE LABEL HAS A COUNTER
 
-        }
+          //We need to remove the first digit to calculate the checksum for the EAN-13
+          if (barCodeNumber.charAt(0) === '0') {
+            barCodeNumber = barCodeNumber.slice(1);
+            var checkDigit = eanCheckDigit('' + barCodeNumber);
+            var EanWithCheckDigit = barCodeNumber + checkDigit;
+          } else {
+            var EanWithCheckDigit = barCodeNumber;
+          }
+
+          var map = {
+            '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+            '_QUANTIDADE_EXTENDIDA': Quantity_full,
+            '_NUM_ARTIGO': customer_product_id,
+            '_QUANTIDADE': qtyByBox,
+            '_PRINT_QUANTITY': NumberLabelsOnBox, //THIS IS THE NUMBER OF LABELS IN EACH BOX (2, 3, etc ...)
+            '_COUNTER_MAX_VALUE' : quantity_box_labels,
+            //'_COUNTER_VALUE':  counter_value
+          };
+
+          var counter_value_test_label = padDigits(1, quantity_box_labels.toString().length) + '';
   
+          var mapTestLabel = {
+            '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+            '_QUANTIDADE_EXTENDIDA': Quantity_full,
+            '_FULL_EAN': FullEan,
+            '_NUM_ARTIGO': customer_product_id,
+            '_QUANTIDADE': qtyByBox,
+            '_PRINT_QUANTITY': 1,
+            '_COUNTER_MAX_VALUE' : quantity_box_labels,
+            '_COUNTER_VALUE':  counter_value_test_label
+          };
+
+          if(productNameForLabel.indexOf("\n")==-1){
+            //alert("No newline characters")
+            map._NOME_ARTIGO = productNameForLabel;
+            mapTestLabel._NOME_ARTIGO = productNameForLabel;
+  
+          }else{
+            //alert("Contains newline characters")
+            var productNameForLabelSplit = productNameForLabel.split('\n');
+  
+            var nomeArtigo = productNameForLabelSplit[0];
+            map._NOME_ARTIGO = nomeArtigo;
+            mapTestLabel._NOME_ARTIGO = nomeArtigo;
+  
+            for(i=1; i < productNameForLabelSplit.length; i++) {
+              map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+              mapTestLabel["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+            }
+  
+          }
+
+          var sendToPrinterTestLabel = replaceAll(ZPLStringTestLabel, mapTestLabel);
+  
+          var sendToPrinterAllLabels = replaceAll(ZPLStringAllLabels, map);
+
+          sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinterTestLabel);
+
+          var dataForModal = {
+            'ZPLString' : sendToPrinterAllLabels,
+            'PrinterIPAddress' : PrinterIPAddress,
+            'PrinterPort' : PrinterPort,
+            'label_being_printed' : 'box',
+            'unique_id': unique_id,
+            'order_id' : order_id,
+            'customer_product_id' : customer_product_id,
+            'article_label_already_printed' : article_label_already_printed,
+            'box_label_already_printed' : 'false',
+            'label_has_counter' : 'true',
+            'total_labels_to_print' : quantity_box_labels 
+          }
+  
+          ModalService.showModal({
+            templateUrl: "../modal/yesNoGeneric.html",
+            controller: "printAllLabelsModalController",
+              preClose: (modal) => { modal.element.modal('hide'); },
+              inputs: {
+                message: "A etiqueta de teste de caixa foi impressa com sucesso ?" + "Pretende imprimir as " + quantity_box_labels + " etiquetas de caixa?",
+                dataObj: dataForModal
+              }
+            }).then(function (modal) {
+              modal.element.modal();
+              modal.close.then(function (result) {
+                if (!result) {
+                  $scope.complexResult = "Modal forcibly closed..."
+                } else {
+                  $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+                }
+              });
+          }); 
+
+        } 
 
       },
       function errorCallback(data) {
@@ -425,130 +509,280 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
     var customer_product_id 			    = dataObj.customer_product_id;
     var article_label_already_printed = dataObj.article_label_already_printed;
     var box_label_already_printed 		= dataObj.box_label_already_printed;
+    var label_has_counter             = dataObj.label_has_counter;
+    var total_labels_to_print         = dataObj.total_labels_to_print;
 
     
-    //  This close function doesn't need to use jQuery or bootstrap, because
-    //  the button has the 'data-dismiss' attribute.
+    function padDigits(number, digits) {
+      return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+    }
+
+    function replaceAll(str, map) {
+      for (key in map) {
+        str2 = str.replace(key, map[key]);
+        str = str2;
+        str2 = null;
+      }
+      return str;
+    }
 
     //Save Content Modal  
     $scope.yes = function () {
 
-      sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, ZPLString);
+     if(label_has_counter == 'false') {
 
-     //IF THE ARTICLE LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
-     if(label_being_printed === 'box') {
-      if (article_label_already_printed === 'true') {
-        var operationsToExecute = ['/deleteLabelsToPrint'];
-  
-        var dataToDelete = [{ "UNIQUE_ID": unique_id, "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
-  
-        ModalService.showModal({
-          templateUrl: "../modal/labelsPrintingModal.html",
-          controller: "genericMultOperationsModalController",
-            preClose: (modal) => { modal.element.modal('hide'); },
-            inputs: {
-              message: "As etiquetas de caixa foram impressas com sucesso ?",
-              operationsObj: operationsToExecute,
-              dataObjs: dataToDelete,
-              stateToGo: "listLabelsToPrint",
-              needToReload: true
-            }
-          }).then(function (modal) {
-            modal.element.modal();
-            modal.close.then(function (result) {
-              if (!result) {
-                $scope.complexResult = "Modal forcibly closed..."
-              } else {
-                $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
-              }
-            });
-        });
-      } else {
-        var operationsToExecute = ['/updateLabelAlreadyPrinted'];
-  
-        var dataToDelete = [{ "COLUMN_TO_UPDATE": 'BOX_LABEL_ALREADY_PRINTED', "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
-  
-        ModalService.showModal({
-          templateUrl: "../modal/labelsPrintingModal.html",
-          controller: "genericMultOperationsModalController",
-            preClose: (modal) => { modal.element.modal('hide'); },
-            inputs: {
-              message: "As etiquetas de caixa foram impressas com sucesso ?",
-              operationsObj: operationsToExecute,
-              dataObjs: dataToDelete,
-              stateToGo: "listLabelsToPrint",
-              needToReload: true
-            }
-          }).then(function (modal) {
-            modal.element.modal();
-            modal.close.then(function (result) {
-              if (!result) {
-                $scope.complexResult = "Modal forcibly closed..."
-              } else {
-                $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
-              }
-            });
-        });
-      }
-     }
-     
-     if(label_being_printed === 'article') {  
-        //IF THE BOX LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
-        if (box_label_already_printed === 'true') {
-  
+        sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, ZPLString);
+
+      //IF THE ARTICLE LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
+      if(label_being_printed === 'box') {
+        if (article_label_already_printed === 'true') {
           var operationsToExecute = ['/deleteLabelsToPrint'];
-  
+    
           var dataToDelete = [{ "UNIQUE_ID": unique_id, "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
-  
+    
           ModalService.showModal({
             templateUrl: "../modal/labelsPrintingModal.html",
             controller: "genericMultOperationsModalController",
-            preClose: (modal) => { modal.element.modal('hide'); },
-            inputs: {
-              message: "As etiquetas do artigo foram impressas com sucesso ?",
-              operationsObj: operationsToExecute,
-              dataObjs: dataToDelete,
-              stateToGo: "listLabelsToPrint",
-              needToReload: true
-            }
-          }).then(function (modal) {
-            modal.element.modal();
-            modal.close.then(function (result) {
-              if (!result) {
-                $scope.complexResult = "Modal forcibly closed..."
-              } else {
-                $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+              preClose: (modal) => { modal.element.modal('hide'); },
+              inputs: {
+                message: "As etiquetas de caixa foram impressas com sucesso ?",
+                operationsObj: operationsToExecute,
+                dataObjs: dataToDelete,
+                stateToGo: "listLabelsToPrint",
+                needToReload: true
               }
-            });
+            }).then(function (modal) {
+              modal.element.modal();
+              modal.close.then(function (result) {
+                if (!result) {
+                  $scope.complexResult = "Modal forcibly closed..."
+                } else {
+                  $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+                }
+              });
           });
         } else {
           var operationsToExecute = ['/updateLabelAlreadyPrinted'];
-  
-          var dataToDelete = [{ "COLUMN_TO_UPDATE": 'ARTICLE_LABEL_ALREADY_PRINTED', "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
-  
+    
+          var dataToDelete = [{ "COLUMN_TO_UPDATE": 'BOX_LABEL_ALREADY_PRINTED', "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
+    
           ModalService.showModal({
             templateUrl: "../modal/labelsPrintingModal.html",
             controller: "genericMultOperationsModalController",
-            preClose: (modal) => { modal.element.modal('hide'); },
-            inputs: {
-              message: "As etiquetas do artigo foram impressas com sucesso ?",
-              operationsObj: operationsToExecute,
-              dataObjs: dataToDelete,
-              stateToGo: "listLabelsToPrint",
-              needToReload: true
-            }
-          }).then(function (modal) {
-            modal.element.modal();
-            modal.close.then(function (result) {
-              if (!result) {
-                $scope.complexResult = "Modal forcibly closed..."
-              } else {
-                $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+              preClose: (modal) => { modal.element.modal('hide'); },
+              inputs: {
+                message: "As etiquetas de caixa foram impressas com sucesso ?",
+                operationsObj: operationsToExecute,
+                dataObjs: dataToDelete,
+                stateToGo: "listLabelsToPrint",
+                needToReload: true
               }
-            });
+            }).then(function (modal) {
+              modal.element.modal();
+              modal.close.then(function (result) {
+                if (!result) {
+                  $scope.complexResult = "Modal forcibly closed..."
+                } else {
+                  $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+                }
+              });
           });
+        }
+      }
+      
+      if(label_being_printed === 'article') {  
+          //IF THE BOX LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
+          if (box_label_already_printed === 'true') {
+    
+            var operationsToExecute = ['/deleteLabelsToPrint'];
+    
+            var dataToDelete = [{ "UNIQUE_ID": unique_id, "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
+    
+            ModalService.showModal({
+              templateUrl: "../modal/labelsPrintingModal.html",
+              controller: "genericMultOperationsModalController",
+              preClose: (modal) => { modal.element.modal('hide'); },
+              inputs: {
+                message: "As etiquetas do artigo foram impressas com sucesso ?",
+                operationsObj: operationsToExecute,
+                dataObjs: dataToDelete,
+                stateToGo: "listLabelsToPrint",
+                needToReload: true
+              }
+            }).then(function (modal) {
+              modal.element.modal();
+              modal.close.then(function (result) {
+                if (!result) {
+                  $scope.complexResult = "Modal forcibly closed..."
+                } else {
+                  $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+                }
+              });
+            });
+          } else {
+            var operationsToExecute = ['/updateLabelAlreadyPrinted'];
+    
+            var dataToDelete = [{ "COLUMN_TO_UPDATE": 'ARTICLE_LABEL_ALREADY_PRINTED', "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
+    
+            ModalService.showModal({
+              templateUrl: "../modal/labelsPrintingModal.html",
+              controller: "genericMultOperationsModalController",
+              preClose: (modal) => { modal.element.modal('hide'); },
+              inputs: {
+                message: "As etiquetas do artigo foram impressas com sucesso ?",
+                operationsObj: operationsToExecute,
+                dataObjs: dataToDelete,
+                stateToGo: "listLabelsToPrint",
+                needToReload: true
+              }
+            }).then(function (modal) {
+              modal.element.modal();
+              modal.close.then(function (result) {
+                if (!result) {
+                  $scope.complexResult = "Modal forcibly closed..."
+                } else {
+                  $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+                }
+              });
+            });
+          }
+        }
+     } else { //THE LABEL HAS A COUNTER 
+
+      var ZPLString_aux= ZPLString;
+
+      var digits_for_padding = total_labels_to_print.toString().length;
+
+      for(i=1; i <= total_labels_to_print; i++) {
+
+        var counter_value_test_label = padDigits(i, digits_for_padding) + '';
+
+        var map = {
+          '_COUNTER_VALUE':  counter_value_test_label
+        };
+
+        var sendToPrinterAllLabels = replaceAll(ZPLString_aux, map);
+        sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinterAllLabels);
+        var ZPLString_aux= ZPLString;
+
+      }
+        
+      //IF THE ARTICLE LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
+      if(label_being_printed === 'box') {
+        if (article_label_already_printed === 'true') {
+          var operationsToExecute = ['/deleteLabelsToPrint'];
+    
+          var dataToDelete = [{ "UNIQUE_ID": unique_id, "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
+    
+          ModalService.showModal({
+            templateUrl: "../modal/labelsPrintingModal.html",
+            controller: "genericMultOperationsModalController",
+              preClose: (modal) => { modal.element.modal('hide'); },
+              inputs: {
+                message: "As etiquetas de caixa foram impressas com sucesso ?",
+                operationsObj: operationsToExecute,
+                dataObjs: dataToDelete,
+                stateToGo: "listLabelsToPrint",
+                needToReload: true
+              }
+            }).then(function (modal) {
+              modal.element.modal();
+              modal.close.then(function (result) {
+                if (!result) {
+                  $scope.complexResult = "Modal forcibly closed..."
+                } else {
+                  $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+                }
+              });
+          });
+        } else {
+          var operationsToExecute = ['/updateLabelAlreadyPrinted'];
+    
+          var dataToDelete = [{ "COLUMN_TO_UPDATE": 'BOX_LABEL_ALREADY_PRINTED', "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
+    
+          ModalService.showModal({
+            templateUrl: "../modal/labelsPrintingModal.html",
+            controller: "genericMultOperationsModalController",
+              preClose: (modal) => { modal.element.modal('hide'); },
+              inputs: {
+                message: "As etiquetas de caixa foram impressas com sucesso ?",
+                operationsObj: operationsToExecute,
+                dataObjs: dataToDelete,
+                stateToGo: "listLabelsToPrint",
+                needToReload: true
+              }
+            }).then(function (modal) {
+              modal.element.modal();
+              modal.close.then(function (result) {
+                if (!result) {
+                  $scope.complexResult = "Modal forcibly closed..."
+                } else {
+                  $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+                }
+              });
+          });
+        }
+      }
+      
+      if(label_being_printed === 'article') {  
+          //IF THE BOX LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
+          if (box_label_already_printed === 'true') {
+    
+            var operationsToExecute = ['/deleteLabelsToPrint'];
+    
+            var dataToDelete = [{ "UNIQUE_ID": unique_id, "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
+    
+            ModalService.showModal({
+              templateUrl: "../modal/labelsPrintingModal.html",
+              controller: "genericMultOperationsModalController",
+              preClose: (modal) => { modal.element.modal('hide'); },
+              inputs: {
+                message: "As etiquetas do artigo foram impressas com sucesso ?",
+                operationsObj: operationsToExecute,
+                dataObjs: dataToDelete,
+                stateToGo: "listLabelsToPrint",
+                needToReload: true
+              }
+            }).then(function (modal) {
+              modal.element.modal();
+              modal.close.then(function (result) {
+                if (!result) {
+                  $scope.complexResult = "Modal forcibly closed..."
+                } else {
+                  $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+                }
+              });
+            });
+          } else {
+            var operationsToExecute = ['/updateLabelAlreadyPrinted'];
+    
+            var dataToDelete = [{ "COLUMN_TO_UPDATE": 'ARTICLE_LABEL_ALREADY_PRINTED', "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
+    
+            ModalService.showModal({
+              templateUrl: "../modal/labelsPrintingModal.html",
+              controller: "genericMultOperationsModalController",
+              preClose: (modal) => { modal.element.modal('hide'); },
+              inputs: {
+                message: "As etiquetas do artigo foram impressas com sucesso ?",
+                operationsObj: operationsToExecute,
+                dataObjs: dataToDelete,
+                stateToGo: "listLabelsToPrint",
+                needToReload: true
+              }
+            }).then(function (modal) {
+              modal.element.modal();
+              modal.close.then(function (result) {
+                if (!result) {
+                  $scope.complexResult = "Modal forcibly closed..."
+                } else {
+                  $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+                }
+              });
+            });
+          }
         }
      }
 
-    };
+    }; //Function yes close
+
 }]);
