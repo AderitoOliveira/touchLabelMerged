@@ -78,9 +78,11 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
             str2 = null;
           }
           return str;
-        }
+          }
 
-        if(LabelHasCounter == 'false') {
+          if(LabelHasCounter == 'true') {
+            quantity_article_labels = quantity_article_labels * NumberLabelsOnArticle;
+          }
 
           var mapTestLabel = {
             '_EAN_CHECK_DIGIT': EanWithCheckDigit,
@@ -181,9 +183,6 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
                 }
               });
           });
-        }  else { //THE LABEL HAS A COUNTER
-
-        }
   
       },
       function errorCallback(data) {
