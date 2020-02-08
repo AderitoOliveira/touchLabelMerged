@@ -250,6 +250,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
               '_FULL_EAN': FullEan,
               '_NUM_ARTIGO': customer_product_id,
               '_NOME_ARTIGO': productNameForLabel,
+              '_ORDER_ID' : order_id,
               '_QUANTIDADE': qtyByBox,
               '_PRINT_QUANTITY': quantity_box_labels
             };
@@ -260,6 +261,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
               '_FULL_EAN': FullEan,
               '_NUM_ARTIGO': customer_product_id,
               '_NOME_ARTIGO': productNameForLabel,
+              '_ORDER_ID' : order_id,
               '_QUANTIDADE': qtyByBox,
               '_PRINT_QUANTITY': 1
             };
@@ -289,6 +291,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
               '_EAN_CHECK_DIGIT': EanWithCheckDigit,
               '_QUANTIDADE_EXTENDIDA': Quantity_full,
               '_NUM_ARTIGO': customer_product_id,
+              '_ORDER_ID' : order_id,
               '_QUANTIDADE': qtyByBox,
               '_PRINT_QUANTITY': quantity_box_labels
             };
@@ -298,6 +301,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
               '_QUANTIDADE_EXTENDIDA': Quantity_full,
               '_FULL_EAN': FullEan,
               '_NUM_ARTIGO': customer_product_id,
+              '_ORDER_ID' : order_id,
               '_QUANTIDADE': qtyByBox,
               '_PRINT_QUANTITY': 1
             };
@@ -377,6 +381,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
             '_EAN_CHECK_DIGIT': EanWithCheckDigit,
             '_QUANTIDADE_EXTENDIDA': Quantity_full,
             '_NUM_ARTIGO': customer_product_id,
+            '_ORDER_ID' : order_id,
             '_QUANTIDADE': qtyByBox,
             '_PRINT_QUANTITY': NumberLabelsOnBox, //THIS IS THE NUMBER OF LABELS IN EACH BOX (2, 3, etc ...)
             '_COUNTER_MAX_VALUE' : quantity_box_labels,
@@ -390,6 +395,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
             '_QUANTIDADE_EXTENDIDA': Quantity_full,
             '_FULL_EAN': FullEan,
             '_NUM_ARTIGO': customer_product_id,
+            '_ORDER_ID' : order_id,
             '_QUANTIDADE': qtyByBox,
             '_PRINT_QUANTITY': 1,
             '_COUNTER_MAX_VALUE' : quantity_box_labels,
@@ -649,11 +655,11 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
         }
      } else { //THE LABEL HAS A COUNTER 
 
-      var ZPLString_aux= ZPLString;
+      //var ZPLString_aux= ZPLString;
 
       var digits_for_padding = total_labels_to_print.toString().length;
 
-      for(i=1; i <= total_labels_to_print; i++) {
+      /* for(i=1; i <= total_labels_to_print; i++) {
 
         var counter_value_test_label = padDigits(i, digits_for_padding) + '';
 
@@ -664,8 +670,40 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
         var sendToPrinterAllLabels = replaceAll(ZPLString_aux, map);
         sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinterAllLabels);
         var ZPLString_aux= ZPLString;
+        console.log("ZPL_FINAL:" + sendToPrinterAllLabels);
+        console.log("*******************************************************************************************");
+      } */
 
+      // Returns a Promise that resolves after "ms" Milliseconds
+      function timer(ms) {
+        return new Promise(res => setTimeout(res, ms));
       }
+      
+      async function executeCycleToPrintLabels () { // We need to wrap the loop into an async function for this to work
+        
+        var ZPLString_aux= ZPLString;
+
+        for(i=1; i <= total_labels_to_print; i++) {
+
+          var counter_value_test_label = padDigits(i, digits_for_padding) + '';
+  
+          var map = {
+            '_COUNTER_VALUE':  counter_value_test_label
+          };
+  
+          var sendToPrinterAllLabels = replaceAll(ZPLString_aux, map);
+          sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinterAllLabels);
+          var ZPLString_aux= ZPLString;
+          console.log("ZPL_FINAL:" + sendToPrinterAllLabels);
+          console.log("*******************************************************************************************");
+
+          await timer(1500); // then the created Promise can be awaited
+
+        }
+      }
+
+      executeCycleToPrintLabels();
+
         
       //IF THE ARTICLE LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
       if(label_being_printed === 'box') {
