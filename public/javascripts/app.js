@@ -2093,7 +2093,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       var products_still_to_produce = totalquantityordered - $scope.totalquantityproduced;
     }
 
-    if (products_still_to_produce == 0 || employyee_name == null || $scope.totalquantityproduced == null) {
+    if (employyee_name == null || $scope.totalquantityproduced == null) {
 
       if(products_still_to_produce == 0) {
         var message = 'A quantidade de artigos a pintar para o produto ' + productName + ' na encomenda ' + $scope.orderid + ' já foi atingida!';
@@ -2122,6 +2122,42 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       });
 
       //$state.reload();
+
+      return true;
+    };
+
+    if (products_still_to_produce == 0 || products_still_to_produce < 0) {
+
+      var valueProducedByTheEmployee = $scope.totalquantityproduced * $scope.priceEuro;
+      ModalService.showModal({
+        templateUrl: "../modal/registerExtraProductionForClosedProductInOrder.html",
+        controller: "registerExtraPaintingForClosedProductInOrderController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: 'A quantidade de artigos a produzir para o produto ' + productName + ' na encomenda ' + $scope.orderid + ' já foi atingida! \n Pretende adicionar a quantidade produzida nesta encomenda?',
+          ORDER_ID: $scope.orderid,
+          INTERNAL_PRODUCT_ID: $scope.internalproductid,
+          CUSTOMER_PRODUCT_ID: $scope.customerproductid,
+          PRODUCT_NAME: $scope.productnameinternal,
+          ORDER_PRODUCTS_UNIQUE_ID: $scope.unique_order_id,
+          EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
+          EMPLOYEE_ID: employyee_name.EMPLOYEE_ID,
+          TOTAL_PRODUCTS_PAINTED: $scope.totalquantityproduced,
+          PRODUCED_VALUE_IN_EURO: valueProducedByTheEmployee,
+          CREATED_DATE: productiondate
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+
+      $state.reload();
 
       return true;
     };
@@ -5023,6 +5059,31 @@ app.controller('registerExtraProductionForClosedProductInOrderController', funct
     };
 
     var res = $http.post('/insertDailyProduction', dataObj).then(function (data, status, headers, config) {
+      $state.reload();
+    });
+  };
+
+});
+
+/*------------------------    Controller for the GENERIC MODAL   -----------------------------*/
+app.controller('registerExtraPaintingForClosedProductInOrderController', function ($scope, $http, $state, message, ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, ORDER_PRODUCTS_UNIQUE_ID, EMPLOYEE_NAME, EMPLOYEE_ID, TOTAL_PRODUCTS_PAINTED, PRODUCED_VALUE_IN_EURO) {
+
+  $scope.message = message;
+
+  $scope.yes = function () {
+    var dataObj = {
+      ORDER_PRODUCTS_UNIQUE_ID: ORDER_PRODUCTS_UNIQUE_ID,
+      ORDER_ID: ORDER_ID,
+      INTERNAL_PRODUCT_ID: INTERNAL_PRODUCT_ID,
+      CUSTOMER_PRODUCT_ID: CUSTOMER_PRODUCT_ID,
+      PRODUCT_NAME: PRODUCT_NAME,
+      EMPLOYEE_NAME: EMPLOYEE_NAME,
+      EMPLOYEE_ID: EMPLOYEE_ID,
+      TOTAL_PRODUCTS_PAINTED: TOTAL_PRODUCTS_PAINTED,
+      PRODUCED_VALUE_IN_EURO: PRODUCED_VALUE_IN_EURO,
+    };
+
+    var res = $http.post('/insertDailyPainting', dataObj).then(function (data, status, headers, config) {
       $state.reload();
     });
   };
