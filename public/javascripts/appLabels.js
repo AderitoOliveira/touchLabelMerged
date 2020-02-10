@@ -655,11 +655,12 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
         }
      } else { //THE LABEL HAS A COUNTER 
 
-      //var ZPLString_aux= ZPLString;
+      var finalZPLStringToSend = "";
+      var ZPLString_aux= ZPLString;
 
       var digits_for_padding = total_labels_to_print.toString().length;
 
-      /* for(i=1; i <= total_labels_to_print; i++) {
+      for(i=1; i <= total_labels_to_print; i++) {
 
         var counter_value_test_label = padDigits(i, digits_for_padding) + '';
 
@@ -668,14 +669,17 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
         };
 
         var sendToPrinterAllLabels = replaceAll(ZPLString_aux, map);
-        sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinterAllLabels);
+        finalZPLStringToSend = finalZPLStringToSend + sendToPrinterAllLabels;
+        //sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinterAllLabels);
         var ZPLString_aux= ZPLString;
-        console.log("ZPL_FINAL:" + sendToPrinterAllLabels);
-        console.log("*******************************************************************************************");
-      } */
+        //console.log("ZPL_FINAL:" + sendToPrinterAllLabels);
+        //console.log("*******************************************************************************************");
+      }
+
+      sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, finalZPLStringToSend);
 
       // Returns a Promise that resolves after "ms" Milliseconds
-      function timer(ms) {
+      /* function timer(ms) {
         return new Promise(res => setTimeout(res, ms));
       }
       
@@ -702,7 +706,7 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
         }
       }
 
-      executeCycleToPrintLabels();
+      executeCycleToPrintLabels(); */
 
         
       //IF THE ARTICLE LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
