@@ -4422,9 +4422,9 @@ app.controller('PalletesController', ['$scope', '$http', '$state', '$rootScope',
     if (palletequantity == undefined) {
       return false;
     } else {
-      validatedPalletequantity = palletequantity.replace(/[^0-9]/g, '');
+      validatedPalletequantity = /^\-?[0-9]+(e[0-9]+)?(\.[0-9]+)?$/.test(palletequantity);
     }
-    if (validatedPalletequantity == palletequantity) {
+    if (validatedPalletequantity) {
       updatePalleteQuantity.updatePallete(orderid, customerproductid, palletequantity).then(function () {
 
         ModalService.showModal({
