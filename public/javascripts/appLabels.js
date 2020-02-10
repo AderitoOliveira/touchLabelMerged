@@ -655,6 +655,7 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
         }
      } else { //THE LABEL HAS A COUNTER 
 
+      //var finalZPLStringToSend = "";
       //var ZPLString_aux= ZPLString;
 
       var digits_for_padding = total_labels_to_print.toString().length;
@@ -668,11 +669,15 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
         };
 
         var sendToPrinterAllLabels = replaceAll(ZPLString_aux, map);
-        sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinterAllLabels);
+        finalZPLStringToSend = finalZPLStringToSend + sendToPrinterAllLabels;
+        //sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinterAllLabels);
         var ZPLString_aux= ZPLString;
-        console.log("ZPL_FINAL:" + sendToPrinterAllLabels);
-        console.log("*******************************************************************************************");
-      } */
+        //console.log("ZPL_FINAL:" + sendToPrinterAllLabels);
+        //console.log("*******************************************************************************************");
+      }
+
+      console.log("ZPL_FINAL:" + finalZPLStringToSend);
+      sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, finalZPLStringToSend); */
 
       // Returns a Promise that resolves after "ms" Milliseconds
       function timer(ms) {
@@ -697,7 +702,7 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
           console.log("ZPL_FINAL:" + sendToPrinterAllLabels);
           console.log("*******************************************************************************************");
 
-          await timer(1500); // then the created Promise can be awaited
+          await timer(4000); // then the created Promise can be awaited
 
         }
       }
