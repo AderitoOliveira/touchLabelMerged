@@ -384,6 +384,13 @@ router.get('/getProductTechSheet/:productid', function (req, res) {
   getProductTechSheet(req, res);
 });
 
+//GET PRODUCT TECHNICAL SHEET FOR GENERATING LABELS
+router.get('/getProductTechSheetForLabels/:productid', function (req, res) {
+  console.log("GET PRODUCT TECHNICAL SHEET");
+  //console.log(req.body);
+  getProductTechSheetForLabels(req, res);
+});
+
 //DELETE PRODUCT TECHNICAL SHEET
 router.post('/deleteProductTechSheet', function (req, res) {
   console.log("DELETE PRODUCT TECHNICAL SHEET");

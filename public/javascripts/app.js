@@ -1565,10 +1565,10 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
   //CLOSE THE PRODUCT FOR PAITING - CREATE THE LABELS RECORD TO PRINT
-  $scope.closeProductPainting = function (internalproductid, customerproductid, productName, qtyproduced, in_compound_product) {
+  $scope.closeProductPainting = function (internalproductid, customerproductid, productName, qtyproduced, totalquantityordered, in_compound_product) {
 
     $scope.productTechSheet = [];
-    var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerproductid));
+    var request = $http.get('/getProductTechSheetForLabels/' + encodeURIComponent(customerproductid));
     request.then(function successCallback(response) {
       $scope.productTechSheet = response.data;
 
@@ -1608,7 +1608,12 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         });
       }
       else {
-        var qtyBoxLabelsToPrint = qtyproduced / $scope.productTechSheet[0].Qty_By_Box;
+        if($scope.productTechSheet[0].LABEL_HAS_COUNTER == 'false') {
+          var qtyBoxLabelsToPrint = qtyproduced / $scope.productTechSheet[0].Qty_By_Box;
+        } else {
+          var qtyBoxLabelsToPrint = totalquantityordered / $scope.productTechSheet[0].Qty_By_Box;
+        }
+        
 
         
         //if ($scope.productTechSheet[0].Qty_By_Pallet_Compound_Product || $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product > 0) {
@@ -3034,10 +3039,10 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
 
  //CREATE THE INTERMEDIATE REQUEST FOR THE LABELS TO PRINT IN THE ORDER
- $scope.createIntermediateRequestForLabels = function (internalproductid, customerproductid, productName, qtyproduced, in_compound_product) {
+ $scope.createIntermediateRequestForLabels = function (internalproductid, customerproductid, productName, qtyproduced, totalquantityordered, in_compound_product) {
 
   $scope.productTechSheet = [];
-  var request = $http.get('/getProductTechSheet/' + encodeURIComponent(customerproductid));
+  var request = $http.get('/getProductTechSheetForLabels/' + encodeURIComponent(customerproductid));
   request.then(function successCallback(response) {
     $scope.productTechSheet = response.data;
 
@@ -3077,7 +3082,12 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       });
     }
     else {
-      var qtyBoxLabelsToPrint = qtyproduced / $scope.productTechSheet[0].Qty_By_Box;
+      
+      if($scope.productTechSheet[0].LABEL_HAS_COUNTER == 'false') {
+        var qtyBoxLabelsToPrint = qtyproduced / $scope.productTechSheet[0].Qty_By_Box;
+      } else {
+        var qtyBoxLabelsToPrint = totalquantityordered / $scope.productTechSheet[0].Qty_By_Box;
+      }
 
       if (in_compound_product == 'Y') {
         var isChildProduct = true;
