@@ -837,6 +837,26 @@ getProductTechSheet = function(data, callback) {
 });
 }
 
+//GET PRODUCT TECHNICAL SHEET FOR GENERATING LABELS 
+getProductTechSheetForLabels = function(data, callback) {
+    con.connect(function(err) {
+    con.query('select ptsheet.*, prod.CLIENT_NAME, label.LABEL_HAS_COUNTER from products_technical_sheet ptsheet, products prod, label_templates label where ptsheet.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID and prod.CLIENT_NAME = label.ClientName and ptsheet.CUSTOMER_PRODUCT_ID = ?', [data.params.productid], function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        //console.log(data); 
+        callback = rows;
+        //console.log("--------------------------------------------------");   
+        //console.log(rows);   
+        //console.log("--------------------------------------------------");    
+    });
+});
+}
+
 //DELETE PRODUCT TECHNICAL SHEET
 deleteProductTechSheet = function(req, res) {
     res.setHeader('Content-Type', 'application/json');
@@ -1722,7 +1742,7 @@ insertIntermediateLabelsToPrint = async function(req, res) {
             postDataForMainTable.QTY_LABELS_TO_PRINT_ARTICLE  = postDataForMainTable.QTY_LABELS_TO_PRINT_ARTICLE - articleLabelsAlreadyPrinted;
             postDataForMainTable.QTY_LABELS_TO_PRINT_BOX     = postDataForMainTable.QTY_LABELS_TO_PRINT_BOX - boxLabelsAlreadyPrinted;
 
-            if(postDataForMainTable.QTY_LABELS_TO_PRINT_BOX > 0) {
+            if(postDataForMainTable.QTY_LABELS_TO_PRINT_ARTICLE > 0) {
                 con.connect(function(err) {
                     con.query('delete from order_products_labels_to_print_intermediate_staging where ORDER_ID = ? and CUSTOMER_PRODUCT_ID= ?', [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
                     if (error) throw error;
@@ -1770,7 +1790,7 @@ insertIntermediateLabelsToPrint = async function(req, res) {
             postDataForMainTable.QTY_LABELS_TO_PRINT_ARTICLE  = postDataForMainTable.QTY_LABELS_TO_PRINT_ARTICLE - articleLabelsAlreadyPrinted;
             postDataForMainTable.QTY_LABELS_TO_PRINT_BOX     = postDataForMainTable.QTY_LABELS_TO_PRINT_BOX - boxLabelsAlreadyPrinted;
 
-            if(postDataForMainTable.QTY_LABELS_TO_PRINT_BOX > 0) {
+            if(postDataForMainTable.QTY_LABELS_TO_PRINT_ARTICLE > 0) {
                 con.connect(function(err) {
                     con.query('INSERT INTO order_products_labels_to_print_intermediate_staging set ?  ON DUPLICATE KEY UPDATE QTY_LABELS_TO_PRINT_ARTICLE = VALUES(QTY_LABELS_TO_PRINT_ARTICLE), QTY_LABELS_TO_PRINT_BOX = VALUES(QTY_LABELS_TO_PRINT_BOX)', [req.body, req.body.QTY_LABELS_TO_PRINT_ARTICLE, req.body.QTY_LABELS_TO_PRINT_BOX], function (error, results, fields) {
                     if (error) throw error;

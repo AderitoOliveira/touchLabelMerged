@@ -138,13 +138,13 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
               var sendToPrinter_TEST = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL_TEST, mapTestLabel);
             }
             if (quantity_article_labels % 2 != 0) {
-              map._PRINT_QUANTITY = quantity_article_labels / 2;
+              map._PRINT_QUANTITY = Math.ceil(quantity_article_labels / 2);
+              mapTestLabel._PRINT_QUANTITY = 2;
               var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL_TEST, map);
+              var sendToPrinter_TEST = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL_TEST, mapTestLabel);
     
               map._PRINT_QUANTITY = 1;
-              mapTestLabel._PRINT_QUANTITY = 2;
-              var sendToPrinter = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
-              var sendToPrinter_TEST = replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL_TEST, mapTestLabel);
+              sendToPrinter = sendToPrinter + replaceAll(ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, map);
             }
     
           }
