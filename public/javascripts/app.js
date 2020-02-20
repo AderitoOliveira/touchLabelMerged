@@ -1565,7 +1565,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
   //CLOSE THE PRODUCT FOR PAITING - CREATE THE LABELS RECORD TO PRINT
-  $scope.closeProductPainting = function (internalproductid, customerproductid, productName, qtyproduced, totalquantityordered, in_compound_product) {
+  $scope.closeProductPainting = function (internalproductid, customerproductid, productName, qtyproduced, totalquantityordered, in_compound_product, is_parent) {
 
     $scope.productTechSheet = [];
     var request = $http.get('/getProductTechSheetForLabels/' + encodeURIComponent(customerproductid));
@@ -1617,7 +1617,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
         
         //if ($scope.productTechSheet[0].Qty_By_Pallet_Compound_Product || $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product > 0) {
-        if(in_compound_product == 'Y') {
+        if(in_compound_product == 'Y' && is_parent == 'N') {
           var isChildProduct = true;
         } else {
           var isChildProduct = false;
@@ -3039,7 +3039,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
 
  //CREATE THE INTERMEDIATE REQUEST FOR THE LABELS TO PRINT IN THE ORDER
- $scope.createIntermediateRequestForLabels = function (internalproductid, customerproductid, productName, qtyproduced, totalquantityordered, in_compound_product) {
+ $scope.createIntermediateRequestForLabels = function (internalproductid, customerproductid, productName, qtyproduced, totalquantityordered, in_compound_product, is_parent) {
 
   $scope.productTechSheet = [];
   var request = $http.get('/getProductTechSheetForLabels/' + encodeURIComponent(customerproductid));
@@ -3089,7 +3089,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         var qtyBoxLabelsToPrint = totalquantityordered / $scope.productTechSheet[0].Qty_By_Box;
       }
 
-      if (in_compound_product == 'Y') {
+      if (in_compound_product == 'Y' && is_parent == 'N') {
         var isChildProduct = true;
       } else {
         var isChildProduct = false;
