@@ -287,7 +287,17 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
   },
     function errorCallback(data) {
       console.log('Error: ' + data);
-    });
+  });
+
+  ////GET PRINTERS FOR THE UIB-TYPEAHED 
+  $scope.printersTypeAhead = [];
+  var request = $http.get('/getPrintersForTypeAhead');
+  request.then(function successCallback(response) {
+    $scope.printersTypeAhead = response.data;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+  });
 
   //GET PRINTERS 
   $scope.printers = [];
@@ -301,7 +311,24 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
   },
     function errorCallback(data) {
       console.log('Error: ' + data);
-    });
+  });
+
+  //GET PRINTERS CONFIGURATION FOR EACH CUSTOMER
+  $scope.printersforeachcustomer = [];
+  $scope.articlePrinterForCustomerIP = "";
+  var request = $http.get('/getPrintersConfigurationForEachCustomer');
+  request.then(function successCallback(response) {
+    $scope.printersforeachcustomer = response.data;
+    /* for(i = 0; i < $scope.printersforeachcustomer.length; i++) {
+      $scope.articlePrinterForCustomerIP = response.data[0].ARTICLE_PRINTER_IP_ADDRESS;
+      $scope.boxPrinterForCustomerIP = response.data[0].BOX_PRINTER_IP_ADDRESS;
+    } */
+    /* $scope.articlePrinterPortForCustomer = response.data[0].ARTICLE_PRINTER_PORT;
+    $scope.boxPrinterPortForCustomer = response.data[0].BOX_PRINTER_PORT; */
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+  });
 
   //UPDATE PRINTER INFORMATION
   $scope.updatePrinterIPAddress = function () {

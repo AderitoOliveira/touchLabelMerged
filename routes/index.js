@@ -736,6 +736,18 @@ router.get('/getPrintersConfiguration', function (req, res) {
   getPrintersConfiguration(req, res);
 });
 
+//GET PRINTERS CONFIGURATION FOR EACH CUSTOMER
+router.get('/getPrintersConfigurationForEachCustomer', function (req, res) {
+  console.log("GET PRINTERS CONFIGURATION FOR EACH CUSTOMER");
+  getPrintersConfigurationForEachCustomer(req, res);
+});
+
+//GET PRINTERS FOR THE UIB-TYPEAHED 
+router.get('/getPrintersForTypeAhead', function (req, res) {
+  console.log("GET PRINTERS FOR THE UIB-TYPEAHED");
+  getPrintersForTypeAhead(req, res);
+});
+
 //UPDATE PRINTERS CONFIGURATION
 router.post('/updatePrintersConfiguration', function (req, res) {
   console.log("UPDATE PRINTERS CONFIGURATION");
