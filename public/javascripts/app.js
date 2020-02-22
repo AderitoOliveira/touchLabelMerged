@@ -1603,7 +1603,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       //IF THE Qty_By_Box OR Qty_By_Pallet OR Bar_Code_Tech_Sheet ARE NOT DEFINED IN THE PRODUCT TECHNICAL SHEET OF THE PRODUCT
       //THE PRODUCT CANNOT BE CLOSED FOR PAINTING IN THIS ORDER
       //IF the Qty_By_Pallet_Compound_Product is defined then it's a child product
-      if (($scope.productTechSheet[0].Qty_By_Box == null || $scope.productTechSheet[0].Qty_By_Pallet == null || $scope.productTechSheet[0].Bar_Code_Tech_Sheet == null) && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null) {
+      if (($scope.productTechSheet[0].Qty_By_Box == null || $scope.productTechSheet[0].PRODUCT_NAME_FOR_LABEL == null || $scope.productTechSheet[0].Qty_By_Pallet == null || $scope.productTechSheet[0].Bar_Code_Tech_Sheet == null) && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null) {
 
         var messageToSend = "";
         if ($scope.productTechSheet[0].Qty_By_Box == null && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null) {
@@ -1614,6 +1614,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         }
         if ($scope.productTechSheet[0].Bar_Code_Tech_Sheet == null && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null && messageToSend == "") {
           messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o Código de Barras. Edite a ficha técnica do produto e adicione o Código de Barras para poder fechar o produto nesta encomenda."
+        }
+        if ($scope.productTechSheet[0].PRODUCT_NAME_FOR_LABEL == null && messageToSend == "") {
+          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o Nome da Etiqueta. Edite o produto e defina o Nome da Etiqueta para poder fechar o produto nesta encomenda."
         }
 
         ModalService.showModal({
@@ -3077,7 +3080,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     //IF THE Qty_By_Box OR Qty_By_Pallet OR Bar_Code_Tech_Sheet ARE NOT DEFINED IN THE PRODUCT TECHNICAL SHEET OF THE PRODUCT
     //THE PRODUCT CANNOT BE CLOSED FOR PAINTING IN THIS ORDER
     //IF the Qty_By_Pallet_Compound_Product is defined then it's a child product
-    if (($scope.productTechSheet[0].Qty_By_Box == null || $scope.productTechSheet[0].Qty_By_Pallet == null || $scope.productTechSheet[0].Bar_Code_Tech_Sheet == null) && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null) {
+    if (($scope.productTechSheet[0].Qty_By_Box == null || $scope.productTechSheet[0].PRODUCT_NAME_FOR_LABEL == null || $scope.productTechSheet[0].Qty_By_Pallet == null || $scope.productTechSheet[0].Bar_Code_Tech_Sheet == null) && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null) {
 
       var messageToSend = "";
       if ($scope.productTechSheet[0].Qty_By_Box == null && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null) {
@@ -3088,6 +3091,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       }
       if ($scope.productTechSheet[0].Bar_Code_Tech_Sheet == null && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null && messageToSend == "") {
         messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o Código de Barras. Edite a ficha técnica do produto e adicione o Código de Barras para poder fechar o produto nesta encomenda."
+      }
+      if ($scope.productTechSheet[0].PRODUCT_NAME_FOR_LABEL == null && messageToSend == "") {
+        messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o Nome da Etiqueta. Edite o produto e defina o Nome da Etiqueta para poder fechar o produto nesta encomenda."
       }
 
       ModalService.showModal({

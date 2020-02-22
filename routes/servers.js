@@ -840,7 +840,7 @@ getProductTechSheet = function(data, callback) {
 //GET PRODUCT TECHNICAL SHEET FOR GENERATING LABELS 
 getProductTechSheetForLabels = function(data, callback) {
     con.connect(function(err) {
-    con.query('select ptsheet.*, prod.CLIENT_NAME, label.LABEL_HAS_COUNTER from products_technical_sheet ptsheet, products prod, label_templates label where ptsheet.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID and prod.CLIENT_NAME = label.ClientName and ptsheet.CUSTOMER_PRODUCT_ID = ?', [data.params.productid], function(err, rows) {
+    con.query('select ptsheet.*, prod.CLIENT_NAME, prod.PRODUCT_NAME_FOR_LABEL, label.LABEL_HAS_COUNTER from products_technical_sheet ptsheet, products prod, label_templates label where ptsheet.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID and prod.CLIENT_NAME = label.ClientName and ptsheet.CUSTOMER_PRODUCT_ID = ?', [data.params.productid], function(err, rows) {
         if (err) {
             throw err;
         } else
