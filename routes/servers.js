@@ -1983,6 +1983,42 @@ getPrintersConfiguration = function(data, callback) {
 });
 }
 
+//GET PRINTERS CONFIGURATION FOR EACH CUSTOMER
+getPrintersConfigurationForEachCustomer = function(data, callback) {
+    con.connect(function(err) {
+    con.query('select ClientName, ARTICLE_PRINTER_IP_ADDRESS, BOX_PRINTER_IP_ADDRESS, ARTICLE_LABEL_WITH_2_COLUMNS, LABEL_HAS_COUNTER, NUMBER_LABELS_ON_ARTICLE, NUMBER_LABELS_ON_BOX from label_templates', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET PRINTERS CONFIGURATION");   
+
+    });
+});
+}
+
+//GET PRINTERS FOR THE UIB-TYPEAHED 
+getPrintersForTypeAhead = function(data, callback) {
+    con.connect(function(err) {
+    con.query('select ARTICLE_PRINTER_IP_ADDRESS, BOX_PRINTER_IP_ADDRESS from printers_ip_address', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET PRINTERS FOR THE UIB-TYPEAHED");   
+
+    });
+});
+}
+
 //UPDATE PRINTERS CONFIGURATION
 updatePrintersConfiguration = function(req, res) {
     var postData  = req.body;
