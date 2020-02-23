@@ -1,25 +1,31 @@
 <div id="configurations-wrap" class="wrap" ng-controller="configurations">
     <div class="form-heading-wrap">
-      <div class="row">
-        <div class="col-md-12">
-          <ul id="tech-sheet-tabs" class="toggle-wrap">
-            <div class="row">
-              <li class="toggle-item col-md-2">
-                <a class="toggle-button primary-conf active" data-target="#email-configurations">Email</a>
-              </li>
-              <li class="toggle-item col-md-2">
-                <a class="toggle-button primary-conf" data-target="#printers-configurations">Impressoras</a>
-              </li>
-              <li class="toggle-item col-md-2">
-                <a class="toggle-button secondary-conf" data-target="#boxes-configurations">Medidas de Caixa</a>
-              </li>
-              <li class="toggle-item col-md-2">
-                <a class="toggle-button secondary-conf" data-target="#workers-configurations">Funcionários</a>
-              </li>
+        <div class="row">
+            <div class="col-md-12">
+                <ul id="tech-sheet-tabs" class="toggle-wrap">
+                    <div class="row">
+                        <li class="toggle-item col-md-2">
+                            <a class="toggle-button primary-conf active" data-target="#email-configurations">Email</a>
+                        </li>
+                        <li class="toggle-item col-md-2">
+                            <a class="toggle-button primary-conf" data-target="#printers-configurations">Impressoras</a>
+                        </li>
+                        <li class="toggle-item col-md-2">
+                            <a class="toggle-button secondary-conf" data-target="#boxes-configurations">Medidas de
+                                Caixa</a>
+                        </li>
+                        <li class="toggle-item col-md-2">
+                            <a class="toggle-button secondary-conf"
+                                data-target="#workers-configurations">Funcionários</a>
+                        </li>
+                        <li class="toggle-item col-md-2">
+                            <a class="toggle-button secondary-conf"
+                                data-target="#printer-label-by-customer">Impressoras-Cliente</a>
+                        </li>
+                    </div>
+                </ul>
             </div>
-          </ul>
         </div>
-      </div>
     </div>
     <div class="form-wrap">
         <div class="row">
@@ -30,31 +36,39 @@
                         <div class="col-md-12 form-row">
                             <div class="row">
                                 <div class="col-md-4 form-input-item">
-                                    <label class="control-label" for="rawMaterial">Email Primário de Notificações</label>
+                                    <label class="control-label" for="rawMaterial">Email Primário de
+                                        Notificações</label>
                                     <div class="input-wrap-inner">
-                                    <input type="text" class="form-control" id="rawMaterial" placeholder="email@email.com" ng-model="rawMaterial">
-                                    </div>                  
+                                        <input type="text" class="form-control" id="rawMaterial"
+                                            placeholder="email@email.com" ng-model="rawMaterial">
+                                    </div>
                                 </div>
-                            </div>                
+                            </div>
                         </div>
                         <div class="col-md-12 form-row">
                             <div class="row">
                                 <div class="col-md-4 form-input-item">
-                                    <label class="control-label" for="rawMaterial">Email Secundário de Notificações</label>
+                                    <label class="control-label" for="rawMaterial">Email Secundário de
+                                        Notificações</label>
                                     <div class="input-wrap-inner">
-                                    <input type="text" class="form-control" id="rawMaterial" placeholder="email@email.com" ng-model="rawMaterial">
-                                    </div>                  
+                                        <input type="text" class="form-control" id="rawMaterial"
+                                            placeholder="email@email.com" ng-model="rawMaterial">
+                                    </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                         <div class="col-md-12 button-holder">
                             <div class="row">
                                 <div class="col-md-2">
-                                <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" />Cancelar</button>
+                                    <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img
+                                            src="assets/icons/cancel-symbol.svg" width="16px"
+                                            height="16px" />Cancelar</button>
                                 </div>
                                 <div class="col-md-2">
-                                <button id="conf-save" type="submit" ng-click="saveTechSheet()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
+                                    <button id="conf-save" type="submit" ng-click="saveTechSheet()"
+                                        class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg"
+                                            width="18px" height="14px" />Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -64,64 +78,82 @@
             </div>
             <div id="printers-configurations" class="toggle-panel configurations-panel">
                 <div class="col-md-12">
-                    <form class="inner-form-wrap row"  role="form">
+                    <form class="inner-form-wrap row" role="form">
                         <div class="col-md-12 form-row">
                             <div class="row">
                                 <div class="col-md-4 form-input-item">
-                                    <label class="control-label" for="articlePrinterIP">Endereço IP Impressora Etiquetas de Produto</label>
+                                    <label class="control-label" for="articlePrinterIP">Endereço IP Impressora Etiquetas
+                                        de Produto</label>
                                     <div class="input-wrap-inner">
-                                    <input type="text" class="form-control" id="articlePrinterIP" placeholder="0.0.0.0" ng-model="articlePrinterIP">
-                                    </div>                  
+                                        <input type="text" class="form-control" id="articlePrinterIP"
+                                            placeholder="0.0.0.0" ng-model="articlePrinterIP">
+                                    </div>
                                 </div>
-                            </div>                
+                            </div>
                         </div>
                         <div class="col-md-12 form-row">
                             <div class="row">
                                 <div class="col-md-4 form-input-item">
-                                    <label class="control-label" for="boxPrinterIP">Endereço IP Impressora Etiquetas de Caixa</label>
+                                    <label class="control-label" for="boxPrinterIP">Endereço IP Impressora Etiquetas de
+                                        Caixa</label>
                                     <div class="input-wrap-inner">
-                                    <input type="text" class="form-control" id="boxPrinterIP" placeholder="0.0.0.0" ng-model="boxPrinterIP">
-                                    </div>                  
+                                        <input type="text" class="form-control" id="boxPrinterIP" placeholder="0.0.0.0"
+                                            ng-model="boxPrinterIP">
+                                    </div>
                                 </div>
-                            </div>    
+                            </div>
                         </div>
                         <div class="col-md-12 button-holder">
                             <div class="row">
                                 <div class="col-md-2">
-                                <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img src="assets/icons/cancel-symbol.svg" width="16px" height="16px" />Cancelar</button>
+                                    <button type="submit" ng-click="back()" class="btn btn-default btn-cancel"><img
+                                            src="assets/icons/cancel-symbol.svg" width="16px"
+                                            height="16px" />Cancelar</button>
                                 </div>
                                 <div class="col-md-2">
-                                <button id="conf-save" type="submit" ng-click="updatePrinterIPAddress()" class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Guardar</button>
+                                    <button id="conf-save" type="submit" ng-click="updatePrinterIPAddress()"
+                                        class="btn btn-default btn-save"><img src="assets/icons/symbol-sucess.svg"
+                                            width="18px" height="14px" />Guardar</button>
                                 </div>
                             </div>
                         </div>
                     </form>
-                </div>  
+                </div>
             </div>
             <div id="boxes-configurations" class="toggle-panel configurations-panel">
-              <div class="col-md-12">
-                  <div class="row">
-                      <div class="col-md-6">
-                          <div class="row">
-                            <div  id="boxes-conf-table" class="col-md-12">
-                                <div class="label-table-wrap">
-                                    <div class="label-table-header row">
-                                        <div class="inner-wrap">
-                                            <div class="col-md-2 label-header-item header-label-boxid">ID</div>
-                                            <div class="col-md-5 label-header-item header-label-boxdim">Dimensões</div>
-                                            <div class="col-md-4 label-header-item header-label-boxclient">Cliente</div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div id="boxes-conf-table" class="col-md-12">
+                                    <div class="label-table-wrap">
+                                        <div class="label-table-header row">
+                                            <div class="inner-wrap">
+                                                <div class="col-md-2 label-header-item header-label-boxid">ID</div>
+                                                <div class="col-md-5 label-header-item header-label-boxdim">Dimensões
+                                                </div>
+                                                <div class="col-md-4 label-header-item header-label-boxclient">Cliente
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="order-labels-content row" dir-paginate="box in boxes | orderBy : 'ID' |filter:searchChar | itemsPerPage:7" pagination-id="box">
+                                        <div class="order-labels-content row"
+                                            dir-paginate="box in boxes | orderBy : 'ID' |filter:searchChar | itemsPerPage:7"
+                                            pagination-id="box">
                                             <div class="col-md-12">
                                                 <div class="row">
                                                     <div class="item-inner-wrap">
-                                                        <div class="col-md-2 table-item item-label-boxid">{{box.ID}}</div>
-                                                        <div class="col-md-5 table-item item-label-boxdim">{{box.MEASURES}}</div>
-                                                        <div class="col-md-3 table-item item-label-boxclient">{{box.CLIENT_NAME}}</div>
+                                                        <div class="col-md-2 table-item item-label-boxid">{{box.ID}}
+                                                        </div>
+                                                        <div class="col-md-5 table-item item-label-boxdim">
+                                                            {{box.MEASURES}}</div>
+                                                        <div class="col-md-3 table-item item-label-boxclient">
+                                                            {{box.CLIENT_NAME}}</div>
                                                         <div class="col-md-2 table-item item-button-action">
-                                                            <a class="btn btn-sm btn-danger" ng-click="deleteBoxMeasure(box.UNIQUE_ID, box.ID, box.MEASURES)" data-toggle="tooltip" title="Remover Caixa">
-                                                                <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
+                                                            <a class="btn btn-sm btn-danger"
+                                                                ng-click="deleteBoxMeasure(box.UNIQUE_ID, box.ID, box.MEASURES)"
+                                                                data-toggle="tooltip" title="Remover Caixa">
+                                                                <img src="assets/icons/btn-remove.svg" width="24px"
+                                                                    height="24px" />
                                                             </a>
                                                         </div>
                                                     </div>
@@ -130,24 +162,21 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>                        
+                            </div>
                             <div id="pagination">
                                 <div class="row">
                                     <div class="container">
                                         <div>
-                                            <dir-pagination-controls
-                                                    max-size="7"
-                                                    direction-links="true"
-                                                    boundary-links="true" 
-                                                    pagination-id="box">
+                                            <dir-pagination-controls max-size="7" direction-links="true"
+                                                boundary-links="true" pagination-id="box">
                                             </dir-pagination-controls>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                          </div>
-                          <!--Adicionar Caixas-->
-                          <div class="form-boxes-wrap col-md-6">
+                        </div>
+                        <!--Adicionar Caixas-->
+                        <div class="form-boxes-wrap col-md-6">
                             <div class="row">
                                 <div class="col-md-7 block-heading">
                                     <h5 class="block-title block-search">
@@ -156,8 +185,9 @@
                                 </div>
                                 <div class="col-md-6 form-input-item">
                                     <div class="input-wrap-inner">
-                                    <input type="text" class="form-control form-search" id="search-boxes" placeholder="Pesquisar Caixas" ng-model="searchChar">
-                                    </div>                  
+                                        <input type="text" class="form-control form-search" id="search-boxes"
+                                            placeholder="Pesquisar Caixas" ng-model="searchChar">
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -171,140 +201,220 @@
                                 <div class="col-md-2 form-input-item">
                                     <label class="control-label" for="boxId">ID</label>
                                     <div class="input-wrap-inner">
-                                    <input type="text" class="form-control" id="boxId" placeholder="001" ng-model="boxId">
-                                    </div>                  
+                                        <input type="text" class="form-control" id="boxId" placeholder="001"
+                                            ng-model="boxId">
+                                    </div>
                                 </div>
                                 <div class="col-md-4 form-input-item">
                                     <label class="control-label" for="boxDimensions">Dimensões</label>
                                     <div class="input-wrap-inner">
-                                    <input type="text" class="form-control" id="boxDimensions" placeholder="00*00*00" ng-model="boxDimensions">
-                                    </div>                  
+                                        <input type="text" class="form-control" id="boxDimensions"
+                                            placeholder="00*00*00" ng-model="boxDimensions">
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 form-input-item">
                                     <label class="control-label" for="clientname">Cliente</label>
                                     <div class="input-wrap-inner">
-                                    <input type="text" autocomplete="off" class="form-control" id="clientname" placeholder="Nome Cliente" ng-model="clientname" uib-typeahead="client as client.CLIENT_NAME for client in clients | filter:$viewValue | limitTo:8" ng-style="{'z-index': 1050 + index*10, display: 'block'}">
-                                    </div>                  
+                                        <input type="text" autocomplete="off" class="form-control" id="clientname"
+                                            placeholder="Nome Cliente" ng-model="clientname"
+                                            uib-typeahead="client as client.CLIENT_NAME for client in clients | filter:$viewValue | limitTo:8"
+                                            ng-style="{'z-index': 1050 + index*10, display: 'block'}">
+                                    </div>
                                 </div>
-                            </div>  
+                            </div>
                             <div class="row">
                                 <div class="col-md-4">
-                                <button id="conf-save" type="submit" ng-click="saveBoxMeasure()" class="btn btn-default btn-save btn-margin"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Adicionar</button>
+                                    <button id="conf-save" type="submit" ng-click="saveBoxMeasure()"
+                                        class="btn btn-default btn-save btn-margin"><img
+                                            src="assets/icons/symbol-sucess.svg" width="18px"
+                                            height="14px" />Adicionar</button>
                                 </div>
                             </div>
                         </div>
-                      </div>
-                  </div>
+                    </div>
+                </div>
             </div>
             <div id="workers-configurations" class="toggle-panel configurations-panel">
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="row">
-                                <div  id="workers-conf-table" class="col-md-12">
+                                <div id="workers-conf-table" class="col-md-12">
                                     <div class="label-table-wrap">
                                         <div class="label-table-header row">
                                             <div class="inner-wrap">
                                                 <div class="col-md-2 label-header-item header-label-boxid">ID</div>
                                                 <div class="col-md-5 label-header-item header-label-boxdim">Nome</div>
-                                                <div class="col-md-5 label-header-item header-label-boxclient">Função</div>
+                                                <div class="col-md-5 label-header-item header-label-boxclient">Função
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="order-labels-content row" dir-paginate="employee in employees | orderBy : 'ID' |filter:searchChar | itemsPerPage:7" pagination-id="employee">
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <div class="item-inner-wrap">
-                                                            <div class="col-md-2 table-item item-label-boxid">{{employee.EMPLOYEE_ID}}</div>
-                                                            <div class="col-md-5 table-item item-label-boxdim">{{employee.EMPLOYEE_NAME}}</div>
-                                                            <div class="col-md-3 table-item item-label-boxclient">{{employee.EMPLOYEE_FUNCTION}}</div>
-                                                            <div class="col-md-2 table-item item-button-action">
-                                                                <a class="btn btn-sm btn-danger" ng-click="deleteEmployee(employee.EMPLOYEE_ID, employee.EMPLOYEE_NAME, employee.EMPLOYEE_FUNCTION)" data-toggle="tooltip" title="Remover Funcionário">
-                                                                    <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
-                                                                </a>
-                                                            </div>
+                                        <div class="order-labels-content row"
+                                            dir-paginate="employee in employees | orderBy : 'ID' |filter:searchChar | itemsPerPage:7"
+                                            pagination-id="employee">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="item-inner-wrap">
+                                                        <div class="col-md-2 table-item item-label-boxid">
+                                                            {{employee.EMPLOYEE_ID}}</div>
+                                                        <div class="col-md-5 table-item item-label-boxdim">
+                                                            {{employee.EMPLOYEE_NAME}}</div>
+                                                        <div class="col-md-3 table-item item-label-boxclient">
+                                                            {{employee.EMPLOYEE_FUNCTION}}</div>
+                                                        <div class="col-md-2 table-item item-button-action">
+                                                            <a class="btn btn-sm btn-danger"
+                                                                ng-click="deleteEmployee(employee.EMPLOYEE_ID, employee.EMPLOYEE_NAME, employee.EMPLOYEE_FUNCTION)"
+                                                                data-toggle="tooltip" title="Remover Funcionário">
+                                                                <img src="assets/icons/btn-remove.svg" width="24px"
+                                                                    height="24px" />
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>                        
-                                <div id="pagination">
-                                    <div class="row">
-                                        <div class="container">
-                                            <div>
-                                                <dir-pagination-controls
-                                                        max-size="7"
-                                                        direction-links="true"
-                                                        boundary-links="true" 
-                                                        pagination-id="employee">
-                                                </dir-pagination-controls>
+                                </div>
+                            </div>
+                            <div id="pagination">
+                                <div class="row">
+                                    <div class="container">
+                                        <div>
+                                            <dir-pagination-controls max-size="7" direction-links="true"
+                                                boundary-links="true" pagination-id="employee">
+                                            </dir-pagination-controls>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Adicionar Funcionário-->
+                        <div class="form-boxes-wrap col-md-6">
+                            <div class="row">
+                                <div class="col-md-7 block-heading">
+                                    <h5 class="block-title block-search">
+                                        Pesquisar Funcionários
+                                    </h5>
+                                </div>
+                                <div class="col-md-6 form-input-item">
+                                    <div class="input-wrap-inner">
+                                        <input type="text" class="form-control form-search" id="search-employee"
+                                            placeholder="Pesquisar Funcionário" ng-model="searchChar">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 block-heading">
+                                    <h4 class="block-title">
+                                        Adicionar novo Funcionário
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 form-input-item">
+                                    <label class="control-label" for="employeeId">ID</label>
+                                    <div class="input-wrap-inner">
+                                        <input type="text" class="form-control" id="employeeId" placeholder="001"
+                                            ng-model="employeeId">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-input-item">
+                                    <label class="control-label" for="employeeName">Nome</label>
+                                    <div class="input-wrap-inner">
+                                        <input type="text" class="form-control" id="employeeName"
+                                            placeholder="Nome Funcionário" ng-model="employeeName">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-input-item">
+                                    <label class="control-label" for="employeeFunction">Função</label>
+                                    <div class="input-wrap-inner">
+                                        <input type="text" autocomplete="off" class="form-control" id="employeeFunction"
+                                            placeholder="RODISTA/PINTOR" ng-model="employeeFunction">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <button id="conf-save" type="submit" ng-click="insertEmployee()"
+                                        class="btn btn-default btn-save btn-margin"><img
+                                            src="assets/icons/symbol-sucess.svg" width="18px"
+                                            height="14px" />Adicionar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="printer-label-by-customer" class="toggle-panel configurations-panel">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div id="workers-conf-table" class="col-md-12">
+                            <div class="label-table-wrap">
+                                <div class="label-table-header row">
+                                    <div class="inner-wrap">
+                                        <div class="col-md-2 label-header-item header-label-boxid">Nome Cliente</div>
+                                        <div class="col-md-2 label-header-item header-label-boxdim">IP Impressora Artigo
+                                        </div>
+                                        <div class="col-md-2 label-header-item header-label-boxclient">IP Impressora
+                                            Caixa</div>
+                                        <div class="col-md-2 label-header-item header-label-boxid">Etiqu. Artigo duas
+                                            colunas</div>
+                                        <div class="col-md-2 label-header-item header-label-boxdim">Etiqueta caixa com
+                                            contador</div>
+                                        <div class="col-md-2 label-header-item header-label-boxclient">Número Etiquetas
+                                            na Caixa</div>
+                                    </div>
+                                </div>
+                                <div class="order-labels-content row" dir-paginate="printerconfig in printersforeachcustomer | itemsPerPage:30" pagination-id="employee">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="item-inner-wrap">
+                                                <div class="col-md-2 table-item item-label-boxid">{{printerconfig.ClientName}}</div>
+                                                <div class="col-md-2 table-item item-label-boxdim">{{printerconfig.ARTICLE_PRINTER_IP_ADDRESS}}</div>
+                                                <!-- <div class="col-md-2 table-item item-label-boxid">
+                                                </div> -->
+                                                <div class="col-md-2 table-item item-label-boxclient">{{printerconfig.BOX_PRINTER_IP_ADDRESS}}</div>
+                                                <div class="col-md-2 table-item item-label-boxid">{{printerconfig.ARTICLE_LABEL_WITH_2_COLUMNS}}</div>
+                                                <div class="col-md-2 table-item item-label-boxdim">{{printerconfig.LABEL_HAS_COUNTER}}</div>
+                                                <div class="col-md-2 table-item item-label-boxclient">{{printerconfig.NUMBER_LABELS_ON_BOX}}</div>
+                                                <!-- <div class="col-md-2 table-item item-button-action">
+                                                                <a class="btn btn-sm btn-danger" ng-click="deleteEmployee(employee.EMPLOYEE_ID, employee.EMPLOYEE_NAME, employee.EMPLOYEE_FUNCTION)" data-toggle="tooltip" title="Remover Funcionário">
+                                                                    <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
+                                                                </a>
+                                                            </div> -->
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!--Adicionar Funcionário-->
-                            <div class="form-boxes-wrap col-md-6">
-                                <div class="row">
-                                    <div class="col-md-7 block-heading">
-                                        <h5 class="block-title block-search">
-                                            Pesquisar Funcionários
-                                        </h5>
-                                    </div>
-                                    <div class="col-md-6 form-input-item">
-                                        <div class="input-wrap-inner">
-                                        <input type="text" class="form-control form-search" id="search-employee" placeholder="Pesquisar Funcionário" ng-model="searchChar">
-                                        </div>                  
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 block-heading">
-                                        <h4 class="block-title">
-                                            Adicionar novo Funcionário
-                                        </h4>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-2 form-input-item">
-                                        <label class="control-label" for="employeeId">ID</label>
-                                        <div class="input-wrap-inner">
-                                        <input type="text" class="form-control" id="employeeId" placeholder="001" ng-model="employeeId">
-                                        </div>                  
-                                    </div>
-                                    <div class="col-md-4 form-input-item">
-                                        <label class="control-label" for="employeeName">Nome</label>
-                                        <div class="input-wrap-inner">
-                                        <input type="text" class="form-control" id="employeeName" placeholder="Nome Funcionário" ng-model="employeeName">
-                                        </div>                  
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 form-input-item">
-                                        <label class="control-label" for="employeeFunction">Função</label>
-                                        <div class="input-wrap-inner">
-                                        <input type="text" autocomplete="off" class="form-control" id="employeeFunction" placeholder="RODISTA/PINTOR" ng-model="employeeFunction">
-                                        </div>                  
-                                    </div>
-                                </div>  
-                                <div class="row">
-                                    <div class="col-md-4">
-                                    <button id="conf-save" type="submit" ng-click="insertEmployee()" class="btn btn-default btn-save btn-margin"><img src="assets/icons/symbol-sucess.svg" width="18px" height="14px" />Adicionar</button>
-                                    </div>
+                        </div>
+                    </div>
+                    <div id="pagination">
+                        <div class="row">
+                            <div class="container">
+                                <div>
+                                    <dir-pagination-controls max-size="7" direction-links="true"
+                                        boundary-links="true" pagination-id="printer-label">
+                                    </dir-pagination-controls>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
             </div>
+
         </div>
     </div>
-  </div>
-  <div id="conf-notification">
-      <div class="conf-inner">
-          <span class="conf-text">
+</div>
+<div id="conf-notification">
+    <div class="conf-inner">
+        <span class="conf-text">
             <img src="assets/icons/warning-yellow.svg" width="28px" height="28px"> Foram gravadas as suas alterações
-          </span>
-      </div>
-  </div>
+        </span>
+    </div>
+</div>

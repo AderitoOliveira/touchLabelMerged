@@ -287,7 +287,17 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
   },
     function errorCallback(data) {
       console.log('Error: ' + data);
-    });
+  });
+
+  ////GET PRINTERS FOR THE UIB-TYPEAHED 
+  $scope.printersTypeAhead = [];
+  var request = $http.get('/getPrintersForTypeAhead');
+  request.then(function successCallback(response) {
+    $scope.printersTypeAhead = response.data;
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+  });
 
   //GET PRINTERS 
   $scope.printers = [];
@@ -301,7 +311,24 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
   },
     function errorCallback(data) {
       console.log('Error: ' + data);
-    });
+  });
+
+  //GET PRINTERS CONFIGURATION FOR EACH CUSTOMER
+  $scope.printersforeachcustomer = [];
+  $scope.articlePrinterForCustomerIP = "";
+  var request = $http.get('/getPrintersConfigurationForEachCustomer');
+  request.then(function successCallback(response) {
+    $scope.printersforeachcustomer = response.data;
+    /* for(i = 0; i < $scope.printersforeachcustomer.length; i++) {
+      $scope.articlePrinterForCustomerIP = response.data[0].ARTICLE_PRINTER_IP_ADDRESS;
+      $scope.boxPrinterForCustomerIP = response.data[0].BOX_PRINTER_IP_ADDRESS;
+    } */
+    /* $scope.articlePrinterPortForCustomer = response.data[0].ARTICLE_PRINTER_PORT;
+    $scope.boxPrinterPortForCustomer = response.data[0].BOX_PRINTER_PORT; */
+  },
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+  });
 
   //UPDATE PRINTER INFORMATION
   $scope.updatePrinterIPAddress = function () {
@@ -1113,11 +1140,11 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       console.log('Error: ' + data);
     });
 
-  var request = $http.get('/orderproducts/' + orderId);
+  var request = $http.get('/orderproductsServerside/' + orderId);
   request.then(function successCallback(response) {
     $scope.products = response.data;
 
-    var x = 0;
+    /* var x = 0;
     for (i = 0; i < $scope.products.length; i++) {
 
       if ($scope.products[i].IS_PARENT == 'Y') {
@@ -1263,7 +1290,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
     $scope.singleProductsIndex = [];
 
-    return $scope.products;
+    return $scope.products; */
   },
     function errorCallback(data) {
       console.log('Error: ' + data);
@@ -1576,7 +1603,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       //IF THE Qty_By_Box OR Qty_By_Pallet OR Bar_Code_Tech_Sheet ARE NOT DEFINED IN THE PRODUCT TECHNICAL SHEET OF THE PRODUCT
       //THE PRODUCT CANNOT BE CLOSED FOR PAINTING IN THIS ORDER
       //IF the Qty_By_Pallet_Compound_Product is defined then it's a child product
-      if (($scope.productTechSheet[0].Qty_By_Box == null || $scope.productTechSheet[0].Qty_By_Pallet == null || $scope.productTechSheet[0].Bar_Code_Tech_Sheet == null) && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null) {
+      if (($scope.productTechSheet[0].Qty_By_Box == null || $scope.productTechSheet[0].PRODUCT_NAME_FOR_LABEL == null || $scope.productTechSheet[0].Qty_By_Pallet == null || $scope.productTechSheet[0].Bar_Code_Tech_Sheet == null) && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null) {
 
         var messageToSend = "";
         if ($scope.productTechSheet[0].Qty_By_Box == null && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null) {
@@ -1587,6 +1614,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
         }
         if ($scope.productTechSheet[0].Bar_Code_Tech_Sheet == null && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null && messageToSend == "") {
           messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o Código de Barras. Edite a ficha técnica do produto e adicione o Código de Barras para poder fechar o produto nesta encomenda."
+        }
+        if ($scope.productTechSheet[0].PRODUCT_NAME_FOR_LABEL == null && messageToSend == "") {
+          messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o Nome da Etiqueta. Edite o produto e defina o Nome da Etiqueta para poder fechar o produto nesta encomenda."
         }
 
         ModalService.showModal({
@@ -3050,7 +3080,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     //IF THE Qty_By_Box OR Qty_By_Pallet OR Bar_Code_Tech_Sheet ARE NOT DEFINED IN THE PRODUCT TECHNICAL SHEET OF THE PRODUCT
     //THE PRODUCT CANNOT BE CLOSED FOR PAINTING IN THIS ORDER
     //IF the Qty_By_Pallet_Compound_Product is defined then it's a child product
-    if (($scope.productTechSheet[0].Qty_By_Box == null || $scope.productTechSheet[0].Qty_By_Pallet == null || $scope.productTechSheet[0].Bar_Code_Tech_Sheet == null) && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null) {
+    if (($scope.productTechSheet[0].Qty_By_Box == null || $scope.productTechSheet[0].PRODUCT_NAME_FOR_LABEL == null || $scope.productTechSheet[0].Qty_By_Pallet == null || $scope.productTechSheet[0].Bar_Code_Tech_Sheet == null) && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null) {
 
       var messageToSend = "";
       if ($scope.productTechSheet[0].Qty_By_Box == null && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null) {
@@ -3061,6 +3091,9 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       }
       if ($scope.productTechSheet[0].Bar_Code_Tech_Sheet == null && $scope.productTechSheet[0].Qty_By_Pallet_Compound_Product == null && messageToSend == "") {
         messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o Código de Barras. Edite a ficha técnica do produto e adicione o Código de Barras para poder fechar o produto nesta encomenda."
+      }
+      if ($scope.productTechSheet[0].PRODUCT_NAME_FOR_LABEL == null && messageToSend == "") {
+        messageToSend = "O produto " + customerproductid + " (" + productName + ") " + "não tem definido o Nome da Etiqueta. Edite o produto e defina o Nome da Etiqueta para poder fechar o produto nesta encomenda."
       }
 
       ModalService.showModal({

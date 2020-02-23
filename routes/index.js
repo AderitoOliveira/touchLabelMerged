@@ -187,6 +187,13 @@ router.get('/orderproducts/:id', function (req, res) {
   fetchAllProductsForAnOrder(req, res);
 });
 
+//Get ALL Products for an Order - Server Side
+router.get('/orderproductsServerside/:id', function (req, res) {
+  console.log("List All Orders");
+  console.log(req.body);
+  fetchAllProductsForAnOrderServerSide(req, res);
+});
+
 //Get ALL Products for an Order Historic
 router.get('/orderproductshistoric/:id', function (req, res) {
   console.log("List All Orders Historic");
@@ -734,6 +741,18 @@ router.get('/getBoxMeasuresAllFields', function (req, res) {
 router.get('/getPrintersConfiguration', function (req, res) {
   console.log("GET PRINTERS CONFIGURATION");
   getPrintersConfiguration(req, res);
+});
+
+//GET PRINTERS CONFIGURATION FOR EACH CUSTOMER
+router.get('/getPrintersConfigurationForEachCustomer', function (req, res) {
+  console.log("GET PRINTERS CONFIGURATION FOR EACH CUSTOMER");
+  getPrintersConfigurationForEachCustomer(req, res);
+});
+
+//GET PRINTERS FOR THE UIB-TYPEAHED 
+router.get('/getPrintersForTypeAhead', function (req, res) {
+  console.log("GET PRINTERS FOR THE UIB-TYPEAHED");
+  getPrintersForTypeAhead(req, res);
 });
 
 //UPDATE PRINTERS CONFIGURATION
