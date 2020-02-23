@@ -2875,3 +2875,182 @@ insertDailyProductionServersJs = async function(req, res) {
       console.log("DONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
       res.end(JSON.stringify(productDistributionToReturn));
   };
+
+
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  //Get All the Products for an Order - Server Side Function
+fetchAllProductsForAnOrderServerSide = function(data, callback) {
+	
+	var parentProductsIndex = [];
+	var singleProductsIndex = [];
+	var childProducts = [];
+	var products = [];
+  
+    con.connect(function(err) {
+    // Query Correcta --2018-08-30 con.query('SELECT s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED, 0) AS TOTAL_PRODUCTS_PRODUCED FROM (SELECT ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE, DATE_FORMAT(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") AS MODIFIED_DATE FROM orders_products WHERE ORDER_ID = ?) AS s1 LEFT OUTER JOIN (SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PRODUCED) AS TOTAL_PRODUCTS_PRODUCED FROM order_products_production_registry GROUP BY ORDER_ID, CUSTOMER_PRODUCT_ID ) AS s2 ON s1.ORDER_ID = s2.ORDER_ID AND s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID', [data.params.id], function(err, rows) {
+   // Query Correcta --2019-11-30 con.query('select s1.UNIQUE_ORDER_ID, s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.IN_COMPOUND_PRODUCT, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED,0) as TOTAL_PRODUCTS_PRODUCED, IFNULL(s5.TOTAL_PRODUCTS_PAINTED,0) as TOTAL_PRODUCTS_PAINTED, s3.IMAGE_NAME, s3.IMAGE_PATH, s3.PRICE_EURO_1, s3.IS_PARENT, s3.PARENT_CUSTOMER_PRODUCT_ID, s4.QTY_BY_PALLET from (select UNIQUE_ORDER_ID, ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, IN_COMPOUND_PRODUCT, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE from orders_products where ORDER_ID = ? ) as s1 left outer join (select ORDER_PRODUCTS_UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID, ORDER_PRODUCTS_UNIQUE_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s2.ORDER_PRODUCTS_UNIQUE_ID left outer join (select IMAGE_NAME, IMAGE_PATH, CUSTOMER_PRODUCT_ID, PRICE_EURO_1, IS_PARENT, PARENT_CUSTOMER_PRODUCT_ID from products) as s3 on s1.CUSTOMER_PRODUCT_ID = s3.CUSTOMER_PRODUCT_ID left outer join (select CUSTOMER_PRODUCT_ID, QTY_BY_PALLET from products_technical_sheet) as s4 on s1.CUSTOMER_PRODUCT_ID = s4.CUSTOMER_PRODUCT_ID left outer join (select ORDER_PRODUCTS_UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PAINTED) as TOTAL_PRODUCTS_PAINTED from order_products_painting_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID, ORDER_PRODUCTS_UNIQUE_ID) as s5 on s1.ORDER_ID = s5.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s5.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s5.ORDER_PRODUCTS_UNIQUE_ID order by IS_PARENT desc', [data.params.id], function(err, rows) {
+    con.query('select s1.UNIQUE_ORDER_ID, s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.IN_COMPOUND_PRODUCT, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED,0) as TOTAL_PRODUCTS_PRODUCED, IFNULL(s5.TOTAL_PRODUCTS_PAINTED,0) as TOTAL_PRODUCTS_PAINTED, s3.IMAGE_NAME, s3.IMAGE_PATH, s3.PRICE_EURO_1, s3.IS_PARENT, s3.PARENT_CUSTOMER_PRODUCT_ID, s4.QTY_BY_PALLET, s6.TOTAL_BOXES_TO_ORDER, s7.QTY_LABELS_TO_PRINT_ARTICLE, s7.QTY_LABELS_TO_PRINT_BOX from (select UNIQUE_ORDER_ID, ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, IN_COMPOUND_PRODUCT, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE from orders_products where ORDER_ID = ? ) as s1 left outer join (select ORDER_PRODUCTS_UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID, ORDER_PRODUCTS_UNIQUE_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s2.ORDER_PRODUCTS_UNIQUE_ID left outer join (select IMAGE_NAME, IMAGE_PATH, CUSTOMER_PRODUCT_ID, PRICE_EURO_1, IS_PARENT, PARENT_CUSTOMER_PRODUCT_ID from products) as s3 on s1.CUSTOMER_PRODUCT_ID = s3.CUSTOMER_PRODUCT_ID left outer join (select CUSTOMER_PRODUCT_ID, QTY_BY_PALLET from products_technical_sheet) as s4 on s1.CUSTOMER_PRODUCT_ID = s4.CUSTOMER_PRODUCT_ID left outer join (select ORDER_PRODUCTS_UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PAINTED) as TOTAL_PRODUCTS_PAINTED from order_products_painting_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID, ORDER_PRODUCTS_UNIQUE_ID) as s5 on s1.ORDER_ID = s5.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s5.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s5.ORDER_PRODUCTS_UNIQUE_ID left outer join (select ORDER_ID, CUSTOMER_PRODUCT_ID, TOTAL_BOXES_TO_ORDER from order_boxes_intermediate_staging) as s6 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s6.CUSTOMER_PRODUCT_ID left outer join (select ORDER_ID, CUSTOMER_PRODUCT_ID, QTY_LABELS_TO_PRINT_ARTICLE, QTY_LABELS_TO_PRINT_BOX from order_products_labels_to_print_intermediate_staging) as s7 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s7.CUSTOMER_PRODUCT_ID order by IS_PARENT desc', [data.params.id], function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+		
+		var x = 0;
+		for (i = 0; i < rows.length; i++) {
+
+		  if (rows[i].IS_PARENT == 'Y') {
+			var parentProductsArray = [];
+			parentProductsArray.push(rows[i]);
+			parentProductsIndex[rows[i].CUSTOMER_PRODUCT_ID] = parentProductsArray;
+		  }
+
+		  if (rows[i].PARENT_CUSTOMER_PRODUCT_ID == null || rows[i].IN_COMPOUND_PRODUCT == 'N') {
+			rows[i].CAN_BE_DELETED = 'true';
+		  }
+
+		  //IF em_producao
+		  if (rows[i].ORDER_PRODUCT_STATUS == 'em_producao') {
+
+			var percentage = Math.round(rows[i].TOTAL_PRODUCTS_PRODUCED / rows[i].TOTAL_QUANTITY_ORDERED * 100);
+			rows[i].percent = percentage;
+			rows[i].width = percentage;
+			rows[i].ORDER_PRODUCT_STATUS_RAW = rows[i].ORDER_PRODUCT_STATUS;
+			rows[i].ORDER_PRODUCT_STATUS = 'Em Produção';
+
+			rows[i].TOTAL_PRODUCTS_COMPLETED = rows[i].TOTAL_PRODUCTS_PRODUCED;
+			if (rows[i].IN_COMPOUND_PRODUCT != 'Y' || rows[i].IS_PARENT == 'Y') {
+			  rows[i].ORDER_BOXES = 'true';
+			  rows[i].INTERMEDIATE_LABELS = 'true';
+			} 
+
+			if (rows[i].PARENT_CUSTOMER_PRODUCT_ID != null && rows[i].IN_COMPOUND_PRODUCT == 'Y') {
+			  rows[i].ITEM_FILHO = 'item-filho';
+			  rows[i].INSERT_PRODUCTION = 'true';
+
+			  var parentProductsArray = parentProductsIndex[rows[i].PARENT_CUSTOMER_PRODUCT_ID];
+			  parentProductsArray.push(rows[i]);
+			  parentProductsIndex[rows[i].PARENT_CUSTOMER_PRODUCT_ID] = parentProductsArray;
+
+
+			} else if (rows[i].IS_PARENT == 'N') {
+			  singleProductsIndex.push(rows[i]);
+			  rows[i].INSERT_PRODUCTION = 'true';
+			}
+
+			if (rows[i].TOTAL_BOXES_TO_ORDER != null) {
+			  rows[i].BOXES_ICON_CLASS = 'btn-intermediate';
+			  rows[i].BOXES_ICON_TOOLTIP = 'Já foram encomendadas ' + rows[i].TOTAL_BOXES_TO_ORDER + ' caixas para este produto, nesta encomenda';
+			} else {
+			  rows[i].BOXES_ICON_CLASS = 'btn-action';
+			  rows[i].BOXES_ICON_TOOLTIP = 'Encomenda Parcial de Caixas';
+			}
+
+			if (rows[i].QTY_LABELS_TO_PRINT_ARTICLE != null || rows[i].QTY_LABELS_TO_PRINT_BOX) {
+			  rows[i].LABELS_ICON_CLASS = 'btn-intermediate';
+			  rows[i].LABELS_ICON_TOOLTIP = 'Já foram impressas ' + rows[i].QTY_LABELS_TO_PRINT_ARTICLE + ' etiquetas de artigo e ' + rows[i].QTY_LABELS_TO_PRINT_BOX + ' etiquetas de caixa , nesta encomenda';
+			} else {
+			  rows[i].LABELS_ICON_CLASS = 'btn-action';
+			  rows[i].LABELS_ICON_TOOLTIP = 'Encomenda Parcial de Etiquetas';
+			}
+
+		  }
+
+		  //IF em_pintura
+		  if (rows[i].ORDER_PRODUCT_STATUS == 'em_pintura') {
+			var percentage = Math.round(rows[i].TOTAL_PRODUCTS_PAINTED / rows[i].TOTAL_QUANTITY_ORDERED * 100);
+			rows[i].percent = percentage;
+			rows[i].width = percentage;
+			//NEWSTYLES
+			if (percentage > 33) {
+			  rows[i].progressBarColor = "#e31b1b";
+			}
+			if (percentage >= 34 && percentage <= 66) {
+			  rows[i].progressBarColor = "#e3cf1b";
+			}
+			if (percentage > 66) {
+			  rows[i].progressBarColor = "#1be36b";
+			}
+
+			rows[i].ORDER_PRODUCT_STATUS_RAW = rows[i].ORDER_PRODUCT_STATUS;
+			rows[i].ORDER_PRODUCT_STATUS = 'Em Pintura';
+			rows[i].INSERT_PAINTING = 'true';
+
+			rows[i].TOTAL_PRODUCTS_COMPLETED = rows[i].TOTAL_PRODUCTS_PAINTED;
+			if (rows[i].IN_COMPOUND_PRODUCT != 'Y' || rows[i].IS_PARENT == 'Y') {
+			  rows[i].INTERMEDIATE_LABELS = 'true';
+			} 
+
+			if (rows[i].PARENT_CUSTOMER_PRODUCT_ID != null && rows[i].IN_COMPOUND_PRODUCT == 'Y') {
+			  rows[i].ITEM_FILHO = 'item-filho';
+
+			  var parentProductsArray = parentProductsIndex[rows[i].PARENT_CUSTOMER_PRODUCT_ID];
+			  parentProductsArray.push(rows[i]);
+			  parentProductsIndex[rows[i].PARENT_CUSTOMER_PRODUCT_ID] = parentProductsArray;
+
+
+			} else if (rows[i].IS_PARENT == 'N') {
+			  singleProductsIndex.push(rows[i]);
+			}
+
+			if (rows[i].QTY_LABELS_TO_PRINT_ARTICLE != null || rows[i].QTY_LABELS_TO_PRINT_BOX) {
+			  rows[i].LABELS_ICON_CLASS = 'btn-intermediate';
+			  rows[i].LABELS_ICON_TOOLTIP = 'Já foram impressas ' + rows[i].QTY_LABELS_TO_PRINT_ARTICLE + ' etiquetas de artigo e ' + rows[i].QTY_LABELS_TO_PRINT_BOX + ' etiquetas de caixa , nesta encomenda';
+			} else {
+			  rows[i].LABELS_ICON_CLASS = 'btn-action';
+			  rows[i].LABELS_ICON_TOOLTIP = 'Encomenda Parcial de Etiquetas';
+			}
+
+		  }
+
+		  //IF fechado_na_encomenda
+		  if (rows[i].ORDER_PRODUCT_STATUS == 'fechado_na_encomenda') {
+			rows[i].ORDER_PRODUCT_STATUS_RAW = rows[i].ORDER_PRODUCT_STATUS;
+			rows[i].ORDER_PRODUCT_STATUS = 'Fechado na Encomenda';
+
+			rows[i].TOTAL_PRODUCTS_COMPLETED = rows[i].TOTAL_PRODUCTS_PRODUCED;
+
+			if (rows[i].PARENT_CUSTOMER_PRODUCT_ID != null && rows[i].IN_COMPOUND_PRODUCT == 'Y') {
+			  rows[i].ITEM_FILHO = 'item-filho';
+
+			  var parentProductsArray = parentProductsIndex[rows[i].PARENT_CUSTOMER_PRODUCT_ID];
+			  parentProductsArray.push(rows[i]);
+			  parentProductsIndex[rows[i].PARENT_CUSTOMER_PRODUCT_ID] = parentProductsArray;
+
+
+			} else if (rows[i].IS_PARENT == 'N') {
+			  singleProductsIndex.push(rows[i]);
+			}
+		  }
+
+		}
+
+		products = [];
+
+		var allParentCustomerProductKey = Object.keys(parentProductsIndex);
+
+		for (i = 0; i < allParentCustomerProductKey.length; i++) {
+		  var parentAndChildProductsArray = parentProductsIndex[allParentCustomerProductKey[i]];
+		  for (j = 0; j < parentAndChildProductsArray.length; j++) {
+			products.push(parentAndChildProductsArray[j]);
+		  }
+		}
+
+		for (k = 0; k < singleProductsIndex.length; k++) {
+		  products.push(singleProductsIndex[k]);
+		}
+
+		singleProductsIndex = [];
+
+        callback.end(JSON.stringify(products));
+		//return products;
+		
+        //callback.end(JSON.stringify(products));
+        console.log("FECTHING ALL PRODUCTS FOR THE ORDER " + data.params.id); 
+        //callback = rows; 
+    });
+});
+}

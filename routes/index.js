@@ -187,6 +187,13 @@ router.get('/orderproducts/:id', function (req, res) {
   fetchAllProductsForAnOrder(req, res);
 });
 
+//Get ALL Products for an Order - Server Side
+router.get('/orderproductsServerside/:id', function (req, res) {
+  console.log("List All Orders");
+  console.log(req.body);
+  fetchAllProductsForAnOrderServerSide(req, res);
+});
+
 //Get ALL Products for an Order Historic
 router.get('/orderproductshistoric/:id', function (req, res) {
   console.log("List All Orders Historic");
