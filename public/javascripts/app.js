@@ -1140,11 +1140,12 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       console.log('Error: ' + data);
     });
 
-  var request = $http.get('/orderproductsServerside/' + orderId);
+  //var request = $http.get('/orderproductsServerside/' + orderId);
+  var request = $http.get('/orderproducts/' + orderId);
   request.then(function successCallback(response) {
     $scope.products = response.data;
 
-    /* var x = 0;
+    var x = 0;
     for (i = 0; i < $scope.products.length; i++) {
 
       if ($scope.products[i].IS_PARENT == 'Y') {
@@ -1290,7 +1291,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
 
     $scope.singleProductsIndex = [];
 
-    return $scope.products; */
+    return $scope.products;
   },
     function errorCallback(data) {
       console.log('Error: ' + data);
