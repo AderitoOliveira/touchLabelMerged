@@ -2,11 +2,11 @@ var mysql = require('mysql');
 
 
 /* var con = mysql.createConnection({
-    host: 'localhost',
+    host: '127.0.0.1',
     user: 'easylabeldb',
     password: 'easylabeldb',
     database: 'easylabeldb',
-    port: '15432'
+    port: '3306'
 }); */
 
 
@@ -16,7 +16,7 @@ var mysql = require('mysql');
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'	
-}); */
+}); --  ANTIGO POD ---*/ 
 
 var con = mysql.createConnection({  
     host: '172.30.221.112',
@@ -2209,12 +2209,6 @@ postAuthenticateUserInfo = function(req, callback) {
             console.log("rows: " + JSON.stringify(rows)); 
             console.log("GET USER");   
         });
-
-        if (err) {
-            console.log(err.message);
-            console.error(err.message);
-            throw err;
-        }
     });
 }
 
