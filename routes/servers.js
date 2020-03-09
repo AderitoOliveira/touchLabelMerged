@@ -10,14 +10,21 @@ var mysql = require('mysql');
 }); */
 
 
-var con = mysql.createConnection({  
+/* var con = mysql.createConnection({  
     host: '172.30.184.178',
     user: 'easylabeldb',
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'	
-});
+}); */
 
+var con = mysql.createConnection({  
+    host: '172.31.54.65',
+    user: 'easylabeldb2',
+    password: 'easylabeldb2',
+    database: 'easylabeldb2',
+    port: '3306'	
+});
 
 
 //GET ALL CLIENTS
