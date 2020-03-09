@@ -2,11 +2,11 @@ var mysql = require('mysql');
 
 
 /* var con = mysql.createConnection({
-    host: '127.0.0.1',
+    host: 'localhost',
     user: 'easylabeldb',
     password: 'easylabeldb',
     database: 'easylabeldb',
-    port: '3306'
+    port: '15432'
 }); */
 
 
@@ -19,10 +19,10 @@ var mysql = require('mysql');
 }); */
 
 var con = mysql.createConnection({  
-    host: ' 172.30.221.112',
-    user: 'easylabeldb2',
-    password: 'easylabeldb2',
-    database: 'easylabeldb2',
+    host: '172.30.221.112',
+    user: 'easylabeldb',
+    password: 'easylabeldb',
+    database: 'easylabeldb',
     port: '3306'	
 });
 
@@ -2186,28 +2186,36 @@ postAuthenticateUserInfo = function(req, callback) {
     console.log("req.body.email: " + req.body.email);
     console.log("req.body.password: " + req.body.password);
     con.connect(function(err) {
-    con.query('select USERNAME, PASSWORD, ITERATIONS from user where USERNAME = ?', [req.body.email] ,function(err, rows) {
+        con.query('select USERNAME, PASSWORD, ITERATIONS from user where USERNAME = ?', [req.body.email] ,function(err, rows) {
+            if (err) {
+                console.log(err.message);
+                console.error(err.message);
+                throw err;
+            } else
+            callback.setHeader('Content-Type', 'application/json');
+            callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+            callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+            //callback.end(JSON.stringify(rows));
+            console.log('SERVER.js --> PASSWORD: ' + rows[0].PASSWORD);
+            callback.append("PASS", rows[0].PASSWORD);
+            callback.append("XPTO", JSON.stringify(rows));
+            var XPTO = JSON.stringify(rows);
+            //callback = rows;
+            //callback.end(JSON.stringify(rows));
+            var arrayToSendBack = {
+                PASSWORD: rows[0].PASSWORD
+            };
+            //callback.end(JSON.stringify(arrayToSendBack));
+            console.log("rows: " + JSON.stringify(rows)); 
+            console.log("GET USER");   
+        });
+
         if (err) {
+            console.log(err.message);
+            console.error(err.message);
             throw err;
-        } else
-        callback.setHeader('Content-Type', 'application/json');
-        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
-        //callback.end(JSON.stringify(rows));
-        console.log('SERVER.js --> PASSWORD: ' + rows[0].PASSWORD);
-        callback.append("PASS", rows[0].PASSWORD);
-        callback.append("XPTO", JSON.stringify(rows));
-        var XPTO = JSON.stringify(rows);
-        //callback = rows;
-        //callback.end(JSON.stringify(rows));
-        var arrayToSendBack = {
-            PASSWORD: rows[0].PASSWORD
-        };
-        //callback.end(JSON.stringify(arrayToSendBack));
-        console.log("rows: " + JSON.stringify(rows)); 
-        console.log("GET USER");   
+        }
     });
-});
 }
 
 //AUTHENTICATE USER
