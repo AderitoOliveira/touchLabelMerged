@@ -19,7 +19,7 @@ var mysql = require('mysql');
 }); */
 
 var con = mysql.createConnection({  
-    host: '172.31.54.65',
+    host: ' 172.30.221.112',
     user: 'easylabeldb2',
     password: 'easylabeldb2',
     database: 'easylabeldb2',
