@@ -2188,9 +2188,7 @@ postAuthenticateUserInfo = function(req, callback) {
     con.connect(function(err) {
         con.query('select USERNAME, PASSWORD, ITERATIONS from user where USERNAME = ?', [req.body.email] ,function(err, rows) {
             if (err) {
-                console.log(err.message);
-                console.error(err.message);
-                throw err;
+                return console.error('error: ' + err.message);
             } else
             callback.setHeader('Content-Type', 'application/json');
             callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -2209,6 +2207,10 @@ postAuthenticateUserInfo = function(req, callback) {
             console.log("rows: " + JSON.stringify(rows)); 
             console.log("GET USER");   
         });
+
+        if (err) {
+            return console.error('error: ' + err.message);
+        }
     });
 }
 
