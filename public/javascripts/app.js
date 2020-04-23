@@ -1502,10 +1502,16 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   };
 
   //CLOSE THE PRODUCT IN PRODUCTION - ORDER THE BOXES
-  $scope.closeProductInProduction = function (internalproductid, customerproductid, productName, qtyorder, qtyproduced, parentcustomerproductid, uniqueorderid) {
+  $scope.closeProductInProduction = function (internalproductid, customerproductid, productName, qtyorder, qtyproduced, parentcustomerproductid, in_compound_product, uniqueorderid) {
 
     function containsOnlyNumbers(input) {
           return /^\d+$/.test(input);
+    }
+
+    //Test if the product belongs to a compound product or if as a parent but not in this order
+    if (parentcustomerproductid != null && in_compound_product == 'N') {
+      //If the relation parent/child doesn't exist in thi order, then the product is a single product
+      parentcustomerproductid = null;
     }
 
     $scope.productTechSheet = [];
