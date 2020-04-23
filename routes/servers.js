@@ -1,13 +1,13 @@
 var mysql = require('mysql');
 
 
-var con = mysql.createConnection({
+/* var con = mysql.createConnection({
     host: '127.0.0.1',
     user: 'easylabeldb',
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'
-});
+}); */
 
 
 /* var con = mysql.createConnection({  
@@ -18,13 +18,13 @@ var con = mysql.createConnection({
     port: '3306'	
 }); --  ANTIGO POD ---*/ 
 
-/* var con = mysql.createConnection({  
+var con = mysql.createConnection({  
     host: '172.30.221.112',
     user: 'easylabeldb',
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'	
-}); */
+});
 
 
 //GET ALL CLIENTS
