@@ -1682,7 +1682,8 @@ deleteLabelsToPrint = function(req, res) {
 //GET LABELS TO PRINT - order_products_labels_to_print
 fetchAllLabelsToPrint = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT * FROM order_products_labels_to_print', function(err, rows) {
+    //con.query('SELECT * FROM order_products_labels_to_print', function(err, rows) {
+    con.query('SELECT labels.*, concat(product.IMAGE_PATH, \'/\', product.IMAGE_NAME) as IMAGE FROM order_products_labels_to_print labels, products as product where labels.CUSTOMER_PRODUCT_ID = product.CUSTOMER_PRODUCT_ID', function(err, rows) {
         if (err) {
             throw err;
         } else
