@@ -827,7 +827,7 @@ updateProductTechSheet = function(req, res) {
 //GET PRODUCT TECHNICAL SHEET 
 getProductTechSheet = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT ptsheet.*, prod.CLIENT_NAME FROM products_technical_sheet ptsheet, products prod WHERE ptsheet.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID AND ptsheet.CUSTOMER_PRODUCT_ID = ?', [data.params.productid], function(err, rows) {
+    con.query('select ptsheet.*, prod.CLIENT_NAME, cli.CLIENT_ID from products_technical_sheet ptsheet, products prod, clients cli where ptsheet.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID and prod.CLIENT_NAME = cli.CLIENT_NAME and ptsheet.CUSTOMER_PRODUCT_ID = ?', [data.params.productid], function(err, rows) {
         if (err) {
             throw err;
         } else
