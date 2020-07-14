@@ -6948,6 +6948,14 @@ app.factory('CloneProductService', ['$http', '$q', function ($http, $q) {
           //$state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2 });
         });
 
+        var insertClientProduct = {
+          CLIENT_ID: productTechnicalSheet[0].CLIENT_ID,
+          PRODUCT_ID: cloneCustomerProductId
+        }
+
+        var res = $http.post('/insertclientproduct', insertClientProduct).then(function (data, status, headers, config) {
+        });
+
       },
         function errorCallback(data) {
           console.log('Error: ' + data);
