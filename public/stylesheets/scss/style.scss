@@ -1980,6 +1980,23 @@ button.btn.btn-sm.btn-delete.btn-remove-pallet {
         border: 0px;
         width: 100%;
     }
+
+    button.btn-save-small {
+        height: 30px;
+        //width: 100%;
+        text-align: center;
+        border-radius: 2px;
+        background-color: #27ae60;
+        font-size: 14px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        color: #ffffff;
+        border: 0px;
+    }
+
     button img{
         margin-right:6px;
     }
@@ -2723,6 +2740,20 @@ a.btn-remove-order {
     }
 }
 
+select { 
+    color: black; 
+    height: 24px; 
+    width:100%; 
+    border: 2px solid; 
+    border-color:#222222 !important;
+    display: flex;
+}
+
+option:not(:checked) { 
+    color: black; 
+    height: 24px;
+    display: flex;
+}
 
 @media screen and (max-width:1024px){
     .nav-toggle{
