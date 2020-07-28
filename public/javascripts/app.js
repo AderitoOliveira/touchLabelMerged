@@ -293,11 +293,23 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
   $scope.printersTypeAhead = [];
   var request = $http.get('/getPrintersForTypeAhead');
   request.then(function successCallback(response) {
-    $scope.printersTypeAhead = response.data;
+    $scope.printersTypeAhead.push(response.data[0].ARTICLE_PRINTER_IP_ADDRESS);
+    $scope.printersTypeAhead.push(response.data[0].BOX_PRINTER_IP_ADDRESS);
   },
     function errorCallback(data) {
       console.log('Error: ' + data);
   });
+
+  $scope.optionChanged = function (currentIpAddress, newIpAddress, index) {
+        console.log('currentIpAddress: ' + currentIpAddress);
+        console.log('newIpAddress: ' + newIpAddress);
+        console.log('index: ' + index);
+        if (currentIpAddress != newIpAddress) {
+          $scope.xpto = index;
+        } else {
+          $scope.xpto = -1;
+        }
+  }
 
   //GET PRINTERS 
   $scope.printers = [];
