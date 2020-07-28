@@ -2749,11 +2749,15 @@ select {
     display: flex;
 }
 
-option:not(:checked) { 
+select.ng-touched {
+    margin-top: 10px;
+}
+
+/* option:not(:checked) { 
     color: black; 
     height: 24px;
     display: flex;
-}
+} */
 
 @media screen and (max-width:1024px){
     .nav-toggle{
