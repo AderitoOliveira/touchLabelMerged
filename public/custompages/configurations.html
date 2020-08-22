@@ -401,7 +401,7 @@
                                                 <div class="col-md-2 table-item item-label-boxdim">{{printerconfig.LABEL_HAS_COUNTER}}</div>
                                                 <div class="col-md-1 table-item item-label-boxclient">{{printerconfig.NUMBER_LABELS_ON_BOX}}</div>
                                                 <div class="col-md-1 table-item" ng-if="xpto==$index">
-                                                    <button id="conf-save" type="submit" ng-click="saveTechSheet()"
+                                                    <button id="configuration-save" type="submit" ng-click="saveConfiguration(printerconfig.ClientName, printerconfig.ARTICLE_PRINTER_IP_ADDRESS, labelsPrinter, printerconfig.BOX_PRINTER_IP_ADDRESS, boxPrinter)"
                                                         class="btn btn-default btn-save-small"><img src="assets/icons/symbol-sucess.svg"
                                                         width="18px" height="14px" />Guardar
                                                     </button>
