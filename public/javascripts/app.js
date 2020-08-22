@@ -342,6 +342,66 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
       console.log('Error: ' + data);
   });
 
+
+  $scope.saveConfiguration = function (clientName, currentArticlePrinterIpAddress ,changedArticlePrinterIpAddress, currentBoxPrinterIpAddress, changedBoxPrinterIpAddress) {
+
+      var messageToPrint = "";
+      var dataToUpdate = {};
+
+      if (changedArticlePrinterIpAddress != undefined && changedBoxPrinterIpAddress == undefined) {
+        messageToPrint = "Pretende alterar o IP da impressora de artigo de " + currentArticlePrinterIpAddress + " para " + changedArticlePrinterIpAddress + " ?";
+          
+        dataToUpdate = {
+          CLIENT_NAME: clientName,
+          ARTICLE_PRINTER_IP_ADDRESS: changedArticlePrinterIpAddress,
+          BOX_PRINTER_IP_ADDRESS: currentBoxPrinterIpAddress
+        }
+
+      } 
+      if (changedBoxPrinterIpAddress != undefined && changedArticlePrinterIpAddress == undefined) {
+        messageToPrint = "Pretende alterar o IP da impressora de caixa de " + currentBoxPrinterIpAddress + " para " + changedBoxPrinterIpAddress + " ?";
+
+        dataToUpdate = {
+          CLIENT_NAME: clientName,
+          ARTICLE_PRINTER_IP_ADDRESS: currentArticlePrinterIpAddress,
+          BOX_PRINTER_IP_ADDRESS: changedBoxPrinterIpAddress
+        }
+
+      }
+      if (changedBoxPrinterIpAddress != undefined && changedArticlePrinterIpAddress != undefined) {
+        messageToPrint = "Pretende alterar o IP da impressora de caixa e de artigo ?";
+
+        dataToUpdate = {
+          CLIENT_NAME: clientName,
+          ARTICLE_PRINTER_IP_ADDRESS: changedArticlePrinterIpAddress,
+          BOX_PRINTER_IP_ADDRESS: changedBoxPrinterIpAddress
+        }
+
+      }
+      
+      
+      ModalService.showModal({
+        templateUrl: "../modal/yesNoGeneric.html",
+        controller: "genericModalController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: messageToPrint,
+          operationURL: '/updatePrintersIpAddressCustomer',
+          dataObj: dataToUpdate
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+
+  }
+
   //UPDATE PRINTER INFORMATION
   $scope.updatePrinterIPAddress = function () {
 
