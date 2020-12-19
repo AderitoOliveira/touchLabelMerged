@@ -1876,14 +1876,14 @@ updateLabelAlreadyPrinted = function(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     if(req.body.COLUMN_TO_UPDATE === 'ARTICLE_LABEL_ALREADY_PRINTED') {
-     queryToExecute = 'update order_products_labels_to_print set ARTICLE_LABEL_ALREADY_PRINTED = \'true\' where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?';
+     queryToExecute = 'update order_products_labels_to_print set ARTICLE_LABEL_ALREADY_PRINTED = \'true\' where UNIQUE_ID = ? and ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?';
      console.log("QUERY_ARTICLE ---> " + queryToExecute);
     } else {
-     queryToExecute = 'update order_products_labels_to_print set BOX_LABEL_ALREADY_PRINTED = \'true\' where ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?';
+     queryToExecute = 'update order_products_labels_to_print set BOX_LABEL_ALREADY_PRINTED = \'true\' where UNIQUE_ID = ? and ORDER_ID = ? and CUSTOMER_PRODUCT_ID = ?';
      console.log("QUERY_BOX ---> " + queryToExecute);
     }
     con.connect(function(err) {
-    con.query(queryToExecute, [req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
+    con.query(queryToExecute, [req.body.UNIQUE_ID, req.body.ORDER_ID, req.body.CUSTOMER_PRODUCT_ID], function (error, results, fields) {
     console.log(queryToExecute.sql);
     if (error) throw error;
     res.end(JSON.stringify(results));
