@@ -570,7 +570,7 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
         } else {
           var operationsToExecute = ['/updateLabelAlreadyPrinted'];
     
-          var dataToDelete = [{ "COLUMN_TO_UPDATE": 'BOX_LABEL_ALREADY_PRINTED', "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
+          var dataToDelete = [{ "COLUMN_TO_UPDATE": 'BOX_LABEL_ALREADY_PRINTED', "UNIQUE_ID": unique_id, "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
     
           ModalService.showModal({
             templateUrl: "../modal/labelsPrintingModal.html",
@@ -628,7 +628,7 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
           } else {
             var operationsToExecute = ['/updateLabelAlreadyPrinted'];
     
-            var dataToDelete = [{ "COLUMN_TO_UPDATE": 'ARTICLE_LABEL_ALREADY_PRINTED', "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
+            var dataToDelete = [{ "COLUMN_TO_UPDATE": 'ARTICLE_LABEL_ALREADY_PRINTED', "UNIQUE_ID": unique_id, "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
     
             ModalService.showModal({
               templateUrl: "../modal/labelsPrintingModal.html",
@@ -741,7 +741,7 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
         } else {
           var operationsToExecute = ['/updateLabelAlreadyPrinted'];
     
-          var dataToDelete = [{ "COLUMN_TO_UPDATE": 'BOX_LABEL_ALREADY_PRINTED', "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
+          var dataToDelete = [{ "COLUMN_TO_UPDATE": 'BOX_LABEL_ALREADY_PRINTED', "UNIQUE_ID": unique_id, "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
     
           ModalService.showModal({
             templateUrl: "../modal/labelsPrintingModal.html",
@@ -799,7 +799,7 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
           } else {
             var operationsToExecute = ['/updateLabelAlreadyPrinted'];
     
-            var dataToDelete = [{ "COLUMN_TO_UPDATE": 'ARTICLE_LABEL_ALREADY_PRINTED', "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
+            var dataToDelete = [{ "COLUMN_TO_UPDATE": 'ARTICLE_LABEL_ALREADY_PRINTED', "UNIQUE_ID": unique_id, "ORDER_ID": order_id, "CUSTOMER_PRODUCT_ID": customer_product_id }];
     
             ModalService.showModal({
               templateUrl: "../modal/labelsPrintingModal.html",
