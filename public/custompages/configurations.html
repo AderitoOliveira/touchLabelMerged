@@ -358,35 +358,54 @@
                                 <div class="label-table-header row">
                                     <div class="inner-wrap">
                                         <div class="col-md-2 label-header-item header-label-boxid">Nome Cliente</div>
-                                        <div class="col-md-2 label-header-item header-label-boxdim">IP Impressora Artigo
-                                        </div>
-                                        <div class="col-md-2 label-header-item header-label-boxclient">IP Impressora
-                                            Caixa</div>
-                                        <div class="col-md-2 label-header-item header-label-boxid">Etiqu. Artigo duas
-                                            colunas</div>
-                                        <div class="col-md-2 label-header-item header-label-boxdim">Etiqueta caixa com
-                                            contador</div>
-                                        <div class="col-md-2 label-header-item header-label-boxclient">Número Etiquetas
-                                            na Caixa</div>
+                                        <div class="col-md-2 label-header-item header-label-boxdim">IP Impressora Artigo</div>
+                                        <div class="col-md-2 label-header-item header-label-boxclient">IP Impressora Caixa</div>
+                                        <div class="col-md-2 label-header-item header-label-boxid">Eti. Artigo duas colunas</div>
+                                        <div class="col-md-2 label-header-item header-label-boxdim">Eti. caixa contador</div>
+                                        <div class="col-md-1 label-header-item header-label-boxclient">Num. Eti. na Caixa</div>
+                                        <div class="col-md-1 label-header-item header-label-boxclient"></div>
                                     </div>
                                 </div>
-                                <div class="order-labels-content row" dir-paginate="printerconfig in printersforeachcustomer | itemsPerPage:30" pagination-id="employee">
+                                <div class="order-labels-content row" ng-repeat="printerconfig in printersforeachcustomer track by $index">
                                     <div class="col-md-12">
                                         <div class="row">
                                             <div class="item-inner-wrap">
                                                 <div class="col-md-2 table-item item-label-boxid">{{printerconfig.ClientName}}</div>
-                                                <div class="col-md-2 table-item item-label-boxdim">{{printerconfig.ARTICLE_PRINTER_IP_ADDRESS}}</div>
+                                                <!-- <div class="col-md-2 table-item item-label-boxdim">{{printerconfig.ARTICLE_PRINTER_IP_ADDRESS}}</div> -->
+                                                <!-- <div class="col-md-2 table-item item-label-boxdim" ng-model="labelsPrinter" uib-typeahead="printer as printer.ARTICLE_PRINTER_IP_ADDRESS for printersTypeAhead in printersTypeAhead | filter:$viewValue | limitTo:3" ng-style="{'z-index': 1050 + index*10, display: 'block'}" typeahead-editable="true">
+                                                    {{printerconfig.ARTICLE_PRINTER_IP_ADDRESS}}
+                                                </div> -->
+
+                                                <!-- <div class="col-md-2">
+                                                    <select id="dropdownStyle" ng-model="labelsPrinter">
+                                                        <option value=""></option>
+                                                        <option ng-repeat="printer in printersTypeAhead" value="">{{printer}}</option>
+                                                    </select>
+                                                </div> -->
+                                                
+                                                <div class="col-md-2 table-item">
+                                                    <select ng-model="labelsPrinter" ng-options="printer as printer for printer in printersTypeAhead" ng-change="optionChanged(printerconfig.ARTICLE_PRINTER_IP_ADDRESS, labelsPrinter, $index)">
+                                                        <option value="">{{printerconfig.ARTICLE_PRINTER_IP_ADDRESS}}</option>
+                                                     </select>
+                                                </div>
+
                                                 <!-- <div class="col-md-2 table-item item-label-boxid">
                                                 </div> -->
-                                                <div class="col-md-2 table-item item-label-boxclient">{{printerconfig.BOX_PRINTER_IP_ADDRESS}}</div>
+                                                <!-- <div class="col-md-2 table-item item-label-boxclient">{{printerconfig.BOX_PRINTER_IP_ADDRESS}}</div> -->
+                                                <div class="col-md-2 table-item">
+                                                    <select ng-model="boxPrinter" ng-options="printer as printer for printer in printersTypeAhead" ng-change="optionChanged(printerconfig.BOX_PRINTER_IP_ADDRESS, boxPrinter, $index)">
+                                                        <option value="">{{printerconfig.BOX_PRINTER_IP_ADDRESS}}</option>
+                                                     </select>
+                                                </div>
                                                 <div class="col-md-2 table-item item-label-boxid">{{printerconfig.ARTICLE_LABEL_WITH_2_COLUMNS}}</div>
                                                 <div class="col-md-2 table-item item-label-boxdim">{{printerconfig.LABEL_HAS_COUNTER}}</div>
-                                                <div class="col-md-2 table-item item-label-boxclient">{{printerconfig.NUMBER_LABELS_ON_BOX}}</div>
-                                                <!-- <div class="col-md-2 table-item item-button-action">
-                                                                <a class="btn btn-sm btn-danger" ng-click="deleteEmployee(employee.EMPLOYEE_ID, employee.EMPLOYEE_NAME, employee.EMPLOYEE_FUNCTION)" data-toggle="tooltip" title="Remover Funcionário">
-                                                                    <img src="assets/icons/btn-remove.svg" width="24px" height="24px" />
-                                                                </a>
-                                                            </div> -->
+                                                <div class="col-md-1 table-item item-label-boxclient">{{printerconfig.NUMBER_LABELS_ON_BOX}}</div>
+                                                <div class="col-md-1 table-item" ng-if="xpto==$index">
+                                                    <button id="configuration-save" type="submit" ng-click="saveConfiguration(printerconfig.ClientName, printerconfig.ARTICLE_PRINTER_IP_ADDRESS, labelsPrinter, printerconfig.BOX_PRINTER_IP_ADDRESS, boxPrinter)"
+                                                        class="btn btn-default btn-save-small"><img src="assets/icons/symbol-sucess.svg"
+                                                        width="18px" height="14px" />Guardar
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

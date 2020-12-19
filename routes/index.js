@@ -761,6 +761,12 @@ router.post('/updatePrintersConfiguration', function (req, res) {
   updatePrintersConfiguration(req, res);
 });
 
+//UPDATE PRINTERS IP ADDRESS FOR A CLIENT
+router.post('/updatePrintersIpAddressCustomer', function (req, res) {
+  console.log("UPDATE PRINTERS IP ADDRESS FOR A CLIENT");
+  updatePrintersIpAddressCustomer(req, res);
+});
+
 //GET PRODUCTS PRODUCED IN THE LAST 7 DAYS
 router.get('/getProductionLast7Days', function (req, res) {
   console.log("GET PRODUCTS PRODUCED IN THE LAST 7 DAYS");

@@ -293,11 +293,23 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
   $scope.printersTypeAhead = [];
   var request = $http.get('/getPrintersForTypeAhead');
   request.then(function successCallback(response) {
-    $scope.printersTypeAhead = response.data;
+    $scope.printersTypeAhead.push(response.data[0].ARTICLE_PRINTER_IP_ADDRESS);
+    $scope.printersTypeAhead.push(response.data[0].BOX_PRINTER_IP_ADDRESS);
   },
     function errorCallback(data) {
       console.log('Error: ' + data);
   });
+
+  $scope.optionChanged = function (currentIpAddress, newIpAddress, index) {
+        console.log('currentIpAddress: ' + currentIpAddress);
+        console.log('newIpAddress: ' + newIpAddress);
+        console.log('index: ' + index);
+        if (currentIpAddress != newIpAddress) {
+          $scope.xpto = index;
+        } else {
+          $scope.xpto = -1;
+        }
+  }
 
   //GET PRINTERS 
   $scope.printers = [];
@@ -329,6 +341,66 @@ app.controller('configurations', function ($scope, $http, $rootScope, ModalServi
     function errorCallback(data) {
       console.log('Error: ' + data);
   });
+
+
+  $scope.saveConfiguration = function (clientName, currentArticlePrinterIpAddress ,changedArticlePrinterIpAddress, currentBoxPrinterIpAddress, changedBoxPrinterIpAddress) {
+
+      var messageToPrint = "";
+      var dataToUpdate = {};
+
+      if (changedArticlePrinterIpAddress != undefined && changedBoxPrinterIpAddress == undefined) {
+        messageToPrint = "Pretende alterar o IP da impressora de artigo de " + currentArticlePrinterIpAddress + " para " + changedArticlePrinterIpAddress + " ?";
+          
+        dataToUpdate = {
+          CLIENT_NAME: clientName,
+          ARTICLE_PRINTER_IP_ADDRESS: changedArticlePrinterIpAddress,
+          BOX_PRINTER_IP_ADDRESS: currentBoxPrinterIpAddress
+        }
+
+      } 
+      if (changedBoxPrinterIpAddress != undefined && changedArticlePrinterIpAddress == undefined) {
+        messageToPrint = "Pretende alterar o IP da impressora de caixa de " + currentBoxPrinterIpAddress + " para " + changedBoxPrinterIpAddress + " ?";
+
+        dataToUpdate = {
+          CLIENT_NAME: clientName,
+          ARTICLE_PRINTER_IP_ADDRESS: currentArticlePrinterIpAddress,
+          BOX_PRINTER_IP_ADDRESS: changedBoxPrinterIpAddress
+        }
+
+      }
+      if (changedBoxPrinterIpAddress != undefined && changedArticlePrinterIpAddress != undefined) {
+        messageToPrint = "Pretende alterar o IP da impressora de caixa e de artigo ?";
+
+        dataToUpdate = {
+          CLIENT_NAME: clientName,
+          ARTICLE_PRINTER_IP_ADDRESS: changedArticlePrinterIpAddress,
+          BOX_PRINTER_IP_ADDRESS: changedBoxPrinterIpAddress
+        }
+
+      }
+      
+      
+      ModalService.showModal({
+        templateUrl: "../modal/yesNoGeneric.html",
+        controller: "genericModalController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: messageToPrint,
+          operationURL: '/updatePrintersIpAddressCustomer',
+          dataObj: dataToUpdate
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+
+  }
 
   //UPDATE PRINTER INFORMATION
   $scope.updatePrinterIPAddress = function () {
@@ -6946,6 +7018,14 @@ app.factory('CloneProductService', ['$http', '$q', function ($http, $q) {
           //var currentPageTemplate = $state.current.templateUrl;
           //$templateCache.remove(currentPageTemplate);
           //$state.transitionTo("editProduct", { 'productName': $scope.productName, 'customerProductId': customerProductId, 'productId': $scope.productId, 'clientname': $scope.clientname, 'imageName': $scope.imageName, 'barCode': $scope.barCode, 'nameInTheLabel': $scope.nameInTheLabel, 'numArticleByBox': $scope.numArticleByBox, 'preco1': $scope.preco1, 'preco2': $scope.preco2 });
+        });
+
+        var insertClientProduct = {
+          CLIENT_ID: productTechnicalSheet[0].CLIENT_ID,
+          PRODUCT_ID: cloneCustomerProductId
+        }
+
+        var res = $http.post('/insertclientproduct', insertClientProduct).then(function (data, status, headers, config) {
         });
 
       },

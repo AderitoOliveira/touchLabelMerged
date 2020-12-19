@@ -827,7 +827,7 @@ updateProductTechSheet = function(req, res) {
 //GET PRODUCT TECHNICAL SHEET 
 getProductTechSheet = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT ptsheet.*, prod.CLIENT_NAME FROM products_technical_sheet ptsheet, products prod WHERE ptsheet.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID AND ptsheet.CUSTOMER_PRODUCT_ID = ?', [data.params.productid], function(err, rows) {
+    con.query('select ptsheet.*, prod.CLIENT_NAME, cli.CLIENT_ID from products_technical_sheet ptsheet, products prod, clients cli where ptsheet.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID and prod.CLIENT_NAME = cli.CLIENT_NAME and ptsheet.CUSTOMER_PRODUCT_ID = ?', [data.params.productid], function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -1994,7 +1994,7 @@ getPrintersConfiguration = function(data, callback) {
 //GET PRINTERS CONFIGURATION FOR EACH CUSTOMER
 getPrintersConfigurationForEachCustomer = function(data, callback) {
     con.connect(function(err) {
-    con.query('select ClientName, ARTICLE_PRINTER_IP_ADDRESS, BOX_PRINTER_IP_ADDRESS, ARTICLE_LABEL_WITH_2_COLUMNS, LABEL_HAS_COUNTER, NUMBER_LABELS_ON_ARTICLE, NUMBER_LABELS_ON_BOX from label_templates', function(err, rows) {
+    con.query('select ClientName, ARTICLE_PRINTER_IP_ADDRESS, BOX_PRINTER_IP_ADDRESS, if(ARTICLE_LABEL_WITH_2_COLUMNS=\'true\', \'Sim\', \'Não\') ARTICLE_LABEL_WITH_2_COLUMNS , if(LABEL_HAS_COUNTER=\'true\', \'Sim\', \'Não\') LABEL_HAS_COUNTER, NUMBER_LABELS_ON_ARTICLE, NUMBER_LABELS_ON_BOX from label_templates', function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -2036,6 +2036,21 @@ updatePrintersConfiguration = function(req, res) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     con.connect(function(err) {
      con.query('update printers_ip_address set ARTICLE_PRINTER_IP_ADDRESS = ?, BOX_PRINTER_IP_ADDRESS = ?, ARTICLE_PRINTER_PORT = ?, BOX_PRINTER_PORT = ?',  [req.body.ARTICLE_PRINTER_IP_ADDRESS, req.body.BOX_PRINTER_IP_ADDRESS, req.body.ARTICLE_PRINTER_PORT, req.body.BOX_PRINTER_PORT], function (error, results, fields) {
+    if (error) throw error;
+    res.end(JSON.stringify(results));
+  });
+ });
+}
+
+//UPDATE PRINTERS IP ADDRESS FOR A CLIENT
+updatePrintersIpAddressCustomer = function(req, res) {
+    var postData  = req.body;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    con.connect(function(err) {
+     con.query('update label_templates set ARTICLE_PRINTER_IP_ADDRESS = ?, BOX_PRINTER_IP_ADDRESS = ? where ClientName = ?',  [req.body.ARTICLE_PRINTER_IP_ADDRESS, req.body.BOX_PRINTER_IP_ADDRESS, req.body.CLIENT_NAME], function (error, results, fields) {
     if (error) throw error;
     res.end(JSON.stringify(results));
   });
