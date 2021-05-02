@@ -3250,11 +3250,6 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
   $scope.searchValue = '';
 
   $scope.sendHttpAfterDebounce = function(value) {
-    console.log("sendHttpAfterDebounce");
-    console.log(value);
-
-    console.log('$scope.searchValue: ' + $scope.searchValue);
-
     let url = '';
     if(value != '') {
       url = 'http://localhost:8080/ordersSearch/' + encodeURIComponent(value);
@@ -3265,7 +3260,6 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
     var request = $http.get(url);
     request.then(function successCallback(response) {
       $scope.orders = response.data;
-      console.log(response.data);
       for (i = 0; i < $scope.orders.length; i++) {
         if ($scope.orders[i].QTY_PRODUCED > 0) {
           var percentage = Math.round($scope.orders[i].QTY_PRODUCED / $scope.orders[i].QTY_ORDERED * 100);
@@ -3284,8 +3278,6 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
       function errorCallback(data) {
         console.log('Error: ' + data);
     });
-
-    $scope.searchValue = '';
 
   };
 
