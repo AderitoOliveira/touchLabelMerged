@@ -173,6 +173,13 @@ router.get('/orders', function (req, res) {
   fetchAllOrders(req, res);
 });
 
+//Search in the Orders containing searchQuery
+router.get('/ordersSearch/:searchQuery', function (req, res) {
+  console.log("Search in All Orders");
+  console.log(req.body);
+  searchInOrders(req, res);
+});
+
 //Get ALL Orders Historic
 router.get('/ordersHistoric', function (req, res) {
   console.log("List All Orders Historic");
