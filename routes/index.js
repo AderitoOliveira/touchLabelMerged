@@ -123,6 +123,16 @@ router.get('/products', function (req, res) {
   fetchAllProducts(req, res);
 });
 
+//Search for Product in the Products Table
+router.get('/getProduct/:searchId', function (req, res) {
+  searchProduct(req, res);
+});
+
+//Get First 100 Rows from Products table for Label APP
+router.get('/firstProducts', function (req, res) {
+  fetchFirstProducts(req, res);
+});
+
 //GET ALL PRODUCTS THAT ARE CHILDREN OF THE PARENT PRODUCT
 router.get('/childProductsOfParentProduct/:customer_product_id', function (req, res) {
   childProductsOfParentProduct(req, res);

@@ -1,3 +1,4 @@
+const { query } = require('express');
 var mysql = require('mysql');
 
 
@@ -146,6 +147,43 @@ fetchSingleClientProduct = function(data, callback) {
 fetchAllProducts = function(data, callback) {
     con.connect(function(err) {
     con.query('SELECT * FROM products', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET ALL PRODUCTS");      
+    });
+});
+}
+
+
+//Search for Product in the Products Table
+searchProduct = function(data, callback) {
+    let searchParam = data.params.searchId + '%';
+    console.log("searchParam: " + searchParam);
+    con.connect(function(err) {
+    con.query('SELECT * FROM products where CUSTOMER_PRODUCT_ID like ? OR INTERNAL_PRODUCT_ID like ?', [searchParam, searchParam], function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET ALL PRODUCTS");      
+    });
+});
+}
+
+//Get First 100 Rows from Products table for Label APP
+fetchFirstProducts = function(data, callback) {
+    con.connect(function(err) {
+    con.query('SELECT * FROM products LIMIT 100', function(err, rows) {
         if (err) {
             throw err;
         } else
