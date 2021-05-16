@@ -218,6 +218,15 @@ router.get('/orderproductshistoric/:id', function (req, res) {
   fetchAllProductsForAnOrderHistoric(req, res);
 });
 
+//Get All Orders where a product is produced. This is for for the BoxLabel Dropdown of a product that has label with counter
+router.get('/orderidfordropdowninlabel/:customerproductid', function (req, res) {
+  console.log("List All Orders Historic");
+  console.log(req.body);
+  fetchOrderIdForDropdownInLabel(req, res);
+});
+
+
+
 //Get PARENT UNIQUE ORDER ID FOR COMPOUND PRODUCTS
 router.get('/getParentUniqueOrderId/:orderid/:parentproductid', function (req, res) {
   console.log("Get PARENT UNIQUE ORDER ID");
