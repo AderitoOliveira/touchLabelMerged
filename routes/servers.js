@@ -2,13 +2,13 @@ const { query } = require('express');
 var mysql = require('mysql');
 
 
-var con = mysql.createConnection({
+/* var con = mysql.createConnection({
     host: '127.0.0.1',
     user: 'easylabeldb',
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'
-});
+}); */
 
 
 /* var con = mysql.createConnection({  
@@ -19,13 +19,13 @@ var con = mysql.createConnection({
     port: '3306'	
 }); --  ANTIGO POD ---*/ 
 
-/* var con = mysql.createConnection({  
+var con = mysql.createConnection({  
     host: '172.30.221.112',
     user: 'easylabeldb',
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'	
-}); */
+});
 
 
 //GET ALL CLIENTS
@@ -351,7 +351,7 @@ searchInOrders = function(data, callback) {
     console.log(data.params.searchQuery)
     con.connect(function(err) {
     //con.query('select s1.ORDER_ID, s1.CLIENT_ID, s1.CLIENT_NAME, date_format(s1.CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(s1.MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE, IFNULL(sum(s2.TOTAL_QUANTITY_ORDERED),0) as QTY_ORDERED, IFNULL(sum(s3.TOTAL_PRODUCTS_PRODUCED),0) as QTY_PRODUCED, STATUS from (select ORDER_ID, CLIENT_ID, CLIENT_NAME, CREATED_DATE, MODIFIED_DATE, STATUS from orders where ORDER_ID in (select distinct ORDER_ID from orders_products where ORDER_ID like \'1094614%\' or CUSTOMER_PRODUCT_ID like \'1094614%\' or INTERNAL_PRODUCT_ID like \'1094614%\' group by ORDER_ID)) as s1 left outer join (select ord_.ORDER_ID, ord_.INTERNAL_PRODUCT_ID, ord_.CUSTOMER_PRODUCT_ID, sum(ord_.TOTAL_QUANTITY_ORDERED) as TOTAL_QUANTITY_ORDERED from orders_products ord_, products prod where ord_.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID and prod.IS_PARENT = \'N\' group by ORDER_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID left outer join (select ord_registry.ORDER_ID, ord_registry.INTERNAL_PRODUCT_ID, ord_registry.CUSTOMER_PRODUCT_ID, sum(ord_registry.TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry ord_registry, products prod where ord_registry.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID and prod.IS_PARENT = \'N\' group by ORDER_ID) as s3 on s1.ORDER_ID = s3.ORDER_ID group by s1.ORDER_ID order by s1.MODIFIED_DATE asc',  [data.params.searchQuery, data.params.searchQuery, data.params.searchQuery],function(err, rows) {
-    con.query('select s1.ORDER_ID, s1.CLIENT_ID, s1.CLIENT_NAME, date_format(s1.CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(s1.MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE, IFNULL(sum(s2.TOTAL_QUANTITY_ORDERED),0) as QTY_ORDERED, IFNULL(sum(s3.TOTAL_PRODUCTS_PRODUCED),0) as QTY_PRODUCED, STATUS from (select ORDER_ID, CLIENT_ID, CLIENT_NAME, CREATED_DATE, MODIFIED_DATE, STATUS from orders where ORDER_ID in (select distinct ORDER_ID from orders_products where ORDER_ID like ? or CUSTOMER_PRODUCT_ID like ? or INTERNAL_PRODUCT_ID like ? group by ORDER_ID)) as s1 left outer join (select ord_.ORDER_ID, ord_.INTERNAL_PRODUCT_ID, ord_.CUSTOMER_PRODUCT_ID, sum(ord_.TOTAL_QUANTITY_ORDERED) as TOTAL_QUANTITY_ORDERED from orders_products ord_, products prod where ord_.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID and prod.IS_PARENT = \'N\' group by ORDER_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID left outer join (select ord_registry.ORDER_ID, ord_registry.INTERNAL_PRODUCT_ID, ord_registry.CUSTOMER_PRODUCT_ID, sum(ord_registry.TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry ord_registry, products prod where ord_registry.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID and prod.IS_PARENT = \'N\' group by ORDER_ID) as s3 on s1.ORDER_ID = s3.ORDER_ID group by s1.ORDER_ID order by s1.MODIFIED_DATE asc',  [searchParam, searchParam, searchParam],function(err, rows) {
+    con.query('select s1.ORDER_ID, s1.CLIENT_ID, s1.CLIENT_NAME, date_format(s1.CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(s1.MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE, IFNULL(sum(s2.TOTAL_QUANTITY_ORDERED),0) as QTY_ORDERED, IFNULL(sum(s3.TOTAL_PRODUCTS_PRODUCED),0) as QTY_PRODUCED, STATUS from (select ORDER_ID, CLIENT_ID, CLIENT_NAME, CREATED_DATE, MODIFIED_DATE, STATUS from orders where ORDER_ID in (select distinct ORDER_ID from orders_products where ORDER_ID like ? or CUSTOMER_PRODUCT_ID like ? or INTERNAL_PRODUCT_ID like ? or PRODUCT_NAME like ? group by ORDER_ID)) as s1 left outer join (select ord_.ORDER_ID, ord_.INTERNAL_PRODUCT_ID, ord_.CUSTOMER_PRODUCT_ID, sum(ord_.TOTAL_QUANTITY_ORDERED) as TOTAL_QUANTITY_ORDERED from orders_products ord_, products prod where ord_.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID and prod.IS_PARENT = \'N\' group by ORDER_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID left outer join (select ord_registry.ORDER_ID, ord_registry.INTERNAL_PRODUCT_ID, ord_registry.CUSTOMER_PRODUCT_ID, sum(ord_registry.TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry ord_registry, products prod where ord_registry.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID and prod.IS_PARENT = \'N\' group by ORDER_ID) as s3 on s1.ORDER_ID = s3.ORDER_ID group by s1.ORDER_ID order by s1.MODIFIED_DATE asc',  [searchParam, searchParam, searchParam, searchParam],function(err, rows) {
         if (err) {
             throw err;
         } else

@@ -18,13 +18,13 @@
                         </div>
                         <div class="col-md-6">
                             <div class="row">
-                                <div class="col-md-6 vert-spacer"></div>
-                                <div class="col-md-6">
+                                <div class="col-md-2 vert-spacer"></div>
+                                <div class="col-md-10">
                                     <div class="search-wrap">
                                         <!--input type="text" name="Pesquisa" ng-model="searchChar" placeholder=" Pesquisar"-->
                                         <input type="text" id="the-user" 
                                         ng-model="search" 
-                                        placeholder=" Pesquisar"
+                                        placeholder=" Pesquisar Num. Encomenda , Id Producto, Nome Produto ..."
                                         ng-model-options="{'debounce': 500}" 
                                         ng-change="sendHttpAfterDebounce(search)"
                                         typeahead-loading="loadingUsers" 
