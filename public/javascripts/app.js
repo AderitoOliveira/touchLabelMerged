@@ -3247,6 +3247,39 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
   $rootScope.class = 'not-home';
   $rootScope.name = "Lista de todas as Encomendas";
   $scope.orders = [];
+  $scope.searchValue = '';
+
+  $scope.sendHttpAfterDebounce = function(value) {
+    let url = '';
+    if(value != '') {
+      url = 'http://localhost:8080/ordersSearch/' + encodeURIComponent(value);
+    } else {
+      url = 'http://localhost:8080/orders';
+    }
+
+    var request = $http.get(url);
+    request.then(function successCallback(response) {
+      $scope.orders = response.data;
+      for (i = 0; i < $scope.orders.length; i++) {
+        if ($scope.orders[i].QTY_PRODUCED > 0) {
+          var percentage = Math.round($scope.orders[i].QTY_PRODUCED / $scope.orders[i].QTY_ORDERED * 100);
+        } else {
+          var percentage = 0;
+        }
+        $scope.orders[i].percent = percentage;
+        $scope.orders[i].width = percentage;
+  
+        if ($scope.orders[i].STATUS == 'Fechada') {
+          $scope.orders[i].ORDER_STATUS_RAW = 'fechado_na_encomenda';
+        }
+  
+      }
+    },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+    });
+
+  };
 
   $scope.today = function () {
     $scope.deliverDate = new Date();

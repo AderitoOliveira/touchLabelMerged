@@ -1,3 +1,4 @@
+const { query } = require('express');
 var mysql = require('mysql');
 
 
@@ -159,6 +160,43 @@ fetchAllProducts = function(data, callback) {
 });
 }
 
+
+//Search for Product in the Products Table
+searchProduct = function(data, callback) {
+    let searchParam = data.params.searchId + '%';
+    console.log("searchParam: " + searchParam);
+    con.connect(function(err) {
+    con.query('SELECT * FROM products where CUSTOMER_PRODUCT_ID like ? OR INTERNAL_PRODUCT_ID like ?', [searchParam, searchParam], function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET ALL PRODUCTS");      
+    });
+});
+}
+
+//Get First 100 Rows from Products table for Label APP
+fetchFirstProducts = function(data, callback) {
+    con.connect(function(err) {
+    con.query('SELECT * FROM products LIMIT 100', function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        callback = rows;
+        console.log("GET ALL PRODUCTS");      
+    });
+});
+}
+
 //GET ALL PRODUCTS FOR THE ADD CHILD TO COMPOUND PRODUCT PAGE
 fetchAllProductsForChildPage = function(data, callback) {
     con.connect(function(err) {
@@ -257,7 +295,8 @@ fetchSingleProductLabels = function(data, callback) {
     console.log(data.params);
     console.log('--------------------------------------------------------------------');
     con.connect(function(err) {
-    con.query('select prod.CUSTOMER_PRODUCT_ID, prod.PRODUCT_NAME, prod.PRODUCT_NAME_FOR_LABEL, tecsheet.Qty_By_Box, prod.IMAGE_PATH, prod.IMAGE_NAME, tecsheet.Bar_Code_Tech_Sheet, label.ARTICLE_BARCODE_TYPE, label.BOX_BARCODE_TYPE, label.ZPL_STRING_ARTICLE, label.ZPL_STRING_BOX, label.ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, label.ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, label.ARTICLE_LABEL_WITH_2_COLUMNS, label.ARTICLE_PRINTER_IP_ADDRESS, label.BOX_PRINTER_IP_ADDRESS, label.ARTICLE_PRINTER_PORT, label.BOX_PRINTER_PORT, label.LABEL_HAS_COUNTER, label.NUMBER_LABELS_ON_ARTICLE, label.NUMBER_LABELS_ON_BOX from products prod, products_technical_sheet tecsheet, label_templates label, client_product cliprod where prod.CUSTOMER_PRODUCT_ID = ? and cliprod.PRODUCT_ID = ? and label.ClientID = cliprod.CLIENT_ID and prod.CUSTOMER_PRODUCT_ID = tecsheet.CUSTOMER_PRODUCT_ID', [customer_product_id, customer_product_id], function(err, rows) {
+    //con.query('select prod.CUSTOMER_PRODUCT_ID, prod.PRODUCT_NAME, prod.PRODUCT_NAME_FOR_LABEL, tecsheet.Qty_By_Box, prod.IMAGE_PATH, prod.IMAGE_NAME, tecsheet.Bar_Code_Tech_Sheet, label.ARTICLE_BARCODE_TYPE, label.BOX_BARCODE_TYPE, label.ZPL_STRING_ARTICLE, label.ZPL_STRING_BOX, label.ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, label.ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, label.ARTICLE_LABEL_WITH_2_COLUMNS, label.ARTICLE_PRINTER_IP_ADDRESS, label.BOX_PRINTER_IP_ADDRESS, label.ARTICLE_PRINTER_PORT, label.BOX_PRINTER_PORT, label.LABEL_HAS_COUNTER, label.NUMBER_LABELS_ON_ARTICLE, label.NUMBER_LABELS_ON_BOX from products prod, products_technical_sheet tecsheet, label_templates label, client_product cliprod where prod.CUSTOMER_PRODUCT_ID = ? and cliprod.PRODUCT_ID = ? and label.ClientID = cliprod.CLIENT_ID and prod.CUSTOMER_PRODUCT_ID = tecsheet.CUSTOMER_PRODUCT_ID', [customer_product_id, customer_product_id], function(err, rows) {
+    con.query('select prod.CUSTOMER_PRODUCT_ID, prod.PRODUCT_NAME, prod.PRODUCT_NAME_FOR_LABEL, tecsheet.Qty_By_Box, prod.IMAGE_PATH, prod.IMAGE_NAME, tecsheet.Bar_Code_Tech_Sheet, label.ARTICLE_BARCODE_TYPE, label.BOX_BARCODE_TYPE, label.ZPL_STRING_ARTICLE, label.ZPL_STRING_BOX, label.ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, label.ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, label.ARTICLE_LABEL_WITH_2_COLUMNS, label.ARTICLE_PRINTER_IP_ADDRESS, label.BOX_PRINTER_IP_ADDRESS, label.ARTICLE_PRINTER_PORT, label.BOX_PRINTER_PORT, label.LABEL_HAS_COUNTER, label.LABEL_HAS_ORDER_ID, label.LABEL_WITH_COUNTER_PRINT_DELAY, label.NUMBER_LABELS_ON_ARTICLE, label.NUMBER_LABELS_ON_BOX from products prod, products_technical_sheet tecsheet, label_templates label, client_product cliprod where prod.CUSTOMER_PRODUCT_ID = ? and cliprod.PRODUCT_ID = ? and label.ClientID = cliprod.CLIENT_ID and prod.CUSTOMER_PRODUCT_ID = tecsheet.CUSTOMER_PRODUCT_ID', [customer_product_id, customer_product_id], function(err, rows) {    
         if (err) {
             throw err;
         } else
@@ -307,6 +346,27 @@ fetchAllOrders = function(data, callback) {
 });
 }
 
+//Search in the Orders containing searchQuery
+searchInOrders = function(data, callback) {
+    let searchParam = data.params.searchQuery + '%';
+    console.log(data.params.searchQuery)
+    con.connect(function(err) {
+    //con.query('select s1.ORDER_ID, s1.CLIENT_ID, s1.CLIENT_NAME, date_format(s1.CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(s1.MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE, IFNULL(sum(s2.TOTAL_QUANTITY_ORDERED),0) as QTY_ORDERED, IFNULL(sum(s3.TOTAL_PRODUCTS_PRODUCED),0) as QTY_PRODUCED, STATUS from (select ORDER_ID, CLIENT_ID, CLIENT_NAME, CREATED_DATE, MODIFIED_DATE, STATUS from orders where ORDER_ID in (select distinct ORDER_ID from orders_products where ORDER_ID like \'1094614%\' or CUSTOMER_PRODUCT_ID like \'1094614%\' or INTERNAL_PRODUCT_ID like \'1094614%\' group by ORDER_ID)) as s1 left outer join (select ord_.ORDER_ID, ord_.INTERNAL_PRODUCT_ID, ord_.CUSTOMER_PRODUCT_ID, sum(ord_.TOTAL_QUANTITY_ORDERED) as TOTAL_QUANTITY_ORDERED from orders_products ord_, products prod where ord_.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID and prod.IS_PARENT = \'N\' group by ORDER_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID left outer join (select ord_registry.ORDER_ID, ord_registry.INTERNAL_PRODUCT_ID, ord_registry.CUSTOMER_PRODUCT_ID, sum(ord_registry.TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry ord_registry, products prod where ord_registry.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID and prod.IS_PARENT = \'N\' group by ORDER_ID) as s3 on s1.ORDER_ID = s3.ORDER_ID group by s1.ORDER_ID order by s1.MODIFIED_DATE asc',  [data.params.searchQuery, data.params.searchQuery, data.params.searchQuery],function(err, rows) {
+    con.query('select s1.ORDER_ID, s1.CLIENT_ID, s1.CLIENT_NAME, date_format(s1.CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(s1.MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE, IFNULL(sum(s2.TOTAL_QUANTITY_ORDERED),0) as QTY_ORDERED, IFNULL(sum(s3.TOTAL_PRODUCTS_PRODUCED),0) as QTY_PRODUCED, STATUS from (select ORDER_ID, CLIENT_ID, CLIENT_NAME, CREATED_DATE, MODIFIED_DATE, STATUS from orders where ORDER_ID in (select distinct ORDER_ID from orders_products where CUSTOMER_PRODUCT_ID like ? or INTERNAL_PRODUCT_ID like ? or PRODUCT_NAME like ? group by ORDER_ID union select distinct ORDER_ID from orders where ORDER_ID like ? group by ORDER_ID)) as s1 left outer join (select ord_.ORDER_ID, ord_.INTERNAL_PRODUCT_ID, ord_.CUSTOMER_PRODUCT_ID, sum(ord_.TOTAL_QUANTITY_ORDERED) as TOTAL_QUANTITY_ORDERED from orders_products ord_, products prod where ord_.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID and prod.IS_PARENT = \'N\' group by ORDER_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID left outer join (select ord_registry.ORDER_ID, ord_registry.INTERNAL_PRODUCT_ID, ord_registry.CUSTOMER_PRODUCT_ID, sum(ord_registry.TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry ord_registry, products prod where ord_registry.CUSTOMER_PRODUCT_ID = prod.CUSTOMER_PRODUCT_ID and prod.IS_PARENT = \'N\' group by ORDER_ID) as s3 on s1.ORDER_ID = s3.ORDER_ID group by s1.ORDER_ID order by s1.MODIFIED_DATE asc',  [searchParam, searchParam, searchParam, searchParam],function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        //console.log(query.sql);
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        console.log("Search in the Orders containing searchQuery"); 
+        //callback = rows;
+    });
+});
+}
+
 //GET ALL ORDERS HISTORIC
 fetchAllOrdersHistoric = function(data, callback) {
     con.connect(function(err) {
@@ -330,7 +390,7 @@ fetchAllProductsForAnOrder = function(data, callback) {
     con.connect(function(err) {
     // Query Correcta --2018-08-30 con.query('SELECT s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED, 0) AS TOTAL_PRODUCTS_PRODUCED FROM (SELECT ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE, DATE_FORMAT(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") AS MODIFIED_DATE FROM orders_products WHERE ORDER_ID = ?) AS s1 LEFT OUTER JOIN (SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PRODUCED) AS TOTAL_PRODUCTS_PRODUCED FROM order_products_production_registry GROUP BY ORDER_ID, CUSTOMER_PRODUCT_ID ) AS s2 ON s1.ORDER_ID = s2.ORDER_ID AND s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID', [data.params.id], function(err, rows) {
    // Query Correcta --2019-11-30 con.query('select s1.UNIQUE_ORDER_ID, s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.IN_COMPOUND_PRODUCT, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED,0) as TOTAL_PRODUCTS_PRODUCED, IFNULL(s5.TOTAL_PRODUCTS_PAINTED,0) as TOTAL_PRODUCTS_PAINTED, s3.IMAGE_NAME, s3.IMAGE_PATH, s3.PRICE_EURO_1, s3.IS_PARENT, s3.PARENT_CUSTOMER_PRODUCT_ID, s4.QTY_BY_PALLET from (select UNIQUE_ORDER_ID, ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, IN_COMPOUND_PRODUCT, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE from orders_products where ORDER_ID = ? ) as s1 left outer join (select ORDER_PRODUCTS_UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID, ORDER_PRODUCTS_UNIQUE_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s2.ORDER_PRODUCTS_UNIQUE_ID left outer join (select IMAGE_NAME, IMAGE_PATH, CUSTOMER_PRODUCT_ID, PRICE_EURO_1, IS_PARENT, PARENT_CUSTOMER_PRODUCT_ID from products) as s3 on s1.CUSTOMER_PRODUCT_ID = s3.CUSTOMER_PRODUCT_ID left outer join (select CUSTOMER_PRODUCT_ID, QTY_BY_PALLET from products_technical_sheet) as s4 on s1.CUSTOMER_PRODUCT_ID = s4.CUSTOMER_PRODUCT_ID left outer join (select ORDER_PRODUCTS_UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PAINTED) as TOTAL_PRODUCTS_PAINTED from order_products_painting_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID, ORDER_PRODUCTS_UNIQUE_ID) as s5 on s1.ORDER_ID = s5.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s5.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s5.ORDER_PRODUCTS_UNIQUE_ID order by IS_PARENT desc', [data.params.id], function(err, rows) {
-    con.query('select s1.UNIQUE_ORDER_ID, s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.IN_COMPOUND_PRODUCT, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED,0) as TOTAL_PRODUCTS_PRODUCED, IFNULL(s5.TOTAL_PRODUCTS_PAINTED,0) as TOTAL_PRODUCTS_PAINTED, s3.IMAGE_NAME, s3.IMAGE_PATH, s3.PRICE_EURO_1, s3.IS_PARENT, s3.PARENT_CUSTOMER_PRODUCT_ID, s4.QTY_BY_PALLET, s6.TOTAL_BOXES_TO_ORDER, s7.QTY_LABELS_TO_PRINT_ARTICLE, s7.QTY_LABELS_TO_PRINT_BOX from (select UNIQUE_ORDER_ID, ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, IN_COMPOUND_PRODUCT, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE from orders_products where ORDER_ID = ? ) as s1 left outer join (select ORDER_PRODUCTS_UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID, ORDER_PRODUCTS_UNIQUE_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s2.ORDER_PRODUCTS_UNIQUE_ID left outer join (select IMAGE_NAME, IMAGE_PATH, CUSTOMER_PRODUCT_ID, PRICE_EURO_1, IS_PARENT, PARENT_CUSTOMER_PRODUCT_ID from products) as s3 on s1.CUSTOMER_PRODUCT_ID = s3.CUSTOMER_PRODUCT_ID left outer join (select CUSTOMER_PRODUCT_ID, QTY_BY_PALLET from products_technical_sheet) as s4 on s1.CUSTOMER_PRODUCT_ID = s4.CUSTOMER_PRODUCT_ID left outer join (select ORDER_PRODUCTS_UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PAINTED) as TOTAL_PRODUCTS_PAINTED from order_products_painting_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID, ORDER_PRODUCTS_UNIQUE_ID) as s5 on s1.ORDER_ID = s5.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s5.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s5.ORDER_PRODUCTS_UNIQUE_ID left outer join (select ORDER_ID, CUSTOMER_PRODUCT_ID, TOTAL_BOXES_TO_ORDER from order_boxes_intermediate_staging) as s6 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s6.CUSTOMER_PRODUCT_ID left outer join (select ORDER_ID, CUSTOMER_PRODUCT_ID, QTY_LABELS_TO_PRINT_ARTICLE, QTY_LABELS_TO_PRINT_BOX from order_products_labels_to_print_intermediate_staging) as s7 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s7.CUSTOMER_PRODUCT_ID order by IS_PARENT desc', [data.params.id], function(err, rows) {
+    con.query('select s1.UNIQUE_ORDER_ID, s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.IN_COMPOUND_PRODUCT, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED,0) as TOTAL_PRODUCTS_PRODUCED, IFNULL(s5.TOTAL_PRODUCTS_PAINTED,0) as TOTAL_PRODUCTS_PAINTED, s3.IMAGE_NAME, s3.IMAGE_PATH, s3.PRICE_EURO_1, s3.IS_PARENT, s3.PARENT_CUSTOMER_PRODUCT_ID, s4.QTY_BY_PALLET, s6.TOTAL_BOXES_TO_ORDER, s7.QTY_LABELS_TO_PRINT_ARTICLE, s7.QTY_LABELS_TO_PRINT_BOX from (select UNIQUE_ORDER_ID, ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, IN_COMPOUND_PRODUCT, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, date_format(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") as MODIFIED_DATE from orders_products where ORDER_ID = ? ) as s1 left outer join (select ORDER_PRODUCTS_UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PRODUCED) as TOTAL_PRODUCTS_PRODUCED from order_products_production_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID, ORDER_PRODUCTS_UNIQUE_ID) as s2 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s2.ORDER_PRODUCTS_UNIQUE_ID left outer join (select IMAGE_NAME, IMAGE_PATH, CUSTOMER_PRODUCT_ID, PRICE_EURO_1, IS_PARENT, PARENT_CUSTOMER_PRODUCT_ID from products) as s3 on s1.CUSTOMER_PRODUCT_ID = s3.CUSTOMER_PRODUCT_ID left outer join (select CUSTOMER_PRODUCT_ID, QTY_BY_PALLET from products_technical_sheet) as s4 on s1.CUSTOMER_PRODUCT_ID = s4.CUSTOMER_PRODUCT_ID left outer join (select ORDER_PRODUCTS_UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, sum(TOTAL_PRODUCTS_PAINTED) as TOTAL_PRODUCTS_PAINTED from order_products_painting_registry group by ORDER_ID, CUSTOMER_PRODUCT_ID, ORDER_PRODUCTS_UNIQUE_ID) as s5 on s1.ORDER_ID = s5.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s5.CUSTOMER_PRODUCT_ID and s1.UNIQUE_ORDER_ID = s5.ORDER_PRODUCTS_UNIQUE_ID left outer join (select ORDER_ID, CUSTOMER_PRODUCT_ID, TOTAL_BOXES_TO_ORDER from order_boxes_intermediate_staging) as s6 on s1.ORDER_ID = s2.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s6.CUSTOMER_PRODUCT_ID left outer join (select ORDER_ID, CUSTOMER_PRODUCT_ID, QTY_LABELS_TO_PRINT_ARTICLE, QTY_LABELS_TO_PRINT_BOX from order_products_labels_to_print_intermediate_staging) as s7 on s1.ORDER_ID = s7.ORDER_ID and s1.CUSTOMER_PRODUCT_ID = s7.CUSTOMER_PRODUCT_ID order by IS_PARENT desc', [data.params.id], function(err, rows) {
         if (err) {
             throw err;
         } else
@@ -349,6 +409,25 @@ fetchAllProductsForAnOrderHistoric = function(data, callback) {
     con.connect(function(err) {
     // Query Correcta --2018-08-30 con.query('SELECT s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED, 0) AS TOTAL_PRODUCTS_PRODUCED FROM (SELECT ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE, DATE_FORMAT(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") AS MODIFIED_DATE FROM orders_products WHERE ORDER_ID = ?) AS s1 LEFT OUTER JOIN (SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PRODUCED) AS TOTAL_PRODUCTS_PRODUCED FROM order_products_production_registry GROUP BY ORDER_ID, CUSTOMER_PRODUCT_ID ) AS s2 ON s1.ORDER_ID = s2.ORDER_ID AND s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID', [data.params.id], function(err, rows) {
     con.query('SELECT s1.ORDER_ID, s1.INTERNAL_PRODUCT_ID, s1.CUSTOMER_PRODUCT_ID, s1.PRODUCT_NAME, s1.TOTAL_QUANTITY_ORDERED, s1.ORDER_PRODUCT_STATUS, s1.CREATED_DATE, s1.MODIFIED_DATE, IFNULL(s2.TOTAL_PRODUCTS_PRODUCED, 0) AS TOTAL_PRODUCTS_PRODUCED, IFNULL(s5.TOTAL_PRODUCTS_PAINTED, 0) AS TOTAL_PRODUCTS_PAINTED, s3.IMAGE_NAME, s3.IMAGE_PATH, s3.PRICE_EURO_1, s4.QTY_BY_PALLET FROM (SELECT ORDER_ID, INTERNAL_PRODUCT_ID, CUSTOMER_PRODUCT_ID, PRODUCT_NAME, TOTAL_QUANTITY_ORDERED, ORDER_PRODUCT_STATUS, DATE_FORMAT(CREATED_DATE, "%Y-%m-%d %H:%i:%s") AS CREATED_DATE, DATE_FORMAT(MODIFIED_DATE, "%Y-%m-%d %H:%i:%s") AS MODIFIED_DATE FROM orders_products_bck WHERE ORDER_ID = ?) AS s1 LEFT OUTER JOIN (SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PRODUCED) AS TOTAL_PRODUCTS_PRODUCED FROM order_products_production_registry_bck GROUP BY ORDER_ID, CUSTOMER_PRODUCT_ID) AS s2 ON s1.ORDER_ID = s2.ORDER_ID AND s1.CUSTOMER_PRODUCT_ID = s2.CUSTOMER_PRODUCT_ID LEFT OUTER JOIN (SELECT IMAGE_NAME, IMAGE_PATH, CUSTOMER_PRODUCT_ID, PRICE_EURO_1 FROM products) AS s3 ON s1.CUSTOMER_PRODUCT_ID = s3.CUSTOMER_PRODUCT_ID LEFT OUTER JOIN (SELECT CUSTOMER_PRODUCT_ID, QTY_BY_PALLET FROM products_technical_sheet) AS s4 ON s1.CUSTOMER_PRODUCT_ID = s4.CUSTOMER_PRODUCT_ID LEFT OUTER JOIN (SELECT ORDER_ID, CUSTOMER_PRODUCT_ID, SUM(TOTAL_PRODUCTS_PAINTED) AS TOTAL_PRODUCTS_PAINTED FROM order_products_painting_registry_bck GROUP BY ORDER_ID, CUSTOMER_PRODUCT_ID) AS s5 ON s1.ORDER_ID = s5.ORDER_ID AND s1.CUSTOMER_PRODUCT_ID = s5.CUSTOMER_PRODUCT_ID', [data.params.id], function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        console.log("FECTHING ALL THE HISTORIC PRODUCTS FOR THE ORDER " + data.params.id); 
+        //callback = rows; 
+    });
+});
+}
+
+
+//Get All Orders where a product is produced. This is for for the BoxLabel Dropdown of a product that has label with counter
+fetchOrderIdForDropdownInLabel = function(data, callback) {
+    let customer_product_id = data.params.customerproductid;
+    con.connect(function(err) {
+    con.query('select ORDER_ID as value, ORDER_ID as text from orders_products where CUSTOMER_PRODUCT_ID = ?', [customer_product_id], function(err, rows) {
         if (err) {
             throw err;
         } else

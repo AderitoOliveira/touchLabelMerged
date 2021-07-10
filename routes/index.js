@@ -123,6 +123,16 @@ router.get('/products', function (req, res) {
   fetchAllProducts(req, res);
 });
 
+//Search for Product in the Products Table
+router.get('/getProduct/:searchId', function (req, res) {
+  searchProduct(req, res);
+});
+
+//Get First 100 Rows from Products table for Label APP
+router.get('/firstProducts', function (req, res) {
+  fetchFirstProducts(req, res);
+});
+
 //GET ALL PRODUCTS THAT ARE CHILDREN OF THE PARENT PRODUCT
 router.get('/childProductsOfParentProduct/:customer_product_id', function (req, res) {
   childProductsOfParentProduct(req, res);
@@ -173,6 +183,13 @@ router.get('/orders', function (req, res) {
   fetchAllOrders(req, res);
 });
 
+//Search in the Orders containing searchQuery
+router.get('/ordersSearch/:searchQuery', function (req, res) {
+  console.log("Search in All Orders");
+  console.log(req.body);
+  searchInOrders(req, res);
+});
+
 //Get ALL Orders Historic
 router.get('/ordersHistoric', function (req, res) {
   console.log("List All Orders Historic");
@@ -200,6 +217,15 @@ router.get('/orderproductshistoric/:id', function (req, res) {
   console.log(req.body);
   fetchAllProductsForAnOrderHistoric(req, res);
 });
+
+//Get All Orders where a product is produced. This is for for the BoxLabel Dropdown of a product that has label with counter
+router.get('/orderidfordropdowninlabel/:customerproductid', function (req, res) {
+  console.log("List All Orders Historic");
+  console.log(req.body);
+  fetchOrderIdForDropdownInLabel(req, res);
+});
+
+
 
 //Get PARENT UNIQUE ORDER ID FOR COMPOUND PRODUCTS
 router.get('/getParentUniqueOrderId/:orderid/:parentproductid', function (req, res) {
