@@ -3252,9 +3252,10 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
   $scope.sendHttpAfterDebounce = function(value) {
     let url = '';
     if(value != '') {
-      url = 'http://localhost:8080/ordersSearch/' + encodeURIComponent(value);
+      //url = 'http://localhost:8080/ordersSearch/' + encodeURIComponent(value);
+      url = '/ordersSearch/' + encodeURIComponent(value);
     } else {
-      url = 'http://localhost:8080/orders';
+      url = '/orders';
     }
 
     var request = $http.get(url);
