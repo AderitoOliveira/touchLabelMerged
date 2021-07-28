@@ -1,6 +1,6 @@
 <div class="wrap">
   <div id="label-print">
-    <div ng-controller="productLabels" ng-repeat="product in data" class="row">
+    <div ng-repeat="product in data" class="row">
       <!--div class="container"-->
       <div class="form-photo col-md-3">
           <div class="form-item-inner">
@@ -44,7 +44,8 @@
               </div>
             </div>
           </div>
-          <div class="col-md-12" id="box-label-print">
+
+          <div class="col-md-12" id="box-label-print" ng-if="showLabelBoxCounter==false">
             <div class="label-wrap">
                 <div class="label-left">
                   <div class="label-title">
@@ -67,6 +68,50 @@
                 </div>
               </div>
           </div>
+
+          <div class="col-md-12" id="box-label-print" ng-if="showLabelBoxCounter==true">
+            <div class="label-wrap">
+                <div class="label-left">
+                  <div class="label-title">
+                    Etiquetas de Caixa
+                  </div>
+                  <div class="label-quantity">
+                      <label class="control-label" for="qtyBox">Num. Encomenda</label>
+                      <div class="input-wrap-inner">
+                        <!--input type="qtyBox" class="form-control" id="qtyBox" placeholder="Número Etiquetas" ng-model="qtyBox"-->
+                        <select ng-model="orderId" class="order-dropdown">
+                          <option ng-repeat="order in orderIdForDropdown" value="{{order.value}}">{{order.value}}</option>
+                        </select>
+                      </div>
+                  </div>
+
+                  <div class="label-quantity">
+                    <label class="control-label" for="qtyBox">Contador Caixas</label>
+                    <div class="input-wrap-inner">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="boxCounterInitial" class="form-control" id="boxCounterInitial" placeholder="Num. etiqueta inicial" ng-model="boxCounterInitial">
+                            </div>
+                            <div class="col-md-12">
+                                <input type="boxCounterFinal" class="form-control" id="boxCounterFinal" placeholder="Num. etiqueta final" ng-model="boxCounterFinal">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                </div>
+                <div class="label-right">
+                  <img class="label-detail" src="assets/icons/bc_label_box.svg" width="244px" height="129px">
+                </div>
+                <div class="label-bottom">
+                  <div class="label-button">
+                      <button type="submit" ng-click="printLabelBox(product.BOX_PRINTER_IP_ADDRESS, product.BOX_PRINTER_PORT, product.Bar_Code_Tech_Sheet, product.PRODUCT_NAME_FOR_LABEL, product.CUSTOMER_PRODUCT_ID, product.ZPL_STRING_BOX, product.BOX_BARCODE_TYPE, product.Qty_By_Box, qtyBox)" class="btn btn-default btn-save"><img src="assets/icons/symbol-print.svg" width="20px" height="18px" />Imprimir</button>
+                  </div>
+                </div>
+              </div>
+          </div>
+
         </div>
       </div>
     </div>

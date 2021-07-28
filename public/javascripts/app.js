@@ -792,7 +792,22 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
   $rootScope.class = 'not-home';
   $rootScope.name = "Imprimir etiquetas do Produto " + $stateParams.productName;
   $scope.data = [];
+  $scope.orderIdForDropdown = [];
+  $scope.showLabelBoxCounter = false;
+  $scope.orderId = "";
+  $scope.boxCounterInitial = "";
+  $scope.boxCounterFinal = "";
+
   var productId = $stateParams.productId;
+
+  var request = $http.get('/orderidfordropdowninlabel/' + encodeURIComponent(productId));
+	request.then(function successCallback(response) {
+		$scope.orderIdForDropdown = response.data;
+	},
+    function errorCallback(data) {
+      console.log('Error: ' + data);
+  });
+
   var request = $http.get('/labelToPrintForProduct/' + encodeURIComponent(productId));
   request.then(function successCallback(response) {
     $scope.data = response.data;
@@ -819,7 +834,10 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
       $state.go("listProducts", null, { reload: true });
     }
     console.log(response.data);
-    //$scope.image = '/images' + '/' + $scope.data.image_name;
+    
+    if($scope.data[0].LABEL_HAS_COUNTER == 'true') {
+      $scope.showLabelBoxCounter = true;
+    }
     return $scope.data;
   },
     function errorCallback(data) {
