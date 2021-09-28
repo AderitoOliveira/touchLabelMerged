@@ -1013,6 +1013,127 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
 
   }
 
+  //PRINT LABEL WITH COUNTER FOR THE BOX
+  $scope.printLabelBoxWithCounter = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductNameForLabel, ProductID, ZPLString, BoxBarCodeType, qtyByBox, numberLabelsOnBox, OrderId, boxCounterInitial, boxCounterFinal) {
+
+    if (BoxBarCodeType == 'GS1-128') {
+
+      function padDigits(number, digits) {
+        return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+      }
+
+      var Quantity_full = padDigits(Quantity, 4);
+
+      if (BarCodeNumber.charAt(0) != '0') {
+        BarCodeNumber = '0' + BarCodeNumber;
+        var EanWithCheckDigit = BarCodeNumber;
+        var FullEan = "802" + BarCodeNumber + "37" + Quantity_full;
+      } else {
+        var checkDigit = eanCheckDigit('' + BarCodeNumber);
+        var EanWithCheckDigit = BarCodeNumber + checkDigit;
+        //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
+        //GS1-128 BarCode
+        var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
+      }
+      
+
+      function replaceAll(str, map) {
+        for (key in map) {
+          str2 = str.replace(key, map[key]);
+          str = str2;
+          str2 = null;
+        }
+        return str;
+      }
+
+      var map = {
+        '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+        '_QUANTIDADE_EXTENDIDA': Quantity_full,
+        '_FULL_EAN': FullEan,
+        '_NUM_ARTIGO': ProductID,
+        '_ORDER_ID': OrderId,
+        '_PRINT_QUANTITY': NumLabelsToPrint
+      };
+
+      if(ProductNameForLabel.indexOf("\n")==-1){
+        //alert("No newline characters")
+        map._NOME_ARTIGO = ProductNameForLabel;
+      }else{
+        //alert("Contains newline characters")
+        var productNameForLabelSplit = ProductNameForLabel.split('\n');
+
+        var nomeArtigo = productNameForLabelSplit[0];
+        map._NOME_ARTIGO = nomeArtigo;
+        for(i=1; i < productNameForLabelSplit.length; i++) {
+          map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+        }
+
+      }
+
+      var sendToPrinter = replaceAll(ZPLString, map);
+
+      sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
+    }
+
+    if (BoxBarCodeType == 'EAN13') {
+      
+      function padDigits(number, digits) {
+        return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+      }
+
+      var Quantity_full = padDigits(qtyByBox, 4);
+
+      //We need to remove the first digit to calculate the checksum for the EAN-13
+      if (BarCodeNumber.charAt(0) === '0') {
+        BarCodeNumber = BarCodeNumber.slice(1);
+        var checkDigit = eanCheckDigit('' + BarCodeNumber);
+        var EanWithCheckDigit = BarCodeNumber + checkDigit;
+      } else {
+        var EanWithCheckDigit = BarCodeNumber;
+      }
+
+
+      function replaceAll(str, map) {
+        for (key in map) {
+          str2 = str.replace(key, map[key]);
+          str = str2;
+          str2 = null;
+        }
+        return str;
+      }
+
+      var map = {
+        '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+        '_QUANTIDADE_EXTENDIDA': Quantity_full,
+        '_NUM_ARTIGO': ProductID,
+        '_ORDER_ID': OrderId,
+        '_QUANTIDADE': qtyByBox,
+        '_PRINT_QUANTITY': numberLabelsOnBox, // THIS IS THE NUMBER OF LABELS IN EACH BOX (2, 3, etc ...)
+        '_COUNTER_MAX_VALUE': boxCounterFinal
+      }
+
+      if(ProductNameForLabel.indexOf("\n")==-1){
+        //alert("No newline characters")
+        map._NOME_ARTIGO = ProductNameForLabel;
+      }else{
+        //alert("Contains newline characters")
+        var productNameForLabelSplit = ProductNameForLabel.split('\n');
+
+        var nomeArtigo = productNameForLabelSplit[0];
+        map._NOME_ARTIGO = nomeArtigo;
+        for(i=1; i < productNameForLabelSplit.length; i++) {
+          map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+        }
+
+      }
+
+      var sendToPrinter = replaceAll(ZPLString, map);
+
+      sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
+    }
+
+  }
+
   //PRINT LABEL ARTICLE
   $scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductNameForLabel, ProductID, ZPLString, ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, BoxBarCodeType, Quantity, labelsWith2Columns) {
 
