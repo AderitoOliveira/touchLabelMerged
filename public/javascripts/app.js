@@ -792,10 +792,38 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
   $rootScope.class = 'not-home';
   $rootScope.name = "Imprimir etiquetas do Produto " + $stateParams.productName;
   $scope.data = [];
+  $scope.orderIdForDropdown = [];
+  $scope.showLabelBoxCounter = false;
+  $scope.showOrderIdDropdown = false;
+
+  $scope.check = function () {
+    console.log("You typed '" + this.orderId + "'"); // used 'this' instead of $scope
+  }
+
   var productId = $stateParams.productId;
+
   var request = $http.get('/labelToPrintForProduct/' + encodeURIComponent(productId));
   request.then(function successCallback(response) {
     $scope.data = response.data;
+
+    var request = $http.get('/orderidfordropdowninlabel/' + encodeURIComponent(productId));
+    request.then(function successCallback(response) {
+      if (response.data.length > 0 && $scope.data[0].LABEL_HAS_COUNTER == "true") {
+        $scope.orderIdForDropdown = response.data;
+        $scope.showOrderIdDropdown = true;
+        $scope.showLabelBoxCounter = true;
+      } else if (response.data.length == 0 && $scope.data[0].LABEL_HAS_COUNTER == "true") {
+        $scope.showOrderIdDropdown = false;
+        $scope.showLabelBoxCounter = true;
+
+      } else {
+        $scope.showOrderIdDropdown = false;
+        $scope.showLabelBoxCounter = false;
+      }
+    },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+    });
 
     if ($scope.data.length == 0) {
       ModalService.showModal({
@@ -819,7 +847,10 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
       $state.go("listProducts", null, { reload: true });
     }
     console.log(response.data);
-    //$scope.image = '/images' + '/' + $scope.data.image_name;
+    
+    if($scope.data[0].LABEL_HAS_COUNTER == 'true') {
+      $scope.showLabelBoxCounter = true;
+    }
     return $scope.data;
   },
     function errorCallback(data) {
@@ -880,10 +911,6 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
 
     if (BoxBarCodeType == 'GS1-128') {
 
-      function padDigits(number, digits) {
-        return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
-      }
-
       var Quantity_full = padDigits(Quantity, 4);
 
       if (BarCodeNumber.charAt(0) != '0') {
@@ -938,10 +965,6 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
     }
 
     if (BoxBarCodeType == 'EAN13') {
-      
-      function padDigits(number, digits) {
-        return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
-      }
 
       var Quantity_full = padDigits(Quantity, 4);
 
@@ -991,6 +1014,128 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
       var sendToPrinter = replaceAll(ZPLString, map);
 
       sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
+    }
+
+  }
+
+  //PRINT LABEL WITH COUNTER FOR THE BOX
+  $scope.printLabelBoxWithCounter = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductNameForLabel, ProductID, ZPLString, BoxBarCodeType, qtyByBox, numberLabelsOnBox, OrderId, boxCounterInitial, boxCounterFinal, labelWithCounterPrintDelay) {
+
+    if (BoxBarCodeType == 'GS1-128') {
+
+      function padDigits(number, digits) {
+        return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+      }
+
+      var Quantity_full = padDigits(Quantity, 4);
+
+      if (BarCodeNumber.charAt(0) != '0') {
+        BarCodeNumber = '0' + BarCodeNumber;
+        var EanWithCheckDigit = BarCodeNumber;
+        var FullEan = "802" + BarCodeNumber + "37" + Quantity_full;
+      } else {
+        var checkDigit = eanCheckDigit('' + BarCodeNumber);
+        var EanWithCheckDigit = BarCodeNumber + checkDigit;
+        //In the 802 the 8 it's for the size of the code bar and the 02 is the Application Identifier of the
+        //GS1-128 BarCode
+        var FullEan = "802" + BarCodeNumber + checkDigit + "37" + Quantity_full;
+      }
+      
+
+      function replaceAll(str, map) {
+        for (key in map) {
+          str2 = str.replace(key, map[key]);
+          str = str2;
+          str2 = null;
+        }
+        return str;
+      }
+
+      var map = {
+        '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+        '_QUANTIDADE_EXTENDIDA': Quantity_full,
+        '_FULL_EAN': FullEan,
+        '_NUM_ARTIGO': ProductID,
+        '_ORDER_ID': OrderId,
+        '_PRINT_QUANTITY': NumLabelsToPrint
+      };
+
+      if(ProductNameForLabel.indexOf("\n")==-1){
+        //alert("No newline characters")
+        map._NOME_ARTIGO = ProductNameForLabel;
+      }else{
+        //alert("Contains newline characters")
+        var productNameForLabelSplit = ProductNameForLabel.split('\n');
+
+        var nomeArtigo = productNameForLabelSplit[0];
+        map._NOME_ARTIGO = nomeArtigo;
+        for(i=1; i < productNameForLabelSplit.length; i++) {
+          map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+        }
+
+      }
+
+      var sendToPrinter = replaceAll(ZPLString, map);
+
+      sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
+    }
+
+    if (BoxBarCodeType == 'EAN13') {
+      
+      function padDigits(number, digits) {
+        return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+      }
+
+      var Quantity_full = padDigits(qtyByBox, 4);
+
+      //We need to remove the first digit to calculate the checksum for the EAN-13
+      if (BarCodeNumber.charAt(0) === '0') {
+        BarCodeNumber = BarCodeNumber.slice(1);
+        var checkDigit = eanCheckDigit('' + BarCodeNumber);
+        var EanWithCheckDigit = BarCodeNumber + checkDigit;
+      } else {
+        var EanWithCheckDigit = BarCodeNumber;
+      }
+
+
+      function replaceAll(str, map) {
+        for (key in map) {
+          str2 = str.replace(key, map[key]);
+          str = str2;
+          str2 = null;
+        }
+        return str;
+      }
+
+      var map = {
+        '_EAN_CHECK_DIGIT': EanWithCheckDigit,
+        '_QUANTIDADE_EXTENDIDA': Quantity_full,
+        '_NUM_ARTIGO': ProductID,
+        '_ORDER_ID': OrderId,
+        '_QUANTIDADE': qtyByBox,
+        '_PRINT_QUANTITY': numberLabelsOnBox, // THIS IS THE NUMBER OF LABELS IN EACH BOX (2, 3, etc ...)
+        '_COUNTER_MAX_VALUE': boxCounterFinal
+      }
+
+      if(ProductNameForLabel.indexOf("\n")==-1){
+        //alert("No newline characters")
+        map._NOME_ARTIGO = ProductNameForLabel;
+      }else{
+        //alert("Contains newline characters")
+        var productNameForLabelSplit = ProductNameForLabel.split('\n');
+
+        var nomeArtigo = productNameForLabelSplit[0];
+        map._NOME_ARTIGO = nomeArtigo;
+        for(i=1; i < productNameForLabelSplit.length; i++) {
+          map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+        }
+
+      }
+
+      var sendToPrinter = replaceAll(ZPLString, map);
+
+      executeCycleToPrintLabels (PrinterIPAddress, PrinterPort, sendToPrinter, boxCounterInitial, boxCounterFinal, labelWithCounterPrintDelay);
+
     }
 
   }
@@ -1074,6 +1219,50 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
     sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
   }
 
+
+  function timer(ms) {
+    return new Promise(res => setTimeout(res, ms));
+  }
+
+  function padDigits(number, digits) {
+    return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+  }
+
+  function replaceAll(str, map) {
+    for (key in map) {
+      str2 = str.split(key).join(map[key]);
+      str = str2;
+      str2 = null;
+    }
+    return str;
+  }
+
+  async function executeCycleToPrintLabels (PrinterIPAddress, PrinterPort, ZPLString, boxCounterInitial, boxCounterFinal, printDelay) { // We need to wrap the loop into an async function for this to work
+        
+    const totalLabelsToPrint = boxCounterFinal - boxCounterInitial;
+    const digits_for_padding = boxCounterFinal.toString().length;
+    var ZPLString_aux= ZPLString;
+    const intialCounter = parseInt(boxCounterInitial, 10);
+    const finalCounter = parseInt(boxCounterFinal, 10);
+
+    for (i=intialCounter; i <= finalCounter; i++) {
+
+      var counter_value_test_label = padDigits(i, digits_for_padding) + '';
+
+      var map = {
+        '_COUNTER_VALUE':  counter_value_test_label
+      };
+
+      var sendToPrinterAllLabels = replaceAll(ZPLString_aux, map);
+      sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinterAllLabels);
+      var ZPLString_aux= ZPLString;
+      //console.log("ZPL_FINAL:" + sendToPrinterAllLabels);
+      //console.log("*******************************************************************************************");
+
+      await timer(printDelay); // then the created Promise can be awaited
+
+    }
+  }
 
 }]);
 
