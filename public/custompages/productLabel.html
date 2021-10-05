@@ -63,7 +63,7 @@
                 </div>
                 <div class="label-bottom">
                   <div class="label-button">
-                      <button type="submit" ng-click="printLabelBox(product.BOX_PRINTER_IP_ADDRESS, product.BOX_PRINTER_PORT, product.Bar_Code_Tech_Sheet, product.PRODUCT_NAME_FOR_LABEL, product.CUSTOMER_PRODUCT_ID, product.ZPL_STRING_BOX, product.BOX_BARCODE_TYPE, product.Qty_By_Box, qtyBox)" class="btn btn-default btn-save"><img src="assets/icons/symbol-print.svg" width="20px" height="18px" />Imprimir</button>
+                      <button type="submit" ng-click="printLabelBox(product.BOX_PRINTER_IP_ADDRESS, product.BOX_PRINTER_PORT, product.Bar_Code_Tech_Sheet, product.PRODUCT_NAME_FOR_LABEL, product.CUSTOMER_PRODUCT_ID, product.ZPL_STRING_BOX, product.BOX_BARCODE_TYPE, product.Qty_By_Box, qtyBox)" class="btn btn-default btn-save-bottom"><img src="assets/icons/symbol-print.svg" width="20px" height="18px" />Imprimir</button>
                   </div>
                 </div>
               </div>
@@ -78,14 +78,9 @@
                   <div class="label-quantity">
                       <label class="control-label" for="qtyBox">Num. Encomenda</label>
                       <div class="input-wrap-inner">
-                        <!--input type="qtyBox" class="form-control" id="qtyBox" placeholder="Número Etiquetas" ng-model="qtyBox"-->
                         <select ng-model="orderId" class="order-dropdown">
                           <option ng-repeat="order in orderIdForDropdown" value="{{order.value}}">{{order.value}}</option>
                         </select>
-                        <!--button ng-click="check()">Write console log</button>
-                        <div class="label-button" ng-if="showOrderIdDropdown==true">
-                          <button type="submit" ng-click="printLabelBoxWithCounter(product.BOX_PRINTER_IP_ADDRESS, product.BOX_PRINTER_PORT, product.Bar_Code_Tech_Sheet, product.PRODUCT_NAME_FOR_LABEL, product.CUSTOMER_PRODUCT_ID, product.ZPL_STRING_BOX, product.BOX_BARCODE_TYPE, product.Qty_By_Box, product.NUMBER_LABELS_ON_BOX, orderId, boxCounterInitial, boxCounterFinal, product.LABEL_WITH_COUNTER_PRINT_DELAY)" class="btn btn-default btn-save"><img src="assets/icons/symbol-print.svg" width="20px" height="18px" />Imprimir</button>
-                        </div-->
                       </div>
                   </div>
                   <div class="label-quantity">
@@ -108,7 +103,7 @@
                 </div>
                 <div class="label-bottom">
                   <div class="label-button">
-                    <button type="submit" ng-click="printLabelBoxWithCounter(product.BOX_PRINTER_IP_ADDRESS, product.BOX_PRINTER_PORT, product.Bar_Code_Tech_Sheet, product.PRODUCT_NAME_FOR_LABEL, product.CUSTOMER_PRODUCT_ID, product.ZPL_STRING_BOX, product.BOX_BARCODE_TYPE, product.Qty_By_Box, product.NUMBER_LABELS_ON_BOX, orderId, boxCounterInitial, boxCounterFinal, product.LABEL_WITH_COUNTER_PRINT_DELAY)" class="btn btn-default btn-save"><img src="assets/icons/symbol-print.svg" width="20px" height="18px" />Imprimir</button>
+                    <button type="submit" ng-click="printLabelBoxWithCounter(product.BOX_PRINTER_IP_ADDRESS, product.BOX_PRINTER_PORT, product.Bar_Code_Tech_Sheet, product.PRODUCT_NAME_FOR_LABEL, product.CUSTOMER_PRODUCT_ID, product.ZPL_STRING_BOX, product.BOX_BARCODE_TYPE, product.Qty_By_Box, product.NUMBER_LABELS_ON_BOX, orderId, boxCounterInitial, boxCounterFinal, product.LABEL_WITH_COUNTER_PRINT_DELAY)" class="btn btn-default btn-save-bottom"><img src="assets/icons/symbol-print.svg" width="20px" height="18px" />Imprimir</button>
                   </div>
                 </div>
               </div>
