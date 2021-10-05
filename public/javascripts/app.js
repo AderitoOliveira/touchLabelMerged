@@ -794,23 +794,36 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
   $scope.data = [];
   $scope.orderIdForDropdown = [];
   $scope.showLabelBoxCounter = false;
-  $scope.orderId = "";
-  $scope.boxCounterInitial = "";
-  $scope.boxCounterFinal = "";
+  $scope.showOrderIdDropdown = false;
+
+  $scope.check = function () {
+    console.log("You typed '" + this.orderId + "'"); // used 'this' instead of $scope
+  }
 
   var productId = $stateParams.productId;
-
-  var request = $http.get('/orderidfordropdowninlabel/' + encodeURIComponent(productId));
-	request.then(function successCallback(response) {
-		$scope.orderIdForDropdown = response.data;
-	},
-    function errorCallback(data) {
-      console.log('Error: ' + data);
-  });
 
   var request = $http.get('/labelToPrintForProduct/' + encodeURIComponent(productId));
   request.then(function successCallback(response) {
     $scope.data = response.data;
+
+    var request = $http.get('/orderidfordropdowninlabel/' + encodeURIComponent(productId));
+    request.then(function successCallback(response) {
+      if (response.data.length > 0 && $scope.data[0].LABEL_HAS_COUNTER == "true") {
+        $scope.orderIdForDropdown = response.data;
+        $scope.showOrderIdDropdown = true;
+        $scope.showLabelBoxCounter = true;
+      } else if (response.data.length == 0 && $scope.data[0].LABEL_HAS_COUNTER == "true") {
+        $scope.showOrderIdDropdown = false;
+        $scope.showLabelBoxCounter = true;
+
+      } else {
+        $scope.showOrderIdDropdown = false;
+        $scope.showLabelBoxCounter = false;
+      }
+    },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
+    });
 
     if ($scope.data.length == 0) {
       ModalService.showModal({
@@ -898,10 +911,6 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
 
     if (BoxBarCodeType == 'GS1-128') {
 
-      function padDigits(number, digits) {
-        return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
-      }
-
       var Quantity_full = padDigits(Quantity, 4);
 
       if (BarCodeNumber.charAt(0) != '0') {
@@ -956,10 +965,6 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
     }
 
     if (BoxBarCodeType == 'EAN13') {
-      
-      function padDigits(number, digits) {
-        return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
-      }
 
       var Quantity_full = padDigits(Quantity, 4);
 
@@ -1014,7 +1019,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
   }
 
   //PRINT LABEL WITH COUNTER FOR THE BOX
-  $scope.printLabelBoxWithCounter = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductNameForLabel, ProductID, ZPLString, BoxBarCodeType, qtyByBox, numberLabelsOnBox, OrderId, boxCounterInitial, boxCounterFinal) {
+  $scope.printLabelBoxWithCounter = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductNameForLabel, ProductID, ZPLString, BoxBarCodeType, qtyByBox, numberLabelsOnBox, OrderId, boxCounterInitial, boxCounterFinal, labelWithCounterPrintDelay) {
 
     if (BoxBarCodeType == 'GS1-128') {
 
@@ -1129,7 +1134,8 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
 
       var sendToPrinter = replaceAll(ZPLString, map);
 
-      sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
+      executeCycleToPrintLabels (PrinterIPAddress, PrinterPort, sendToPrinter, boxCounterInitial, boxCounterFinal, labelWithCounterPrintDelay);
+
     }
 
   }
@@ -1213,6 +1219,50 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
     sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
   }
 
+
+  function timer(ms) {
+    return new Promise(res => setTimeout(res, ms));
+  }
+
+  function padDigits(number, digits) {
+    return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+  }
+
+  function replaceAll(str, map) {
+    for (key in map) {
+      str2 = str.split(key).join(map[key]);
+      str = str2;
+      str2 = null;
+    }
+    return str;
+  }
+
+  async function executeCycleToPrintLabels (PrinterIPAddress, PrinterPort, ZPLString, boxCounterInitial, boxCounterFinal, printDelay) { // We need to wrap the loop into an async function for this to work
+        
+    const totalLabelsToPrint = boxCounterFinal - boxCounterInitial;
+    const digits_for_padding = boxCounterFinal.toString().length;
+    var ZPLString_aux= ZPLString;
+    const intialCounter = parseInt(boxCounterInitial, 10);
+    const finalCounter = parseInt(boxCounterFinal, 10);
+
+    for (i=intialCounter; i <= finalCounter; i++) {
+
+      var counter_value_test_label = padDigits(i, digits_for_padding) + '';
+
+      var map = {
+        '_COUNTER_VALUE':  counter_value_test_label
+      };
+
+      var sendToPrinterAllLabels = replaceAll(ZPLString_aux, map);
+      sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinterAllLabels);
+      var ZPLString_aux= ZPLString;
+      //console.log("ZPL_FINAL:" + sendToPrinterAllLabels);
+      //console.log("*******************************************************************************************");
+
+      await timer(printDelay); // then the created Promise can be awaited
+
+    }
+  }
 
 }]);
 
