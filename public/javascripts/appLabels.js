@@ -383,7 +383,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
             '_NUM_ARTIGO': customer_product_id,
             '_ORDER_ID' : order_id,
             '_QUANTIDADE': qtyByBox,
-            '_PRINT_QUANTITY': NumberLabelsOnBox, //THIS IS THE NUMBER OF LABELS IN EACH BOX (2, 3, etc ...)
+            '_PRINT_QUANTITY': quantity_box_labels, //THIS IS THE NUMBER OF LABELS IN EACH BOX (2, 3, etc ...)
             '_COUNTER_MAX_VALUE' : quantity_box_labels,
             //'_COUNTER_VALUE':  counter_value
           };
@@ -660,26 +660,20 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
 
       var digits_for_padding = total_labels_to_print.toString().length;
 
-      /* for(i=1; i <= total_labels_to_print; i++) {
+      var counter_value_test_label = padDigits(1, digits_for_padding) + '';
+  
+      var map = {
+        '_COUNTER_VALUE':  counter_value_test_label,
+        //'_PRINT_QUANTITY': total_labels_to_print
+      };
 
-        var counter_value_test_label = padDigits(i, digits_for_padding) + '';
-
-        var map = {
-          '_COUNTER_VALUE':  counter_value_test_label
-        };
-
-        var sendToPrinterAllLabels = replaceAll(ZPLString_aux, map);
-        finalZPLStringToSend = finalZPLStringToSend + sendToPrinterAllLabels;
-        //sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinterAllLabels);
-        var ZPLString_aux= ZPLString;
-        //console.log("ZPL_FINAL:" + sendToPrinterAllLabels);
-        //console.log("*******************************************************************************************");
-      }
-
-      console.log("ZPL_FINAL:" + finalZPLStringToSend);
-      sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, finalZPLStringToSend); */
+      var sendToPrinterAllLabels = replaceAll(ZPLString, map);
+      sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinterAllLabels);
+      
 
       // Returns a Promise that resolves after "ms" Milliseconds
+      
+      /*
       function timer(ms) {
         return new Promise(res => setTimeout(res, ms));
       }
@@ -709,6 +703,7 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
 
       executeCycleToPrintLabels();
 
+      */
         
       //IF THE ARTICLE LABELS WHERE ALREADY PRINTED, THEN THIS RECORD SHOULD BE DELETED
       if(label_being_printed === 'box') {
