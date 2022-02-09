@@ -1107,13 +1107,17 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
         return str;
       }
 
+      let totalLabelsToPrint = (boxCounterFinal - boxCounterInitial) + 1;
+      let boxCounterInitialPadded = padDigits(boxCounterInitial, boxCounterFinal.length);
+
       var map = {
         '_EAN_CHECK_DIGIT': EanWithCheckDigit,
         '_QUANTIDADE_EXTENDIDA': Quantity_full,
         '_NUM_ARTIGO': ProductID,
         '_ORDER_ID': OrderId,
         '_QUANTIDADE': qtyByBox,
-        '_PRINT_QUANTITY': numberLabelsOnBox, // THIS IS THE NUMBER OF LABELS IN EACH BOX (2, 3, etc ...)
+        '_PRINT_QUANTITY': totalLabelsToPrint, // THIS IS THE NUMBER OF LABELS IN EACH BOX (2, 3, etc ...),
+        '_COUNTER_VALUE':  boxCounterInitialPadded,
         '_COUNTER_MAX_VALUE': boxCounterFinal
       }
 
@@ -1134,7 +1138,9 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
 
       var sendToPrinter = replaceAll(ZPLString, map);
 
-      executeCycleToPrintLabels (PrinterIPAddress, PrinterPort, sendToPrinter, boxCounterInitial, boxCounterFinal, labelWithCounterPrintDelay);
+      console.log('ZPL Final: ' + sendToPrinter)
+      sendZPLCodeToPrinter.sendZplToPrinter(PrinterIPAddress, PrinterPort, sendToPrinter);
+      //executeCycleToPrintLabels (PrinterIPAddress, PrinterPort, sendToPrinter, boxCounterInitial, boxCounterFinal, labelWithCounterPrintDelay);
 
     }
 
