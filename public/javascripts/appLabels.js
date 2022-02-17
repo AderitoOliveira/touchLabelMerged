@@ -377,18 +377,20 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
             var EanWithCheckDigit = barCodeNumber;
           }
 
+          var labelsToPrint = quantity_box_labels * NumberLabelsOnBox;
+
           var map = {
             '_EAN_CHECK_DIGIT': EanWithCheckDigit,
             '_QUANTIDADE_EXTENDIDA': Quantity_full,
             '_NUM_ARTIGO': customer_product_id,
             '_ORDER_ID' : order_id,
             '_QUANTIDADE': qtyByBox,
-            '_PRINT_QUANTITY': quantity_box_labels, //THIS IS THE NUMBER OF LABELS IN EACH BOX (2, 3, etc ...)
+            '_PRINT_QUANTITY': labelsToPrint, //THIS IS THE NUMBER OF LABELS IN EACH BOX (2, 3, etc ...)
             '_COUNTER_MAX_VALUE' : quantity_box_labels,
             //'_COUNTER_VALUE':  counter_value
           };
 
-          var counter_value_test_label = padDigits(1, quantity_box_labels.toString().length) + '';
+          var counter_value_test_label = padDigits(1, labelsToPrint.toString().length) + '';
   
           var mapTestLabel = {
             '_EAN_CHECK_DIGIT': EanWithCheckDigit,
