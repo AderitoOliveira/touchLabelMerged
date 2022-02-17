@@ -1107,7 +1107,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
         return str;
       }
 
-      let totalLabelsToPrint = (boxCounterFinal - boxCounterInitial) + 1;
+      let totalLabelsToPrint = ((boxCounterFinal - boxCounterInitial) + 1) * numberLabelsOnBox;
       let boxCounterInitialPadded = padDigits(boxCounterInitial, boxCounterFinal.length);
 
       var map = {
