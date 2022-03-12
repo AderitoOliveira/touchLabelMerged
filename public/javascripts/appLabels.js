@@ -55,7 +55,8 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
         var NumberLabelsOnBox                                 = $scope.productLabel[0].NUMBER_LABELS_ON_BOX;
         var customerProductId                                 = $scope.productLabel[0].CUSTOMER_PRODUCT_ID;
         var labelsWith2Columns                                = $scope.productLabel[0].ARTICLE_LABEL_WITH_2_COLUMNS;
-  
+        var LabelHasDate                                      = $scope.productLabel[0].LABEL_HAS_DATE;
+        var DateFormat                                        = $scope.productLabel[0].DATE_FORMAT;
   
         //We need to remove the first digit to calculate the checksum for the EAN-13
         if (barCodeNumber.charAt(0) === '0') {
@@ -114,6 +115,25 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
               mapTestLabel["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
             }
   
+          }
+
+          if(LabelHasDate == 'true') {
+            var dateFormatSplit = DateFormat.split('/');
+            var dateFinalString = "";
+          
+            for(i=0; i < dateFormatSplit.length; i++) {
+              var intermediateDate = moment().format("" + dateFormatSplit[i]);
+              if (i == dateFormatSplit.length - 1) {
+                dateFinalString = dateFinalString + intermediateDate;
+              } else {
+                dateFinalString = dateFinalString + intermediateDate + "/";
+              }
+            }
+            
+            map["_DATE"] = dateFinalString;
+          
+            console.log("dateFinalString: " + dateFinalString);
+          
           }
     
           if (labelsWith2Columns == "false") {
@@ -223,6 +243,8 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
         var LabelHasCounter         = $scope.productLabel[0].LABEL_HAS_COUNTER;
         var NumberLabelsOnArticle   = $scope.productLabel[0].NUMBER_LABELS_ON_ARTICLE;
         var NumberLabelsOnBox       = $scope.productLabel[0].NUMBER_LABELS_ON_BOX;
+        var LabelHasDate            = $scope.productLabel[0].LABEL_HAS_DATE;
+        var DateFormat              = $scope.productLabel[0].DATE_FORMAT;
 
 
         if(LabelHasCounter == 'false') {
@@ -422,6 +444,25 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
               mapTestLabel["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
             }
   
+          }
+          
+          if(LabelHasDate == 'true') {
+            var dateFormatSplit = DateFormat.split('/');
+            var dateFinalString = "";
+
+            for(i=0; i < dateFormatSplit.length; i++) {
+              var intermediateDate = moment().format("" + dateFormatSplit[i]);
+              if (i == dateFormatSplit.length - 1) {
+                dateFinalString = dateFinalString + intermediateDate;
+              } else {
+                dateFinalString = dateFinalString + intermediateDate + "/";
+              }
+            }
+            
+            map["_DATE"] = dateFinalString;
+
+            console.log("dateFinalString: " + dateFinalString);
+
           }
 
           var sendToPrinterTestLabel = replaceAll(ZPLStringTestLabel, mapTestLabel);
