@@ -2306,7 +2306,38 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
   //Insert Daily Production - Call Server Side Function
   $scope.insertDailyProductionServerSide = function (orderproductuniqueid, internalproductid, customerproductid, productName, totalquantityordered, totalproductsproduced, totalquantityproduced, employyee_name, priceEuro, productiondate, parent_customer_product_id, in_compound_product) {
 
-    var dataObj = {
+    var messageToSend = "";
+    totalquantityproduced, employyee_name
+    if ( totalquantityproduced == null || totalquantityproduced == 0 || !employyee_name ) {
+
+      if ( totalquantityproduced == null || totalquantityproduced == 0 && messageToSend == "" ) {
+        messageToSend = "Não foi inserida a quantidade produzida. Insira a quantidade."
+      }
+      if ( !employyee_name  && messageToSend == "" ) {
+        messageToSend = "Não foi inserido o nome do Funcionário. Insira o Funcionário."
+      }
+
+      ModalService.showModal({
+        templateUrl: "../modal/genericModal.html",
+        controller: "GenericController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: messageToSend
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+
+    } else {
+	
+		var dataObj = {
       CREATED_DATE: moment(productiondate).format('YYYY-MM-DD 00:00:00'),
       CUSTOMER_PRODUCT_ID: customerproductid,
       EMPLOYEE_NAME: employyee_name.EMPLOYEE_NAME,
@@ -2322,28 +2353,6 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       PARENT_CUSTOMER_PRODUCT_ID: parent_customer_product_id,
       IN_COMPOUND_PRODUCT: in_compound_product
     }
-
-    /* var res = $http.post('/insertDailyProductionServerSide', dataObj).then(function (data, status, headers, config) {
-      //$state.reload();
-      ModalService.showModal({
-        templateUrl: "../modal/dailyProductionInsertOrderDistributionReport.html",
-        controller: "dailyProductionOrderDistributionModalController",
-        preClose: (modal) => { modal.element.modal('hide'); },
-        inputs: {
-          message: "Os produtos produzidos foram distribuídos pela(s) encomenda(s): " + totalquantityproduced,
-          dataObj: data
-        }
-      }).then(function (modal) {
-        modal.element.modal();
-        modal.close.then(function (result) {
-          if (!result) {
-            $scope.complexResult = "Modal forcibly closed..."
-          } else {
-            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
-          }
-        });
-      });
-    }); */
 
     InsertDailyProductionService.insert(dataObj).then(function (orderproductdistribution) {
 
@@ -2373,6 +2382,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
       }
 
     });
+	}
     
 };
 
@@ -2472,7 +2482,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     };
 
     //THE NUMBER OF PRODUCTS TO REGISTER ARE STILL INFERIOR TO THE NUMBER OF PRODUCTS TO COMPLETE THE ORDER
-    if ($scope.totalquantityproduced <= products_still_to_produce) {
+    if ($scope.totalquantityproduced <= totalquantityordered) {
 
       $scope.orderproductstatus = 'em_producao';
       var valueProducedByTheEmployee = $scope.totalquantityproduced * $scope.priceEuro;
@@ -3543,20 +3553,53 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
   //Save Content Modal  
   $scope.save = function () {
 
-    $scope.formattedDate = moment($scope.deliverDate).format('YYYY-MM-DD 00:00:00');
-    console.log("A MINHA DATA: " + $scope.formattedDate);
+    var messageToSend = "";
 
-    var dataObj = {
-      ORDER_ID: $scope.orderid,
-      CLIENT_NAME: $scope.clientname.CLIENT_NAME,
-      CLIENT_ID: $scope.clientname.CLIENT_ID,
-      MODIFIED_DATE: $scope.formattedDate,
-      STATUS: 'Em Aberto'
-    };
+    if ( $scope.orderid == null || !$scope.clientname ) {
 
-    var res = $http.post('/insertorder', dataObj).then(function (data, status, headers, config) {
-      $state.reload();
-    });
+      if ( $scope.orderid == null && messageToSend == "" ) {
+        messageToSend = "Não foi inserido o número da Encomenda. Insira um número de encomenda."
+      }
+      if ( !$scope.clientname && messageToSend == "" ) {
+        messageToSend = "Não foi inserido o nome do Cliente da Encomenda. Insira o Cliente."
+      }
+
+      ModalService.showModal({
+        templateUrl: "../modal/genericModal.html",
+        controller: "GenericController",
+        preClose: (modal) => { modal.element.modal('hide'); },
+        inputs: {
+          message: messageToSend
+        }
+      }).then(function (modal) {
+        modal.element.modal();
+        modal.close.then(function (result) {
+          if (!result) {
+            $scope.complexResult = "Modal forcibly closed..."
+          } else {
+            $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+          }
+        });
+      });
+
+    } else {
+      
+      $scope.formattedDate = moment($scope.deliverDate).format('YYYY-MM-DD 00:00:00');
+      console.log("A MINHA DATA: " + $scope.formattedDate);
+  
+      var dataObj = {
+        ORDER_ID: $scope.orderid,
+        CLIENT_NAME: $scope.clientname.CLIENT_NAME,
+        CLIENT_ID: $scope.clientname.CLIENT_ID,
+        MODIFIED_DATE: $scope.formattedDate,
+        STATUS: 'Em Aberto'
+      };
+  
+      var res = $http.post('/insertorder', dataObj).then(function (data, status, headers, config) {
+        $state.reload();
+      });
+  
+    }
 
   };
 
