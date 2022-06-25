@@ -907,7 +907,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
   console.log("SCOPEDATA: " + $scope.data);
 
   //PRINT LABEL BOX
-  $scope.printLabelBox = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductNameForLabel, ProductID, ZPLString, BoxBarCodeType, Quantity, NumLabelsToPrint) {
+  $scope.printLabelBox = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductNameForLabel, ProductID, ZPLString, BoxBarCodeType, Quantity, NumLabelsToPrint, LabelHasDate, DateFormat) {
 
     if (BoxBarCodeType == 'GS1-128') {
 
@@ -957,6 +957,25 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
           map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
         }
 
+      }
+
+      if(LabelHasDate == 'true') {
+        var dateFormatSplit = DateFormat.split('/');
+        var dateFinalString = "";
+      
+        for(i=0; i < dateFormatSplit.length; i++) {
+          var intermediateDate = moment().format("" + dateFormatSplit[i]);
+          if (i == dateFormatSplit.length - 1) {
+            dateFinalString = dateFinalString + intermediateDate;
+          } else {
+            dateFinalString = dateFinalString + intermediateDate + "/";
+          }
+        }
+        
+        map["_DATE"] = dateFinalString;
+      
+        console.log("dateFinalString: " + dateFinalString);
+      
       }
 
       var sendToPrinter = replaceAll(ZPLString, map);
@@ -1147,7 +1166,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
   }
 
   //PRINT LABEL ARTICLE
-  $scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductNameForLabel, ProductID, ZPLString, ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, BoxBarCodeType, Quantity, labelsWith2Columns) {
+  $scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductNameForLabel, ProductID, ZPLString, ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, BoxBarCodeType, Quantity, labelsWith2Columns, LabelHasDate, DateFormat) {
 
     if (BarCodeNumber.charAt(0) === '0') {
       BarCodeNumber = BarCodeNumber.slice(1);
@@ -1196,6 +1215,25 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
         map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
       }
 
+    }
+
+    if(LabelHasDate == 'true') {
+      var dateFormatSplit = DateFormat.split('/');
+      var dateFinalString = "";
+    
+      for(i=0; i < dateFormatSplit.length; i++) {
+        var intermediateDate = moment().format("" + dateFormatSplit[i]);
+        if (i == dateFormatSplit.length - 1) {
+          dateFinalString = dateFinalString + intermediateDate;
+        } else {
+          dateFinalString = dateFinalString + intermediateDate + "/";
+        }
+      }
+      
+      map["_DATE"] = dateFinalString;
+    
+      console.log("dateFinalString: " + dateFinalString);
+    
     }
 
     if (labelsWith2Columns == false) {
@@ -3639,6 +3677,33 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
 
   };
 
+  //Edit the Order Delivery Date
+  $scope.editOrderDeliveryDate = function (order_id) {
+
+    var orderToEdit = [{ "ORDER_ID": order_id }];
+
+    ModalService.showModal({
+      templateUrl: "../modal/editOrderDeliveryDate.html",
+      controller: "editOrderDeliveryDateController",
+      preClose: (modal) => { modal.element.modal('hide'); },
+      inputs: {
+        message: "Editar a data de entrega da encomenda " + order_id + " .",
+        operationURL: '/editOrderDeliveryDate',
+        dataObj: orderToEdit
+      }
+    }).then(function (modal) {
+      modal.element.modal();
+      modal.close.then(function (result) {
+        if (!result) {
+          $scope.complexResult = "Modal forcibly closed..."
+        } else {
+          $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
+        }
+      });
+    });
+
+  }
+
 }]);
 
 app.controller('panels', function ($scope, $http, $rootScope) {
@@ -5767,6 +5832,55 @@ app.controller('orderCreateModalController', [
     };
 
   }]);
+
+
+//Modal for changing the order delivery date
+app.controller('editOrderDeliveryDateController', ['$scope', '$http', '$state', 'operationURL', 'dataObj', 'message',
+function ($scope, $http, $state, operationURL, dataObj, message) {
+
+  $scope.message = message;
+  $scope.operationURL = operationURL;
+  $scope.data = dataObj;
+
+  $scope.today = function () {
+    $scope.deliverDate = new Date();
+  };
+  $scope.today();
+  
+  $scope.dateOptions = {
+    //dateDisabled: disabled,
+    formatYear: 'yy',
+    maxDate: new Date(2050, 5, 22),
+    minDate: new Date(2018, 12, 01),
+    startingDay: 1
+  };
+
+  $scope.open1 = function () {
+    $scope.popup1.opened = true;
+  };
+
+  $scope.setDate = function (year, month, day) {
+    $scope.dt = new Date(year, month, day);
+  };
+
+  $scope.popup1 = {
+    opened: false
+  };
+
+  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy','d!.M!.yyyy', 'shortDate'];
+  $scope.format = $scope.formats[0];
+  
+  //Save Content Modal  
+  $scope.yes = function () {
+
+    var res = $http.post($scope.operationURL, $scope.data).then(function (data, status, headers, config) {
+      $scope.formattedDate = moment($scope.deliverDate).format('YYYY-MM-DD 00:00:00');
+      console.log("A MINHA DATA: " + $scope.formattedDate);
+      //$state.reload();
+    });
+
+  };
+}]);
 
 //EDIT PRODUCT IMAGE CONTROLLER
 app.controller('editImageCtrl', ['$http', '$state', '$scope', 'Upload', '$timeout', '$stateParams', '$templateCache', function ($http, $state, $scope, Upload, $timeout, $stateParams, $templateCache) {

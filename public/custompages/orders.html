@@ -111,7 +111,7 @@
                                     <div class="col-xs-2 col-md-2 table-item item-order-products">{{order.QTY_ORDERED}}<strong> / {{order.QTY_PRODUCED}}</strong></div>
                                     <div class="col-xs-1 col-md-one-half table-item item-order-state">{{order.STATUS   }}</div>
                                     <div class="col-xs-2 col-md-one-half table-item item-order-actions">
-                                        <a class="btn btn-sm btn-primary" ng-click="printLabelProduct(order.ORDER_ID, order.CLIENT_NAME)" data-toggle="tooltip" title="Imprimir Etiquetas do Produto.">
+                                        <a class="btn btn-sm btn-primary" ng-click="editOrderDeliveryDate(order.ORDER_ID)" data-toggle="tooltip" title="Imprimir Etiquetas do Produto.">
                                             <img src="assets/icons/btn-paint.svg" width="24px" height="24px" />
                                         </a>
                                         <a class="btn btn-sm btn-warning" ng-click="showProductsForOrder(order.ORDER_ID, order.CLIENT_NAME, order.MODIFIED_DATE)" data-toggle="tooltip" title="Editar Produto.">
