@@ -907,7 +907,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
   console.log("SCOPEDATA: " + $scope.data);
 
   //PRINT LABEL BOX
-  $scope.printLabelBox = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductNameForLabel, ProductID, ZPLString, BoxBarCodeType, Quantity, NumLabelsToPrint) {
+  $scope.printLabelBox = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductNameForLabel, ProductID, ZPLString, BoxBarCodeType, Quantity, NumLabelsToPrint, LabelHasDate, DateFormat) {
 
     if (BoxBarCodeType == 'GS1-128') {
 
@@ -957,6 +957,25 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
           map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
         }
 
+      }
+
+      if(LabelHasDate == 'true') {
+        var dateFormatSplit = DateFormat.split('/');
+        var dateFinalString = "";
+      
+        for(i=0; i < dateFormatSplit.length; i++) {
+          var intermediateDate = moment().format("" + dateFormatSplit[i]);
+          if (i == dateFormatSplit.length - 1) {
+            dateFinalString = dateFinalString + intermediateDate;
+          } else {
+            dateFinalString = dateFinalString + intermediateDate + "/";
+          }
+        }
+        
+        map["_DATE"] = dateFinalString;
+      
+        console.log("dateFinalString: " + dateFinalString);
+      
       }
 
       var sendToPrinter = replaceAll(ZPLString, map);
@@ -1147,7 +1166,7 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
   }
 
   //PRINT LABEL ARTICLE
-  $scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductNameForLabel, ProductID, ZPLString, ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, BoxBarCodeType, Quantity, labelsWith2Columns) {
+  $scope.printLabelArticle = function (PrinterIPAddress, PrinterPort, BarCodeNumber, ProductNameForLabel, ProductID, ZPLString, ZPL_STRING_ARTICLE_2_COLUMNS_1_LABEL, ZPL_STRING_ARTICLE_2_COLUMNS_MULTIPLE_LABEL, BoxBarCodeType, Quantity, labelsWith2Columns, LabelHasDate, DateFormat) {
 
     if (BarCodeNumber.charAt(0) === '0') {
       BarCodeNumber = BarCodeNumber.slice(1);
@@ -1196,6 +1215,25 @@ app.controller('productLabels', ['$scope', '$http', '$rootScope', '$state', '$st
         map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
       }
 
+    }
+
+    if(LabelHasDate == 'true') {
+      var dateFormatSplit = DateFormat.split('/');
+      var dateFinalString = "";
+    
+      for(i=0; i < dateFormatSplit.length; i++) {
+        var intermediateDate = moment().format("" + dateFormatSplit[i]);
+        if (i == dateFormatSplit.length - 1) {
+          dateFinalString = dateFinalString + intermediateDate;
+        } else {
+          dateFinalString = dateFinalString + intermediateDate + "/";
+        }
+      }
+      
+      map["_DATE"] = dateFinalString;
+    
+      console.log("dateFinalString: " + dateFinalString);
+    
     }
 
     if (labelsWith2Columns == false) {
@@ -5836,7 +5874,9 @@ function ($scope, $http, $state, operationURL, dataObj, message) {
   $scope.yes = function () {
 
     var res = $http.post($scope.operationURL, $scope.data).then(function (data, status, headers, config) {
-      $state.reload();
+      $scope.formattedDate = moment($scope.deliverDate).format('YYYY-MM-DD 00:00:00');
+      console.log("A MINHA DATA: " + $scope.formattedDate);
+      //$state.reload();
     });
 
   };
