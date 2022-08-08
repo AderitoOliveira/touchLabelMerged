@@ -533,6 +533,13 @@ router.get('/getDailyProduction', function (req, res) {
   fetchDailyProduction(req, res);
 });
 
+//Search in the Daily Production Registry containing searchQuery
+router.get('/dailyProductionSearch/:searchQuery', function (req, res) {
+  console.log("Search Daily Production");
+  console.log(req.body);
+  searchInDailyProduction(req, res);
+});
+
 //GET DAILY PRODUCTION HISTORIC - order_products_production_registry_bck
 router.get('/getDailyProductionHistoric', function (req, res) {
   console.log("GET DAILY PRODUCTION HISTORIC");
@@ -552,6 +559,14 @@ router.get('/getDailyPainting', function (req, res) {
   console.log(req.body);
   fetchDailyPainting(req, res);
 });
+
+//Search in the Daily Painting Registry containing searchQuery
+router.get('/dailyPaintingSearch/:searchQuery', function (req, res) {
+  console.log("Search in All Orders");
+  console.log(req.body);
+  searchInDailyPainting(req, res);
+});
+
 
 //GET DAILY PAINTING HISTORIC - order_products_painting_registry_bck
 router.get('/getDailyPaintingHistoric', function (req, res) {

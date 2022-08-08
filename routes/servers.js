@@ -1346,6 +1346,27 @@ fetchDailyProduction = function(data, callback) {
 });
 }
 
+//Search in the Daily Production Registry containing searchQuery
+searchInDailyProduction = function(data, callback) {
+    //let searchParam       = data.params.searchQuery + '%';
+    let clientSearchParam = '%' + data.params.searchQuery + '%';
+    console.log(data.params.searchQuery)
+    con.connect(function(err) {
+    con.query('select UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_ID, EMPLOYEE_NAME, TOTAL_PRODUCTS_PRODUCED, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, PRODUCED_VALUE_IN_EURO from order_products_production_registry where ORDER_ID like ? or CUSTOMER_PRODUCT_ID like ? or INTERNAL_PRODUCT_ID like ? or PRODUCT_NAME like ? or CREATED_DATE like ? order by CREATED_DATE desc',  [clientSearchParam, clientSearchParam, clientSearchParam, clientSearchParam, clientSearchParam],function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        //console.log(query.sql);
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        console.log("Search in the Daily Production containing searchQuery"); 
+        //callback = rows;
+    });
+});
+}
+
 //GET DAILY PRODUCTION HISTORIC - order_products_production_registry_bck
 fetchDailyProductionHistoric = function(data, callback) {
     con.connect(function(err) {
@@ -1393,6 +1414,26 @@ fetchDailyPainting = function(data, callback) {
         callback = rows;
         console.log("GET DAILY PAINTING");   
 
+    });
+});
+}
+
+//Search in the Daily Painting Registry containing searchQuery
+searchInDailyPainting = function(data, callback) {
+    let clientSearchParam = '%' + data.params.searchQuery + '%';
+    console.log(data.params.searchQuery)
+    con.connect(function(err) {
+    con.query('select UNIQUE_ID, ORDER_ID, CUSTOMER_PRODUCT_ID, INTERNAL_PRODUCT_ID, PRODUCT_NAME, EMPLOYEE_ID, EMPLOYEE_NAME, TOTAL_PRODUCTS_PAINTED, date_format(CREATED_DATE, "%Y-%m-%d %H:%i:%s") as CREATED_DATE, PRODUCED_VALUE_IN_EURO from order_products_painting_registry where ORDER_ID like ? or CUSTOMER_PRODUCT_ID like ? or INTERNAL_PRODUCT_ID like ? or PRODUCT_NAME like ? or CREATED_DATE like ? order by CREATED_DATE desc',  [clientSearchParam, clientSearchParam, clientSearchParam, clientSearchParam, clientSearchParam],function(err, rows) {
+        if (err) {
+            throw err;
+        } else
+        //console.log(query.sql);
+        callback.setHeader('Content-Type', 'application/json');
+        callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        callback.end(JSON.stringify(rows));
+        console.log("Search in the Daily Painting containing searchQuery"); 
+        //callback = rows;
     });
 });
 }
