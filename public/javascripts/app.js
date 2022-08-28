@@ -6669,8 +6669,26 @@ app.controller('dailyProduction', function ($scope, $http, $rootScope, ModalServ
   },
     function errorCallback(data) {
       console.log('Error: ' + data);
+  });
+
+
+  $scope.sendHttpAfterDebounce = function(value) {
+    let url = '';
+    if(value != '') {
+      url = '/dailyProductionSearch/' + encodeURIComponent(value);
+    } else {
+      url = '/getDailyProduction';
+    }
+
+    var request = $http.get(url);
+    request.then(function successCallback(response) {
+      $scope.dailyProduction = response.data;
+    },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
     });
 
+  };
 
   //Delete daily production registry
   $scope.delete = function (unique_id, order_id, customer_product_id, employee_name) {
@@ -6718,8 +6736,25 @@ app.controller('dailyPaintingController', function ($scope, $http, $rootScope, M
   },
     function errorCallback(data) {
       console.log('Error: ' + data);
+  });
+
+  $scope.sendHttpAfterDebounce = function(value) {
+    let url = '';
+    if(value != '') {
+      url = '/dailyPaintingSearch/' + encodeURIComponent(value);
+    } else {
+      url = '/getDailyPainting';
+    }
+
+    var request = $http.get(url);
+    request.then(function successCallback(response) {
+      $scope.dailyPainting = response.data;
+    },
+      function errorCallback(data) {
+        console.log('Error: ' + data);
     });
 
+  };
 
   //Delete daily painting registry
   $scope.delete = function (unique_id, order_id, customer_product_id, employee_name) {
