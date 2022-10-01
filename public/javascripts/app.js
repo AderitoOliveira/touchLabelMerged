@@ -1446,7 +1446,7 @@ app.controller('orderProducts', ['$scope', '$http', '$rootScope', '$stateParams'
     });
 
   //var request = $http.get('/orderproductsServerside/' + orderId);
-  var request = $http.get('/orderproducts/' + orderId);
+  var request = $http.get('/orderproducts/' + encodeURIComponent(orderId));
   request.then(function successCallback(response) {
     $scope.products = response.data;
 
