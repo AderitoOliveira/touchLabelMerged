@@ -221,7 +221,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
 
       function replaceAll(str, map) {
         for (key in map) {
-          str2 = str.replace(key, map[key]);
+          str2 = str.replaceAll(key, map[key]);
           str = str2;
           str2 = null;
         }
@@ -568,7 +568,7 @@ labels.controller('printAllLabelsModalController', ['$scope', 'dataObj', 'messag
 
     function replaceAll(str, map) {
       for (key in map) {
-        str2 = str.replace(key, map[key]);
+        str2 = str.replaceAll(key, map[key]);
         str = str2;
         str2 = null;
       }
