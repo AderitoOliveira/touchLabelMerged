@@ -2013,7 +2013,7 @@ updateLabelAlreadyPrinted = function(req, res) {
 //GET NEXT VALUE FROM THE pdf_requistion_id_sequence SEQUENCE
 fecthNextValueFromPDFReqIdSequence = function(data, callback) {
     con.connect(function(err) {
-    con.query('SELECT nextval(\'pdf_requistion_id_sequence\') as NEXT_VALUE', function(err, rows) {
+    con.query('SELECT nextval(pdf_requistion_id_sequence) as NEXT_VALUE', function(err, rows) {
         if (err) {
             throw err;
         } else
