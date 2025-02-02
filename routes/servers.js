@@ -3,13 +3,13 @@ var mysql = require('mysql');
 
 
 /* var con = mysql.createConnection({
-    host: '127.0.0.1',
+    host: 'localhost',
     user: 'easylabeldb',
     password: 'easylabeldb',
     database: 'easylabeldb',
     port: '3306'
-});
- */
+}); */
+
 
 /* var con = mysql.createConnection({  
     host: '172.30.184.178',
@@ -19,12 +19,12 @@ var mysql = require('mysql');
     port: '3306'	
 }); --  ANTIGO POD ---*/ 
 
-var con = mysql.createConnection({  
-    host: '172.30.221.112',
+var con = mysql.createConnection({
+    host: 'touchlabel.clq9twn40k1w.eu-west-1.rds.amazonaws.com',
     user: 'easylabeldb',
     password: 'easylabeldb',
     database: 'easylabeldb',
-    port: '3306'	
+    port: '3306'
 });
 
 
