@@ -262,6 +262,14 @@ router.post('/updateOrderProductsUniqueId', function (req, res) {
   updateOrderProductsUniqueId(req, res);
 });
 
+//UPDATE ORDER DELIVERY DATE
+router.post('/updateOrderDeliveryDate', function (req, res) {
+  console.log("UPDATE ORDERS SET MODIFIED_DATE");
+  console.log(req.body);
+  updateOrderDeliveryDate(req, res);
+});
+
+
 //Get All the Products for an Order that isn't complete and the daily production needs to be updated
 router.get('/productstilltocloseinthisorder/:orderid/:productid', function (req, res) {
   console.log("List All Orders");
@@ -913,7 +921,7 @@ router.post('/getUserInfo', function (req, res) {
 
     console.log("passToCompare: " + passToCompare);
     console.log("CHAVE --> " + key.toString('hex'));
-    console.log("ANTES DO passToCompare === key.toString('hex')");
+    console.log("A === key.toString('hex')");
     if (passToCompare === key.toString('hex')) {
       console.log("DENTRO DO if(passToCompare === key.toString('hex')) ");
       var array = {

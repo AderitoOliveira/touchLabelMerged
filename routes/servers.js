@@ -7,7 +7,7 @@ var mysql = require('mysql');
     user: 'easylabeldb',
     password: 'easylabeldb',
     database: 'easylabeldb',
-    port: '3306'
+    port: '3399'
 }); */
 
 
@@ -532,6 +532,28 @@ updateOrderProductsUniqueId = function(data, callback) {
             callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
             callback.end(JSON.stringify(rows));
             console.log("UPDATE ORDER_PRODUCTS_UNIQUE_ID IN ORDER_PRODUCTS_PRODUCTION_REGISTRY"); 
+            //callback = rows; 
+    });
+    console.log(query.sql);
+});
+}
+
+
+//UPDATE ORDER DELIVERY DATE
+updateOrderDeliveryDate = function(data, callback) {
+    console.log(data.body);
+    console.log("data.params.ORDER_ID: " + data.body.ORDER_ID); 
+    console.log("data.params.ORDER_DELIVER_DATE " + data.body.ORDER_DELIVER_DATE); 
+    con.connect(function(err) {
+    var query = con.query('update orders set MODIFIED_DATE = ? where ORDER_ID = ?', [data.body.ORDER_DELIVER_DATE, data.body.ORDER_ID], function(err, rows) {
+        if (err) {
+                throw err;
+            } else
+            callback.setHeader('Content-Type', 'application/json');
+            callback.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+            callback.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+            callback.end(JSON.stringify(rows));
+            console.log("UPDATED ORDER DELIVERY DATE"); 
             //callback = rows; 
     });
     console.log(query.sql);

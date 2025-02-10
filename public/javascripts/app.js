@@ -3688,7 +3688,7 @@ app.controller('ordersController', ['$scope', '$http', '$rootScope', '$statePara
       preClose: (modal) => { modal.element.modal('hide'); },
       inputs: {
         message: "Editar a data de entrega da encomenda " + order_id + " .",
-        operationURL: '/editOrderDeliveryDate',
+        operationURL: '/updateOrderDeliveryDate',
         dataObj: orderToEdit
       }
     }).then(function (modal) {
@@ -5873,10 +5873,15 @@ function ($scope, $http, $state, operationURL, dataObj, message) {
   //Save Content Modal  
   $scope.yes = function () {
 
-    var res = $http.post($scope.operationURL, $scope.data).then(function (data, status, headers, config) {
+    var data = {
+      ORDER_ID: $scope.data[0].ORDER_ID,
+      ORDER_DELIVER_DATE: moment($scope.deliverDate).format('YYYY-MM-DD 00:00:00')
+    }
+    
+    var res = $http.post($scope.operationURL, data).then(function (data, status, headers, config) {
       $scope.formattedDate = moment($scope.deliverDate).format('YYYY-MM-DD 00:00:00');
       console.log("A MINHA DATA: " + $scope.formattedDate);
-      //$state.reload();
+      $state.reload();
     });
 
   };
