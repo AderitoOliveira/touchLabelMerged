@@ -88,12 +88,14 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
           var mapTestLabel = {
             '_EAN_CHECK_DIGIT': EanWithCheckDigit,
             '_NUM_ARTIGO': customerProductId,
+            '_ORDER_ID' : order_id,
             '_PRINT_QUANTITY': 1
           };
     
           var map = {
             '_EAN_CHECK_DIGIT': EanWithCheckDigit,
             '_NUM_ARTIGO': customerProductId,
+            '_ORDER_ID' : order_id,
             '_PRINT_QUANTITY': quantityToReplace
           };
           
@@ -131,6 +133,7 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
             }
             
             map["_DATE"] = dateFinalString;
+            mapTestLabel["_DATE"] = dateFinalString;
           
             console.log("dateFinalString: " + dateFinalString);
           
@@ -287,6 +290,24 @@ labels.controller('labelsToPrint', ['$scope', '$http', '$rootScope', '$state', '
               '_QUANTIDADE': qtyByBox,
               '_PRINT_QUANTITY': 1
             };
+
+            if(productNameForLabel.indexOf("\n")==-1){
+              //alert("No newline characters")
+              map._NOME_ARTIGO = productNameForLabel;
+
+            }else{
+              //alert("Contains newline characters")
+              var productNameForLabelSplit = productNameForLabel.split('\n');
+
+              var nomeArtigo = productNameForLabelSplit[0];
+              map._NOME_ARTIGO = nomeArtigo;
+              mapTestLabel._NOME_ARTIGO = nomeArtigo;
+              for(i=1; i < productNameForLabelSplit.length; i++) {
+                map["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+                mapTestLabel["_ARTIGO_NOME_EXT_" + i] = productNameForLabelSplit[i];
+              }
+
+            }
   
             var sendToPrinterTestLabel = replaceAll(ZPLStringTestLabel, mapTestLabel);
   
